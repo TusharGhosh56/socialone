@@ -1,0 +1,78 @@
+---
+// TeamCarousel — Our Team section's 2-row continuously-scrolling marquee,
+// opposite directions, both rows pause together on hover (per explicit
+// product decision — a single :hover on the whole wrapper controls both
+// tracks, not per-row). Pure CSS, no JS: each row's track renders its
+// member list TWICE back-to-back (the second copy `decorative` — hidden
+// from assistive tech) and animates `transform: translateX(-50%)` — since
+// the two copies are identical, the exact moment the animation resets from
+// -50% back to 0% is visually seamless, the classic infinite-marquee
+// technique. Row B's opposite direction is just `animation-direction:
+// reverse` on the same keyframe, not a second one — reversing playback of
+// a 0%→-50% animation still loops seamlessly for the same duplicated-
+// content reason, just visually moving the other way.
+import TeamCard from './TeamCard.astro';
+import type { TeamMember } from '../data/team';
+
+interface Props {
+  rowA: TeamMember[];
+  rowB: TeamMember[];
+}
+const { rowA, rowB } = Astro.props;
+---
+
+<div class="team-marquee" data-team-marquee>
+  <div class="team-marquee__row">
+    <div class="team-marquee__track team-marquee__track--a">
+      {rowA.map((m) => <TeamCard {...m} />)}
+      {rowA.map((m) => <TeamCard {...m} decorative />)}
+    </div>
+  </div>
+  <div class="team-marquee__row">
+    <div class="team-marquee__track team-marquee__track--b">
+      {rowB.map((m) => <TeamCard {...m} />)}
+      {rowB.map((m) => <TeamCard {...m} decorative />)}
+    </div>
+  </div>
+</div>
+
+<style>
+  .team-marquee {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .team-marquee__row {
+    overflow: hidden;
+    /* Soft fade at the true screen edges rather than a hard clip — this
+       sits full-bleed (sibling of .container-x, see index.astro), so the
+       edges are the actual viewport edges. */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  }
+  .team-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 1.25rem;
+    padding-inline: 1.25rem;
+    animation: team-marquee-scroll 34s linear infinite;
+  }
+  .team-marquee__track--b {
+    animation-duration: 40s;
+    animation-direction: reverse;
+  }
+  .team-marquee:hover .team-marquee__track {
+    animation-play-state: paused;
+  }
+  @keyframes team-marquee-scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .team-marquee__track {
+      animation: none;
+    }
+  }
+</style>

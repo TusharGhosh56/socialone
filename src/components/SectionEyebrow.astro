@@ -1,0 +1,18 @@
+---
+// SectionEyebrow (§7) — inline dot mark (12px) + uppercase tracked label.
+// `tone`: 'light' (deep-gold/mid-navy on light) or 'dark' (gold on navy).
+interface Props {
+  label: string;
+  tone?: 'light' | 'dark';
+}
+const { label, tone = 'light' } = Astro.props;
+const color = tone === 'dark' ? 'text-gold' : 'text-deep-gold';
+const dot = tone === 'dark' ? '#D19C33' : '#A87826';
+---
+
+<p class={`flex items-center gap-2 text-eyebrow font-bold uppercase tracking-[0.14em] ${color}`}>
+  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" class="shrink-0">
+    <circle cx="6" cy="6" r="4.5" fill={dot} />
+  </svg>
+  {label}
+</p>

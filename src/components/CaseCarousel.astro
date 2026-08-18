@@ -1,0 +1,223 @@
+---
+// CaseCarousel — peek/slide carousel for AI in Action's case studies.
+// Unlike How We Work's StepCarousel (an expanding-accordion — all cards
+// always laid out full-width, one just grows via flex-grow/flex-basis),
+// this is a sliding TRACK: activeIndex is always the CENTRE card (not a
+// window start), shown full-size, flanked by however many neighbours the
+// current breakpoint keeps fully visible too (1 on mobile, 3 on desktop —
+// i.e. activeIndex ± 1), with the next card out on each side peeking in,
+// cropped by the viewport's own overflow-hidden, scaled down and faded.
+// caseCarousel.ts measures the real rendered viewport/card width (never a
+// hardcoded per-breakpoint formula) so "N cards + peeks fit the viewport"
+// holds at any actual screen width. Prev/next arrows below the track reuse
+// the exact thin-circle-outline shape/interaction How We Work's carousel
+// uses, recoloured for this section's light background instead of that
+// one's dark navy.
+//
+// Meant to be rendered full-bleed (a sibling of .container-x, not nested
+// inside it — see index.astro) so the peek cards crop at the true screen
+// edge, not container-x's 1200px cap.
+//
+// Infinite-loop technique: the track is a genuinely linear DOM row, so
+// wrapping activeIndex alone (e.g. last card's "next" = first card) doesn't
+// wrap the PHYSICAL layout — there's nothing actually positioned next to
+// the real last card, hence a blank gap until the track jumps. The
+// standard fix: clone CLONE_COUNT cards from each end and prepend/append
+// them (aria-hidden + inert, screen readers/keyboard never see the
+// duplicates), so navigating past the real last card slides into a CLONE
+// of the first card — visually identical — then caseCarousel.ts silently
+// snaps the track (transition disabled for one frame) back to the real
+// card at the same visual position once the animated move finishes. 2
+// clones covers the desktop case (3 visible = need a real neighbour 2 away
+// from the boundary for the peek beyond it to render); mobile only needs 1
+// but 2 is a harmless superset.
+import Reveal from './Reveal.astro';
+import CaseCard from './CaseCard.astro';
+import type { CaseStudy } from '../data/cases';
+
+interface Props {
+  cases: CaseStudy[];
+}
+const { cases } = Astro.props;
+
+const CLONE_COUNT = 2;
+const N = cases.length;
+const extended = [
+  ...cases.slice(-CLONE_COUNT).map((c, i) => ({ c, realIndex: N - CLONE_COUNT + i, clone: true })),
+  ...cases.map((c, i) => ({ c, realIndex: i, clone: false })),
+  ...cases.slice(0, CLONE_COUNT).map((c, i) => ({ c, realIndex: i, clone: true })),
+];
+---
+
+<Reveal delay={140} class="case-carousel" data-case-carousel-root data-clone-count={CLONE_COUNT}>
+  <div class="case-carousel__viewport" data-case-carousel-viewport>
+    <div
+      class="case-carousel__track"
+      data-case-carousel-track
+      role="group"
+      aria-roledescription="carousel"
+      aria-label="AI in Action case studies"
+      tabindex="0"
+    >
+      {
+        extended.map(({ c, realIndex, clone }, extendedIndex) => (
+          <div
+            class={`case-carousel__card${extendedIndex === CLONE_COUNT ? ' is-active' : ''}`}
+            data-case-carousel-card={realIndex}
+            data-extended-index={extendedIndex}
+            aria-hidden={clone ? 'true' : undefined}
+            inert={clone ? true : undefined}
+          >
+            <CaseCard {...c} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="case-carousel__nav-row">
+    <button type="button" class="case-carousel__arrow" data-case-carousel-prev aria-label="Previous case study">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3l-5 5 5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button type="button" class="case-carousel__arrow" data-case-carousel-next aria-label="Next case study">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+</Reveal>
+
+<script>
+  import { initCaseCarousel } from '../scripts/caseCarousel';
+  initCaseCarousel();
+</script>
+
+<style>
+  .case-carousel {
+    /* Single source of truth for the slide duration — caseCarousel.ts reads
+       this to time the post-slide clone→real snap, same "read the CSS
+       value, don't duplicate the number in JS" convention as Preloader.astro. */
+    --slide-ms: 500ms;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* overflow: clip, not clip-path — clip-path only clips PAINT, never
+     scrollable overflow, so the extended track (all the cloned peek cards
+     laid out in a single ~5300px-wide flex row, some peeking hundreds of px
+     past the visible edge by design) was still counted as part of the
+     page's scrollable width, producing a real horizontal scrollbar
+     (confirmed via document.documentElement.scrollWidth). overflow:hidden
+     would fix that, but overflow-x:hidden/overflow-y:visible has the CSS
+     quirk where the "visible" axis computes to `auto` instead when the
+     other axis isn't visible — same reasoning this originally avoided.
+     overflow:clip doesn't have that coupling (neither axis is ever
+     `visible`) and DOES establish a real clip boundary that removes
+     descendants from the ancestor's scrollable overflow. overflow-clip-
+     margin was tried first for the active card's hover-lift shadow room,
+     but it's a single value applied to ALL four edges — giving it enough
+     margin to not clip the vertical shadow also re-opened enough
+     horizontal bleed (peek cards regularly exceed it) to leave a residual
+     scrollbar. Real padding + a canceling negative margin gets vertical-
+     only breathing room instead: overflow clips at the padding edge (not
+     content edge), so content bleeding into the padding-block area stays
+     unclipped while the negative margin-block cancels the padding's
+     effect on the flex layout above/below, so .case-carousel's overall
+     height in the page doesn't change. Horizontal has zero padding, so
+     clip still lands exactly at this box's true left/right edges. */
+  .case-carousel__viewport {
+    overflow: clip;
+    padding-block: 40px;
+    margin-block: -40px;
+  }
+
+  /* Suppresses the track's AND every card's transition — applied only for
+     the one instantaneous frame of the clone→real snap (caseCarousel.ts),
+     so that invisible jump doesn't also visibly cross-fade/rescale the
+     cards whose .is-active/.is-near classes moved to a different element. */
+  .case-carousel.is-snapping .case-carousel__track,
+  .case-carousel.is-snapping .case-carousel__card {
+    transition: none;
+  }
+
+  .case-carousel__track {
+    display: flex;
+    gap: 1.25rem;
+    outline: none;
+    will-change: transform;
+    transition: transform var(--slide-ms) var(--ease-out);
+  }
+  .case-carousel__track:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 4px;
+  }
+
+  /* Width is set by caseCarousel.ts (--card-w, measured — see that file),
+     not a hardcoded per-breakpoint value. Peeking cards (anything beyond
+     .is-active/.is-near) default to the scaled-down/faded treatment. */
+  .case-carousel__card {
+    flex: 0 0 auto;
+    width: var(--card-w, 80vw);
+    opacity: 0.4;
+    transform: scale(0.88);
+    transition:
+      transform var(--slide-ms) var(--ease-out),
+      opacity var(--slide-ms) var(--ease-out);
+  }
+  .case-carousel__card.is-active,
+  .case-carousel__card.is-near {
+    opacity: 1;
+    transform: scale(1);
+  }
+  /* Below lg (mobile: only 1 card fully visible), the immediate neighbours
+     get the peek treatment too — "is-near" only means full-size on desktop,
+     where 3 cards (active ± 1) are meant to be fully visible at once. */
+  @media (max-width: 1023px) {
+    .case-carousel__card.is-near {
+      opacity: 0.4;
+      transform: scale(0.88);
+    }
+  }
+
+  .case-carousel__nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .case-carousel__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--hair);
+    background: none;
+    color: var(--ash);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+  .case-carousel__arrow:hover,
+  .case-carousel__arrow:focus-visible {
+    border-color: var(--gold);
+    color: var(--deep-gold);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-carousel__track {
+      transition: none;
+    }
+    .case-carousel__card {
+      transition: none;
+    }
+    .case-carousel__arrow {
+      transition: none;
+    }
+  }
+</style>

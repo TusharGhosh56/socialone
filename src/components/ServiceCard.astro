@@ -1,0 +1,20 @@
+---
+// ServiceCard (§7) — title + one-liner; hover raises + gold top-border grows from left.
+import type { Service } from '../data/services';
+interface Props extends Service {
+  class?: string;
+}
+const { title, body, class: className = '' } = Astro.props;
+---
+
+<div
+  class={`group relative overflow-hidden rounded-lg border border-hair bg-white p-6 shadow-sm transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-1 hover:shadow-md sm:p-8 ${className}`}
+>
+  <!-- gold top-border grows from left on hover -->
+  <span
+    aria-hidden="true"
+    class="absolute inset-x-0 top-0 h-[3px] w-0 origin-left bg-gold transition-[width] duration-base ease-out group-hover:w-full motion-reduce:transition-none"
+  ></span>
+  <h3 class="text-h3 font-bold text-navy">{title}</h3>
+  <p class="mt-3 text-navy/85">{body}</p>
+</div>

@@ -1,0 +1,6 @@
+<!-- APLYD logomark (white). Real brand asset; gold normalized #D99D29→#D19C33.
+     Class fills inlined to avoid global .cls-* collisions when inlined. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195.87 216.26" fill="#FFFFFF" role="img" aria-label="APLYD logomark">
+  <circle cx="97.93" cy="177.5" r="24.09" fill="#D19C33"/>
+  <polygon fill-rule="evenodd" points="131.24 139.25 97.93 65.4 97.93 65.4 64.36 139.25 53.65 163.02 29.59 216.26 0 216.26 97.91 0 97.91 0 97.95 0 195.87 216.26 166.24 216.26 142.07 163.02 131.24 139.25"/>
+</svg>

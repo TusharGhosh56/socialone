@@ -1,0 +1,207 @@
+---
+// StepCarousel — expanding-card carousel, currently used by the Principles
+// section (index.astro's "5 · PRINCIPLES") — `ariaLabel` prop lets each
+// call site describe its own content instead of a hardcoded "How we work
+// steps" (that copy stayed as the default since the archived original How
+// We Work section, if ever restored, would still want it unchanged). Every
+// card's photo fills its ENTIRE box as a background (see StepRow.astro).
+// The step-number badge (top-left, gold circle/navy number) is always
+// visible, collapsed or active alike — only the title/body text overlay is
+// exclusive to the active card, sliding/fading in on a dark fade at a
+// fixed width independent of the card's own resize (see StepRow.astro's
+// own comment on why that's a separate transition). One `.is-active` class
+// per card, toggled by stepCarousel.ts, drives the sizing itself via plain
+// CSS flexbox (`flex-grow`/`flex-basis`, both transition-animatable) — not
+// JS-computed sizes. stepCarousel.ts also drives a 5s autoplay (paused on
+// hover, reset by manual navigation) once this component's own entrance
+// reveal has settled. Rendered inside the SAME container-x as the heading
+// row above it (see index.astro) — not a hand-approximated padding-left,
+// so it's pixel-aligned with the heading at every viewport width,
+// including the wide-screen case where container-x's own centering insets
+// it more than a flat var(--container-pad) alone would. Advance with the
+// minimal prev/next arrows below the track, or by clicking a collapsed
+// card directly.
+import Reveal from './Reveal.astro';
+import StepRow from './StepRow.astro';
+import PrincipleIcon from './PrincipleIcon.astro';
+import type { Step } from '../data/steps';
+
+interface Props {
+  steps: Step[];
+  ariaLabel?: string;
+}
+const { steps, ariaLabel = 'How we work steps' } = Astro.props;
+---
+
+{/* delay is later than the heading row's own Reveals above it (0/60/90/140ms,
+    ~740ms to fully settle) so the cards+controls visibly follow after the
+    title/description/button finish, rather than fading in at the same time. */}
+<Reveal delay={400} class="step-carousel" data-carousel-root>
+  <div
+    class="step-carousel__track"
+    data-carousel-track
+    role="group"
+    aria-roledescription="carousel"
+    aria-label={ariaLabel}
+    tabindex="0"
+  >
+    {
+      steps.map((s, i) => (
+        <div class={`step-carousel__card${i === 0 ? ' is-active' : ''}`} data-carousel-card={i}>
+          <span class="step-carousel__card-badge" aria-hidden="true">
+            {s.icon ? <PrincipleIcon icon={s.icon} animated={false} /> : s.n}
+          </span>
+          <StepRow {...s} />
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="step-carousel__nav-row">
+    <button type="button" class="step-carousel__arrow" data-carousel-prev aria-label="Previous step">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M10 3l-5 5 5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button type="button" class="step-carousel__arrow" data-carousel-next aria-label="Next step">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
+  </div>
+</Reveal>
+
+<script>
+  import { initStepCarousel } from '../scripts/stepCarousel';
+  initStepCarousel();
+</script>
+
+<style>
+  .step-carousel {
+    /* Establishes its own stacking context above How We Work's background
+       video (position:absolute, z-index:0) — without this, the carousel
+       would be plain in-flow non-positioned content, which paints BELOW
+       any positioned z-index:0 layer regardless of DOM order. */
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .step-carousel__track {
+    height: clamp(280px, 38vh, 400px);
+    display: flex;
+    gap: 1rem;
+    outline: none;
+  }
+  .step-carousel__track:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: -4px;
+  }
+  /* Collapsed by default — a narrow sliver, still fully clickable. Expands
+     via .is-active (stepCarousel.ts toggles this, one card at a time):
+     flex-grow takes over and the card fills essentially all the space the
+     other (fixed-width, collapsed) cards don't need. Both flex-grow and
+     flex-basis are transition-animatable, so this reads as a smooth
+     expand/collapse rather than a snap. `min-width: 0` matters here — flex
+     items default to `min-width: auto`, which lets their CONTENT'S
+     intrinsic width (StepRow's text, before it's fixed-width-and-hidden)
+     stop them shrinking properly; without this override the row's total
+     required width could exceed the track and spill past the section's
+     right edge instead of every card sizing the way flex-grow/flex-basis
+     actually says to. */
+  .step-carousel__card {
+    position: relative;
+    flex: 0 0 84px;
+    min-width: 0;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+      flex-grow 550ms var(--ease-out),
+      flex-basis 550ms var(--ease-out);
+  }
+  .step-carousel__card.is-active {
+    flex: 1 1 0%;
+    cursor: default;
+  }
+  /* Step-number badge — same treatment and position (top-left) whether the
+     card is collapsed or active; StepRow's own text overlay has no number
+     of its own, so there's no duplicate. */
+  .step-carousel__card-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding-inline: 0.5rem;
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  .step-carousel__nav-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  /* Minimal — a thin outline, no fill. */
+  .step-carousel__arrow {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+    background: none;
+    color: var(--pale-navy);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+  .step-carousel__arrow:hover,
+  .step-carousel__arrow:focus-visible {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step-carousel__card {
+      transition: none;
+    }
+    .step-carousel__arrow {
+      transition: none;
+    }
+  }
+
+  /* Mobile: vertical accordion instead of the horizontal sliver row — per
+     explicit product decision, after measuring the horizontal layout's real
+     mobile bug (not just "cramped"): the 3 collapsed cards (84px each) plus
+     gaps already consumed 300 of the 335px then-available, so the ACTIVE
+     card rendered at 35px wide — narrower than its own collapsed siblings.
+     Flipping .step-carousel__track's main axis to column turns the exact
+     same flex-grow/flex-basis mechanic (already transition-animatable, see
+     .step-carousel__card above) into a height-based expand/collapse with
+     zero JS changes — stepCarousel.ts only ever toggles .is-active, it
+     never assumes an axis. Every card is full track WIDTH in this mode
+     (flex column's default align-items:stretch), so only flex-basis's
+     meaning (now height) needs overriding here. */
+  @media (max-width: 640px) {
+    .step-carousel__track {
+      height: clamp(480px, 130vw, 560px);
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .step-carousel__card {
+      flex: 0 0 64px;
+      min-height: 0;
+    }
+  }
+</style>

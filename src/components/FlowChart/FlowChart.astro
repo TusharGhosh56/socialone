@@ -1,0 +1,86 @@
+---
+// FlowChart — Screen 2's signature: a continuously-running, full-bleed left-
+// to-right Canvas 2D animation with no mouse interactivity. A traveling dot
+// journeys along a seven-station trunk — Data, Institution, Workflow,
+// Delivery, Evidence, Ownership, Impact — each with its own bespoke motif
+// (see flowChart.ts). The full formation plays once on first scroll into
+// view; after that each station keeps its own idle loop while a lightweight
+// traveler keeps re-tracing the path.
+//
+// Now its own rounded inset card (Runway-style, see .flow in flowChart.css)
+// with a looping muted gradient video background (same pattern as
+// HeroFlow's/How We Work's own video backgrounds) instead of the flat
+// .gradient-navy/.gradient-sheen fill — a navy overlay fade sits between
+// the video and the content (text + canvas) for legibility/contrast.
+//
+// The .flow__static block below is the no-JS / reduced-motion fallback.
+import './flowChart.css';
+---
+
+<section class="flow" id="flow" data-flow aria-labelledby="flow-h2">
+  <div class="flow__video-wrap" aria-hidden="true">
+    <video class="flow__video" autoplay loop muted playsinline preload="auto">
+      <source src="/video/gradient_yellow.mp4" type="video/mp4" />
+    </video>
+    <div class="flow__video-fade"></div>
+  </div>
+
+  <div class="container-x relative pt-14 sm:pt-16 lg:pt-20">
+    <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">How It Works</p>
+    <h2 id="flow-h2" class="mt-4 max-w-[26ch] text-h2 font-bold text-white">From data to better decisions</h2>
+    <p class="mt-4 max-w-measure text-lede font-light text-pale-navy">
+      One signal moves from data through the institutions, workflows and people who deliver it,
+      gathers evidence, is owned by those it serves, and becomes lasting impact.
+    </p>
+  </div>
+
+  <div class="flow__stage mt-3" data-flow-stage>
+    <div class="flow__frame" data-flow-frame>
+      <canvas class="flow__canvas" data-flow-canvas aria-hidden="true"></canvas>
+      <div class="flow__labels" data-flow-labels aria-hidden="true"></div>
+    </div>
+
+    <!-- static fallback (no-JS / reduced-motion) -->
+    <div class="flow__static container-x">
+      <div class="flow__static-row">
+        <span>Data</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Institution</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Workflow</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Delivery</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Evidence</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Ownership</span>
+        <span class="flow__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Impact</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sr-only">
+    APLYD turns data into lasting impact. Data feeds into institutions, moves through workflows,
+    reaches delivery on the ground, generates evidence, is owned by the people and systems it
+    serves, and produces lasting impact.
+  </p>
+</section>
+
+<!-- Flag animation mode before first paint (JS on + motion allowed). -->
+<script is:inline>
+  (function () {
+    try {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelector('[data-flow]')?.classList.add('is-anim');
+      }
+    } catch (e) {
+      /* leave static */
+    }
+  })();
+</script>
+
+<script>
+  import { initFlowChart } from './flowChart';
+  initFlowChart();
+</script>

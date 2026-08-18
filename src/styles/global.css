@@ -1,0 +1,382 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Self-hosted Lato (§1) is imported as JS in Base.astro (avoids CSS @import
+   ordering constraints); font-display: swap comes from @fontsource css. */
+
+/* ------------------------------------------------------------------ */
+/* Design tokens (§4) — CSS vars are the runtime source of truth.      */
+/* ------------------------------------------------------------------ */
+:root {
+  --deep-navy: #1a2150;
+  --navy: #232b65;
+  --mid-navy: #4a538a;
+  --pale-navy: #e8eaf1;
+  --deep-gold: #a87826;
+  --gold: #d19c33;
+  --pale-gold: #f5e9d1;
+  --ink: #0a0a0a;
+  --ash: #6b6b6b;
+  --smoke: #c8c8c2;
+  --hair: #e4e4df;
+  --paper: #f5f5f2;
+  --off-white: #fafaf7;
+  --white: #ffffff;
+  /* Form validation / submission failure. Only used by the contact form's
+     status line today; picked to clear 4.5:1 on --white and --off-white. */
+  --error: #b3261e;
+
+  /* Single source of truth for the page's left/right content inset — reused
+     anywhere that needs to align with .container-x without being a normal-
+     flow child of one (e.g. FlowChart's absolutely-positioned canvas).
+     Floor bumped 1.25rem -> 3.25rem (was too tight on phones): flowLine.ts's
+     rails sit at a fixed x independent of this padding (railPad() measures
+     the header logomark, not container-pad, currently ~35px on a 375px-wide
+     phone) — a heading's own text (starting at the padding edge) needs to
+     clear the rail's dot (radius 5) with real breathing room, not just not
+     touch it. Confirmed via getBoundingClientRect on #flow-h2 et al.: the
+     old 20px floor put text flush against the dot; 2.5rem (40px) still had
+     the dot's edge exactly touching the text's left edge; 3.25rem (52px)
+     leaves a clean ~12px gap. Only the floor moved; the 5vw scaling term
+     and 4rem ceiling are unchanged, so tablet/desktop padding is
+     unaffected. */
+  --container-pad: clamp(3.25rem, 5vw, 4rem);
+
+  --shadow-sm: 0 1px 2px rgba(26, 33, 80, 0.06);
+  --shadow-md: 0 8px 24px -8px rgba(26, 33, 80, 0.12);
+  --shadow-lg: 0 24px 60px -20px rgba(26, 33, 80, 0.2);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 150ms;
+  --dur-base: 280ms;
+  --dur-reveal: 600ms;
+}
+
+/* ------------------------------------------------------------------ */
+/* Base type & document (§4.2)                                         */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--paper);
+    color: var(--navy);
+    font-family: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 400;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--navy);
+    text-wrap: balance;
+  }
+
+  /* Visible keyboard focus everywhere (§13). */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--pale-gold);
+    color: var(--navy);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reusable component/utility classes                                  */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+
+  .prose-x {
+    max-width: 720px;
+  }
+
+  .section-y {
+    padding-block: clamp(5rem, 10vw, 9rem);
+  }
+
+  /* Visually hidden but available to assistive tech + crawlers (AEO/GEO). */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Skip-link — first focusable element (§12). */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -3rem;
+    z-index: 100;
+    background: var(--navy);
+    color: var(--white);
+    padding: 0.625rem 1rem;
+    border-radius: 6px;
+    transition: top var(--dur-base) var(--ease-out);
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Hero and FlowChart(V2) are full-bleed, square-cornered sections (see
+     .hero/.flow2 in their own component CSS) that sit flush against each
+     other with zero gap, reading as one continuous run — this wrapper is
+     layout-only (no background of its own): just enough top padding to
+     clear the fixed header so Hero starts right below it. No margin-bottom
+     either — Trust (the next section down) sits flush against FlowChart
+     too, same zero-gap treatment. Vision & Mission used to be the third
+     member of this stack, between FlowChart and Trust; it was removed
+     entirely per explicit product decision. */
+  .hero-flow-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 4rem; /* header h-16 below sm */
+  }
+  @media (min-width: 640px) {
+    .hero-flow-stack {
+      padding-top: 4.5rem; /* header sm:h-[72px] */
+    }
+  }
+
+  /* Reusable dark, slightly-animated background for navy sections sitewide
+     (FlowChart, How We Work, Backed by Athena, etc.) — replaces flat
+     bg-navy/bg-deep-navy fills. `.gradient-navy` is the darker base wash;
+     `.gradient-sheen` layers the same slow moving highlight sweep on top via
+     ::before. Split into two classes so a section can use the dark base
+     without the animation, though in practice they're used together. */
+  .gradient-navy {
+    position: relative;
+    background: linear-gradient(180deg, #0d1030 0%, #171d47 40%, #171d47 68%, #0d1030 100%);
+  }
+  .gradient-sheen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      100deg,
+      transparent 15%,
+      rgba(74, 83, 138, 0.4) 40%,
+      rgba(209, 156, 51, 0.08) 52%,
+      transparent 78%
+    );
+    background-size: 260% 100%;
+    animation: hero-sheen 16s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Reusable "rounded inset card" shape — the same treatment Hero and
+     FlowChart already use locally (.hero/.flow in their own component CSS:
+     margin-inline + border-radius + overflow:hidden), so a full-bleed
+     section reads as a floating card on the page background rather than a
+     flat edge-to-edge band. Also sets margin-block (Hero/FlowChart don't
+     need their own — .hero-flow-stack's padding-top/gap already spaces
+     them vertically; a standalone section like How We Work has no such
+     wrapper, so this covers all four sides itself). */
+  .section-card {
+    margin: clamp(0.75rem, 2.5vw, 2rem);
+    border-radius: 1.75rem;
+    overflow: hidden;
+  }
+  /* .gradient-sheen's ::before is a separate absolutely-positioned layer —
+     the host's own `background` clips to border-radius automatically with
+     no extra help needed, but this pseudo-element doesn't inherit that
+     rounding just because its host is a .section-card, so without this it
+     renders as a plain rectangle poking past the rounded corners. Scoped to
+     BOTH classes together so this doesn't round every .gradient-sheen
+     section sitewide (most aren't .section-cards and have square corners
+     on purpose, e.g. Trust, Backed by Athena). */
+  .section-card.gradient-sheen::before {
+    border-radius: inherit;
+  }
+}
+
+@keyframes hero-sheen {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 0%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-sheen::before {
+    animation: none;
+    background-position: 45% 0%;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Reveal-on-scroll (§7, §11). Component wrapper toggles .is-visible,   */
+/* both in AND out (Reveal.astro replays this every re-entry). Under    */
+/* reduced-motion we render the final state instantly.                 */
+/* ------------------------------------------------------------------ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
+  /* Delay lives on .is-visible ONLY (see below) — this base rule is what
+     applies the moment .is-visible is REMOVED (scrolling back out), so
+     leaving this at 0 means exits happen immediately, without replaying
+     the entrance stagger in reverse. */
+  transition-delay: 0ms;
+  will-change: opacity, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Backed by Athena — the horizontal rule is now a static, always-      */
+/* visible faint track (a channel for the master line to run along);   */
+/* the master line itself does the actual left-to-right progressive    */
+/* reveal on top of it as it crosses each dot. Each dot+text pair fades */
+/* in reversibly via [data-flow-fade] as the master line reaches it.    */
+/* ------------------------------------------------------------------ */
+
+/* ------------------------------------------------------------------ */
+/* Reversible fade-in, driven by the page-wide flowing line's progress */
+/* (flowLine.ts) reaching that element's own trigger point — used for   */
+/* the Challenge's pointer items and the Timeline's per-year entries.   */
+/* Unlike Reveal's one-shot [data-reveal], this un-reveals on scroll-up.*/
+/* ------------------------------------------------------------------ */
+[data-flow-fade] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+[data-flow-fade].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-flow-fade] {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Page-wide flowing connector line (src/scripts/flowLine.ts).         */
+/* ------------------------------------------------------------------ */
+.flow-line-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 5;
+}
+.flow-line-path {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1 11;
+}
+.flow-line-dot {
+  fill: var(--gold);
+  stroke: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-line-dot {
+    opacity: 1 !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Trusted Partners — dark gradient stat card. Vertical dividers between   */
+/* metrics, reset/reapplied per breakpoint so each rule matches that       */
+/* breakpoint's actual column count (grid-cols-2/3/5) — nth-child(Nn+1)    */
+/* correctly identifies "first in row" for an N-column grid, so no stray  */
+/* divider appears on the first item of a wrapped row.                    */
+/* ------------------------------------------------------------------ */
+.metric-row > *:not(:nth-child(2n + 1)) {
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+@media (min-width: 640px) {
+  .metric-row > *:not(:nth-child(2n + 1)) {
+    border-left: none;
+  }
+  .metric-row > *:not(:nth-child(3n + 1)) {
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+@media (min-width: 1024px) {
+  .metric-row > *:not(:nth-child(3n + 1)) {
+    border-left: none;
+  }
+  .metric-row > *:not(:nth-child(5n + 1)) {
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared hover treatment — AI in Action cards.                        */
+/* Gold-tinted glow on hover/focus; pairs with the data-tilt script.   */
+/* ------------------------------------------------------------------ */
+.hover-glow-gold {
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+/* Selector repeated to out-specificity Tailwind's own hover:shadow-* utility
+   — in this build's compiled output order that utility lands after this
+   rule, so equal specificity would otherwise let it win the tie. */
+.hover-glow-gold.hover-glow-gold:hover,
+.hover-glow-gold.hover-glow-gold:focus-visible {
+  box-shadow:
+    0 20px 45px -14px rgba(26, 33, 80, 0.2),
+    0 0 26px 2px rgba(209, 156, 51, 0.28);
+}

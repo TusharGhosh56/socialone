@@ -1,0 +1,9 @@
+<!-- Favicon derived from the real APLYD logomark (§2): white peak + gold dot
+     on a navy rounded square. Gold normalized to #D19C33. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="52" fill="#232B65"/>
+  <g transform="translate(41.9 33) scale(0.8786)">
+    <circle cx="97.93" cy="177.5" r="24.09" fill="#D19C33"/>
+    <polygon fill-rule="evenodd" fill="#FFFFFF" points="131.24 139.25 97.93 65.4 97.93 65.4 64.36 139.25 53.65 163.02 29.59 216.26 0 216.26 97.91 0 97.91 0 97.95 0 195.87 216.26 166.24 216.26 142.07 163.02 131.24 139.25"/>
+  </g>
+</svg>

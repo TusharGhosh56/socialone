@@ -1,0 +1,220 @@
+/* FlowChartV2 — full-bleed section, same square-cornered flush-with-
+   neighbours treatment as the archived original (see .flow in
+   src/components/FlowChart/flowChart.css) — Hero/FlowChart used to be
+   .section-card "floating card"s; both had that treatment removed earlier,
+   so this duplicate never needs to touch it either.
+
+   Full height (per request): the whole section is now min-height:100vh, same
+   pattern as Hero's own .hero__stage (heroFlow.css) — a flex column with the
+   heading text at its natural height up top and the canvas stage flexing to
+   fill whatever's left, rather than the original's fixed
+   clamp(300px,40vh,460px) stage height. */
+
+.flow2 {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+@media (max-width: 720px) {
+  .flow2 {
+    /* Same mobile-browser-chrome compromise as .hero__stage. */
+    min-height: 92vh;
+  }
+}
+
+/* Background video — identical structure to the archived original's
+   .flow__video-wrap. */
+.flow2__video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.flow2__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flow2__video-fade {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 16, 48, 0.55);
+}
+
+.flow2__stage {
+  position: relative;
+  width: 100%;
+  /* Flex-grow to fill whatever height the heading text above didn't use,
+     instead of a fixed clamp() — this is what makes the section actually
+     reach full viewport height rather than just the heading area doing so. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Centered, 1200px-capped box with NO padding of its own — see the archived
+   original's own comment on why this stays separate from .flow2__canvas/
+   .flow2__labels (padding-box vs. content-edge alignment). */
+.flow2__frame {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 1200px;
+  transform: translateX(-50%);
+}
+
+.flow2__canvas {
+  position: absolute;
+  inset: 0;
+  /* canvas is a replaced element — inset:0 alone won't stretch it. */
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.flow2:not(.is-anim) .flow2__canvas,
+.flow2:not(.is-anim) .flow2__labels {
+  display: none;
+}
+
+.flow2__labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+/* Each station's label is now a title+subtitle pair ABOVE the trunk (was a
+   single line below it) — translate(-50%,0) anchors the block's TOP edge at
+   `top` (flowChartV2.ts's buildLabels() sets the SAME top for all 4, from a
+   measured max block height, so titles align across stations — see that
+   function's own comment). A flex column, not two independently-positioned
+   spans, so title/subtitle always stack with the same small gap between
+   them. */
+.flow2__label {
+  position: absolute;
+  transform: translate(-50%, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  width: 150px;
+  text-align: center;
+  color: var(--white);
+  opacity: var(--reveal, 0);
+  transition:
+    opacity 150ms linear,
+    color 150ms linear;
+}
+
+/* min-height reserves room for 2 lines regardless of actual line count, so
+   a short 1-line title ("Foundation") still starts its visible text at the
+   same Y as a 2-line one ("Institutional Capability") — this is what makes
+   buildLabels()'s shared top-anchor actually align the TEXT, not just each
+   block's own box. */
+.flow2__label-title {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  min-height: calc(1.2em * 2);
+}
+
+/* Same size as the title (per explicit product decision) — regular weight
+   + italic is what distinguishes it, not a smaller size. Hidden by default
+   (independent of the label block's own --reveal fade above it) and only
+   fades+slides in on hover of that station — flowChartV2.ts's
+   updateStationHover() toggles .flow2__label--hovered on the parent based
+   on pointer proximity to the station's own (x, centerY) point on the
+   canvas. Layout space stays reserved either way (opacity/transform only,
+   never display/visibility), so revealing it never shifts the title above
+   it. Nested under the parent's own --reveal opacity, so it still can't
+   show before the station itself has finished forming — CSS opacity
+   composes with an ancestor's, it isn't a separate independent channel. */
+.flow2__label-subtitle {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 220ms var(--ease-out),
+    transform 220ms var(--ease-out);
+}
+.flow2__label--hovered .flow2__label-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.flow2__label--active {
+  color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flow2__label-subtitle {
+    transition: none;
+  }
+}
+
+/* Four trunk stops now (down from seven) — more room per label than the
+   original had, but the narrow-screen tighter treatment stays for the same
+   reason (font-size especially). Below 640px each label sits alone above
+   its own dot (vertical trunk, see flowChartV2.ts) rather than sharing a
+   horizontal row with 3 others, so — unlike desktop — there's no reason to
+   keep it narrow enough to wrap; per explicit product decision, title and
+   subtitle are each forced to a single line instead (white-space:nowrap),
+   with the fixed 108px cap replaced by width:max-content so the box grows
+   to fit whichever line is longest and stays centred on the trunk either
+   way. This is also what makes every station's title-to-subtitle gap
+   visually IDENTICAL — the desktop .flow2__label-title min-height trick
+   (reserving 2-line height so short titles like "Foundation" and long ones
+   like "Institutional Capability" still start their subtitle at the same
+   relative offset) is a wrap-compensation hack that stops being needed at
+   all once nothing wraps, so it's cancelled here too. */
+@media (max-width: 640px) {
+  .flow2__label {
+    width: max-content;
+    max-width: none;
+  }
+  .flow2__label-title,
+  .flow2__label-subtitle {
+    font-size: 0.625rem;
+    white-space: nowrap;
+  }
+  .flow2__label-title {
+    min-height: 0;
+  }
+}
+
+/* static (no-JS / reduced-motion) fallback */
+.flow2__static {
+  display: none;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+.flow2:not(.is-anim) .flow2__static {
+  display: flex;
+}
+.flow2__static-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.flow2__static-arrow {
+  color: var(--gold);
+}

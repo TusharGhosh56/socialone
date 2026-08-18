@@ -1,0 +1,459 @@
+---
+// Get in Touch (/contact) — the real destination for every "Partner With
+// APLYD" / "Get In Touch" link sitewide (header, hero, footer, the Final
+// CTA button on the homepage). The homepage's own section#contact stays in
+// place as a teaser leading here, not a destination itself — see that
+// section's own comment in index.astro.
+//
+// No fixed-position hero video here (this isn't the homepage) — the intro
+// band just needs to clear the fixed header, same padding-top values
+// .hero-flow-stack uses in global.css (4rem / 4.5rem for header h-16 /
+// sm:h-[72px]), applied to a wrapper div rather than baked into section-y
+// itself so section-y's own bottom padding is untouched.
+//
+// BACKEND: static output, no adapter (see astro.config.mjs), so the form
+// posts directly from the browser to the APLYD notification Lambda behind API
+// Gateway — see src/scripts/contactPage.ts. The endpoint is read from
+// PUBLIC_CONTACT_API_URL (a public URL, no credential); the browser origin
+// must be on the Lambda's ALLOWED_ORIGIN list or CORS will reject it.
+import Base from '../layouts/Base.astro';
+import Reveal from '../components/Reveal.astro';
+import { contactEmails, offices } from '../data/contactInfo';
+import { serviceOptions, enquiryOptions } from '../data/contactOptions';
+import { FIELD_LIMITS } from '../data/contactLimits';
+---
+
+<Base
+  title="Get in Touch | APLYD — Intelligence, Applied"
+  description="Tell us what you're working on. Reach the APLYD team by email or phone, find our offices, or send a message directly."
+>
+  <div class="pt-16 sm:pt-[4.5rem]">
+    {/* ============================ INTRO ============================
+        Full viewport height on both mobile and desktop, content vertically
+        centred — same min-height:100vh/flex/align-items:center pattern (and
+        the same 92vh-under-720px mobile-browser-chrome compromise) as
+        Hero's own .hero__stage on the homepage (heroFlow.css). Swapped
+        section-y's own clamp(5rem,10vw,9rem) padding-block for a much
+        smaller fixed py-16 — with the height now coming from min-height
+        instead, that large padding was only adding dead space (and pushing
+        the Contact details/Form section further down) rather than actually
+        making the section taller. */}
+    <section id="get-in-touch-intro" aria-labelledby="contact-h1" class="contact-intro bg-paper py-16">
+      <div class="container-x">
+        <Reveal as="h1" class="max-w-[20ch] text-display font-black text-navy">
+          <span id="contact-h1">Let's talk about what applied AI can do for your institution.</span>
+        </Reveal>
+        <Reveal as="p" delay={40} class="mt-5 max-w-measure text-lede font-light text-mid-navy">
+          Whether you're exploring a partnership, evaluating a program, or just have a question — tell us a bit
+          about what you're working on and we'll route it to the right person on the team.
+        </Reveal>
+      </div>
+    </section>
+
+    {/* ===================== CONTACT DETAILS + FORM =====================
+        section-y gives this its own top clearance from the intro above (the
+        earlier single-section version had no top padding of its own, so
+        content sat flush against where the off-white background began).
+        Both columns are plain grid cells under the default align-items:
+        stretch, and both are styled as matching bg-white cards — the form
+        (more fields: name/email/org/dropdown/message/button) is naturally
+        the taller of the two, so the row's height comes from IT, and the
+        contact-details card stretches up to match rather than the other
+        way around. That's also why the form itself never shows extra space
+        below its own Send Message button: nothing upstream is forcing it
+        taller than its own content anymore (see the old version's comment
+        history — that whitespace came from the office list + map, previously
+        sharing this same column, being the tallest thing in the row instead;
+        both moved to their own section below). */}
+    <section aria-labelledby="contact-form-h2" class="section-y bg-off-white">
+      <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-14">
+        {/* ---- LEFT: contact details ---- */}
+        {/* min-w-0: grid items default to min-width:auto, which lets a long
+            unbreakable string (an email address, no space to wrap at)
+            force this whole track — and the page — wider than the
+            viewport on mobile instead of shrinking with it. Paired with a
+            `truncate` span wrapping the email/phone text below (not the
+            anchor itself — text-overflow only works on a block with its own
+            overflow, and a flex item needs its own min-w-0 to shrink below
+            its content's width before truncate can apply): the icon stays
+            fixed-size (shrink-0), the text span takes the rest of the row
+            (flex-1) and ellipsizes there instead of wrapping to 2 lines or
+            overflowing past the card's padding. */}
+        <Reveal class="min-w-0 rounded-lg border border-hair bg-white p-6 shadow-sm sm:p-8">
+          <h2 id="contact-form-h2" class="text-h3 font-bold text-navy">Contact details</h2>
+          <ul class="mt-5 space-y-8">
+            {
+              contactEmails.map((c) => (
+                <li>
+                  <p class="text-small font-bold uppercase tracking-[0.08em] text-mid-navy">{c.label}</p>
+                  <a
+                    href={`mailto:${c.email}`}
+                    class="group mt-1.5 flex w-full items-center gap-3 text-small sm:text-body text-navy no-underline transition-colors duration-micro hover:text-deep-gold"
+                  >
+                    <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-pale-navy text-navy" aria-hidden="true">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
+                      </svg>
+                    </span>
+                    <span class="min-w-0 flex-1 truncate">{c.email}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </Reveal>
+
+        {/* ---- RIGHT: contact form ---- */}
+        <Reveal delay={100} class="min-w-0 rounded-lg border border-hair bg-white p-6 shadow-sm sm:p-8">
+          <form id="contact-form" class="relative" data-contact-form>
+            {/* Honeypot. The Lambda silently drops any submission whose
+                `companyWebsite` is non-empty. Offscreen rather than
+                display:none — bots routinely skip inputs hidden outright,
+                which defeats the point.
+
+                The DOM field is deliberately NOT called companyWebsite.
+                Chrome's autofill matches on name/label and ignores
+                autocomplete="off"; a field reading as "company website"
+                got filled from the saved address profile alongside the real
+                Organisation input above (which carries
+                autocomplete="organization"), so every genuine submission
+                tripped the trap and was silently discarded. The neutral name
+                here plus the password-manager opt-outs keep it empty unless
+                a bot fills it. contactPage.ts maps this onto the
+                companyWebsite payload key, so the API contract is unchanged. */}
+            <div class="hp-field" aria-hidden="true">
+              <label for="cf-ref">Leave this field blank</label>
+              <input
+                id="cf-ref"
+                name="ref"
+                type="text"
+                tabindex="-1"
+                autocomplete="off"
+                data-honeypot
+                data-lpignore="true"
+                data-1p-ignore
+                data-bwignore
+                data-form-type="other"
+              />
+            </div>
+
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="sm:col-span-1">
+                <label for="cf-name" class="text-small font-bold text-navy">Name</label>
+                <input
+                  id="cf-name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  required
+                  maxlength={FIELD_LIMITS.name}
+                  class="field-input mt-2"
+                />
+              </div>
+              <div class="sm:col-span-1">
+                <label for="cf-email" class="text-small font-bold text-navy">Email</label>
+                <input
+                  id="cf-email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                  maxlength={FIELD_LIMITS.email}
+                  class="field-input mt-2"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="cf-org" class="text-small font-bold text-navy">
+                  Organisation <span class="font-normal text-ash">(optional)</span>
+                </label>
+                <input
+                  id="cf-org"
+                  name="organisation"
+                  type="text"
+                  autocomplete="organization"
+                  maxlength={FIELD_LIMITS.organisation}
+                  class="field-input mt-2"
+                />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="cf-looking-for" class="text-small font-bold text-navy">What are you looking for?</label>
+                <select id="cf-looking-for" name="lookingFor" required class="field-input mt-2">
+                  <option value="" selected disabled>Select an option</option>
+                  <optgroup label="Services">
+                    {serviceOptions.map((opt) => <option value={opt}>{opt}</option>)}
+                  </optgroup>
+                  <optgroup label="General enquiries">
+                    {enquiryOptions.map((opt) => <option value={opt}>{opt}</option>)}
+                  </optgroup>
+                </select>
+              </div>
+              <div class="sm:col-span-2">
+                <label for="cf-message" class="text-small font-bold text-navy">Message</label>
+                <textarea
+                  id="cf-message"
+                  name="message"
+                  rows="5"
+                  required
+                  maxlength={FIELD_LIMITS.message}
+                  class="field-input mt-2 resize-y"
+                />
+                {/* Stays empty until the message approaches the cap, so the
+                    common case isn't cluttered by a counter nobody needs. No
+                    aria-live: it would announce on every keystroke. */}
+                <p class="mt-1.5 text-right text-small text-ash" data-message-counter></p>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap items-center gap-4">
+              {/* Native <button type="submit">, not Button.astro (which always
+                  renders an <a> — can't natively submit a form) — classes
+                  copied verbatim from Button.astro's `primary` variant so it
+                  still matches sitewide. */}
+              <button
+                type="submit"
+                class="group inline-flex items-center gap-0 rounded-pill bg-navy px-6 py-3 font-bold text-body text-white no-underline transition-[transform,box-shadow,background-color,color] duration-base ease-out will-change-transform hover:-translate-y-px hover:shadow-md"
+              >
+                <span
+                  aria-hidden="true"
+                  class="inline-block h-2 w-0 rounded-full bg-gold opacity-0 transition-all duration-base ease-out group-hover:mr-2 group-hover:w-2 group-hover:opacity-100 motion-reduce:transition-none"
+                ></span>
+                <span data-submit-label>Send message</span>
+              </button>
+              <p
+                id="contact-form-status"
+                role="status"
+                aria-live="polite"
+                class="text-small text-mid-navy"
+                data-contact-form-status
+              />
+            </div>
+          </form>
+
+          {/* Shown in place of the form once the Lambda confirms delivery.
+              tabindex="-1" so focus can be moved here on success — otherwise
+              focus would stay on a button that is no longer visible, and a
+              screen-reader user would never learn the send succeeded. No
+              aria-live: focusing it announces it, and the status line below
+              the button is already a live region. */}
+          <div class="contact-success" data-contact-success tabindex="-1" hidden>
+            <span class="contact-success__icon" aria-hidden="true">
+              <svg
+                width="26"
+                height="26"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+            <h3 class="mt-5 text-h3 font-bold text-navy">Thank you — your message is on its way.</h3>
+            <p class="mx-auto mt-3 max-w-measure text-body text-mid-navy">
+              We've received your enquiry and someone from the APLYD team will be in touch shortly.
+            </p>
+            <button type="button" class="contact-success__reset mt-7" data-contact-reset>Send another message</button>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+
+    {/* ========================= OUR OFFICES ==========================
+        Same grid column proportions as the section above (0.85fr/1.15fr)
+        so "Our offices" lines up under Contact details and the map lines
+        up under — and matches the width of — the form. */}
+    <section aria-labelledby="offices-h2" class="section-y bg-paper">
+      <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-14">
+        {/* ---- LEFT: office list ---- */}
+        <Reveal class="min-w-0">
+          <h2 id="offices-h2" class="text-h3 font-bold text-navy">Our offices</h2>
+          {
+            offices.length > 1 ? (
+              <div class="mt-4 flex flex-wrap gap-2" data-office-list role="tablist" aria-label="Office locations">
+                {offices.map((o, i) => (
+                  <button
+                    type="button"
+                    class="office-pill"
+                    data-office-index={i}
+                    data-office-address={o.address}
+                    data-office-query={o.mapQuery}
+                    aria-pressed={i === 0 ? 'true' : 'false'}
+                  >
+                    {o.city}
+                  </button>
+                ))}
+              </div>
+            ) : null
+          }
+          <p class="mt-3 flex items-start gap-2 text-body text-mid-navy" data-office-address>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" class="mt-1 shrink-0 text-gold" aria-hidden="true">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+            </svg>
+            <span>{offices[0]?.address}</span>
+          </p>
+        </Reveal>
+
+        {/* ---- RIGHT: map, same width as the form column above ---- */}
+        <Reveal delay={100} class="min-w-0 overflow-hidden rounded-lg border border-hair" data-office-map-wrap>
+          <iframe
+            data-office-map
+            title="APLYD office location"
+            src={`https://www.google.com/maps?q=${encodeURIComponent(offices[0]?.mapQuery ?? '')}&output=embed`}
+            width="100%"
+            height="360"
+            style="border:0; display:block;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          />
+        </Reveal>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* Mirrors HeroFlow's .hero__stage exactly (heroFlow.css) — full viewport
+     height with content vertically centred, same 92vh-under-720px mobile-
+     browser-chrome compromise. */
+  .contact-intro {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  @media (max-width: 720px) {
+    .contact-intro {
+      min-height: 92vh;
+    }
+  }
+
+  .field-input {
+    display: block;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--hair);
+    background: var(--off-white);
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 1.0625rem;
+    color: var(--navy);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out);
+  }
+  .field-input:hover {
+    border-color: var(--smoke);
+  }
+  .field-input:focus-visible {
+    border-color: var(--gold);
+    background: var(--white);
+  }
+
+  /* Honeypot wrapper — off the canvas but still a real, focusable, filled-in
+     input as far as a form-scraping bot is concerned. Offset to the left so
+     it can't extend the scrollable area (LTR overflow to the left doesn't). */
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  /* Success panel. Deliberately no `display` of its own — the browser's
+     default [hidden] rule is what keeps it out of the layout, and any display
+     value set here would override it and leave the panel permanently visible. */
+  .contact-success {
+    padding: 1.5rem 0.5rem;
+    text-align: center;
+  }
+  .contact-success:focus {
+    outline: none;
+  }
+  .contact-success__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 999px;
+    background: var(--pale-gold);
+    color: var(--deep-gold);
+  }
+  .contact-success__reset {
+    border-radius: 999px;
+    border: 1px solid var(--hair);
+    background: var(--off-white);
+    color: var(--navy);
+    padding: 0.65rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 700;
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out);
+  }
+  .contact-success__reset:hover {
+    border-color: var(--gold);
+    background: var(--white);
+  }
+
+  [data-message-counter][data-state='warn'] {
+    color: var(--mid-navy);
+  }
+  [data-message-counter][data-state='error'] {
+    color: var(--error);
+    font-weight: 700;
+  }
+
+  /* Reserve the line so the row doesn't reflow when a message first appears. */
+  [data-contact-form-status] {
+    min-height: 1.5rem;
+  }
+  [data-contact-form-status][data-state='success'] {
+    color: var(--navy);
+    font-weight: 700;
+  }
+  [data-contact-form-status][data-state='error'] {
+    color: var(--error);
+    font-weight: 700;
+  }
+
+  /* The submit button's hover lift comes from Tailwind utilities, which
+     still apply while disabled — the ID here outranks them. */
+  #contact-form button[type='submit']:disabled,
+  #contact-form button[type='submit']:disabled:hover {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .office-pill {
+    border-radius: 999px;
+    border: 1px solid var(--hair);
+    background: var(--off-white);
+    color: var(--navy);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+  .office-pill:hover {
+    border-color: var(--gold);
+  }
+  .office-pill[aria-pressed='true'] {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+
+</style>
+
+<script>
+  import { initContactPage } from '../scripts/contactPage';
+  initContactPage();
+</script>

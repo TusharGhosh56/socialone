@@ -1,0 +1,68 @@
+---
+// HeroFlow — Screen 1 of the homepage, now a rounded inset card (Runway-
+// style) rather than a full-bleed section — see .hero in heroFlow.css for
+// the card treatment (margin, radius, overflow-hidden). Hero copy (tagline,
+// H1, subhead, CTAs) is left-aligned over the top, always visible.
+//
+// Background is a 5-video cross-fade carousel (see src/scripts/
+// heroVideoCarousel.ts) — all 5 mounted and playing simultaneously
+// (autoplay/loop/muted), only one visible (.is-active, opacity transition)
+// at a time, so switching is a clean cross-fade with no load/seek delay for
+// the incoming video. A navy gradient overlay (hero__video-fade) sits above
+// all of them, fading bottom-to-top (blends into the card's own bottom
+// edge) with an animated gold radial glow sweeping left-to-right-and-back.
+//
+// The cursor-reactive radial-burst canvas that used to live here (and later
+// spanned into FlowChart) has moved to How We Work's left column — see
+// src/components/HeroFlow/heroFlow.ts, now used from index.astro's How We
+// Work markup instead of from here.
+import './heroFlow.css';
+import Button from '../Button.astro';
+
+// Drop the 5 video files at public/video/hero/1.mp4 .. 5.mp4 — see this
+// array if you want different filenames instead.
+const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
+---
+
+<section class="hero" id="hero" data-hero>
+  <div class="hero__stage">
+    <div class="hero__video-wrap" aria-hidden="true">
+      {
+        VIDEO_SOURCES.map((src, i) => (
+          <video class:list={['hero__video', { 'is-active': i === 0 }]} data-hero-video={i} autoplay loop muted playsinline preload="auto">
+            <source src={src} type="video/mp4" />
+          </video>
+        ))
+      }
+      <div class="hero__video-fade"></div>
+    </div>
+
+    <div class="hero__content container-x">
+      <div class="hero__content-inner">
+        <span class="hero__tagline-badge">
+          <span class="hero__tagline-badge-ring" aria-hidden="true"></span>
+          <p class="hero__tagline-badge-inner text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+            Intelligence, Applied
+          </p>
+        </span>
+        <h1 class="mt-3 text-display font-black text-white">
+          Applied AI for governments and <span class="whitespace-nowrap">impact focused</span>
+          institutions
+        </h1>
+        <p class="mt-6 max-w-[46ch] text-lede font-light text-pale-navy">
+          APLYD helps governments and impact focused institutions apply artificial intelligence to
+          improve decisions, strengthen public systems, and build lasting institutional capability.
+        </p>
+        <div class="hero__cta mt-8">
+          <Button href="/contact" variant="gold" class="hero-cta-primary">Partner With APLYD</Button>
+          <Button href="#ai-in-action" variant="outline-light">Explore Our Work</Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initHeroVideoCarousel } from '../../scripts/heroVideoCarousel';
+  initHeroVideoCarousel();
+</script>

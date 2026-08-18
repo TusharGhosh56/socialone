@@ -1,0 +1,81 @@
+---
+// FaqItem (§7) — native <details>/<summary> for zero-JS accessibility.
+// Question is an H3 (§12). Chevron rotates; a tiny script eases the height.
+import type { Faq } from '../data/faqs';
+interface Props extends Faq {}
+const { question, answer } = Astro.props;
+---
+
+<details class="faq group border-b border-hair">
+  <summary
+    class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden"
+  >
+    <h3 class="text-h3 font-bold text-navy">{question}</h3>
+    <svg
+      class="chevron shrink-0 text-deep-gold transition-transform duration-base ease-out"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      aria-hidden="true"
+    >
+      <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </summary>
+  <div class="faq-body overflow-hidden">
+    <p class="max-w-measure pb-6 text-navy/85">{answer}</p>
+  </div>
+</details>
+
+<style>
+  details[open] .chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  // Progressive enhancement: ease the open/close height. Fully functional
+  // without JS (native <details>) and disabled under reduced-motion.
+  if (!(window as any).__aplydFaq) {
+    (window as any).__aplydFaq = true;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) {
+      document.querySelectorAll<HTMLDetailsElement>('details.faq').forEach((d) => {
+        const body = d.querySelector<HTMLElement>('.faq-body');
+        if (!body) return;
+        const summary = d.querySelector('summary');
+        summary?.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          if (d.open) {
+            body.style.height = body.scrollHeight + 'px';
+            requestAnimationFrame(() => (body.style.height = '0px'));
+            body.addEventListener(
+              'transitionend',
+              () => {
+                d.open = false;
+                body.style.height = '';
+              },
+              { once: true },
+            );
+          } else {
+            d.open = true;
+            const h = body.scrollHeight;
+            body.style.height = '0px';
+            requestAnimationFrame(() => (body.style.height = h + 'px'));
+            body.addEventListener('transitionend', () => (body.style.height = ''), { once: true });
+          }
+        });
+      });
+    }
+  }
+</script>
+
+<style is:global>
+  .faq-body {
+    transition: height var(--dur-base) var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-body {
+      transition: none;
+    }
+  }
+</style>

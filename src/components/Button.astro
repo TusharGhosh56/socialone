@@ -1,0 +1,42 @@
+---
+// Button (§7). primary: navy fill; secondary: navy outline; gold/outline-light:
+// on-dark equivalents for use over navy backgrounds (Hero, Final CTA-style).
+// Hover: lift + a decision-dot slides in before the label. Focus: gold ring (global).
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'gold' | 'outline-light';
+  class?: string;
+}
+const { href, variant = 'primary', class: className = '' } = Astro.props;
+const base =
+  'group inline-flex items-center gap-0 rounded-pill font-bold text-body no-underline ' +
+  'px-6 py-3 transition-[transform,box-shadow,background-color,color] duration-base ease-out ' +
+  'will-change-transform';
+const variants = {
+  primary: 'bg-navy text-white hover:-translate-y-px hover:shadow-md',
+  secondary:
+    'border border-navy text-navy bg-transparent hover:bg-pale-navy hover:-translate-y-px',
+  // on-navy primary: gold fill for AA contrast + emphasis
+  gold: 'bg-gold text-navy hover:-translate-y-px hover:shadow-lg',
+  // on-navy secondary: light outline, subtle white-wash hover
+  'outline-light':
+    'border border-white/40 text-white bg-transparent hover:bg-white/10 hover:-translate-y-px',
+};
+// the decision-dot must contrast against each variant's OWN fill, not just
+// reuse gold everywhere (a gold dot would vanish on the gold-fill variant)
+const dotColors = {
+  primary: 'bg-gold',
+  secondary: 'bg-gold',
+  gold: 'bg-navy',
+  'outline-light': 'bg-gold',
+};
+---
+
+<a href={href} class={`${base} ${variants[variant]} ${className}`}>
+  <!-- decision-dot: 0 width by default, expands on hover (§7). reduced-motion: static -->
+  <span
+    aria-hidden="true"
+    class={`inline-block h-2 w-0 rounded-full ${dotColors[variant]} opacity-0 transition-all duration-base ease-out group-hover:mr-2 group-hover:w-2 group-hover:opacity-100 motion-reduce:transition-none`}
+  ></span>
+  <span><slot /></span>
+</a>

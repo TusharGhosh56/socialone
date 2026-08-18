@@ -1,0 +1,89 @@
+---
+// FlowChartV2 — the live duplicate of FlowChart (archived, commented out in
+// index.astro at src/components/FlowChart/FlowChart.astro), built per
+// explicit product decision to trim the station roster, enlarge the
+// stations, go full viewport height, and drop the eyebrow tagline (see
+// flowChartV2.ts's own header comment for the full station-by-station
+// rationale). id="flow-h2" is kept identical to the archived original —
+// src/scripts/flowLine.ts's own milestone list targets that id directly
+// (only its import of getFlowWaypoints was repointed to this module).
+//
+// Four stations — internally still Data/Workflow/Evidence/Impact (see
+// flowChartV2.ts's STATION_LABELS), displayed as Foundation / Field
+// Intelligence / Decision Intelligence / Institutional Capability, each with
+// its own italic subtitle rendered above the trunk (STATION_TEXT in that
+// same file) — a traveling dot moves left to right along the trunk; the full
+// formation plays once on first scroll into view (replaying on every
+// re-entry), then each station keeps its own idle loop while a lightweight
+// traveler keeps re-tracing the path.
+//
+// Heading/body copy is what used to live in the Trust section — the two
+// were accidentally swapped in an earlier session (Trust's own copy is now
+// "Trusted by institutions solving complex public challenges." instead, see
+// that section in index.astro).
+//
+// The .flow2__static block below is the no-JS / reduced-motion fallback.
+import './flowChartV2.css';
+---
+
+<section class="flow2" id="flow" data-flow2 aria-labelledby="flow-h2">
+  <div class="flow2__video-wrap" aria-hidden="true">
+    <video class="flow2__video" autoplay loop muted playsinline preload="auto">
+      <source src="/video/gradient_yellow.mp4" type="video/mp4" />
+    </video>
+    <div class="flow2__video-fade"></div>
+  </div>
+
+  <div class="container-x relative pt-14 sm:pt-16 lg:pt-20">
+    <h2 id="flow-h2" class="max-w-[26ch] text-h2 font-bold text-white">From AI pilots to institutional capability.</h2>
+    <p class="mt-4 max-w-measure text-lede font-light text-pale-navy">
+      AI succeeds when institutions can own it. Our approach combines trusted data, field
+      intelligence, decision support and capability transfer so governments and impact-focused
+      institutions can operate systems long after implementation.
+    </p>
+  </div>
+
+  <div class="flow2__stage mt-3" data-flow2-stage>
+    <div class="flow2__frame" data-flow2-frame>
+      <canvas class="flow2__canvas" data-flow2-canvas aria-hidden="true"></canvas>
+      <div class="flow2__labels" data-flow2-labels aria-hidden="true"></div>
+    </div>
+
+    <!-- static fallback (no-JS / reduced-motion) -->
+    <div class="flow2__static container-x">
+      <div class="flow2__static-row">
+        <span>Foundation</span>
+        <span class="flow2__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Field Intelligence</span>
+        <span class="flow2__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Decision Intelligence</span>
+        <span class="flow2__static-arrow" aria-hidden="true">&rarr;</span>
+        <span>Institutional Capability</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sr-only">
+    APLYD builds a foundation of trusted data systems, layers in field intelligence from ground
+    reality, embeds decision intelligence inside government workflows, and hands back institutional
+    capability so governments own and improve the system themselves.
+  </p>
+</section>
+
+<!-- Flag animation mode before first paint (JS on + motion allowed). -->
+<script is:inline>
+  (function () {
+    try {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelector('[data-flow2]')?.classList.add('is-anim');
+      }
+    } catch (e) {
+      /* leave static */
+    }
+  })();
+</script>
+
+<script>
+  import { initFlowChart } from './flowChartV2';
+  initFlowChart();
+</script>

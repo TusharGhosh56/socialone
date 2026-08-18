@@ -1,0 +1,153 @@
+/* FlowChart — full-bleed section (previously a rounded inset card, matching
+   Hero's old treatment; both had their margin/border-radius removed so
+   Hero, FlowChart, and Vision & Mission now sit flush with no gap between
+   them — see .hero-flow-stack in global.css). Its background is a looping
+   muted gradient video (see .flow__video-wrap below) rather than a flat
+   fill; overflow-hidden stays to clip it to the section's own box. */
+
+.flow {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background video — same structure as HeroFlow's/How We Work's own
+   (.hero__video-wrap etc. / .how-we-work__video-wrap etc.): full-bleed
+   absolute layer behind everything else, a flat semi-transparent navy
+   overlay on top for legibility (flat rather than a directional fade,
+   since both the text above and the canvas's own dots/labels span this
+   whole card, not just one corner). Muted/looping/decorative, so it stays
+   visible even under reduced-motion rather than needing a static fallback
+   — [data-flow]'s OWN `.is-anim` gate (unrelated to this) only controls
+   the canvas animation, not this background. */
+.flow__video-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.flow__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flow__video-fade {
+  position: absolute;
+  inset: 0;
+  background: rgba(13, 16, 48, 0.55);
+}
+
+.flow__stage {
+  position: relative;
+  width: 100%;
+  /* Viewport-height-driven (not vw) and shorter than before — paired with
+     the reduced top padding/gap above (FlowChart.astro), this is the "shift
+     the flowchart up, make the container shorter" half of the ~70/30
+     viewport-height split with the Vision & Mission section below it. */
+  height: clamp(300px, 40vh, 460px);
+  overflow: hidden;
+}
+
+/* Centered, 1200px-capped box with NO padding of its own — deliberately
+   separate from .flow__canvas/.flow__labels below. An absolutely positioned
+   child's `inset:0` fills its containing block's PADDING box (i.e. it would
+   ignore/overlap this frame's own padding if it had any), so the frame stays
+   padding-free and the canvas/labels apply the page's shared --container-pad
+   inset directly on themselves instead — that's what actually lines the
+   canvas's drawing area up with every other section's content edge (the fix
+   for the "canvas stretches past other sections' div bounds" bug). */
+.flow__frame {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 1200px;
+  transform: translateX(-50%);
+}
+
+.flow__canvas {
+  position: absolute;
+  inset: 0;
+  /* canvas is a replaced element with an intrinsic 300x150 size — inset:0
+     alone won't stretch it the way it would a div, so width/height must
+     still be explicit. */
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.flow:not(.is-anim) .flow__canvas,
+.flow:not(.is-anim) .flow__labels {
+  display: none;
+}
+
+/* labels — positioned in px by JS (container-aware layout), faded via --reveal.
+   Same box as .flow__canvas (both fill .flow__frame edge-to-edge) so JS-
+   computed label x's (relative to the canvas's own rect) land in the same
+   coordinate space; the JS itself insets by the real --container-pad amount
+   (see getContentPad() in flowChart.ts) to reach the true content edge. */
+.flow__labels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.flow__label {
+  position: absolute;
+  transform: translate(-50%, 8px);
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--white);
+  opacity: var(--reveal, 0);
+  transition:
+    opacity 150ms linear,
+    color 150ms linear;
+}
+
+/* Toggled by flowChart.ts whenever the traveling dot is passing this
+   station — a brief highlight, not a persistent "current station" state. */
+.flow__label--active {
+  color: var(--gold);
+}
+
+/* Seven trunk stops now share this one label variant (the old dedicated
+   "output" variant went away with the 4 output dots) — sit too close
+   together on narrow screens for single-line labels to avoid overlap. */
+@media (max-width: 640px) {
+  .flow__label--trunk {
+    white-space: normal;
+    width: 60px;
+    text-align: center;
+    font-size: 0.5625rem;
+    line-height: 1.1;
+  }
+}
+
+/* static (no-JS / reduced-motion) fallback */
+.flow__static {
+  display: none;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+.flow:not(.is-anim) .flow__static {
+  display: flex;
+}
+.flow__static-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  color: var(--white);
+}
+.flow__static-arrow {
+  color: var(--gold);
+}

@@ -1,0 +1,181 @@
+<!-- Full-screen initial-load preloader — draws the APLYD logomark (gold dot +
+     navy triangle, same geometry as aplyd-mark-navy.svg) stroke-first then
+     filled, pulses the dot while the page finishes loading, then FLIP-morphs
+     the mark's measured on-screen box onto the header's real wordmark mark
+     (also measured live via getBoundingClientRect — see src/scripts/preloader.ts,
+     never a hardcoded scale) before fading the overlay away. Mounted as the
+     first child of <body> in Base.astro, above Header (z-50) and the mobile
+     sheet (z-60). Self-contained script, same per-component <script> pattern
+     as Reveal.astro; reduced-motion removes it outright (handled in JS to
+     match the rest of the codebase's convention — see tilt.ts/cardSpotlight.ts). -->
+
+<div class="preloader" data-preloader aria-hidden="true">
+  <div class="preloader__waveform" data-gold-waveform data-gold-waveform-alpha="1.8">
+    <canvas class="preloader__waveform-canvas" data-gold-waveform-canvas></canvas>
+  </div>
+
+  <div class="preloader__mark" data-preloader-mark>
+    <div class="preloader__mark-inner" data-preloader-mark-inner>
+      <svg class="preloader__svg" data-preloader-svg viewBox="0 0 233.82 258.16" fill="none">
+        <!-- Ripple rings — same "expanding, fading rings from a fixed-size
+             origin" language as approachBurst.ts's own gold-ring pulse (What
+             We Do's interactive burst), just as plain scale+opacity-animated
+             circles instead of canvas arcs. Two rings, half a cycle out of
+             phase (negative animation-delay), so ripples emanate continuously
+             rather than as one single pulse. non-scaling-stroke keeps the
+             ring's line thickness constant as it scales up, like a real ripple. -->
+        <circle
+          data-preloader-ring="1"
+          cx="116.91"
+          cy="211.9"
+          r="28.76"
+          fill="none"
+          stroke="#D19C33"
+          stroke-width="2"
+          vector-effect="non-scaling-stroke"
+        />
+        <circle
+          data-preloader-ring="2"
+          cx="116.91"
+          cy="211.9"
+          r="28.76"
+          fill="none"
+          stroke="#D19C33"
+          stroke-width="2"
+          vector-effect="non-scaling-stroke"
+        />
+        <circle
+          data-preloader-dot
+          cx="116.91"
+          cy="211.9"
+          r="28.76"
+          fill="#D19C33"
+          fill-opacity="0"
+          stroke="#D19C33"
+          stroke-width="3.5"
+        />
+        <polygon
+          data-preloader-tri
+          fill-rule="evenodd"
+          points="156.68 166.24 116.91 78.07 116.91 78.07 76.83 166.24 64.04 194.61 35.32 258.16 0 258.16 116.89 0 116.89 0 116.93 0 233.82 258.16 198.46 258.16 169.6 194.61 156.68 166.24"
+          fill="#232B65"
+          fill-opacity="0"
+          stroke="#232B65"
+          stroke-width="3.5"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+
+<style>
+  .preloader {
+    /* Single source of truth for phase durations — preloader.ts reads these
+       via getComputedStyle rather than duplicating the numbers in JS. */
+    --draw-ms: 3400ms;
+    /* Normal (not rushed) pace at the start, continuously easing into a much
+       slower finish — gentler initial ramp than --ease-out, which reaches
+       near-full speed almost immediately. */
+    --draw-ease: cubic-bezier(0.33, 1, 0.68, 1);
+    --fill-ms: 650ms;
+    --pulse-ms: 1800ms;
+    --morph-ms: 850ms;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: var(--white);
+    opacity: 1;
+    transition: opacity 550ms var(--ease-out);
+  }
+  .preloader.is-done {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Full-bleed ambient backdrop. <canvas> is a replaced element — inset:0
+     alone doesn't stretch it, width/height:100% must stay explicit
+     alongside it (CLAUDE.md canvas convention). */
+  .preloader__waveform {
+    position: absolute;
+    inset: 0;
+  }
+  .preloader__waveform-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .preloader__mark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(28vw, 170px);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 250ms var(--ease-out);
+  }
+  .preloader.is-drawing .preloader__mark {
+    opacity: 1;
+  }
+
+  /* Gets the FLIP translate+scale transform applied directly (inline style,
+     from preloader.ts) — this transition is what animates it smoothly. */
+  .preloader__mark-inner {
+    transition: transform var(--morph-ms) var(--ease-in-out);
+  }
+
+  .preloader__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* stroke-dashoffset is animated directly via the Web Animations API in
+     preloader.ts (element.animate(...)), not a CSS transition — a transition
+     needs the browser to have already committed a distinct "before" style
+     recalculation before the value changes, which proved unreliable across
+     environments (dev vs. production, different load speeds); a WAAPI
+     Animation always starts explicitly from its first keyframe regardless of
+     any of that, and its `finished` promise gives an exact, non-guessed
+     completion signal instead of a setTimeout matching a duration by hand. */
+  [data-preloader-dot],
+  [data-preloader-tri] {
+    transition: fill-opacity var(--fill-ms) var(--ease-out);
+  }
+
+  .preloader.is-filling [data-preloader-dot],
+  .preloader.is-filling [data-preloader-tri] {
+    fill-opacity: 1;
+  }
+
+  /* Ripple rings — dot itself never scales; only these expand+fade outward
+     from it, so the dot's own size stays constant throughout. */
+  [data-preloader-ring] {
+    transform-box: fill-box;
+    transform-origin: center;
+    opacity: 0;
+  }
+  .preloader.is-pulsing [data-preloader-ring] {
+    animation: preloader-ring-pulse var(--pulse-ms) var(--ease-out) infinite;
+  }
+  .preloader.is-pulsing [data-preloader-ring='2'] {
+    animation-delay: calc(var(--pulse-ms) / -2);
+  }
+  @keyframes preloader-ring-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { initPreloader } from '../scripts/preloader';
+  initPreloader();
+</script>

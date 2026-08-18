@@ -1,0 +1,56 @@
+---
+// Reveal (§7, §11) — fades/rises content in on intersection, and back out
+// again on exit, so the effect replays every time an element re-enters the
+// viewport (scrolling past a section and back up plays it again) — same
+// reversible convention as [data-flow-fade] and the Trust metric counters,
+// just intersection-driven instead of scroll-progress-driven. A single
+// IntersectionObserver (bundled once by Astro) drives every instance.
+// reduced-motion handled in global.css (renders final state instantly).
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  delay?: number; // stagger in ms
+  class?: string;
+  [attr: string]: unknown; // forwarded as-is (e.g. data-* hooks, aria-*)
+}
+const { as: Tag = 'div', delay = 0, class: className = '', ...rest } = Astro.props;
+---
+
+<Tag data-reveal style={`--reveal-delay:${delay}ms`} class={className} {...rest}>
+  <slot />
+</Tag>
+
+<script>
+  // Idempotent: only set up once even though this script is inlined per-component.
+  if (!(window as any).__aplydReveal) {
+    (window as any).__aplydReveal = true;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // `data-reveal-bound` (not `.is-visible`) is the de-dup marker now that
+    // visibility itself toggles both ways — an already-bound element must
+    // stay out of later observeAll() passes regardless of its current
+    // visible/hidden state, or it'd end up observed twice.
+    const els = () => document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-reveal-bound])');
+    if (reduce) {
+      els().forEach((el) => {
+        el.setAttribute('data-reveal-bound', '');
+        el.classList.add('is-visible');
+      });
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            e.target.classList.toggle('is-visible', e.isIntersecting);
+          }
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+      );
+      const observeAll = () =>
+        els().forEach((el) => {
+          el.setAttribute('data-reveal-bound', '');
+          io.observe(el);
+        });
+      observeAll();
+      // Catch any nodes added after hydration.
+      document.addEventListener('astro:page-load', observeAll);
+    }
+  }
+</script>

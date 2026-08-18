@@ -1,0 +1,392 @@
+---
+// PrincipleItem — hover/focus inverts the card to the site's navy theme
+// colour, turns the title/body white/pale-navy. A cursor-tracked gold
+// radial gradient (src/scripts/cardSpotlight.ts writes --spot-x/--spot-y
+// from the pointer position) glows under the content while hovering — see
+// .principle-card__spotlight below.
+//
+// The card's own height is fixed (same at rest and on hover) — set once
+// per breakpoint below, matching index.astro's .challenge-cards grid-auto-
+// rows exactly. Width DOES still change on hover, driven by index.astro's
+// .challenge-cards :has()-based grid-template-columns swap (lg+ only) —
+// nothing in this file drives that, it just renders at whatever width its
+// grid cell computes to.
+//
+// The BODY text is hover/focus-only — grid-rows[0fr]→[1fr] reveal, same
+// technique as the (now-hidden) old Challenge section's
+// .friction-card__desc-wrap. The title sits flush at the card's bottom
+// edge via margin-top:auto on .principle-card__title-wrap (not the h3
+// itself) — pushing that wrapper down absorbs whatever space is free above
+// it, whether that's nothing (rest) or the now-visible body text (hover);
+// the title's own position within its wrapper never moves.
+//
+// .principle-card__title-wrap has a fixed min-height (--title-space,
+// roughly 2 lines of text-h3 at this breakpoint) rather than sizing to
+// its own 1-or-2-line content — per explicit product decision, so a short
+// one-line heading ("No one owns it after launch") reserves the exact same
+// vertical space as a two-line one, keeping .principle-card__motif's own
+// available area (everything above --title-space) identically sized/
+// positioned across all 4 cards regardless of how each one's heading
+// wraps. items-end inside that wrapper keeps the actual text flush at the
+// card's bottom edge either way (any slack from a shorter heading opens up
+// ABOVE the text, inside the reserved box, not below it).
+//
+// principle-card__motif — an ambient decoration filling the dead middle
+// space at rest (from the card's top padding down to --title-space),
+// reused from FlowChart's own per-station animations
+// (src/components/FlowChart/flowChart.ts's drawPersistent — see that
+// file's per-station comments for the original canvas version) as a much
+// lighter pure-CSS/DOM equivalent: a handful of small dots (half muted red,
+// half grey — this section is about what goes wrong, hence red) around a
+// gold hub circle showing the card's own icon (not FlowChart's separate
+// icon file, and — per this round's product decision — no longer ALSO
+// shown as a separate top-left badge; the hub is the only place this
+// card's icon appears now). Orbiting motifs (Workflow, Ownership) use the
+// same "@property + trig functions" technique this codebase already uses
+// for HeroFlow's animated gradient position (heroFlow.css's --glow-x) —
+// animate a registered <angle> custom property via @keyframes, then read
+// it through cos()/sin() in calc() — rather than a rotating wrapper
+// element, since a plain circular dot looks identical either way and this
+// avoids an extra nesting level per dot. Degrades gracefully (dots just
+// sit static at their 0deg position) in any browser without @property/trig
+// support. Fades out on hover via a plain opacity transition — see
+// .principle-card__motif below — since the revealed body text occupies
+// roughly the same space.
+//
+// Offsets/radii were widened well past FlowChart's own original numbers
+// (see DATA_DOTS/INSTITUTION_DOTS/WORKFLOW_*/OWNERSHIP_* below) — at the
+// original scale, several dots sat exactly at or inside the hub's own
+// radius (Data's two closest grid points, Workflow's inner loop's Y-radius)
+// and visibly collided/overlapped with it. That was fine on FlowChart's
+// much larger canvas trunk but not at this card's compact scale, so this
+// is a deliberate departure from 1:1 fidelity, not an oversight.
+import type { Principle } from '../data/principles';
+import PrincipleIcon from './PrincipleIcon.astro';
+interface Props extends Principle {}
+const { lead, body, icon, motif } = Astro.props;
+
+const DATA_DOTS = [
+  { x: 0, y: -87 },
+  { x: -65, y: -65 },
+  { x: 65, y: -65 },
+  { x: 0, y: -42 },
+  { x: 0, y: 42 },
+  { x: -65, y: 65 },
+  { x: 65, y: 65 },
+  { x: 0, y: 87 },
+];
+const INSTITUTION_DOTS = [
+  { x: 0, y: -72 },
+  { x: 72, y: 0 },
+  { x: 0, y: 72 },
+  { x: -72, y: 0 },
+];
+// flowChart.ts's WORKFLOW_SPEED/SPEED2 are rad/s; converted to a CSS
+// animation duration via 2π / |speed|.
+const WORKFLOW_INNER_DURATION = ((2 * Math.PI) / 0.55).toFixed(2); // ~11.42s
+const WORKFLOW_OUTER_DURATION = ((2 * Math.PI) / 0.35).toFixed(2); // ~17.95s
+const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
+---
+
+<div class="principle-card relative flex flex-col overflow-hidden rounded-lg border border-hair bg-off-white p-6" data-spotlight tabindex="0">
+  <span class="principle-card__spotlight" aria-hidden="true"></span>
+
+  <div class={`principle-card__motif motif-${motif}`} aria-hidden="true">
+    {motif === 'data' &&
+      DATA_DOTS.map((d, i) => (
+        <span
+          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-red']}
+          style={`--dot-x:${d.x}px;--dot-y:${d.y}px;animation-delay:${(i * 0.65).toFixed(2)}s`}
+        />
+      ))}
+    {motif === 'institution' &&
+      INSTITUTION_DOTS.map((d, i) => (
+        <span
+          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-red']}
+          style={`--dot-x:${d.x}px;--dot-y:${d.y}px;animation-delay:${(i * 1.1).toFixed(2)}s`}
+        />
+      ))}
+    {motif === 'workflow' && (
+      <>
+        {[0, 1, 2].map((i) => (
+          <span
+            class:list={['motif-dot', 'motif-dot--wf-inner', 'is-grey']}
+            style={`animation-delay:-${((i * Number(WORKFLOW_INNER_DURATION)) / 3).toFixed(2)}s`}
+          />
+        ))}
+        {[0, 1, 2].map((i) => (
+          <span
+            class:list={['motif-dot', 'motif-dot--wf-outer', 'is-red']}
+            style={`animation-delay:-${((i * Number(WORKFLOW_OUTER_DURATION)) / 3).toFixed(2)}s`}
+          />
+        ))}
+      </>
+    )}
+    {motif === 'ownership' && (
+      <>
+        <span class="motif-ring" />
+        <span class="motif-dot motif-dot--ownership is-red" />
+      </>
+    )}
+    <span
+      class="principle-card__hub"
+      style={motif === 'workflow' ? `--wf-inner-t:${WORKFLOW_INNER_DURATION}s;--wf-outer-t:${WORKFLOW_OUTER_DURATION}s` : motif === 'ownership' ? `--own-t:${OWNERSHIP_DURATION}s` : ''}
+    >
+      <PrincipleIcon icon={icon} />
+    </span>
+  </div>
+
+  {/* Sits directly above the title, in normal flow — 0-height/invisible at
+      rest, grows to its content height on hover (revealing ABOVE the
+      title, which stays pinned at the bottom the whole time). */}
+  <div class="principle-card__body-wrap relative z-10 grid grid-rows-[0fr] transition-[grid-template-rows] duration-base ease-out">
+    <p class="principle-card__body min-h-0 overflow-hidden text-navy/85">{body}</p>
+  </div>
+  <div class="principle-card__title-wrap relative z-10 mt-auto flex items-end">
+    <h3 class="principle-card__title text-h3 font-bold text-navy">{lead}</h3>
+  </div>
+</div>
+
+<style>
+  .principle-card {
+    height: 280px;
+    /* Measured, not guessed — the longest actual heading's real wrapped
+       height at each breakpoint's real (lg: narrow, 4-per-row) card width,
+       via a throwaway min-height:0 probe on .principle-card__title-wrap
+       (same "measure, don't reconstruct" convention as CaseCarousel's card
+       width, elsewhere in this project). An earlier "roughly 2 lines"
+       guess badly undershot at lg specifically: at that breakpoint's ~250px
+       card width (~202px after padding), 3 of the 4 real headings actually
+       wrap to 3 lines, not 2 — reserving only 2 lines' worth of space there
+       left those three taller than the shortest ("No one owns it after
+       launch", still 1 line), defeating the whole point of a shared
+       reserved height. */
+    --title-space: 50px;
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out),
+      border-color var(--dur-base) var(--ease-out);
+  }
+  .principle-card:hover,
+  .principle-card:focus-visible {
+    background-color: var(--navy);
+    border-color: transparent;
+    box-shadow:
+      0 20px 45px -14px rgba(26, 33, 80, 0.32),
+      0 0 22px 1px rgba(209, 156, 51, 0.24);
+  }
+  @media (min-width: 640px) {
+    .principle-card {
+      height: 300px;
+      --title-space: 50px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .principle-card {
+      height: 420px;
+      --title-space: 96px;
+    }
+  }
+  /* Cursor-tracked gold spotlight (src/scripts/cardSpotlight.ts writes
+     --spot-x/--spot-y from the pointer's position). Sits above the card's
+     own background but below the icon/text (z-10) so it reads as a warm
+     glow under the content, not on top of it. Position defaults to centre
+     so keyboard focus (no pointer position) still shows a sensible glow. */
+  .principle-card__spotlight {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out);
+    background: radial-gradient(
+      110px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(209, 156, 51, 0.7),
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+  .principle-card:hover .principle-card__spotlight,
+  .principle-card:focus-visible .principle-card__spotlight {
+    opacity: 1;
+  }
+  .principle-card__title-wrap {
+    min-height: var(--title-space);
+  }
+  .principle-card__title,
+  .principle-card__body {
+    transition: color var(--dur-base) var(--ease-out);
+  }
+  .principle-card:hover .principle-card__title,
+  .principle-card:focus-visible .principle-card__title {
+    color: #fff;
+  }
+  /* Body starts at margin-top:0 (invisible, 0-height wrapper) — on reveal
+     the wrapper's own grid-rows growth is what makes room, this margin
+     just gives the body text breathing room from whatever's above it once
+     visible. */
+  .principle-card__body {
+    margin-top: 0;
+    transition:
+      color var(--dur-base) var(--ease-out),
+      margin-top var(--dur-base) var(--ease-out);
+  }
+  .principle-card:hover .principle-card__body,
+  .principle-card:focus-visible .principle-card__body {
+    color: rgba(232, 234, 241, 0.85);
+    margin-top: 0.75rem;
+  }
+  .principle-card:hover .principle-card__body-wrap,
+  .principle-card:focus-visible .principle-card__body-wrap {
+    grid-template-rows: 1fr;
+  }
+
+  /* ---- centred ambient motif (see the frontmatter comment above) ---- */
+  @property --wf-inner-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+  @property --wf-outer-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+  @property --own-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  /* Covers everything ABOVE the reserved title space, not the whole card —
+     centring the hub/dots within top:0..bottom:var(--title-space) instead
+     of the full card height is what keeps the motif's centre aligned with
+     the "space above the heading" rather than the card's own centre. */
+  .principle-card__motif {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: var(--title-space);
+    z-index: 0;
+    opacity: 1;
+    transition: opacity var(--dur-base) var(--ease-out);
+    pointer-events: none;
+  }
+  .principle-card:hover .principle-card__motif,
+  .principle-card:focus-visible .principle-card__motif {
+    opacity: 0;
+  }
+  .principle-card__hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #fff;
+  }
+  .motif-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .motif-dot.is-grey {
+    background: var(--smoke);
+  }
+  .motif-dot.is-red {
+    background: #b5473f;
+  }
+  /* Data/Institution — fixed positions (--dot-x/--dot-y set inline per dot),
+     a slow breathing pulse only, no orbit. */
+  .motif-dot--static {
+    left: calc(50% + var(--dot-x));
+    top: calc(50% + var(--dot-y));
+    animation: motif-pulse 6.3s ease-in-out infinite;
+  }
+  @keyframes motif-pulse {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(0.82);
+      opacity: 0.75;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+  /* Workflow — two concentric counter-rotating loops (3 dots each), eased
+     rounder than FlowChart's own flatter ellipse (which was tuned for a
+     wide horizontal canvas trunk, not a roughly-square card) so the inner
+     loop's Y-radius clears the hub instead of cutting through it. Ownership
+     — one dot on a slow wide orbit plus a static ring marking the path. All
+     three animate a registered <angle> custom property and read it back
+     through cos()/sin() — see the frontmatter comment. */
+  .motif-dot--wf-inner {
+    left: calc(50% + cos(var(--wf-inner-angle)) * 65px);
+    top: calc(50% + sin(var(--wf-inner-angle)) * 44px);
+    animation: motif-wf-inner-spin var(--wf-inner-t, 11.42s) linear infinite;
+  }
+  .motif-dot--wf-outer {
+    left: calc(50% + cos(var(--wf-outer-angle)) * 110px);
+    top: calc(50% + sin(var(--wf-outer-angle)) * 74px);
+    animation: motif-wf-outer-spin var(--wf-outer-t, 17.95s) linear infinite;
+  }
+  @keyframes motif-wf-inner-spin {
+    to {
+      --wf-inner-angle: 360deg;
+    }
+  }
+  @keyframes motif-wf-outer-spin {
+    to {
+      --wf-outer-angle: -360deg;
+    }
+  }
+  .motif-dot--ownership {
+    left: calc(50% + cos(var(--own-angle)) * 80px);
+    top: calc(50% + sin(var(--own-angle)) * 80px);
+    animation: motif-own-spin var(--own-t, 28.56s) linear infinite;
+  }
+  @keyframes motif-own-spin {
+    to {
+      --own-angle: 360deg;
+    }
+  }
+  .motif-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 1px solid var(--smoke);
+    opacity: 0.5;
+    transform: translate(-50%, -50%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .principle-card,
+    .principle-card__spotlight,
+    .principle-card__body,
+    .principle-card__body-wrap,
+    .principle-card__motif,
+    .motif-dot--static,
+    .motif-dot--wf-inner,
+    .motif-dot--wf-outer,
+    .motif-dot--ownership {
+      transition: none;
+      animation: none;
+    }
+    .principle-card:hover,
+    .principle-card:focus-visible {
+      transform: none;
+    }
+  }
+</style>

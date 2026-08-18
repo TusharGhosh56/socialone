@@ -1,0 +1,191 @@
+---
+// Footer (§6.2, §9) — on deep-navy. White wordmark (90% bigger than the
+// original footer size, per explicit product decision — h-[76px], was h-10)
+// with Explore/Company to its RIGHT (not below — an earlier version of this
+// redesign stacked them below the wordmark, then a follow-up request moved
+// them beside it instead), plus a big standalone logomark anchored bottom-
+// right (see src/scripts/footerMark.ts — sized to exactly 60% of the
+// footer's own real height via JS measurement, not a clamp() guess; was
+// 1/3 in the original version of this redesign). The old "What We Do"
+// column and the "Get in touch / Partner with APLYD" block under the
+// wordmark are both gone; the LinkedIn icon moved into the base row.
+// (Vision & Mission moved out of here earlier — now its own section right
+// after FlowChart — see index.astro; that section was later removed
+// entirely, unrelated to this footer redesign.)
+import Reveal from './Reveal.astro';
+import wordmarkWhite from '../assets/logos/aplyd-wordmark-white.svg?raw';
+import markWhite from '../assets/logos/aplyd-mark-white.svg?raw';
+
+// Same helper as Header.astro's own: any '#'-style in-page anchor (About
+// Us's #top, Case Studies' #ai-in-action) only resolves on the homepage —
+// off it (e.g. /contact), it gets the homepage's own path prepended so it
+// navigates there and jumps to the right section, instead of doing nothing.
+const isHome = Astro.url.pathname === '/';
+const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/${href}`);
+
+// Only LinkedIn is live for now (real profile URL below) — the rest stay
+// defined (so re-enabling is just flipping `active`, not re-adding data)
+// but are filtered out of rendering below until their real profile URLs
+// are known.
+const socials = [
+  {
+    label: 'LinkedIn',
+    href: 'https://in.linkedin.com/company/aplydofficial',
+    active: true,
+    path: 'M6.94 8.5H4.06V19.5H6.94V8.5ZM5.5 7.25A1.75 1.75 0 1 0 5.5 3.75A1.75 1.75 0 0 0 5.5 7.25ZM19.94 19.5H17.06V13.75C17.06 12.35 16.5 11.5 15.28 11.5C14.36 11.5 13.81 12.12 13.56 12.72C13.47 12.94 13.44 13.24 13.44 13.55V19.5H10.56S10.6 9.34 10.56 8.5H13.44V9.79C13.83 9.16 14.55 8.26 16.48 8.26C18.88 8.26 19.94 9.86 19.94 12.68V19.5Z',
+  },
+  {
+    label: 'Facebook',
+    href: '#',
+    active: false,
+    path: 'M13.5 20V12.5H16L16.4 9.5H13.5V7.6C13.5 6.75 13.73 6.17 14.95 6.17H16.5V3.5C16.06 3.44 14.9 3.34 13.55 3.34C10.73 3.34 8.8 5.06 8.8 8.22V9.5H6.3V12.5H8.8V20H13.5Z',
+  },
+  {
+    label: 'Twitter',
+    href: '#',
+    active: false,
+    path: 'M18.24 4H20.6L15.4 9.94L21.5 18H16.71L12.96 13.1L8.67 18H6.3L11.86 11.65L6 4H10.91L14.3 8.48L18.24 4ZM17.4 16.58H18.71L10.16 5.34H8.75L17.4 16.58Z',
+  },
+  {
+    label: 'Instagram',
+    href: '#',
+    active: false,
+    path: 'M12 3.5C14.14 3.5 14.4 3.51 15.25 3.55C16.1 3.59 16.67 3.72 17.17 3.92C17.69 4.12 18.13 4.4 18.56 4.83C18.99 5.26 19.27 5.7 19.47 6.22C19.67 6.72 19.8 7.29 19.84 8.14C19.88 8.99 19.89 9.25 19.89 11.39V12.61C19.89 14.75 19.88 15.01 19.84 15.86C19.8 16.71 19.67 17.28 19.47 17.78C19.27 18.3 18.99 18.74 18.56 19.17C18.13 19.6 17.69 19.88 17.17 20.08C16.67 20.28 16.1 20.41 15.25 20.45C14.4 20.49 14.14 20.5 12 20.5C9.86 20.5 9.6 20.49 8.75 20.45C7.9 20.41 7.33 20.28 6.83 20.08C6.31 19.88 5.87 19.6 5.44 19.17C5.01 18.74 4.73 18.3 4.53 17.78C4.33 17.28 4.2 16.71 4.16 15.86C4.12 15.01 4.11 14.75 4.11 12.61V11.39C4.11 9.25 4.12 8.99 4.16 8.14C4.2 7.29 4.33 6.72 4.53 6.22C4.73 5.7 5.01 5.26 5.44 4.83C5.87 4.4 6.31 4.12 6.83 3.92C7.33 3.72 7.9 3.59 8.75 3.55C9.6 3.51 9.86 3.5 12 3.5ZM12 8.5C10.07 8.5 8.5 10.07 8.5 12C8.5 13.93 10.07 15.5 12 15.5C13.93 15.5 15.5 13.93 15.5 12C15.5 10.07 13.93 8.5 12 8.5ZM12 10C13.1 10 14 10.9 14 12C14 13.1 13.1 14 12 14C10.9 14 10 13.1 10 12C10 10.9 10.9 10 12 10ZM15.69 7.31C15.14 7.31 14.69 7.75 14.69 8.31C14.69 8.86 15.14 9.31 15.69 9.31C16.24 9.31 16.69 8.86 16.69 8.31C16.69 7.75 16.24 7.31 15.69 7.31Z',
+  },
+  {
+    label: 'YouTube',
+    href: '#',
+    active: false,
+    path: 'M21.58 7.19C21.35 6.31 20.66 5.62 19.79 5.39C18.2 5 12 5 12 5C12 5 5.8 5 4.21 5.42C3.35 5.65 2.65 6.35 2.42 7.22C2 8.81 2 12.11 2 12.11C2 12.11 2 15.42 2.42 17C2.65 17.87 3.34 18.56 4.21 18.79C5.81 19.22 12 19.22 12 19.22C12 19.22 18.2 19.22 19.79 18.79C20.66 18.56 21.35 17.88 21.58 17C22 15.42 22 12.11 22 12.11C22 12.11 22.02 8.81 21.58 7.19ZM9.99 15.19V9.03L15.37 12.11L9.99 15.19Z',
+  },
+];
+
+const columns = [
+  {
+    title: 'Explore',
+    links: [
+      { label: 'Case Studies', href: '#ai-in-action' }, // TODO: real destination (§16)
+      { label: 'About Us', href: '#top' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'The Athena Group', href: 'https://www.athenainfonomics.com/' },
+      { label: 'Get In Touch', href: '/contact' },
+    ],
+  },
+];
+---
+
+<footer class="gradient-navy gradient-sheen text-pale-navy" data-footer>
+  <div class="container-x relative py-16 sm:py-20">
+    <!-- Wordmark + Explore/Company, side by side (not stacked — see this
+         file's own header comment) — deliberately kept as its own row
+         rather than sharing a width constraint with the base row below,
+         same reasoning as before: the base row needs the rest of
+         container-x's own width to lay its text out on one line at sm+.
+         gap-x-20/gap-y-12 (up from 16/10) per explicit "a bit more space"
+         request. Each of this footer's 3 blocks (this row, the base row,
+         the big mark) gets its own Reveal, staggered, same fade+rise-in-on-
+         viewport-entry convention used everywhere else on this page. -->
+    <Reveal class="flex flex-wrap items-start gap-x-20 gap-y-12">
+      <a href={linkHref('#top')} aria-label="APLYD — home" class="block shrink-0">
+        <span class="block h-[76px] w-auto [&>svg]:h-[76px] [&>svg]:w-auto" set:html={wordmarkWhite} />
+      </a>
+      {
+        columns.map((col) => (
+          <nav aria-label={col.title}>
+            <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">{col.title}</p>
+            <ul class="mt-4 space-y-3">
+              {col.links.map((l) => {
+                const external = l.href.startsWith('http');
+                return (
+                  <li>
+                    <a
+                      href={linkHref(l.href)}
+                      target={external ? '_blank' : undefined}
+                      rel={external ? 'noopener noreferrer' : undefined}
+                      class="text-pale-navy no-underline transition-colors duration-micro hover:text-gold"
+                    >
+                      {l.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        ))
+      }
+    </Reveal>
+
+    <!-- base row — LinkedIn ahead of the copyright text, on the same line
+         at sm+; width is capped by footerMark.ts once the big logomark's
+         own real size is known, so this never runs under it. -->
+    <Reveal
+      delay={140}
+      class="mt-14 flex flex-col gap-3 border-t border-white/12 pt-6 text-small text-pale-navy/70 sm:flex-row sm:items-center sm:gap-4"
+      data-footer-base
+    >
+      <ul class="flex items-center gap-3">
+        {
+          socials
+            .filter((s) => s.active)
+            .map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  aria-label={s.label}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-pale-navy no-underline transition-colors duration-base ease-out hover:border-gold hover:text-gold"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d={s.path} />
+                  </svg>
+                </a>
+              </li>
+            ))
+        }
+      </ul>
+      <span>APLYD · By Athena Infonomics</span>
+      <span aria-hidden="true" class="hidden sm:inline">|</span>
+      <span>© 2026</span>
+      <span aria-hidden="true" class="hidden sm:inline">|</span>
+      <span>FT High-Growth Asia-Pacific · 2021 · 2022 · 2025</span>
+    </Reveal>
+
+    <!-- Big standalone logomark, bottom-right — hidden below sm (not enough
+         room to keep it clear of the base row's text at that width).
+         Height set by footerMark.ts to exactly 60% of the footer's own real
+         rendered height; width follows automatically from the SVG's own
+         viewBox aspect ratio (height:100%/width:auto below). Reveal's own
+         translateY only shifts it vertically pre-reveal, so footerMark.ts's
+         horizontal (left-edge) measurements stay correct either way. -->
+    <Reveal
+      as="span"
+      delay={60}
+      class="footer-mark absolute bottom-0 right-0 hidden w-auto sm:block"
+      data-footer-mark
+      aria-hidden="true"
+    >
+      <span class="block h-full w-auto" set:html={markWhite} />
+    </Reveal>
+  </div>
+</footer>
+
+<style>
+  .footer-mark {
+    pointer-events: none;
+  }
+  .footer-mark :global(svg) {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+</style>
+
+<script>
+  import { initFooterMark } from '../scripts/footerMark';
+  initFooterMark();
+</script>

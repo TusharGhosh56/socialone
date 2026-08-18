@@ -1,0 +1,142 @@
+---
+// StepRow (§7) — one card's content for the expanding-card carousel in How
+// We Work (see StepCarousel.astro + src/scripts/stepCarousel.ts, which
+// toggle the card's own `.is-active`/collapsed sizing via CSS). The photo
+// is the card's full background (not a side column) — text overlays it,
+// bottom-left, on a dark fade for legibility. Text sits at a FIXED width
+// (not a percentage of the card), so the expand/collapse of the card
+// itself (StepCarousel.astro's flex-basis transition) never reflows the
+// text — it just fades/slides in on top once the card is active, a
+// separate, independent transition (see .step-card-text below).
+//
+// Photo goes through Astro's build-time image pipeline (astro:assets) —
+// resized to a few concrete widths + a matching srcset, converted to
+// WebP — rather than a single fixed-size file. `image` comes in already
+// imported (see src/data/steps.ts), not a path string, which is what lets
+// the pipeline process it at all (anything referenced by URL from public/
+// is served completely untouched).
+import { Image } from 'astro:assets';
+import type { Step } from '../data/steps';
+interface Props extends Step {}
+const { title, body, image, focusUnexpanded = 'center', focusExpanded = 'center' } = Astro.props;
+---
+
+<div class="step-card-inner">
+  <Image
+    class="step-card-photo"
+    src={image}
+    alt=""
+    aria-hidden="true"
+    widths={[480, 960, 1600]}
+    sizes="(max-width: 768px) 100vw, 800px"
+    format="webp"
+    quality={80}
+    style={`--unexpanded-position: ${focusUnexpanded}; --expanded-position: ${focusExpanded}`}
+  />
+  <div class="step-card-fade" aria-hidden="true"></div>
+  <div class="step-card-text">
+    {/* No number here — StepCarousel.astro's own badge (top-left, same
+        style whether the card is collapsed or active) already shows it. */}
+    <h3 class="text-h3 font-bold text-white">{title}</h3>
+    <p class="mt-2 text-white/85">{body}</p>
+  </div>
+</div>
+
+<style>
+  .step-card-inner {
+    position: relative;
+    height: 100%;
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
+  .step-card-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Active/expanded-state focus (--expanded-position, set inline above
+       from the `focusExpanded` prop) — per-card, same reasoning as the
+       collapsed-state rule just below. */
+    object-position: var(--expanded-position, center);
+    /* Same duration/easing as the card's own flex-basis expand/collapse
+       (StepCarousel.astro) so the crop re-centers in step with the resize
+       rather than snapping instantly partway through it. */
+    transition: object-position 550ms var(--ease-out);
+  }
+  /* Collapsed sliver shows a narrow crop of a wide photo — per-card which
+     part of the photo stays in frame (--unexpanded-position, set inline
+     above from the `focusUnexpanded` prop) rather than one blanket bias for
+     every card, since that doesn't suit every photo's own composition
+     equally. Reaches into the parent card's state via :global() since
+     Astro scopes plain selectors to the file they're written in —
+     .step-carousel__card is defined in StepCarousel.astro, not here. */
+  :global(.step-carousel__card:not(.is-active)) .step-card-photo {
+    object-position: var(--unexpanded-position, center);
+  }
+  /* Bottom-heavy fade so the text overlay stays legible over whatever the
+     photo underneath looks like. */
+  .step-card-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(13, 16, 48, 0.88) 0%, rgba(13, 16, 48, 0.45) 45%, transparent 75%);
+  }
+  /* FIXED width (not a % of the card) is the whole point — the parent
+     card's own width is what's animating (its flex-basis, on expand/
+     collapse), and a percentage-based width here would recompute every
+     frame of that transition, reflowing/rewrapping the text as it goes
+     ("rigid" look). A constant width means this box's own layout never
+     changes; only its opacity/transform do, independently, giving a clean
+     slide-in instead. Hidden (not just transparent) while the card isn't
+     active — collapsed cards are only ~84px wide, far narrower than this
+     text block, so it must not be interactable there. */
+  .step-card-text {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 2;
+    /* Constant regardless of the card's OWN animating width — max-width
+       here is intentionally viewport-relative (100vw), not a % of the
+       parent, so it only changes on an actual window resize, never as a
+       side effect of the card's own flex-basis transition (a % of the
+       parent would keep recomputing every frame of that transition,
+       reintroducing exactly the reflow this is meant to avoid). The
+       collapsed card clips this box via its own overflow:hidden regardless
+       — harmless since it's opacity:0 there anyway. */
+    width: 300px;
+    max-width: calc(100vw - 4rem);
+    opacity: 0;
+    transform: translateX(-14px);
+    transition:
+      opacity 350ms var(--ease-out) 120ms,
+      transform 350ms var(--ease-out) 120ms;
+    pointer-events: none;
+  }
+  :global(.step-carousel__card.is-active) .step-card-text {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  /* Below 640px, StepCarousel.astro's own mobile query switches the
+     accordion to a vertical stack — every card (not just the active one) is
+     full TRACK width there, since it's the card's HEIGHT that animates now,
+     not its width. That's the opposite of the fixed-300px reasoning above
+     (which exists specifically to survive an animating WIDTH) — once width
+     stops animating, a %-of-card width is safe and correct instead, and
+     necessary: the fixed 300px box was wider than a real mobile card's
+     available width (confirmed via measurement), clipping body text
+     mid-sentence against .step-card-inner's own overflow:hidden. */
+  @media (max-width: 640px) {
+    .step-card-text {
+      width: calc(100% - 3rem);
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step-card-text {
+      transition: none;
+    }
+  }
+</style>

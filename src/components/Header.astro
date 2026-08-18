@@ -1,0 +1,271 @@
+---
+// Header (§6.1) — slim, sticky. Paper background + shadow + hairline border
+// visible from page load (not scroll-gated). Mobile: hamburger → focus-trapped
+// navy sheet, Esc closes.
+import { navLinks, primaryCta } from '../data/nav';
+import Button from './Button.astro';
+// Inline the wordmark so page-loaded Lato applies to its <text>.
+import wordmarkNavy from '../assets/logos/aplyd-wordmark-navy.svg?raw';
+import markNavy from '../assets/logos/aplyd-mark-navy.svg?raw';
+
+// Every in-page anchor this header links to (#top for the logo, and every
+// navLinks entry — #why-aplyd, #what-we-do, #ai-in-action) only resolves on
+// the homepage, where those ids actually live. From any other page (e.g.
+// /contact) that same href would silently do nothing, since the id isn't on
+// the page — so off the homepage, every one of them gets the homepage's own
+// path prepended (e.g. '/#why-aplyd'), which navigates there and then jumps
+// straight to the right section instead of just going nowhere. Footer.astro
+// mirrors this exact same helper for its own '#'-style links.
+const isHome = Astro.url.pathname === '/';
+const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/${href}`);
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 is-scrolled transition-[transform,background-color,box-shadow,border-color,backdrop-filter] duration-base ease-out"
+  data-header
+>
+  <div class="container-x flex h-16 items-center justify-between gap-4 sm:h-[72px]">
+    <a href={linkHref('#top')} aria-label="APLYD — home" class="flex items-center">
+      <span
+        class="block h-[3.025rem] w-auto [&>svg]:h-[3.025rem] [&>svg]:w-auto"
+        data-header-wordmark
+        set:html={wordmarkNavy}
+      />
+    </a>
+
+    <!-- desktop nav -->
+    <nav aria-label="Primary" class="hidden items-center gap-7 lg:flex">
+      {
+        navLinks.map((l) => (
+          <a
+            href={linkHref(l.href)}
+            class="link-underline text-small font-bold text-navy no-underline transition-colors duration-micro hover:text-deep-gold"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <Button href={primaryCta.href} variant="primary" class="!px-5 !py-2 text-small">
+        {primaryCta.label}
+      </Button>
+    </nav>
+
+    <!-- mobile toggle -->
+    <button
+      type="button"
+      id="menu-open"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      class="grid h-11 w-11 place-items-center rounded-md text-navy lg:hidden"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Standalone logomark: fades/scales in when the header hides on scroll-down
+     (req 6), giving the wordmark→mark morph; hidden at top / on scroll-up. -->
+<a
+  href={linkHref('#top')}
+  id="floating-mark"
+  aria-label="APLYD — home"
+  class="fixed left-[clamp(3rem,9vw,7rem)] top-3 z-50 grid h-10 w-10 place-items-center rounded-md bg-white/80 p-1.5 shadow-sm backdrop-blur transition-[opacity,transform] duration-base ease-out [&>svg]:h-full [&>svg]:w-full"
+  data-floating-mark
+  set:html={markNavy}
+></a>
+
+<!-- mobile sheet -->
+<div
+  id="mobile-menu"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu"
+  hidden
+  class="fixed inset-0 z-[60] gradient-navy gradient-sheen text-white lg:hidden"
+>
+  <div class="container-x flex h-16 items-center justify-between">
+    <span class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">Menu</span>
+    <button
+      type="button"
+      id="menu-close"
+      aria-label="Close menu"
+      class="grid h-11 w-11 place-items-center rounded-md text-white"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile" class="container-x flex flex-col gap-1 pt-6">
+    {
+      navLinks.map((l) => (
+        <a
+          href={linkHref(l.href)}
+          class="border-b border-white/10 py-4 text-2xl font-bold text-white no-underline transition-colors hover:text-gold"
+          data-menu-link
+        >
+          {l.label}
+        </a>
+      ))
+    }
+    <a
+      href={primaryCta.href}
+      data-menu-link
+      class="mt-6 inline-flex items-center justify-center rounded-pill bg-gold px-6 py-3 font-bold text-navy no-underline"
+    >
+      {primaryCta.label}
+    </a>
+  </nav>
+</div>
+
+<style>
+  /* scrolled state (§6.1): paper bg + shadow + hairline + subtle blur */
+  [data-header].is-scrolled {
+    background-color: color-mix(in srgb, var(--paper) 88%, transparent);
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid var(--hair);
+    backdrop-filter: saturate(150%) blur(8px);
+  }
+
+  /* hide on scroll-down; slides back in on scroll-up (req 6) */
+  [data-header].is-hidden {
+    transform: translateY(-100%);
+  }
+
+  /* standalone logomark morph-in (req 6) */
+  #floating-mark {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.85);
+    pointer-events: none;
+  }
+  #floating-mark.is-shown {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-header],
+    #floating-mark {
+      transition: none;
+    }
+  }
+
+  /* gold underline that wipes in on hover (§11) */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 2px;
+    width: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-base) var(--ease-out);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .link-underline::after {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // --- header background + hide-on-scroll-down / show-on-scroll-up (req 6) ---
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const mark = document.querySelector<HTMLElement>('[data-floating-mark]');
+  let lastY = window.scrollY;
+  const HIDE_AFTER = 140; // px before hiding kicks in
+
+  const hide = () => {
+    // hide header, morph the wordmark into the standalone logomark
+    header!.classList.add('is-hidden');
+    mark?.classList.add('is-shown');
+  };
+  const show = () => {
+    // bring the full header (wordmark + nav) back
+    header!.classList.remove('is-hidden');
+    mark?.classList.remove('is-shown');
+  };
+
+  const onScroll = () => {
+    if (!header) return;
+    const y = window.scrollY;
+    // Paper background/shadow is visible from load (see the static
+    // .is-scrolled class in the markup above) — no longer scroll-gated.
+
+    const dy = y - lastY;
+    if (Math.abs(dy) < 6) return; // ignore jitter / trailing zero-delta events
+    if (y > HIDE_AFTER && dy > 0) hide();
+    else show(); // scrolling up (from any point) or near the top
+    lastY = y;
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // --- mobile menu with focus trap ---
+  const menu = document.getElementById('mobile-menu');
+  const openBtn = document.getElementById('menu-open');
+  const closeBtn = document.getElementById('menu-close');
+  let lastFocused: HTMLElement | null = null;
+
+  const focusable = () =>
+    menu
+      ? Array.from(
+          menu.querySelectorAll<HTMLElement>(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+          ),
+        )
+      : [];
+
+  const openMenu = () => {
+    if (!menu || !openBtn) return;
+    lastFocused = document.activeElement as HTMLElement;
+    menu.hidden = false;
+    document.body.style.overflow = 'hidden';
+    openBtn.setAttribute('aria-expanded', 'true');
+    focusable()[0]?.focus();
+  };
+  const closeMenu = () => {
+    if (!menu || !openBtn) return;
+    menu.hidden = true;
+    document.body.style.overflow = '';
+    openBtn.setAttribute('aria-expanded', 'false');
+    show(); // keep the header controls in view after closing
+    lastFocused?.focus();
+  };
+
+  openBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  menu?.querySelectorAll('[data-menu-link]').forEach((l) => l.addEventListener('click', closeMenu));
+
+  document.addEventListener('keydown', (e) => {
+    if (menu?.hidden) return;
+    if (e.key === 'Escape') closeMenu();
+    if (e.key === 'Tab') {
+      const items = focusable();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+</script>

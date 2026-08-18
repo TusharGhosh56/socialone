@@ -1,0 +1,330 @@
+---
+// ServiceOrbit — "What We Do"'s radial infographic (index.astro, md+ only;
+// index.astro falls back to a plain ServiceCard grid below md). A slow,
+// continuously-rotating ring carries the four services around the exact
+// centre point flowLine.ts's `.connect-dot` anchors its "what-we-do"
+// milestone to — this component never touches that element or flowLine.ts;
+// it just visually shares the same centre by living inside the same
+// relatively-positioned wrapper (see index.astro's connect-wrap).
+//
+// Two smaller dashed rings sit concentric to the main one, rotating in
+// alternating directions, purely decorative — echoing the flowing line's
+// own dashed-gold stroke (global.css's .flow-line-path) rather than
+// inventing a new motif.
+//
+// Rotation/counter-rotation/tooltip-positioning logic lives in
+// src/scripts/serviceOrbit.ts (initServiceOrbit(), called from index.astro's
+// page script alongside the site's other per-section init calls).
+import type { Service } from '../data/services';
+
+interface Props {
+  services: Service[];
+}
+const { services } = Astro.props;
+
+// Placed at the diagonals (NE/SE/SW/NW), not the cardinal points — the
+// flowing line runs vertically through dead-centre, so a dot sitting at
+// exactly 12/6 o'clock would land right on its path.
+const ANGLES = [45, 135, 225, 315];
+---
+
+<div class="orbit relative mx-auto w-full" data-orbit role="group" aria-label="What APLYD does — four service areas">
+  <span class="orbit__ring orbit__ring--outer" aria-hidden="true"></span>
+  <span class="orbit__ring orbit__ring--inner" aria-hidden="true"></span>
+  <div class="orbit__pulse-layer" aria-hidden="true">
+    <span class="orbit__pulse" style="--pulse-delay:0s"></span>
+    <span class="orbit__pulse" style="--pulse-delay:1.5s"></span>
+    <span class="orbit__pulse" style="--pulse-delay:3s"></span>
+  </div>
+  <span class="orbit__hub" aria-hidden="true"></span>
+
+  <div class="orbit__spin" data-orbit-spin>
+    {
+      services.map((s, i) => (
+        <div class="orbit__slot" style={`--angle:${ANGLES[i]}deg`}>
+          <div class="orbit__slot-fix">
+            <div class="orbit__counter-spin">
+              <button type="button" class="orbit__dot" data-orbit-dot aria-describedby={`orbit-desc-${i}`}>
+                <span class="orbit__marker" aria-hidden="true" />
+                <span class="orbit__label">{s.title}</span>
+              </button>
+              <div class="orbit__tooltip" id={`orbit-desc-${i}`} role="tooltip" data-orbit-tooltip>
+                <p class="orbit__tooltip-title">{s.title}</p>
+                <p class="orbit__tooltip-body">{s.body}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .orbit {
+    --orbit-size: clamp(360px, 38vw, 520px);
+    width: var(--orbit-size);
+    height: var(--orbit-size);
+    /* Dots ride at 44% of the full diameter from centre (was 36%) — pushed
+       further out, still inside the outer decorative ring at 47%
+       (.orbit__ring--outer's 0.94 width / 2). */
+    --dot-radius: calc(var(--orbit-size) * 0.44);
+    --spin-duration: 90s;
+  }
+
+  /* Decorative concentric rings — dashed, yellow/gold outline (brand
+     --gold, matching .flow-line-path's own stroke colour), alternating
+     rotation direction so they read as two independent orbits rather than
+     one rigid shape. Different opacities (not hue) keep them visually
+     distinct from each other and from the pulses below. */
+  .orbit__ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px dashed rgba(209, 156, 51, 0.32);
+    pointer-events: none;
+  }
+  .orbit__ring--outer {
+    width: calc(var(--orbit-size) * 0.94);
+    height: calc(var(--orbit-size) * 0.94);
+    margin: calc(var(--orbit-size) * -0.47) 0 0 calc(var(--orbit-size) * -0.47);
+    animation: orbit-ring-cw 70s linear infinite;
+  }
+  .orbit__ring--inner {
+    width: calc(var(--orbit-size) * 0.5);
+    height: calc(var(--orbit-size) * 0.5);
+    margin: calc(var(--orbit-size) * -0.25) 0 0 calc(var(--orbit-size) * -0.25);
+    border-color: rgba(209, 156, 51, 0.48);
+    animation: orbit-ring-ccw 50s linear infinite;
+  }
+
+  /* Continuously expanding, fading rings — a slow "pulse" radiating out
+     from the shared centre, yellow/gold outline only (no fill), pushed out
+     as far as it can go (85vw / 760px ceiling — well past the orbit's own
+     box, close to the edge of the viewport). Three copies at staggered
+     delays (--pulse-delay, set inline per instance) share one animation
+     cycle so one is always mid-expansion — a single ring would just blink
+     on/off once per cycle instead of reading as a continuous pulse.
+     A dedicated overflow:hidden layer (sized to the same max reach) wraps
+     them rather than leaving them loose in `.orbit` — Chromium reserves
+     document-level scroll width for an absolutely-positioned element's
+     animated `transform: scale()` based on conservative bounds rather than
+     its actual instantaneous size (confirmed empirically: disabling the
+     animation removed the overflow even at full size; shrinking the size
+     with the animation still running did not), which was pushing the page
+     into horizontal overflow. `overflow: hidden` on this wrapper stops that
+     from ever reaching the document, regardless of that quirk. */
+  .orbit__pulse-layer {
+    --pulse-size: min(calc(var(--orbit-size) * 3.4), 85vw, 760px);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--pulse-size);
+    height: var(--pulse-size);
+    margin: calc(var(--pulse-size) * -0.5) 0 0 calc(var(--pulse-size) * -0.5);
+    border-radius: 50%;
+    overflow: hidden;
+    contain: paint;
+    pointer-events: none;
+  }
+  .orbit__pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    opacity: 0;
+    animation: orbit-pulse 4.5s ease-out infinite;
+    animation-delay: var(--pulse-delay, 0s);
+  }
+
+  /* Soft halo marking the shared centre point — deliberately not a solid
+     dot, so it doesn't visually double up with the flow-line's own gold
+     milestone dot when the line reaches this point mid-scroll. Sized/
+     opacity boosted (was a much smaller, fainter glow) so the diagram reads
+     as more visual at rest, then grows further via .is-glowing (set by
+     serviceOrbit.ts) while any of the four dots is hovered/focused. */
+  .orbit__hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--orbit-size) * 0.26);
+    height: calc(var(--orbit-size) * 0.26);
+    margin: calc(var(--orbit-size) * -0.13) 0 0 calc(var(--orbit-size) * -0.13);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(209, 156, 51, 0.4) 0%, rgba(209, 156, 51, 0.16) 45%, rgba(209, 156, 51, 0) 72%);
+    pointer-events: none;
+    transition: transform calc(var(--dur-base) * 2) var(--ease-out);
+  }
+  .orbit.is-glowing .orbit__hub {
+    transform: scale(1.4);
+  }
+
+  .orbit__spin {
+    position: absolute;
+    inset: 0;
+    animation: orbit-spin var(--spin-duration) linear infinite;
+  }
+  .orbit__spin.is-paused,
+  .orbit__spin.is-paused .orbit__counter-spin {
+    animation-play-state: paused;
+  }
+
+  .orbit__slot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    transform: rotate(var(--angle)) translateY(calc(var(--dot-radius) * -1));
+  }
+  /* Cancels only this slot's own fixed placement angle (static — the ring's
+     ongoing rotation is cancelled separately below, in lockstep). */
+  .orbit__slot-fix {
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(calc(var(--angle) * -1));
+  }
+  /* Same duration/timing as .orbit__spin, opposite direction — keeps the
+     dot's own content upright as the ring keeps turning. Both are paused
+     together (see .is-paused above) so they never drift out of sync. */
+  .orbit__counter-spin {
+    position: relative;
+    animation: orbit-spin-reverse var(--spin-duration) linear infinite;
+  }
+
+  .orbit__dot {
+    display: flex;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+  }
+  .orbit__marker {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(209, 156, 51, 0.16);
+    transition:
+      transform var(--dur-base) var(--ease-out),
+      box-shadow var(--dur-base) var(--ease-out);
+  }
+  .orbit__dot:hover .orbit__marker,
+  .orbit__dot:focus-visible .orbit__marker,
+  .orbit__dot.is-active .orbit__marker {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 6px rgba(209, 156, 51, 0.24);
+  }
+  /* Same size as the friction cards' title (index.astro's .friction-card
+     label) — that title is plain body text with no explicit Tailwind
+     text-size utility, so it renders at global.css's body font-size
+     (1.0625rem); matched literally here rather than via a Tailwind class
+     since this label lives in a component-scoped <style> block. */
+  /* A fixed `width` (not max-width) rather than text-wrap:balance — balance
+     tried to even out line lengths by shrinking the box, which for these
+     "word & word" titles picked a NARROWER measure that wrapped some of
+     them to 3 short lines instead of 2 wider ones. A plain fixed width with
+     normal greedy wrapping reliably keeps every title at 2 lines or fewer. */
+  .orbit__label {
+    width: 11rem;
+    text-align: center;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--navy);
+  }
+
+  .orbit__tooltip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 20;
+    width: max-content;
+    max-width: 13rem;
+    transform: translate(calc(-50% + var(--tt-dx, 0px)), calc(-50% + var(--tt-dy, 0px))) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    padding: 0.875rem 1rem;
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+  }
+  .orbit__dot.is-active + .orbit__tooltip {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--tt-dx, 0px)), calc(-50% + var(--tt-dy, 0px))) scale(1);
+  }
+  .orbit__tooltip-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .orbit__tooltip-body {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: rgba(35, 43, 101, 0.85);
+  }
+
+  @keyframes orbit-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes orbit-spin-reverse {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  @keyframes orbit-ring-cw {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes orbit-ring-ccw {
+    to {
+      transform: rotate(-360deg);
+    }
+  }
+  @keyframes orbit-pulse {
+    0% {
+      /* --pulse-size is now much bigger (see .orbit__pulse) than before, so
+         the start scale is correspondingly smaller — keeps the ring's
+         actual starting SIZE close to the hub, same as before this change,
+         while its full-grown size (scale(1), below) reaches much further. */
+      transform: scale(0.07);
+      opacity: 0.6;
+    }
+    70% {
+      opacity: 0.14;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orbit__spin,
+    .orbit__counter-spin,
+    .orbit__ring--outer,
+    .orbit__ring--inner,
+    .orbit__pulse {
+      animation: none;
+    }
+    .orbit__pulse {
+      opacity: 0;
+    }
+    .orbit__hub {
+      transition: none;
+    }
+  }
+</style>

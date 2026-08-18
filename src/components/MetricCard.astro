@@ -1,0 +1,85 @@
+---
+// MetricCard (§7) — big Lato-900 number that counts up on reveal, on the
+// dark gradient stat card (see #trust in index.astro). No icon (removed);
+// label renders in gold/yellow per the reference design.
+// reduced-motion / no-JS: shows the final value immediately.
+import type { Metric } from '../data/metrics';
+interface Props extends Metric {}
+const { value, suffix, label } = Astro.props;
+---
+
+<div class="flex flex-col items-center gap-2 px-2 text-center sm:items-start sm:text-left">
+  <p
+    class="text-metric font-black leading-none text-white tabular-nums"
+    data-count-target={value}
+    data-count-suffix={suffix}
+  >
+    {value}{suffix}
+  </p>
+  <p class="mt-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">
+    {label}
+  </p>
+</div>
+
+<script>
+  if (!(window as any).__aplydCount) {
+    (window as any).__aplydCount = true;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const nums = Array.from(document.querySelectorAll<HTMLElement>('[data-count-target]'));
+    if (!reduce && 'IntersectionObserver' in window) {
+      // Re-runs every time each number re-enters view (not just once ever —
+      // matches FlowChart's own "replays on every re-entry" convention) —
+      // rafIds tracks the in-flight animation per element so scrolling out
+      // mid-count and back in quickly cancels the stale loop rather than
+      // letting two concurrent step() loops fight over the same textContent.
+      const rafIds = new WeakMap<HTMLElement, number>();
+      // IntersectionObserver fires once immediately on observe() with
+      // whatever the initial state is, even if that's "not intersecting"
+      // (true for anything below the fold on load) — without tracking
+      // which elements have actually played at least once, that spurious
+      // first callback would reset the server-rendered final value down to
+      // 0 before the visitor ever scrolls anywhere near it.
+      const hasRun = new WeakSet<HTMLElement>();
+      const run = (el: HTMLElement) => {
+        const prevRaf = rafIds.get(el);
+        if (prevRaf !== undefined) cancelAnimationFrame(prevRaf);
+        const target = Number(el.dataset.countTarget || '0');
+        const suffix = el.dataset.countSuffix || '';
+        const dur = 1400;
+        let start: number | null = null;
+        const step = (t: number) => {
+          if (start === null) start = t;
+          const p = Math.min((t - start) / dur, 1);
+          // ease-out cubic
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased) + suffix;
+          if (p < 1) rafIds.set(el, requestAnimationFrame(step));
+          else {
+            el.textContent = target + suffix;
+            rafIds.delete(el);
+          }
+        };
+        rafIds.set(el, requestAnimationFrame(step));
+      };
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            const el = e.target as HTMLElement;
+            if (e.isIntersecting) {
+              hasRun.add(el);
+              run(el);
+            } else if (hasRun.has(el)) {
+              const prevRaf = rafIds.get(el);
+              if (prevRaf !== undefined) cancelAnimationFrame(prevRaf);
+              rafIds.delete(el);
+              el.textContent = '0' + (el.dataset.countSuffix || '');
+            }
+          }
+        },
+        { threshold: 0.4 },
+      );
+      nums.forEach((n) => io.observe(n));
+    }
+    // reduced-motion: leave the server-rendered final value untouched.
+  }
+</script>
