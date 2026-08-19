@@ -11,15 +11,18 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Preloader from '../components/Preloader.astro';
 import { faqs } from '../data/faqs';
+import { services } from '../data/services';
 
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
 }
 
 const {
-  title = 'APLYD — Intelligence, Applied | Applied AI for Governments & Development',
-  description = 'APLYD helps governments and development institutions apply AI to make better decisions, strengthen public systems, and build lasting capability. By Athena Infonomics.',
+  title = 'APLYD | Applied AI for Governments & Public Institutions',
+  description = 'APLYD helps governments and impact-focused institutions apply artificial intelligence to strengthen public systems, improve decisions, and build lasting capability.',
+  keywords = 'Applied AI, Government AI, Public Sector Artificial Intelligence, Decision Intelligence, Institutional AI Capability, Athena Infonomics, Field Intelligence, AI Evaluation',
 } = Astro.props;
 
 // Canonical from configured `site` (astro.config.mjs → aplyd.ai). Falls back safely.
@@ -32,14 +35,23 @@ const orgLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'APLYD',
+  legalName: 'APLYD by Athena Infonomics',
   url: site.href,
   logo: new URL('/favicon.svg', site).href,
   description,
   parentOrganization: {
     '@type': 'Organization',
     name: 'Athena Infonomics',
+    url: 'https://www.athenainfonomics.com',
   },
-  // TODO (§12/§16): add real profile URLs.
+  knowsAbout: [
+    'Applied Artificial Intelligence',
+    'Public Sector AI Implementation',
+    'Decision Intelligence',
+    'Institutional Capability Building',
+    'Independent AI Evaluation & Assurance',
+  ],
+  areaServed: 'Worldwide',
   sameAs: [] as string[],
 };
 
@@ -48,6 +60,32 @@ const websiteLd = {
   '@type': 'WebSite',
   name: 'APLYD',
   url: site.href,
+  description,
+  inLanguage: 'en',
+  publisher: {
+    '@type': 'Organization',
+    name: 'APLYD',
+  },
+};
+
+const servicesLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'APLYD Applied AI Capabilities',
+  description: 'Core service pillars moving institutions from AI ambition to real-world impact.',
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    item: {
+      '@type': 'Service',
+      name: s.title,
+      description: s.body,
+      provider: {
+        '@type': 'Organization',
+        name: 'APLYD',
+      },
+    },
+  })),
 };
 
 const faqLd = {
@@ -63,7 +101,12 @@ const faqLd = {
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: site.href }],
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+    ...(Astro.url.pathname.startsWith('/contact')
+      ? [{ '@type': 'ListItem', position: 2, name: 'Contact', item: canonical }]
+      : []),
+  ],
 };
 ---
 
@@ -75,18 +118,22 @@ const breadcrumbLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#232B65" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="APLYD by Athena Infonomics" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
     <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph -->
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content="APLYD" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -94,11 +141,10 @@ const breadcrumbLd = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Preconnect not needed: fonts are self-hosted & bundled. -->
-
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(servicesLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
   </head>

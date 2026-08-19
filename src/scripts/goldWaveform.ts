@@ -192,7 +192,8 @@ function bind(container: HTMLElement, canvas: HTMLCanvasElement, alphaMul = 1): 
 }
 
 export function initGoldWaveform(): void {
-  document.querySelectorAll<HTMLElement>('[data-gold-waveform]').forEach((container) => {
+  document.querySelectorAll<HTMLElement>('[data-gold-waveform]:not([data-gold-waveform-bound])').forEach((container) => {
+    container.setAttribute('data-gold-waveform-bound', '');
     const canvas = container.querySelector<HTMLCanvasElement>('[data-gold-waveform-canvas]');
     const alphaMul = parseFloat(container.dataset.goldWaveformAlpha || '1') || 1;
     if (canvas) bind(container, canvas, alphaMul);

@@ -12,7 +12,7 @@ const { question, answer } = Astro.props;
   >
     <h3 class="text-h3 font-bold text-navy">{question}</h3>
     <svg
-      class="chevron shrink-0 text-deep-gold transition-transform duration-base ease-out"
+      class="chevron shrink-0 text-mid-navy transition-all duration-base ease-out group-hover:text-deep-gold"
       width="20"
       height="20"
       viewBox="0 0 20 20"
@@ -29,6 +29,7 @@ const { question, answer } = Astro.props;
 <style>
   details[open] .chevron {
     transform: rotate(180deg);
+    color: var(--deep-gold);
   }
 </style>
 
