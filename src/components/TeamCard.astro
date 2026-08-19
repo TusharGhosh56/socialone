@@ -48,7 +48,7 @@ function initials(fullName: string): string {
     </svg>
   </a>
   {photo ? (
-    <Image class="team-card__avatar team-card__avatar--photo" src={photo} alt="" aria-hidden="true" width={144} height={144} format="webp" quality={82} />
+    <Image class="team-card__avatar team-card__avatar--photo" src={photo} alt={`${name} - ${title} at APLYD`} width={144} height={144} format="webp" quality={82} />
   ) : (
     <span class="team-card__avatar" aria-hidden="true">{initials(name)}</span>
   )}
@@ -75,7 +75,7 @@ function initials(fullName: string): string {
     color: var(--navy);
     font-weight: 700;
     font-size: 1.125rem;
-    box-shadow: 0 0 0 3px var(--white), 0 0 0 4.5px var(--gold);
+    box-shadow: 0 0 0 3px var(--white), 0 0 0 4.5px var(--hair);
   }
   .team-card__avatar--photo {
     object-fit: cover;
@@ -90,8 +90,8 @@ function initials(fullName: string): string {
   .team-card__tag {
     margin-top: 0.75rem;
     border-radius: 999px;
-    background: var(--pale-gold);
-    color: var(--deep-gold);
+    background: var(--pale-navy);
+    color: var(--navy);
     font-size: 0.6875rem;
     font-weight: 700;
     text-transform: uppercase;

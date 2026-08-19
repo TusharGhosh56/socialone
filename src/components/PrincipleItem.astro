@@ -287,13 +287,22 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    /* Navy, not gold. Four identical badges repeated across a row is gold used
-       as decoration, which the colour-ratio rule rules out — gold is "earned,
-       not equal" at ~5%, reserved for the dot in the mark, a key statistic, or
-       a single line of emphasis. Navy with a white icon keeps the badge just as
-       strong and puts these back inside the 25% navy band. */
-    background: var(--navy);
-    color: #fff;
+    /* Line-weight icon inside circular container (§06). Pale-navy container with
+       hairline border and navy stroke at rest; on hover/focus inverts with a
+       gold accent on interaction. */
+    border: 1.5px solid var(--hair);
+    background: var(--pale-navy);
+    color: var(--navy);
+    transition:
+      border-color var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out),
+      color var(--dur-base) var(--ease-out);
+  }
+  .principle-card:hover .principle-card__hub,
+  .principle-card:focus-visible .principle-card__hub {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--gold);
   }
   .motif-dot {
     position: absolute;

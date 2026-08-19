@@ -1,70 +1,151 @@
 ---
-// HeroFlow — Screen 1 of the homepage, now a rounded inset card (Runway-
-// style) rather than a full-bleed section — see .hero in heroFlow.css for
-// the card treatment (margin, radius, overflow-hidden). Hero copy (tagline,
-// H1, subhead, CTAs) is left-aligned over the top, always visible.
-//
-// Background is a 5-video cross-fade carousel (see src/scripts/
-// heroVideoCarousel.ts) — all 5 mounted and playing simultaneously
-// (autoplay/loop/muted), only one visible (.is-active, opacity transition)
-// at a time, so switching is a clean cross-fade with no load/seek delay for
-// the incoming video. A navy gradient overlay (hero__video-fade) sits above
-// all of them, fading bottom-to-top (blends into the card's own bottom
-// edge) with an animated gold radial glow sweeping left-to-right-and-back.
-//
-// The cursor-reactive radial-burst canvas that used to live here (and later
-// spanned into FlowChart) has moved to How We Work's left column — see
-// src/components/HeroFlow/heroFlow.ts, now used from index.astro's How We
-// Work markup instead of from here.
+// HeroFlow — Screen 1: Modern Split Architectural Stage.
+// Left Column: Pure high-contrast editorial typography on deep navy.
+// Right Column: Framed Interactive Intelligence Terminal with HUD telemetry & domain switcher.
 import './heroFlow.css';
 import Button from '../Button.astro';
 
-// Drop the 5 video files at public/video/hero/1.mp4 .. 5.mp4 — see this
-// array if you want different filenames instead.
-const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
+const HERO_DOMAINS = [
+  { id: 1, name: 'Agriculture', title: 'Farmer Advisory & Food Systems', loc: 'LOC: 28.61° N · IN-01', status: 'ACTIVE DEPLOYMENT' },
+  { id: 2, name: 'Education', title: 'Teacher Quality & Assessment', loc: 'LOC: 19.07° N · IN-02', status: 'LIVE EVALUATION' },
+  { id: 3, name: 'Governance', title: 'Public Delivery Systems', loc: 'LOC: 19.43° N · MX-01', status: 'FIELD INTEGRATION' },
+  { id: 4, name: 'Infrastructure', title: 'Resource & Climate Systems', loc: 'LOC: 01.29° S · KE-01', status: 'SCALE OPERATIONS' },
+];
 ---
 
-<section class="hero" id="hero" data-hero>
-  <div class="hero__stage">
-    <div class="hero__video-wrap" aria-hidden="true">
-      {
-        VIDEO_SOURCES.map((src, i) => (
-          <video class:list={['hero__video', { 'is-active': i === 0 }]} data-hero-video={i} autoplay loop muted playsinline preload="auto">
-            <source src={src} type="video/mp4" />
-          </video>
-        ))
-      }
-      <div class="hero__video-fade"></div>
-    </div>
+<section class="hero bg-institutional-grid" id="hero" data-hero>
+  <div class="hero__stage container-hero">
+    <div class="hero__grid grid items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-16">
+      
+      <!-- LEFT COLUMN: Typography & Authority (6 cols) -->
+      <div class="hero__col-left flex flex-col justify-between lg:col-span-6">
+        <div>
+          <!-- Live Status Badge -->
+          <div class="hero__badge-wrap">
+            <div class="hero__badge">
+              <span class="hero__badge-pulse" aria-hidden="true">
+                <span class="hero__badge-dot"></span>
+                <span class="hero__badge-ring"></span>
+              </span>
+              <span class="text-eyebrow font-bold uppercase tracking-[0.14em] text-white/90">
+                Intelligence, Applied
+              </span>
+            </div>
+          </div>
 
-    <div class="hero__content container-x">
-      <div class="hero__content-inner">
-        <span class="hero__tagline-badge">
-          <span class="hero__tagline-badge-ring" aria-hidden="true"></span>
-          <p class="hero__tagline-badge-inner text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
-            Intelligence, Applied
+          <!-- Headline: Lato Light (64-96px) per §07 -->
+          <h1 class="hero__title mt-4 text-hero font-light text-white">
+            Applied AI for governments and <span class="font-normal text-pale-navy">impact focused</span> institutions
+          </h1>
+
+          <!-- Subhead Copy: Lato Regular (400) per §04 -->
+          <p class="mt-4 max-w-[48ch] text-lede font-normal text-pale-navy/90 leading-relaxed">
+            APLYD helps governments and impact-focused institutions apply artificial intelligence to
+            improve decisions, strengthen public systems, and build lasting institutional capability.
           </p>
-        </span>
-        <!-- Hero Type per the guidelines' website spec: Lato LIGHT, 64–96px,
-             line-height 1.05 (text-hero carries the size and the 1.05 — see
-             tailwind.config.mjs). Was `text-display font-black`, i.e. Lato
-             Black at 56px, which missed all three parts of that spec. The
-             `whitespace-nowrap` span around "impact focused" went with it: it
-             existed only to force a two-line wrap at the old Black/56px size,
-             and at Light/~90px it would just overflow the first line. -->
-        <h1 class="hero__title mt-3 text-hero font-light text-white">
-          Applied AI for governments and <span class="whitespace-nowrap">impact focused</span>
-          institutions
-        </h1>
-        <p class="mt-6 max-w-[46ch] text-lede font-light text-pale-navy">
-          APLYD helps governments and impact focused institutions apply artificial intelligence to
-          improve decisions, strengthen public systems, and build lasting institutional capability.
-        </p>
-        <div class="hero__cta mt-8">
-          <Button href="/contact" variant="gold" class="hero-cta-primary">Partner With APLYD</Button>
-          <Button href="#ai-in-action" variant="outline-light">Explore Our Work</Button>
+
+          <!-- Action CTAs -->
+          <div class="hero__cta mt-6 flex flex-wrap items-center gap-4">
+            <Button href="/contact" variant="gold" class="hero-cta-primary shadow-md">
+              Partner With APLYD
+            </Button>
+            <Button href="#ai-in-action" variant="outline-light">
+              Explore Our Work
+            </Button>
+          </div>
+        </div>
+
+        <!-- Institutional Proof Strip -->
+        <div class="hero__proof-strip mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/12 pt-4 text-spec font-bold uppercase tracking-[0.14em] text-pale-navy/65">
+          <div class="flex items-center gap-2">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+            <span>16+ Years Delivery</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+            <span>5 Continents</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+            <span>Proven Public Impact</span>
+          </div>
         </div>
       </div>
+
+      <!-- RIGHT COLUMN: Framed Interactive Intelligence Terminal (6 cols) -->
+      <div class="hero__col-right flex flex-col lg:col-span-6">
+        <div class="hero__terminal w-full flex flex-col justify-between">
+          <!-- Terminal Header Bar with HUD Telemetry -->
+          <div class="hero__terminal-header">
+            <div class="flex items-center gap-2.5">
+              <span class="h-2 w-2 rounded-full bg-gold" aria-hidden="true"></span>
+              <span class="hero__terminal-status text-spec font-bold uppercase tracking-[0.14em] text-pale-navy" data-hud-status>
+                {HERO_DOMAINS[0].status}
+              </span>
+            </div>
+            <span class="hero__terminal-loc text-spec font-mono text-ash tracking-wider" data-hud-loc>
+              {HERO_DOMAINS[0].loc}
+            </span>
+          </div>
+
+          <!-- Video Viewport Frame -->
+          <div class="hero__terminal-viewport">
+            {
+              HERO_DOMAINS.map((domain, i) => (
+                <video
+                  class:list={['hero__terminal-video', { 'is-active': i === 0 }]}
+                  data-hero-video={i}
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="auto"
+                >
+                  <source src={`/video/hero/${domain.id}.mp4`} type="video/mp4" />
+                </video>
+              ))
+            }
+            <div class="hero__terminal-scrim" aria-hidden="true"></div>
+
+            <!-- Corner Crosshairs HUD Overlays -->
+            <div class="hero__terminal-crosshair top-2.5 left-2.5" aria-hidden="true">+</div>
+            <div class="hero__terminal-crosshair top-2.5 right-2.5" aria-hidden="true">+</div>
+            <div class="hero__terminal-crosshair bottom-2.5 left-2.5" aria-hidden="true">+</div>
+            <div class="hero__terminal-crosshair bottom-2.5 right-2.5" aria-hidden="true">+</div>
+
+            <!-- Active Domain Overlay Tag -->
+            <div class="hero__terminal-domain-tag">
+              <span class="text-spec font-bold uppercase tracking-[0.14em] text-gold" data-hud-domain-num>
+                01
+              </span>
+              <p class="text-small font-bold text-white" data-hud-domain-title>
+                {HERO_DOMAINS[0].title}
+              </p>
+            </div>
+          </div>
+
+          <!-- Domain Switcher Tabs -->
+          <div class="hero__terminal-tabs">
+            {
+              HERO_DOMAINS.map((domain, i) => (
+                <button
+                  type="button"
+                  class:list={['hero__tab-btn', { 'is-active': i === 0 }]}
+                  data-domain-idx={i}
+                  data-domain-title={domain.title}
+                  data-domain-loc={domain.loc}
+                  data-domain-status={domain.status}
+                  aria-label={`Switch to ${domain.name} domain`}
+                >
+                  <span class="hero__tab-num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="hero__tab-name">{domain.name}</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

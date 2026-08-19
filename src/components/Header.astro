@@ -46,7 +46,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
           </a>
         ))
       }
-      <Button href={primaryCta.href} variant="primary" class="!px-5 !py-2 text-small">
+      <Button href={primaryCta.href} variant="gold" class="!px-5 !py-2 text-small shadow-sm">
         {primaryCta.label}
       </Button>
     </nav>
@@ -112,13 +112,14 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
         </a>
       ))
     }
-    <a
+    <Button
       href={primaryCta.href}
+      variant="gold"
       data-menu-link
-      class="mt-6 inline-flex items-center justify-center rounded-pill bg-gold px-6 py-3 font-bold text-navy no-underline"
+      class="mt-6 w-full justify-center"
     >
       {primaryCta.label}
-    </a>
+    </Button>
   </nav>
 </div>
 

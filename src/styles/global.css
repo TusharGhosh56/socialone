@@ -184,12 +184,9 @@
     }
   }
 
-  /* Reusable dark, slightly-animated background for navy sections sitewide
-     (FlowChart, How We Work, Backed by Athena, etc.) — replaces flat
-     bg-navy/bg-deep-navy fills. `.gradient-navy` is the darker base wash;
-     `.gradient-sheen` layers the same slow moving highlight sweep on top via
-     ::before. Split into two classes so a section can use the dark base
-     without the animation, though in practice they're used together. */
+  /* Reusable disciplined deep navy background for navy sections sitewide
+     (FlowChart, How We Work, Footer, etc.). Pure palette navy depth with
+     quiet authority — no abstract rainbow swirls or distracting moving sheen. */
   .gradient-navy {
     position: relative;
     background: linear-gradient(180deg, #0d1030 0%, #171d47 40%, #171d47 68%, #0d1030 100%);
@@ -199,15 +196,27 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(
-      100deg,
-      transparent 15%,
-      rgba(74, 83, 138, 0.4) 40%,
-      rgba(209, 156, 51, 0.08) 52%,
-      transparent 78%
-    );
-    background-size: 260% 100%;
-    animation: hero-sheen 16s ease-in-out infinite;
+    background: radial-gradient(circle at 50% 30%, rgba(74, 83, 138, 0.18) 0%, transparent 75%);
+    pointer-events: none;
+  }
+
+  /* Institutional Infrastructure Grid — subtle precision datum lines in pure navy/slate
+     embodying data foundation and cartographic intelligence (§06 & §07). */
+  .bg-institutional-grid {
+    position: relative;
+    background-color: #0d1030;
+    background-image:
+      linear-gradient(rgba(74, 83, 138, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74, 83, 138, 0.12) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center center;
+  }
+  .bg-institutional-grid::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(35, 43, 101, 0.45) 0%, #0d1030 85%);
     pointer-events: none;
   }
 
@@ -215,44 +224,14 @@
      FlowChart already use locally (.hero/.flow in their own component CSS:
      margin-inline + border-radius + overflow:hidden), so a full-bleed
      section reads as a floating card on the page background rather than a
-     flat edge-to-edge band. Also sets margin-block (Hero/FlowChart don't
-     need their own — .hero-flow-stack's padding-top/gap already spaces
-     them vertically; a standalone section like How We Work has no such
-     wrapper, so this covers all four sides itself). */
+     flat edge-to-edge band. */
   .section-card {
     margin: clamp(0.75rem, 2.5vw, 2rem);
     border-radius: 1.75rem;
     overflow: hidden;
   }
-  /* .gradient-sheen's ::before is a separate absolutely-positioned layer —
-     the host's own `background` clips to border-radius automatically with
-     no extra help needed, but this pseudo-element doesn't inherit that
-     rounding just because its host is a .section-card, so without this it
-     renders as a plain rectangle poking past the rounded corners. Scoped to
-     BOTH classes together so this doesn't round every .gradient-sheen
-     section sitewide (most aren't .section-cards and have square corners
-     on purpose, e.g. Trust, Backed by Athena). */
   .section-card.gradient-sheen::before {
     border-radius: inherit;
-  }
-}
-
-@keyframes hero-sheen {
-  0% {
-    background-position: 0% 0%;
-  }
-  50% {
-    background-position: 100% 0%;
-  }
-  100% {
-    background-position: 0% 0%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gradient-sheen::before {
-    animation: none;
-    background-position: 45% 0%;
   }
 }
 
