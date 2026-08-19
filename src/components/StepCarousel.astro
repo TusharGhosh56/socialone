@@ -140,8 +140,17 @@ const { steps, ariaLabel = 'How we work steps' } = Astro.props;
     height: 2rem;
     padding-inline: 0.5rem;
     border-radius: 999px;
-    background: var(--gold);
-    color: var(--navy);
+    /* Was a solid var(--gold) fill on every card's badge. Four gold badges in a
+       row is gold spent per-item rather than on a moment — the colour ratio
+       (70/25/5, "earned, not equal") puts repeated UI furniture in the neutral
+       or navy bands. Navy would disappear on this dark section, so it's a
+       frosted white chip instead: same prominence, no gold spend. Gold still
+       marks interaction here, via the arrows below. */
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #fff;
     font-size: 0.75rem;
     font-weight: 800;
   }

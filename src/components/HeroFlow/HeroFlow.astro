@@ -45,7 +45,14 @@ const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
             Intelligence, Applied
           </p>
         </span>
-        <h1 class="mt-3 text-display font-black text-white">
+        <!-- Hero Type per the guidelines' website spec: Lato LIGHT, 64–96px,
+             line-height 1.05 (text-hero carries the size and the 1.05 — see
+             tailwind.config.mjs). Was `text-display font-black`, i.e. Lato
+             Black at 56px, which missed all three parts of that spec. The
+             `whitespace-nowrap` span around "impact focused" went with it: it
+             existed only to force a two-line wrap at the old Black/56px size,
+             and at Light/~90px it would just overflow the first line. -->
+        <h1 class="hero__title mt-3 text-hero font-light text-white">
           Applied AI for governments and <span class="whitespace-nowrap">impact focused</span>
           institutions
         </h1>

@@ -148,7 +148,16 @@
   display: block;
   margin: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
+  /* Was rgba(255,255,255,0.14) — a true frosted-glass wash. With navy text on
+     top that composited to roughly 1.3:1 contrast over a dark video frame,
+     well under the 4.5:1 floor, and because the hero cycles six different
+     clips the badge swung between barely-legible and invisible depending on
+     which one was showing. Near-opaque instead: navy on this reads ~11:1 and,
+     crucially, reads the SAME on every clip rather than depending on what
+     happens to be behind it. The blur stays — at this opacity it no longer
+     does the heavy lifting, but it still softens the pill's edge against
+     whatever is moving underneath. */
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 0.5rem 1.25rem;
@@ -173,16 +182,29 @@
   max-width: 34rem;
   text-align: left;
 }
-/* Wide enough on desktop that "Applied AI for governments" / "and
-   development institutions" wraps to exactly two lines at the display
-   font size; narrower screens keep the tighter 34rem measure and wrap
-   however they naturally do. (Verified empirically — text-display's
-   viewport-relative font size means this is tuned for common desktop
-   widths, not derived from a formula.) */
+/* Was 62rem, tuned to force "Applied AI for governments" / "and development
+   institutions" onto exactly two lines at the old Lato Black 56px H1. The H1
+   is now Lato Light at up to 96px per the guidelines' Hero Type spec and
+   carries its own measure (.hero__title below), so this wrapper only has to be
+   wide enough not to constrain it — the subhead and CTA row inside it already
+   set their own widths (max-w-[46ch] and flex-wrap). */
 @media (min-width: 1024px) {
   .hero__content-inner {
-    max-width: 62rem;
+    max-width: 68rem;
   }
+}
+
+/* Hero headline measure. In `ch` so it tracks the H1's own font size rather
+   than a fixed pixel width — the same line length then holds wherever
+   text-hero's clamp lands in the 64–96px band, with no per-breakpoint retune.
+   ~19ch reproduces the shape of the guidelines' own hero reference ("Building
+   trusted infrastructure for public impact."): a short, stacked, editorial
+   block rather than a wide banner. Set on the h1 and not on
+   .hero__content-inner because `ch` resolves against the element's OWN
+   font-size, and that wrapper inherits the 17px body size — 19ch there would
+   be ~150px, not ~19 hero characters. */
+.hero__title {
+  max-width: 24ch;
 }
 
 .hero__cta {

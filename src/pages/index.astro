@@ -126,7 +126,10 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     <Reveal delay={160} class="mt-12 gradient-navy gradient-sheen py-10 sm:py-14">
       <div class="container-x relative z-10">
         <div class="metric-row grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-          {metrics.map((m) => <MetricCard {...m} />)}
+          {/* `accent` on the first metric only — the guidelines allow gold to
+              mark "a key statistic", singular, so one number carries it and the
+              other four stay white. See MetricCard.astro. */}
+          {metrics.map((m, i) => <MetricCard {...m} accent={i === 0} />)}
         </div>
       </div>
     </Reveal>
@@ -965,12 +968,24 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
      bottom-to-top fade, since content spans this whole section rather than
      sitting in one corner over the video). Muted/looping/decorative, so it
      stays visible even under reduced-motion rather than needing a static
-     fallback. */
+     fallback.
+     The video file (/video/gradient.mp4) is a VIOLET gradient, and a flat rgba
+     navy at 0.58 was nowhere near enough to neutralise it — the section rendered
+     visibly purple, a hue that exists nowhere in the brand palette (navy / gold
+     / neutrals only, see docs/BRAND-GUIDELINES.md §03). Rather than swap the
+     asset, the video now contributes only its LUMINANCE:
+     mix-blend-mode:luminosity takes hue and saturation from the backdrop instead
+     of the element, so painting the wrapper deep navy underneath renders the
+     same moving gradient in navy. The overlay stays as a contrast floor. */
   .how-we-work__video-wrap {
     position: absolute;
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    /* The hue/saturation source for the blend below — and the plain fallback
+       colour anywhere mix-blend-mode is unsupported (there the video just stays
+       violet, as it was before, rather than the section going blank). */
+    background: #0d1030;
   }
   .how-we-work__video {
     position: absolute;
@@ -978,11 +993,16 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     width: 100%;
     height: 100%;
     object-fit: cover;
+    mix-blend-mode: luminosity;
   }
   .how-we-work__video-fade {
     position: absolute;
     inset: 0;
-    background: rgba(13, 16, 48, 0.58);
+    /* Was rgba(13,16,48,0.58) — a flat wash that had to do all the colour
+       correction itself. With the luminosity blend above handling hue, this is
+       purely a text-contrast floor again, so it can be lighter and let more of
+       the video's movement through. */
+    background: rgba(13, 16, 48, 0.42);
   }
 
   /* Final CTA's background video — same structure as How We Work's own,
