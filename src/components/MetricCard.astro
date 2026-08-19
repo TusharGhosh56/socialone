@@ -1,22 +1,33 @@
 ---
 // MetricCard (§7) — big Lato-900 number that counts up on reveal, on the
-// dark gradient stat card (see #trust in index.astro). No icon (removed);
-// label renders in gold/yellow per the reference design.
+// dark gradient stat card (see #trust in index.astro). No icon (removed).
+//
+// The label used to render gold on every card. Five gold labels in a row is gold
+// spent as decoration, and the colour ratio (70% neutral / 25% navy / 5% gold,
+// "earned, not equal") names "a key statistic" — singular — as a gold moment. So
+// labels are now Pale Navy, and `accent` marks exactly one metric: index.astro
+// passes it for the lead statistic only, which gets the gold NUMBER. Every other
+// card reads white-on-navy.
 // reduced-motion / no-JS: shows the final value immediately.
 import type { Metric } from '../data/metrics';
-interface Props extends Metric {}
-const { value, suffix, label } = Astro.props;
+interface Props extends Metric {
+  accent?: boolean;
+}
+const { value, suffix, label, accent = false } = Astro.props;
 ---
 
 <div class="flex flex-col items-center gap-2 px-2 text-center sm:items-start sm:text-left">
   <p
-    class="text-metric font-black leading-none text-white tabular-nums"
+    class:list={[
+      'text-metric font-black leading-none tabular-nums',
+      accent ? 'text-gold' : 'text-white',
+    ]}
     data-count-target={value}
     data-count-suffix={suffix}
   >
     {value}{suffix}
   </p>
-  <p class="mt-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">
+  <p class="mt-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-pale-navy">
     {label}
   </p>
 </div>

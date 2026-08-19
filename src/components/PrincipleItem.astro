@@ -36,9 +36,10 @@
 // reused from FlowChart's own per-station animations
 // (src/components/FlowChart/flowChart.ts's drawPersistent — see that
 // file's per-station comments for the original canvas version) as a much
-// lighter pure-CSS/DOM equivalent: a handful of small dots (half muted red,
-// half grey — this section is about what goes wrong, hence red) around a
-// gold hub circle showing the card's own icon (not FlowChart's separate
+// lighter pure-CSS/DOM equivalent: a handful of small dots (half Mid Navy,
+// half Smoke — the two-tone split reads as "some of these are missing", which
+// is what this section is about) around a navy hub circle showing the
+// card's own icon (not FlowChart's separate
 // icon file, and — per this round's product decision — no longer ALSO
 // shown as a separate top-left badge; the hub is the only place this
 // card's icon appears now). Orbiting motifs (Workflow, Ownership) use the
@@ -95,14 +96,14 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
     {motif === 'data' &&
       DATA_DOTS.map((d, i) => (
         <span
-          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-red']}
+          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-navy']}
           style={`--dot-x:${d.x}px;--dot-y:${d.y}px;animation-delay:${(i * 0.65).toFixed(2)}s`}
         />
       ))}
     {motif === 'institution' &&
       INSTITUTION_DOTS.map((d, i) => (
         <span
-          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-red']}
+          class:list={['motif-dot', 'motif-dot--static', i % 2 === 0 ? 'is-grey' : 'is-navy']}
           style={`--dot-x:${d.x}px;--dot-y:${d.y}px;animation-delay:${(i * 1.1).toFixed(2)}s`}
         />
       ))}
@@ -116,7 +117,7 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
         ))}
         {[0, 1, 2].map((i) => (
           <span
-            class:list={['motif-dot', 'motif-dot--wf-outer', 'is-red']}
+            class:list={['motif-dot', 'motif-dot--wf-outer', 'is-navy']}
             style={`animation-delay:-${((i * Number(WORKFLOW_OUTER_DURATION)) / 3).toFixed(2)}s`}
           />
         ))}
@@ -125,7 +126,7 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
     {motif === 'ownership' && (
       <>
         <span class="motif-ring" />
-        <span class="motif-dot motif-dot--ownership is-red" />
+        <span class="motif-dot motif-dot--ownership is-navy" />
       </>
     )}
     <span
@@ -286,7 +287,12 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--gold);
+    /* Navy, not gold. Four identical badges repeated across a row is gold used
+       as decoration, which the colour-ratio rule rules out — gold is "earned,
+       not equal" at ~5%, reserved for the dot in the mark, a key statistic, or
+       a single line of emphasis. Navy with a white icon keeps the badge just as
+       strong and puts these back inside the 25% navy band. */
+    background: var(--navy);
     color: #fff;
   }
   .motif-dot {
@@ -301,8 +307,15 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
   .motif-dot.is-grey {
     background: var(--smoke);
   }
-  .motif-dot.is-red {
-    background: #b5473f;
+  /* Was a hardcoded #b5473f ("muted red — this section is about what goes
+     wrong, hence red"). Red is not in the brand palette at all — it is navy /
+     gold / neutrals only (docs/BRAND-GUIDELINES.md §03), and the single red in
+     this codebase (--error) is scoped to form-validation failure. The two-tone
+     contrast the motif needs is kept, just expressed in palette colours: Mid
+     Navy reads as the present/solid dot against Smoke's absent/faint one, which
+     carries the same "some of these are missing" idea without inventing a hue. */
+  .motif-dot.is-navy {
+    background: var(--mid-navy);
   }
   /* Data/Institution — fixed positions (--dot-x/--dot-y set inline per dot),
      a slow breathing pulse only, no orbit. */
