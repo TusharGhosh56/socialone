@@ -1,0 +1,170 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionEyebrow from '../../components/SectionEyebrow.astro';
+import Button from '../../components/Button.astro';
+
+const principles = [
+  {
+    num: '01',
+    tag: 'Embedded Practice',
+    title: 'We work inside the institution',
+    p1: 'We work alongside the teams responsible for implementation, aligning with delivery objectives and staying engaged through deployment and beyond. This helps ensure that what we build reflects existing workflows, operational requirements and the realities of the institution in which it will be used.',
+    p2: 'Effective implementation depends on this context. Solutions designed without an understanding of how work is actually carried out can struggle with adoption. Working within the institution allows those constraints to inform design from the outset.',
+  },
+  {
+    num: '02',
+    tag: 'Capability Transfer',
+    title: 'We hand the system over',
+    p1: 'Capability transfer is built into every engagement. We leave trained teams, documentation and operating routines that enable the institution to manage the system after implementation.',
+    p2: 'From the outset, we consider who will operate the system, how it will be supported and maintained, and what capabilities are required to manage it effectively. The objective is durable institutional ownership, not continued dependence on an external provider.',
+  },
+  {
+    num: '03',
+    tag: 'Evidence-Driven',
+    title: 'We decide from evidence',
+    p1: 'Evidence informs decisions throughout the engagement, from selecting and prioritising use cases to assessing readiness for scale. We combine field data, user experience and measurement to understand how a system performs in practice and what it changes for the people and services it is intended to support.',
+    p2: 'This includes looking beyond aggregate performance to identify gaps in coverage, adoption and outcomes. Decisions to improve, continue or scale are based on evidence from implementation rather than demonstration alone.',
+  },
+  {
+    num: '04',
+    tag: 'Structural Independence',
+    title: 'We evaluate independently',
+    p1: 'We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Evaluation is kept structurally separate from delivery.',
+    p2: 'Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with complete independence—ensuring that evaluation findings are never influenced by an interest in a particular delivery outcome.',
+  },
+];
+---
+
+<Base
+  title="How We Work | Four Operating Principles | APLYD"
+  description="Four principles guide APLYD's work: embedded practice, capability transfer, evidence-driven decisions and independent evaluation."
+  keywords="APLYD Principles, AI Delivery Methodology, Embedded AI Practice, Independent AI Evaluation"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="border-b border-hair bg-paper py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · How We Work
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-navy leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Four principles behind every engagement
+        </h1>
+
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-mid-navy leading-relaxed">
+          Technology alone does not create lasting public value. Whether an AI system delivers and endures depends on how it is designed, implemented and measured within the realities of an institution. Four principles guide our work, each addressing a common challenge in taking AI from a pilot to sustained institutional use.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ 4 PRINCIPLES ============================ */}
+    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+      <div class="container-x divide-y divide-hair">
+        {principles.map((p) => (
+          <div class="py-16 sm:py-20 first:pt-0 last:pb-0">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+              {/* Left Column: Numeral & Title */}
+              <div class="lg:col-span-5">
+                <div class="flex items-center gap-4 mb-4">
+                  <span class="text-4xl sm:text-5xl font-light text-gold font-serif">
+                    {p.num}
+                  </span>
+                  <span class="inline-flex items-center rounded-pill bg-pale-navy px-3 py-1 text-xs font-bold uppercase tracking-wider text-navy">
+                    {p.tag}
+                  </span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-black text-navy leading-tight">
+                  {p.title}
+                </h2>
+              </div>
+
+              {/* Right Column: Narrative Body */}
+              <div class="lg:col-span-7 space-y-6 text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+                <p>{p.p1}</p>
+                <p>{p.p2}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* ============================ DEDICATED INDEPENDENT BY DESIGN SECTION ============================ */}
+    <section class="py-20 sm:py-28 bg-paper border-b border-hair">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-gradient-to-br from-[#1C2353] to-[#12173B] text-white p-8 sm:p-12 lg:p-16 shadow-2xl relative overflow-hidden">
+          {/* Subtle grid pattern background */}
+          <div class="absolute inset-0 bg-institutional-grid opacity-15 pointer-events-none"></div>
+
+          <div class="relative z-10">
+            <div class="max-w-3xl mb-12">
+              <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-gold backdrop-blur-sm mb-4">
+                <span class="h-2 w-2 rounded-full bg-gold"></span>
+                Governance & Institutional Trust
+              </div>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-6 !text-white leading-tight">
+                Independent by design
+              </h2>
+              <p class="text-lg sm:text-xl font-light text-white/90 leading-relaxed">
+                Evaluation is most useful when its findings are not shaped by an interest in a particular outcome. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with complete independence.
+              </p>
+            </div>
+
+            {/* Two Column Institutional Separation Guarantees */}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 pt-8 border-t border-white/15">
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+                <div class="flex items-center gap-3 text-gold font-bold text-sm uppercase tracking-wider mb-3">
+                  <svg class="h-5 w-5 fill-gold" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  Third-Party Assurance
+                </div>
+                <h3 class="text-xl font-bold !text-white mb-2">
+                  Evaluating External Providers
+                </h3>
+                <p class="text-base text-white/80 leading-relaxed font-light">
+                  This approach enables us to evaluate AI systems developed by other vendors and providers without creating conflicts between evaluation and implementation incentives.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-sm">
+                <div class="flex items-center gap-3 text-gold font-bold text-sm uppercase tracking-wider mb-3">
+                  <svg class="h-5 w-5 fill-gold" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  The Reciprocal Principle
+                </div>
+                <h3 class="text-xl font-bold !text-white mb-2">
+                  Systems We Build Are Not Evaluated By Us
+                </h3>
+                <p class="text-base text-white/80 leading-relaxed font-light">
+                  The principle applies equally to our own work. To guarantee objective truth and evidence integrity, systems built by APLYD are always evaluated by external, independent third parties.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ NEXT SECTION CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div>
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Capabilities</div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy">
+              See how these principles shape our institutional work.
+            </h3>
+          </div>
+          <Button href="/services/our-capabilities" variant="primary" class="whitespace-nowrap">
+            Explore our capabilities &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+

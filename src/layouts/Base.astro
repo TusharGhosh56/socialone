@@ -27,6 +27,7 @@ const {
 
 // Canonical from configured `site` (astro.config.mjs → aplyd.ai). Falls back safely.
 const site = Astro.site ?? new URL('https://aplyd.ai');
+const isHome = Astro.url.pathname === '/';
 const canonical = new URL(Astro.url.pathname, site).href;
 const ogImage = new URL('/og-image.png', site).href;
 
@@ -98,14 +99,25 @@ const faqLd = {
   })),
 };
 
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
 const breadcrumbLd = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
-    ...(Astro.url.pathname.startsWith('/contact')
-      ? [{ '@type': 'ListItem', position: 2, name: 'Contact', item: canonical }]
-      : []),
+    ...pathSegments.map((segment, index) => {
+      const itemUrl = new URL('/' + pathSegments.slice(0, index + 1).join('/'), site).href;
+      const formattedName = segment
+        .split('-')
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      return {
+        '@type': 'ListItem',
+        position: index + 2,
+        name: segment === 'about' ? 'About APLYD' : formattedName,
+        item: itemUrl,
+      };
+    }),
   ],
 };
 ---
@@ -149,7 +161,7 @@ const breadcrumbLd = {
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
   </head>
   <body>
-    <Preloader />
+    {isHome && <Preloader />}
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <main id="main">
@@ -157,14 +169,11 @@ const breadcrumbLd = {
     </main>
     <Footer />
 
-    {/* Page-wide flowing connector line (src/scripts/flowLine.ts). One svg,
-        raw page-pixel coordinates via the "0x1 svg, overflow:visible" trick —
-        no viewBox/scale bookkeeping needed. pointer-events:none so it can
-        never block clicks; z-index sits below the fixed header (z-50) and
-        mobile menu (z-60) but above normal section content. */}
-    <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
-      <path class="flow-line-path" />
-      <g class="flow-line-dots"></g>
-    </svg>
+    {isHome && (
+      <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
+        <path class="flow-line-path" />
+        <g class="flow-line-dots"></g>
+      </svg>
+    )}
   </body>
 </html>

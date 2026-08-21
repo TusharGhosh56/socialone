@@ -236,27 +236,15 @@
 }
 
 /* ------------------------------------------------------------------ */
-/* Reveal-on-scroll (§7, §11). Component wrapper toggles .is-visible,   */
-/* both in AND out (Reveal.astro replays this every re-entry). Under    */
-/* reduced-motion we render the final state instantly.                 */
+/* Reveal-on-scroll (§7, §11). Resilient: visible by default.         */
 /* ------------------------------------------------------------------ */
 [data-reveal] {
-  opacity: 0;
-  transform: translateY(16px);
+  opacity: 1;
+  transform: none;
   transition:
     opacity var(--dur-reveal) var(--ease-out),
     transform var(--dur-reveal) var(--ease-out);
-  /* Delay lives on .is-visible ONLY (see below) — this base rule is what
-     applies the moment .is-visible is REMOVED (scrolling back out), so
-     leaving this at 0 means exits happen immediately, without replaying
-     the entrance stagger in reverse. */
-  transition-delay: 0ms;
   will-change: opacity, transform;
-}
-[data-reveal].is-visible {
-  opacity: 1;
-  transform: none;
-  transition-delay: var(--reveal-delay, 0ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
