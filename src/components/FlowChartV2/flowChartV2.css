@@ -24,26 +24,7 @@
   }
 }
 
-/* Background video — identical structure to the archived original's
-   .flow__video-wrap. */
-.flow2__video-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-}
-.flow2__video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.flow2__video-fade {
-  position: absolute;
-  inset: 0;
-  background: rgba(13, 16, 48, 0.55);
-}
+
 
 .flow2__stage {
   position: relative;
