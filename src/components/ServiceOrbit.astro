@@ -72,17 +72,21 @@ const ANGLES = [45, 135, 225, 315];
     --spin-duration: 90s;
   }
 
-  /* Decorative concentric rings — dashed, yellow/gold outline (brand
-     --gold, matching .flow-line-path's own stroke colour), alternating
-     rotation direction so they read as two independent orbits rather than
-     one rigid shape. Different opacities (not hue) keep them visually
-     distinct from each other and from the pulses below. */
+  /* Decorative concentric rings — dashed, alternating rotation direction so they
+     read as two independent orbits rather than one rigid shape. Different
+     opacities (not hue) keep them distinct from each other and from the pulses.
+     These were rgba(209,156,51,...) i.e. brand --gold, matching
+     .flow-line-path's stroke. Recoloured to neutrals: between two rings, three
+     expanding pulses, four node markers and the hub, this one diagram rendered
+     almost entirely in gold — the opposite of the 70/25/5 ratio and its "gold is
+     earned, not equal" rule. Gold survives in exactly one place here now, the
+     hub at the centre, echoing the dot in the APLYD mark. */
   .orbit__ring {
     position: absolute;
     top: 50%;
     left: 50%;
     border-radius: 50%;
-    border: 1px dashed rgba(209, 156, 51, 0.32);
+    border: 1px dashed rgba(200, 200, 194, 0.55);
     pointer-events: none;
   }
   .orbit__ring--outer {
@@ -95,7 +99,7 @@ const ANGLES = [45, 135, 225, 315];
     width: calc(var(--orbit-size) * 0.5);
     height: calc(var(--orbit-size) * 0.5);
     margin: calc(var(--orbit-size) * -0.25) 0 0 calc(var(--orbit-size) * -0.25);
-    border-color: rgba(209, 156, 51, 0.48);
+    border-color: rgba(74, 83, 138, 0.4);
     animation: orbit-ring-ccw 50s linear infinite;
   }
 
@@ -132,7 +136,10 @@ const ANGLES = [45, 135, 225, 315];
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    border: 1.5px solid var(--gold);
+    /* Mid Navy, was var(--gold) — see .orbit__ring's note on this diagram's gold
+       budget. A radiating ambient pulse is motion, not a moment of emphasis, so
+       it belongs in the navy band. */
+    border: 1.5px solid rgba(74, 83, 138, 0.5);
     opacity: 0;
     animation: orbit-pulse 4.5s ease-out infinite;
     animation-delay: var(--pulse-delay, 0s);
@@ -209,16 +216,22 @@ const ANGLES = [45, 135, 225, 315];
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 4px rgba(209, 156, 51, 0.16);
+    /* Navy, was var(--gold) with a gold halo. Four identical node markers is
+       repetition, not emphasis — see .orbit__ring on this diagram's gold budget. */
+    background: var(--navy);
+    box-shadow: 0 0 0 4px rgba(35, 43, 101, 0.12);
     transition:
       transform var(--dur-base) var(--ease-out),
+      background-color var(--dur-base) var(--ease-out),
       box-shadow var(--dur-base) var(--ease-out);
   }
+  /* Gold IS earned on interaction — hovering or activating a node is a single
+     deliberate moment, so the marker takes the accent then and only then. */
   .orbit__dot:hover .orbit__marker,
   .orbit__dot:focus-visible .orbit__marker,
   .orbit__dot.is-active .orbit__marker {
     transform: scale(1.2);
+    background: var(--gold);
     box-shadow: 0 0 0 6px rgba(209, 156, 51, 0.24);
   }
   /* Same size as the friction cards' title (index.astro's .friction-card
