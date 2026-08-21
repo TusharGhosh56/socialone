@@ -15,14 +15,14 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-top: 5.5rem;
-  padding-bottom: 3.25rem;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1024px) {
   .hero__stage {
-    padding-top: 5rem;
-    padding-bottom: 2.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 5rem;
   }
 }
 
