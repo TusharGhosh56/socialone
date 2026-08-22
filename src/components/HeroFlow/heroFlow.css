@@ -1,198 +1,264 @@
-/* HeroFlow — full-bleed video section (previously a rounded inset card;
-   the margin/border-radius were removed so Hero, FlowChart, and Vision &
-   Mission now sit flush edge-to-edge with no gap between them — see
-   .hero-flow-stack in global.css). overflow-hidden stays: it's what clips
-   the video/gradient/content to the section's own box, unrelated to the
-   rounding that's now gone. */
+/* HeroFlow — Screen 1: Modern Split Architectural Stage */
 .hero {
   position: relative;
   overflow: hidden;
 }
 
+.container-hero {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 4vw, 4.5rem);
+}
+
 .hero__stage {
   position: relative;
-  overflow: hidden;
-  /* Full viewport height, per request — was clamp(520px, 82vh, 860px). The
-     720px-and-below override further down keeps its own 92vh (a deliberate
-     mobile-browser-chrome compromise, left alone since it wasn't part of
-     this change). */
-  min-height: 100vh;
+  z-index: 2;
+  width: 100%;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 1024px) {
+  .hero__stage {
+    padding-top: 2.5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+/* Left Column */
+.hero__col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero__badge-wrap {
   display: flex;
   align-items: center;
 }
 
-/* Video — full-bleed card background, now a 5-video cross-fade carousel
-   (see src/scripts/heroVideoCarousel.ts) instead of a single clip. All 5
-   are stacked exactly on top of each other (position:absolute, inset:0)
-   and play simultaneously the whole time; only opacity distinguishes the
-   active one, so switching is a clean cross-fade with no load/seek delay
-   for the incoming video. .hero__video-fade blends the visible one's
-   bottom edge into the card's own bottom (opaque navy) fading up to fully
-   transparent near the top (video shows through clearly there) — a single
-   vertical gradient, bottom-to-top. Stretched further up than a plain
-   "cover the H1" fade would (transparent stop at 92%, not 65%) so it also
-   reaches the description paragraph below the H1, not just the heading
-   itself. Muted/looping/decorative, so it stays visible even under
-   reduced-motion rather than needing a static fallback (only the
-   cross-fade CYCLING is disabled there — see heroVideoCarousel.ts). */
-.hero__video-wrap {
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(23, 29, 71, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero__badge-pulse {
+  position: relative;
+  display: flex;
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+.hero__badge-dot {
+  position: relative;
+  display: inline-flex;
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 999px;
+  background-color: var(--gold);
+}
+
+.hero__badge-ring {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  overflow: hidden;
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background-color: var(--gold);
+  opacity: 0.75;
+  animation: badge-ping 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-.hero__video {
+
+@keyframes badge-ping {
+  75%, 100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.hero__title {
+  line-height: 1.05;
+}
+
+/* Right Column: Framed Interactive Intelligence Terminal */
+.hero__terminal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 1.25rem;
+  background: rgba(13, 16, 48, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.hero__terminal:hover {
+  border-color: rgba(209, 156, 51, 0.4);
+}
+
+/* Header bar */
+.hero__terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1.25rem;
+  background: rgba(23, 29, 71, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Viewport frame */
+.hero__terminal-viewport {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  min-height: 320px;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+@media (min-width: 640px) {
+  .hero__terminal-viewport {
+    min-height: 360px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero__terminal-viewport {
+    min-height: 420px;
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (min-width: 1280px) {
+  .hero__terminal-viewport {
+    min-height: 460px;
+  }
+}
+
+.hero__terminal-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* Right-biased (not dead centre, not the full 100% edge) per explicit
-     product decision — keeps whatever's happening on the right side of
-     frame in view without cropping all the way to the edge. */
-  object-position: 75% center;
+  object-position: center center;
   opacity: 0;
-  transition: opacity 1200ms var(--ease-out);
+  transition: opacity 800ms var(--ease-out);
 }
-.hero__video.is-active {
+
+.hero__terminal-video.is-active {
   opacity: 1;
 }
 
-/* Registered so the browser can smoothly interpolate the radial glow's own
-   X position via the @keyframes below — a plain CSS custom property can't
-   be transitioned/animated (it's just a string substitution), but a
-   @property one with a typed <percentage> syntax can, the same way a
-   native `left`/`opacity` etc. would be. Unsupported browsers just keep
-   the initial-value (0%) — the glow sits static at the left corner rather
-   than sweeping, not a hard failure. */
-@property --glow-x {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 0%;
-}
-.hero__video-fade {
+.hero__terminal-scrim {
   position: absolute;
   inset: 0;
-  --glow-x: 0%;
-  /* Two layers — first-listed paints on top. A warm gold glow (same brand
-     gold/opacity-falloff recipe as CaseCard's own corner accent, --gold
-     rgba(209,156,51,...)) sweeps left-to-right-and-back along the bottom
-     edge (see @keyframes hero-glow-sweep below), over the existing
-     bottom-to-top navy fade underneath it. */
-  background:
-    radial-gradient(70% 70% at var(--glow-x) 100%, rgba(209, 156, 51, 0.35), transparent 60%),
-    linear-gradient(
-      to top,
-      #0d1030 0%,
-      rgba(13, 16, 48, 0.88) 20%,
-      rgba(13, 16, 48, 0.55) 50%,
-      rgba(13, 16, 48, 0.22) 75%,
-      transparent 92%
-    );
-  animation: hero-glow-sweep 14s ease-in-out infinite;
-}
-@keyframes hero-glow-sweep {
-  0%,
-  100% {
-    --glow-x: 0%;
-  }
-  50% {
-    --glow-x: 100%;
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero__video {
-    transition: none;
-  }
-  .hero__video-fade {
-    animation: none;
-  }
-}
-
-/* Tagline badge — rounded frosted-glass pill with a slowly rotating gradient
-   ring as its outline. The ring is a conic-gradient on a pseudo-element
-   sized larger than the badge and centered, clipped by the badge's own
-   overflow:hidden + border-radius — only a thin ring shows around the edge,
-   since the inner frosted pill sits on top and covers the rest. */
-.hero__tagline-badge {
-  position: relative;
-  display: inline-block;
-  margin-top: -1.5rem;
-  border-radius: 999px;
-  padding: 1.5px; /* ring thickness */
-  overflow: hidden;
-  isolation: isolate;
-}
-@media (min-width: 640px) {
-  .hero__tagline-badge {
-    margin-top: -2.5rem;
-  }
-}
-.hero__tagline-badge-ring {
-  position: absolute;
-  inset: -60%;
-  z-index: 0;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    rgba(209, 156, 51, 0.9) 60deg,
-    rgba(245, 233, 209, 0.9) 100deg,
-    transparent 160deg,
-    transparent 360deg
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(13, 16, 48, 0.95) 0%,
+    rgba(13, 16, 48, 0.4) 40%,
+    rgba(13, 16, 48, 0.1) 70%,
+    rgba(13, 16, 48, 0.3) 100%
   );
-  animation: hero-badge-spin 6s linear infinite;
-}
-.hero__tagline-badge-inner {
-  position: relative;
-  z-index: 1;
-  display: block;
-  margin: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  padding: 0.5rem 1.25rem;
-}
-@keyframes hero-badge-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero__tagline-badge-ring {
-    animation: none;
-  }
 }
 
-/* Hero copy — left-aligned, always in flow (no scroll-linked reveal). */
-.hero__content {
-  position: relative;
+.hero__terminal-crosshair {
+  position: absolute;
   z-index: 3;
-}
-.hero__content-inner {
-  max-width: 34rem;
-  text-align: left;
-}
-/* Wide enough on desktop that "Applied AI for governments" / "and
-   development institutions" wraps to exactly two lines at the display
-   font size; narrower screens keep the tighter 34rem measure and wrap
-   however they naturally do. (Verified empirically — text-display's
-   viewport-relative font size means this is tuned for common desktop
-   widths, not derived from a formula.) */
-@media (min-width: 1024px) {
-  .hero__content-inner {
-    max-width: 62rem;
-  }
+  font-family: monospace;
+  font-size: 0.8125rem;
+  color: rgba(209, 156, 51, 0.6);
+  pointer-events: none;
+  line-height: 1;
 }
 
-.hero__cta {
+.hero__terminal-domain-tag {
+  position: absolute;
+  bottom: 0.875rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  z-index: 4;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.2rem;
 }
 
-@media (max-width: 720px) {
-  .hero__stage {
-    min-height: 92vh;
+/* Tabs */
+.hero__terminal-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hero__tab-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem 0.5rem;
+  background: rgba(13, 16, 48, 0.9);
+  color: var(--pale-navy);
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: none;
+  transition: all var(--dur-micro) var(--ease-out);
+}
+
+.hero__tab-btn:hover {
+  background: rgba(23, 29, 71, 0.9);
+  color: var(--white);
+}
+
+.hero__tab-btn.is-active {
+  background: rgba(35, 43, 101, 0.95);
+  color: var(--white);
+}
+
+.hero__tab-btn.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  inset-x: 0;
+  height: 2px;
+  background: var(--gold);
+}
+
+.hero__tab-num {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+
+.hero__tab-name {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__terminal-video {
+    transition: none;
   }
 }

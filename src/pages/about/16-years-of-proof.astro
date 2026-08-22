@@ -1,0 +1,151 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionEyebrow from '../../components/SectionEyebrow.astro';
+import Button from '../../components/Button.astro';
+import InteractiveFootprint from '../../components/InteractiveFootprint.astro';
+
+const bedrockPillars = [
+  {
+    num: '01',
+    title: 'Policy research and advisory',
+    desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
+    icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  },
+  {
+    num: '02',
+    title: 'Measurement and evaluation',
+    desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
+    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
+  },
+  {
+    num: '03',
+    title: 'Digital tools and systems',
+    desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
+    icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
+  },
+  {
+    num: '04',
+    title: 'Last-mile data networks',
+    desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
+    icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z',
+  },
+];
+---
+
+<Base
+  title="16 Years of Proof | Athena Infonomics Heritage | APLYD"
+  description="APLYD builds on sixteen years of Athena Infonomics' work delivering evidence, digital systems and institutional capabilities across 65+ countries."
+  keywords="Athena Infonomics, APLYD Heritage, Global Public Sector Experience, Evidence-Driven AI"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="border-b border-hair bg-paper py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · 16 Years of Proof
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-navy leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Sixteen years of delivery behind a new kind of AI practice
+        </h1>
+
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-mid-navy leading-relaxed">
+          APLYD builds on sixteen years of Athena Infonomics’ work across governments, funders and public institutions, with a focus on evidence, measurement and implementation. That experience provides the institutional and sector context needed to apply AI within real public systems, where data, workflows, governance and delivery conditions matter as much as the technology.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 1: THE BEDROCK ============================ */}
+    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-14">
+          <SectionEyebrow label="Athena Infonomics Heritage" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            The bedrock
+          </h2>
+          <p class="mt-4 text-lg sm:text-xl text-mid-navy leading-relaxed">
+            Athena Infonomics has built its work around four complementary capabilities. Together, they provide the sector knowledge, evidence infrastructure and delivery experience that underpin APLYD’s approach to applied AI.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {bedrockPillars.map((item) => (
+            <div class="group relative rounded-3xl border border-hair bg-paper/50 p-8 sm:p-10 transition-all duration-base hover:border-smoke hover:bg-white hover:shadow-lg">
+              <div class="flex items-center justify-between gap-4 mb-6">
+                <span class="inline-flex items-center justify-center rounded-full bg-navy text-white text-xs font-bold px-3 py-1 tracking-wider uppercase">
+                  Pillar {item.num}
+                </span>
+                <div class="h-10 w-10 rounded-full bg-gold/10 text-gold flex items-center justify-center transition-colors group-hover:bg-gold group-hover:text-white">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d={item.icon} />
+                  </svg>
+                </div>
+              </div>
+              <h3 class="text-2xl font-bold text-navy mb-3 group-hover:text-navy">
+                {item.title}
+              </h3>
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 2: WHAT APLYD ADDS ============================ */}
+    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="gradient-navy gradient-sheen rounded-3xl p-10 sm:p-16 lg:p-20 text-white relative overflow-hidden shadow-2xl">
+          <div class="relative z-10 max-w-3xl">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold mb-6 backdrop-blur-sm">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+              The Next Frontier
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-6 !text-white">
+              What APLYD adds
+            </h2>
+            <p class="text-lg sm:text-2xl font-light text-white/90 leading-relaxed">
+              APLYD brings <span class="text-gold font-bold">AI-native capabilities</span> across technology strategy, domain engineering and deployment. This builds on Athena Infonomics’ sector knowledge, institutional relationships, evidence and last-mile infrastructure to develop and implement AI systems for institutions operating at population scale.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 3: FOOTPRINT ============================ */}
+    <section class="py-20 sm:py-28 bg-paper border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-14">
+          <SectionEyebrow label="Scale & Impact" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            Footprint
+          </h2>
+          <p class="mt-4 text-lg sm:text-xl text-mid-navy leading-relaxed">
+            Sixteen years of global delivery, institutional trust, and applied AI infrastructure across 65+ countries.
+          </p>
+        </div>
+
+        <InteractiveFootprint />
+      </div>
+    </section>
+
+    {/* ============================ NEXT SECTION CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div>
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Explore Capabilities</div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy">
+              See what we build for public institutions and governments.
+            </h3>
+          </div>
+          <Button href="/services/our-capabilities" variant="primary" class="whitespace-nowrap">
+            See what we build &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

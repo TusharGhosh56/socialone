@@ -1,20 +1,70 @@
 ---
-// ServiceCard (§7) — title + one-liner; hover raises + gold top-border grows from left.
+// ServiceCard (§04, §06, §07) — Modern Capability Pillar Card.
+// Line-weight icon in circular container (§06), step index, crisp title, and Lato Regular body.
 import type { Service } from '../data/services';
+
 interface Props extends Service {
+  index?: number;
   class?: string;
 }
-const { title, body, class: className = '' } = Astro.props;
+
+const { title, body, index = 0, class: className = '' } = Astro.props;
 ---
 
 <div
-  class={`group relative overflow-hidden rounded-lg border border-hair bg-white p-6 shadow-sm transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-1 hover:shadow-md sm:p-8 ${className}`}
+  class={`group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-hair bg-white p-7 shadow-sm transition-all duration-base ease-out hover:border-gold/50 hover:shadow-md ${className}`}
 >
-  <!-- gold top-border grows from left on hover -->
-  <span
-    aria-hidden="true"
-    class="absolute inset-x-0 top-0 h-[3px] w-0 origin-left bg-gold transition-[width] duration-base ease-out group-hover:w-full motion-reduce:transition-none"
-  ></span>
-  <h3 class="text-h3 font-bold text-navy">{title}</h3>
-  <p class="mt-3 text-navy/85">{body}</p>
+  <div class="flex flex-1 flex-col">
+    <!-- Top Row: Line-weight icon badge -->
+    <div class="flex items-center justify-between">
+      <span
+        class="flex h-12 w-12 items-center justify-center rounded-full border border-hair bg-off-white text-navy transition-all duration-base ease-out group-hover:border-gold/50 group-hover:bg-pale-gold/25 group-hover:text-deep-gold"
+        aria-hidden="true"
+      >
+        {index === 0 && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+          </svg>
+        )}
+        {index === 1 && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+            <circle cx="5" cy="5" r="2" />
+            <circle cx="19" cy="5" r="2" />
+            <circle cx="5" cy="19" r="2" />
+            <circle cx="19" cy="19" r="2" />
+          </svg>
+        )}
+        {index === 2 && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+            <path d="M2 17l10 5 10-5" />
+            <path d="M2 12l10 5 10-5" />
+          </svg>
+        )}
+        {index === 3 && (
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        )}
+      </span>
+    </div>
+
+    <!-- Content with aligned baseline -->
+    <h3 class="mt-6 text-h3 font-bold text-navy transition-colors duration-base group-hover:text-navy sm:min-h-[3rem]">
+      {title}
+    </h3>
+    <p class="mt-3 text-body font-normal leading-relaxed text-navy/80 sm:min-h-[4.75rem]">
+      {body}
+    </p>
+  </div>
+
+  <!-- Bottom subtle accent indicator that activates on hover -->
+  <div class="mt-8 border-t border-hair/60 pt-4 flex items-center justify-between text-spec font-bold uppercase tracking-[0.12em] text-ash transition-colors duration-base group-hover:text-deep-gold">
+    <span>Capability</span>
+    <span class="transition-transform duration-base group-hover:translate-x-1" aria-hidden="true">→</span>
+  </div>
 </div>
