@@ -1,0 +1,322 @@
+---
+// ApproachConsole.astro — Interactive Systems Lifecycle Explorer & Blueprint Studio
+interface StageDetail {
+  id: string;
+  num: string;
+  phase: string;
+  title: string;
+  subtitle: string;
+  body: string;
+  lastMileNote: string;
+  decisionGate: string;
+  riskMitigation: string;
+  deliverables: string[];
+  flowNodes: { title: string; subtitle: string; status: string }[];
+}
+
+const stages: StageDetail[] = [
+  {
+    id: 'explore',
+    num: '01',
+    phase: 'Explore',
+    title: 'Strategy and direction',
+    subtitle: 'Establishing where AI creates meaningful value and what it takes to deliver it',
+    body: 'Rather than beginning with a technology or a predetermined solution, we start with the decision, service or workflow that needs to improve, and the people and institutions it affects. We assess the mandate, availability and quality of data, existing infrastructure, operational workflows and institutional capacity required for implementation. Readiness and risk are assessed together.',
+    lastMileNote: 'Examines where AI improves decision-making versus where it introduces unnecessary cost, risk, or operational complexity.',
+    decisionGate: 'Go / No-Go Gate: Clear operational mandate, verified data maturity, and feasible ownership pathways.',
+    riskMitigation: 'Stops unviable pilot proposals before expensive engineering or procurement resources are committed.',
+    deliverables: ['Institutional Decision & Mandate Review', 'Data Maturity & Pipeline Audit', 'Operational Complexity Assessment', 'Sequenced Implementation Roadmap'],
+    flowNodes: [
+      { title: 'Decision Audit', subtitle: 'Target High-Value Bottleneck', status: 'Active' },
+      { title: 'Data Feasibility', subtitle: 'Maturity & Mandate Check', status: 'Active' },
+      { title: 'Risk & Friction', subtitle: 'Operational Complexity Analysis', status: 'Review' },
+      { title: 'Investment Gate', subtitle: 'Go / No-Go Decision', status: 'Gate' }
+    ]
+  },
+  {
+    id: 'design',
+    num: '02',
+    phase: 'Design',
+    title: 'Field and delivery',
+    subtitle: 'Grounding system design in the frontline reality of actual delivery settings',
+    body: 'Good design begins with the delivery setting. Before deciding what to build, we understand how work actually happens, where systems fall short, and what people do to bridge those gaps. We observe frontline workflows, trace cases through the system, and work alongside the teams responsible for delivery, bringing forward the last-mile evidence often lost between frontline experience and institutional decision-making.',
+    lastMileNote: 'Co-designs and prototypes with the actual operators, testing against real operational friction rather than lab assumptions.',
+    decisionGate: 'Validation Gate: Frontline operator usability verified under live field constraints.',
+    riskMitigation: 'Refines validated prototypes into actionable specs, or stops the project before full build if field adoption is blocked.',
+    deliverables: ['Frontline Workflow Shadowing', 'Case Tracing & Gap Analysis', 'Contextual Wireframes & Prototypes', 'Field Adoption Verification'],
+    flowNodes: [
+      { title: 'Field Shadowing', subtitle: 'Observe Last-Mile Reality', status: 'Active' },
+      { title: 'Case Tracing', subtitle: 'Identify Operational Bottlenecks', status: 'Active' },
+      { title: 'Co-Design Lab', subtitle: 'Prototype with Actual Operators', status: 'Active' },
+      { title: 'Adoption Gate', subtitle: 'Field-Validated Specs', status: 'Gate' }
+    ]
+  },
+  {
+    id: 'deliver',
+    num: '03',
+    phase: 'Deliver',
+    title: 'Design, build and scale',
+    subtitle: 'Turning validated prototypes into reliable, sovereign systems institutions own',
+    body: 'The third stage turns a validated prototype into a system that can operate reliably within an institution’s existing environment. This requires aligning the product, architecture, data, workflows and governance arrangements needed for sustained use. We undertake the AI and data engineering, integrate the system with existing pipelines and operational systems, and define requirements for interoperability, security, access and decision rights.',
+    lastMileNote: 'Rollout is treated as part of implementation. We establish the training, documentation, and operating structures needed for institutional teams to manage the system.',
+    decisionGate: 'Ownership Gate: Institutional teams fully trained and able to run day-to-day operations independently.',
+    riskMitigation: 'Prevents vendor lock-in by transferring sovereign codebase, data governance rules, and SOPs directly to the institution.',
+    deliverables: ['Production AI & Data Engineering', 'MIS & Core Infrastructure Integration', 'Interoperability & Decision Rights', 'Workforce Training & Operating Routines'],
+    flowNodes: [
+      { title: 'AI Engineering', subtitle: 'Sovereign Architecture Build', status: 'Active' },
+      { title: 'MIS Integration', subtitle: 'Pipeline & Legacy Hookup', status: 'Active' },
+      { title: 'Governance Layer', subtitle: 'Access & Decision Rights', status: 'Active' },
+      { title: 'Handover Gate', subtitle: 'Institutional Ownership Live', status: 'Gate' }
+    ]
+  },
+  {
+    id: 'assure',
+    num: '04',
+    phase: 'Assure',
+    title: 'Evaluation and assurance',
+    subtitle: 'Independent assessment of model performance, fairness, and real public value',
+    body: 'The final stage assesses whether a system is performing as intended and delivering value for the people and institutions it was designed to serve. We assess model performance, user adoption and workflow outcomes, alongside safety, fairness and broader impact. The findings inform a clear decision: improve, hold or scale. Where the evidence does not support continued use, stopping is a valid outcome.',
+    lastMileNote: 'Evaluation is kept strictly independent from delivery. We do not evaluate systems built by our group, and we do not bid to build systems we have evaluated.',
+    decisionGate: 'Assurance Gate: Objective, third-party audit of fairness, safety, adoption, and public outcomes.',
+    riskMitigation: 'Ensures allocation and scaling decisions are based on empirical evidence rather than vendor self-reporting.',
+    deliverables: ['Model Performance & Accuracy Audit', 'User Adoption & Workflow Impact', 'Safety & Fairness Assessment', 'Improve / Hold / Scale Decision Report'],
+    flowNodes: [
+      { title: 'Model Audit', subtitle: 'Safety, Bias & Accuracy', status: 'Active' },
+      { title: 'Adoption Study', subtitle: 'Frontline Workflow Telemetry', status: 'Active' },
+      { title: 'Impact Readout', subtitle: 'Real-World Public Value', status: 'Active' },
+      { title: 'Scale Decision', subtitle: 'Improve / Hold / Scale Verdict', status: 'Gate' }
+    ]
+  },
+];
+---
+
+<div class="approach-console w-full" data-approach-console>
+  {/* Stage Switcher Controls */}
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 p-2 bg-pale-navy/50 rounded-2xl border border-hair mb-8">
+    {stages.map((st, idx) => (
+      <button
+        type="button"
+        class={`stage-btn group flex flex-col items-start p-4 sm:p-5 rounded-xl text-left transition-all duration-base border ${
+          idx === 0 ? 'is-active' : ''
+        }`}
+        data-stage-target={st.id}
+        aria-controls={`stage-panel-${st.id}`}
+        aria-selected={idx === 0 ? 'true' : 'false'}
+      >
+        <div class="flex items-center justify-between w-full mb-2">
+          <span class="stage-num text-xs font-bold uppercase tracking-widest text-gold group-[.is-active]:text-gold">
+            Stage {st.num}
+          </span>
+          <span class="stage-dot h-2 w-2 rounded-full bg-gold/60 group-[.is-active]:bg-gold group-[.is-active]:ring-4 group-[.is-active]:ring-gold/20"></span>
+        </div>
+        <span class="stage-name text-sm sm:text-base font-bold transition-colors">
+          {st.phase}
+        </span>
+        <span class="stage-sub text-xs text-mid-navy group-[.is-active]:text-white/70 line-clamp-1 mt-0.5">
+          {st.title}
+        </span>
+      </button>
+    ))}
+  </div>
+
+  {/* Active Stage Interactive Blueprint Workbench */}
+  <div class="relative min-h-[580px]">
+    {stages.map((st, idx) => (
+      <div
+        id={`stage-panel-${st.id}`}
+        class={`stage-panel transition-all duration-base ${
+          idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
+        }`}
+        data-stage-panel={st.id}
+      >
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 lg:p-14 shadow-sm">
+          {/* Top Bar: Phase Header + Objective */}
+          <div class="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-hair">
+            <div class="flex items-center gap-4">
+              <span class="text-4xl sm:text-5xl font-light text-gold font-serif">{st.num}</span>
+              <div>
+                <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-3 py-1 text-xs font-bold uppercase tracking-wider text-navy mb-1">
+                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                  Stage {st.num} · {st.phase}
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-black text-navy">{st.title}</h3>
+              </div>
+            </div>
+            <div class="text-right hidden sm:block">
+              <span class="text-xs uppercase font-bold tracking-widest text-mid-navy/70 block">Operating Mandate</span>
+              <span class="text-xs font-bold text-navy bg-paper px-3 py-1.5 rounded-lg border border-hair inline-block mt-1">
+                Phase {st.num} of 04
+              </span>
+            </div>
+          </div>
+
+          {/* Interactive Flow Diagram */}
+          <div class="my-8 p-6 rounded-2xl bg-paper/80 border border-hair">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs uppercase font-bold tracking-widest text-mid-navy">
+                System Workflow & Decision Architecture
+              </span>
+              <span class="text-xs font-medium text-mid-navy/70">
+                Stage {st.num} Pipeline
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {st.flowNodes.map((node, nIdx) => (
+                <div class="relative flex flex-col justify-between p-4 rounded-xl bg-white border border-hair/90 shadow-xs">
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-[0.7rem] font-bold uppercase tracking-wider text-mid-navy/70">
+                        Step {nIdx + 1}
+                      </span>
+                      <span class={`h-2 w-2 rounded-full ${node.status === 'Gate' ? 'bg-gold ring-2 ring-gold/30' : 'bg-navy/60'}`}></span>
+                    </div>
+                    <h4 class="text-sm font-bold text-navy mb-1">{node.title}</h4>
+                    <p class="text-xs text-mid-navy font-normal">{node.subtitle}</p>
+                  </div>
+                  {nIdx < st.flowNodes.length - 1 && (
+                    <div class="hidden lg:block absolute -right-2 top-1/2 -translate-y-1/2 z-10 text-gold text-xs font-bold">
+                      →
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Deep Narrative & Decision Gate */}
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <div class="lg:col-span-7 space-y-6">
+              <p class="text-base sm:text-lg text-navy font-medium leading-relaxed">
+                {st.subtitle}
+              </p>
+              <p class="text-base text-mid-navy leading-relaxed">
+                {st.body}
+              </p>
+
+              {/* Last-Mile Context Note */}
+              <div class="rounded-2xl border-l-4 border-gold bg-pale-navy/40 p-5">
+                <span class="text-xs font-bold uppercase tracking-wider text-navy block mb-1">
+                  Last-Mile Reality
+                </span>
+                <p class="text-xs sm:text-sm text-mid-navy leading-relaxed">
+                  {st.lastMileNote}
+                </p>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 space-y-6">
+              {/* Decision Gate Card */}
+              <div class="rounded-2xl border border-hair bg-navy text-white p-6 shadow-md">
+                <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold mb-2">
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  Institutional Control Gate
+                </div>
+                <p class="text-xs sm:text-sm text-white/90 leading-relaxed font-medium mb-4">
+                  {st.decisionGate}
+                </p>
+                <div class="pt-3 border-t border-white/10 text-xs text-white/70">
+                  <span class="text-gold font-bold">Risk Guardrail:</span> {st.riskMitigation}
+                </div>
+              </div>
+
+              {/* Deliverables Checklist */}
+              <div class="rounded-2xl border border-hair bg-paper p-6">
+                <span class="text-xs uppercase font-bold tracking-wider text-mid-navy block mb-3">
+                  Verified Deliverables:
+                </span>
+                <div class="space-y-2">
+                  {st.deliverables.map((del) => (
+                    <div class="flex items-center gap-2.5 text-xs font-bold text-navy">
+                      <svg class="h-3.5 w-3.5 text-gold shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{del}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Stage Buttons */
+  .stage-btn {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #232B65;
+    border-color: rgba(228, 228, 223, 0.8);
+  }
+  .stage-btn:not(.is-active):hover {
+    background-color: #ffffff;
+    border-color: #d1d5db;
+  }
+  .stage-btn.is-active {
+    background-color: #232B65 !important;
+    color: #ffffff !important;
+    border-color: #232B65 !important;
+    box-shadow: 0 10px 25px -5px rgba(35, 43, 101, 0.25) !important;
+  }
+  .stage-btn.is-active .stage-name {
+    color: #ffffff !important;
+  }
+  .stage-btn.is-active .stage-sub {
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+  .stage-btn:not(.is-active) .stage-name {
+    color: #232B65;
+  }
+  .stage-btn:not(.is-active) .stage-sub {
+    color: #555A7B;
+  }
+</style>
+
+<script>
+  function initApproachConsole() {
+    const consoles = document.querySelectorAll<HTMLElement>('[data-approach-console]');
+    if (!consoles.length) return;
+
+    consoles.forEach((consoleEl) => {
+      const buttons = consoleEl.querySelectorAll<HTMLButtonElement>('[data-stage-target]');
+      const panels = consoleEl.querySelectorAll<HTMLElement>('[data-stage-panel]');
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const targetId = btn.getAttribute('data-stage-target');
+
+          // Update button states
+          buttons.forEach((b) => {
+            const isActive = b === btn;
+            b.classList.toggle('is-active', isActive);
+            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          });
+
+          // Update panel display
+          panels.forEach((p) => {
+            const matches = p.getAttribute('data-stage-panel') === targetId;
+            if (matches) {
+              p.classList.remove('hidden');
+              requestAnimationFrame(() => {
+                p.classList.remove('opacity-0');
+                p.classList.add('opacity-100');
+              });
+            } else {
+              p.classList.add('hidden', 'opacity-0');
+              p.classList.remove('opacity-100');
+            }
+          });
+        });
+      });
+    });
+  }
+
+  // Support both page load and Astro page transitions
+  initApproachConsole();
+  document.addEventListener('astro:page-load', initApproachConsole);
+</script>

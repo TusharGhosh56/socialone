@@ -42,9 +42,22 @@ export const navLinks: NavLink[] = [
       },
     ],
   },
-  { label: 'What We Do', href: '#what-we-do' },
+  {
+    label: 'Services',
+    children: [
+      {
+        label: 'Our Approach',
+        href: '/services/our-approach',
+        description: 'How we move from strategy and build to independent assurance.',
+      },
+      {
+        label: 'Our Capabilities',
+        href: '/services/our-capabilities',
+        description: 'Applied AI capabilities across Government, Nonprofits, and Philanthropy.',
+      },
+    ],
+  },
   { label: 'AI in Action', href: '#ai-in-action' },
 ];
 
 export const primaryCta = { label: 'Partner With APLYD', href: '/contact' };
-
