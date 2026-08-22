@@ -1,0 +1,156 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionEyebrow from '../../components/SectionEyebrow.astro';
+import Button from '../../components/Button.astro';
+import ApproachConsole from '../../components/ApproachConsole.astro';
+
+const comparisons = [
+  {
+    pillar: 'Problem Definition',
+    conventional: 'Technology-first; vendor seeks use case for a pre-chosen model or platform.',
+    aplyd: 'Decision-first; starts with the public service, workflow bottleneck, and institutional mandate.',
+  },
+  {
+    pillar: 'Field Integration',
+    conventional: 'Synthetic lab demos; assumes ideal connectivity, clean data, and eager users.',
+    aplyd: 'Last-mile observation; traces frontline cases and co-designs directly with actual operators.',
+  },
+  {
+    pillar: 'Delivery & Ownership',
+    conventional: 'Black-box deployment resulting in ongoing external vendor lock-in.',
+    aplyd: 'Sovereign capability transfer; leaves teams with trained staff, code, documentation, and SOPs.',
+  },
+  {
+    pillar: 'Evaluation & Assurance',
+    conventional: 'Self-evaluated by the delivery team or focused solely on output deployment vanity metrics.',
+    aplyd: 'Structurally independent assurance; objective audits of safety, fairness, and verified impact.',
+  },
+];
+---
+
+<Base
+  title="Our Approach | From Strategy to Assurance | APLYD"
+  description="How APLYD moves an institution from the decision worth improving, through build, to independent assurance."
+  keywords="APLYD Approach, AI Implementation Journey, Strategy to Assurance, Institutional AI Delivery"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="border-b border-hair bg-paper py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          Services · Our Approach
+        </div>
+
+        <h1 class="max-w-5xl text-display font-light text-navy leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          From the decision worth improving to a system that lasts
+        </h1>
+
+        <div class="mt-8 max-w-4xl space-y-6 text-xl sm:text-2xl font-normal text-mid-navy leading-relaxed">
+          <p>
+            Applied AI is easier to pilot than to sustain. Whether it creates lasting value depends on the decisions made before implementation: the problem being addressed, the evidence behind it, the conditions for deployment, and the institutional capacity to own and operate what is built.
+          </p>
+          <p class="text-lg sm:text-xl text-mid-navy/90">
+            We organise our work across four stages, from strategy and direction through design, delivery and assurance. Institutions can engage at any stage based on their needs, or work with us across the full journey.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ INTERCONNECTED LIFECYCLE ============================ */}
+    <section class="py-16 sm:py-20 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-pale-navy/40 p-8 sm:p-12 lg:p-14">
+          <div class="max-w-4xl space-y-4">
+            <SectionEyebrow label="Interconnected Lifecycle" />
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-navy leading-tight">
+              Each stage is designed to strengthen the next
+            </h2>
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+              A poorly defined problem can lead to the wrong solution. A system without clear measures of performance cannot be improved or responsibly scaled. And a solution without institutional ownership is difficult to sustain. The four stages below set out how we move from identifying the right opportunity to building systems that can be used, measured and maintained.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ INTERACTIVE STAGE & SYSTEMS EXPLORER ============================ */}
+    <section class="py-20 sm:py-28 bg-paper border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-14">
+          <SectionEyebrow label="Interactive Systems Lifecycle" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            Explore the four stages of institutional delivery
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-mid-navy">
+            Select a stage below to inspect its operational workflow, decision gates, and verifiable institutional artifacts:
+          </p>
+        </div>
+
+        <ApproachConsole />
+      </div>
+    </section>
+
+    {/* ============================ PARADIGM COMPARISON MATRIX ============================ */}
+    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-14">
+          <SectionEyebrow label="Institutional Stewardship vs Pilot Factories" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            How APLYD’s approach differs
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-mid-navy">
+            Why conventional technology vendor engagements stall inside institutions, and how our model guarantees durable ownership.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-hair bg-paper/60 p-6 sm:p-10 shadow-sm overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[640px]">
+            <thead>
+              <tr class="border-b border-hair/80 text-xs font-bold uppercase tracking-wider text-mid-navy">
+                <th class="py-4 px-4 w-1/4">Operating Dimension</th>
+                <th class="py-4 px-4 w-3/8 text-ash">Conventional Vendor / Pilot</th>
+                <th class="py-4 px-4 w-3/8 text-navy bg-pale-navy/50 rounded-t-xl">APLYD Institutional Stewardship</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hair/60 text-sm">
+              {comparisons.map((row) => (
+                <tr class="hover:bg-white/80 transition-colors">
+                  <td class="py-5 px-4 font-bold text-navy align-top">
+                    {row.pillar}
+                  </td>
+                  <td class="py-5 px-4 text-mid-navy/80 align-top">
+                    {row.conventional}
+                  </td>
+                  <td class="py-5 px-4 font-semibold text-navy bg-pale-navy/30 align-top">
+                    {row.aplyd}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ NEXT SECTION CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Step</div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-3">
+              Explore our capabilities across institutional sectors.
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              Discover how our approach is tailored for government public services, nonprofit strategy, and philanthropic portfolios.
+            </p>
+          </div>
+          <Button href="/services/our-capabilities/government" variant="primary" class="whitespace-nowrap">
+            Explore our capabilities &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
