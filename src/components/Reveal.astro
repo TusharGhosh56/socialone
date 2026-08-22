@@ -38,10 +38,13 @@ const { as: Tag = 'div', delay = 0, class: className = '', ...rest } = Astro.pro
       const io = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
-            e.target.classList.toggle('is-visible', e.isIntersecting);
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
           }
         },
-        { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
+        { threshold: 0.02, rootMargin: '0px 0px 120px 0px' },
       );
       const observeAll = () =>
         els().forEach((el) => {

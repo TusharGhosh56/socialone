@@ -1,0 +1,528 @@
+---
+// InteractiveFootprint.astro — State-of-the-art interactive Global Proof & Footprint matrix
+// Featuring a real photorealistic global cartographic world map with pulsing radar nodes,
+// live count-up metrics, interconnected operational arcs, and FT High-Growth distinction emblem.
+import { Image } from 'astro:assets';
+import worldMapImg from '../assets/images/world-map.jpg';
+
+const metrics = [
+  { value: '440+', label: 'Engagements Delivered', badge: 'Public & Social Sector', detail: 'From national digital health to agriculture & climate' },
+  { value: '240+', label: 'Global Clients', badge: 'Trusted Institutions', detail: 'Governments, UN agencies, Bilaterals & Foundations' },
+  { value: '95+', label: 'Specialists Across Practice', badge: 'Applied AI & Policy', detail: 'Data engineers, econometricians & domain experts' },
+  { value: '65+', label: 'Countries with Projects', badge: 'Global Delivery', detail: 'Across Africa, South Asia, Southeast Asia & Americas' },
+  { value: '5', label: 'Continents in Field Ops', badge: 'Population Scale', detail: 'Active ground intelligence and data networks' },
+  { value: '120+', label: 'People Across the Group', badge: 'Athena Infonomics Ecosystem', detail: 'Multidisciplinary talent driving lasting capability' },
+];
+
+const hubs = [
+  {
+    id: 'india',
+    name: 'India HQ & Core Lab',
+    country: 'India',
+    role: 'Global founding headquarters, applied AI labs & core engineering center',
+    established: '2010',
+    cx: 710,
+    cy: 233,
+    region: 'asia',
+    badge: 'Founding HQ & AI Lab',
+  },
+  {
+    id: 'us',
+    name: 'North America Hub',
+    country: 'United States',
+    role: 'Global public sector advisory, multilateral partnerships & strategy',
+    established: '2016',
+    cx: 255,
+    cy: 195,
+    region: 'americas',
+    badge: 'Advisory & Multilaterals',
+  },
+  {
+    id: 'uk',
+    name: 'UK & Europe Office',
+    country: 'United Kingdom',
+    role: 'Development finance, policy evaluation & multilateral engagements',
+    established: '2018',
+    cx: 485,
+    cy: 140,
+    region: 'europe',
+    badge: 'Policy & Evaluation',
+  },
+  {
+    id: 'kenya',
+    name: 'East Africa Regional Hub',
+    country: 'Kenya',
+    role: 'Sub-Saharan Africa delivery hub, Community Compass & field operations',
+    established: '2019',
+    cx: 568,
+    cy: 305,
+    region: 'africa',
+    badge: 'Field Ops & Community Compass',
+  },
+  {
+    id: 'bangladesh',
+    name: 'South Asia Delivery Hub',
+    country: 'Bangladesh',
+    role: 'Last-mile data networks, institutional systems & governance implementation',
+    established: '2020',
+    cx: 742,
+    cy: 230,
+    region: 'asia',
+    badge: 'Last-Mile Implementation',
+  },
+];
+---
+
+<div class="space-y-16" data-interactive-footprint>
+  {/* ==================== 1. LIVE METRIC TILES ==================== */}
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+    {metrics.map((m, idx) => (
+      <div
+        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base hover:border-smoke hover:shadow-xl flex flex-col justify-between"
+        data-card-spotlight
+      >
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+            {m.badge}
+          </span>
+          <span class="text-xs font-mono font-bold text-mid-navy/40">0{idx + 1}</span>
+        </div>
+
+        <div class="my-4">
+          <div
+            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left"
+            data-metric-target={m.value}
+          >
+            {m.value}
+          </div>
+          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2">
+            {m.label}
+          </div>
+        </div>
+
+        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed">
+          {m.detail}
+        </p>
+      </div>
+    ))}
+  </div>
+
+  {/* ==================== 2. INTERACTIVE GLOBAL MAP CONSOLE ==================== */}
+  <div class="rounded-3xl border border-hair bg-gradient-to-b from-[#101432] to-[#0A0D24] text-white p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden">
+    <div class="relative z-10">
+      {/* Console Top Bar */}
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-white/10">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-gold backdrop-blur-sm mb-2">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-gold opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
+            </span>
+            Active Global Delivery Hubs
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-bold tracking-tight !text-white">
+            Global Operations & Presence Map
+          </h3>
+        </div>
+
+        {/* Region Filter Buttons */}
+        <div class="flex flex-wrap items-center gap-2 bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
+          <button
+            type="button"
+            data-region-filter="all"
+            class="region-btn is-active px-3.5 py-1 rounded-full text-xs font-bold transition-all text-white hover:text-gold"
+          >
+            All Hubs
+          </button>
+          <button
+            type="button"
+            data-region-filter="asia"
+            class="region-btn px-3.5 py-1 rounded-full text-xs font-bold transition-all text-white/70 hover:text-white"
+          >
+            Asia
+          </button>
+          <button
+            type="button"
+            data-region-filter="africa"
+            class="region-btn px-3.5 py-1 rounded-full text-xs font-bold transition-all text-white/70 hover:text-white"
+          >
+            Africa
+          </button>
+          <button
+            type="button"
+            data-region-filter="europe"
+            class="region-btn px-3.5 py-1 rounded-full text-xs font-bold transition-all text-white/70 hover:text-white"
+          >
+            Europe
+          </button>
+          <button
+            type="button"
+            data-region-filter="americas"
+            class="region-btn px-3.5 py-1 rounded-full text-xs font-bold transition-all text-white/70 hover:text-white"
+          >
+            Americas
+          </button>
+        </div>
+      </div>
+
+      {/* Actual World Map Container */}
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mt-8">
+        {/* Real World Map Graphic with Interactive SVG Overlay */}
+        <div class="lg:col-span-8 relative rounded-2xl overflow-hidden border border-white/15 shadow-inner bg-[#07091B]">
+          {/* Photorealistic Dark Global Map Image */}
+          <Image
+            src={worldMapImg}
+            alt="Real global satellite cartographic world map showing APLYD operating hubs"
+            width={1200}
+            height={675}
+            format="webp"
+            quality={95}
+            loading="eager"
+            class="w-full h-auto block select-none object-cover opacity-95 brightness-110 contrast-105"
+          />
+
+          {/* Interactive SVG Radar Overlay */}
+          <div class="absolute inset-0 pointer-events-auto">
+            <svg
+              viewBox="0 0 1000 562.5"
+              class="w-full h-full select-none"
+              preserveAspectRatio="xMidYMid meet"
+              aria-label="Interactive Global Hubs Overlay"
+            >
+              <defs>
+                <radialGradient id="hubGlowGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#D19C33" stop-opacity="0.9" />
+                  <stop offset="100%" stop-color="#D19C33" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="arcStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#D19C33" stop-opacity="0.75" />
+                  <stop offset="100%" stop-color="#D19C33" stop-opacity="0.15" />
+                </linearGradient>
+              </defs>
+
+              {/* Inter-hub network connection arcs */}
+              <g fill="none" stroke="url(#arcStrokeGrad)" stroke-width="2" stroke-dasharray="6,6" class="network-arcs">
+                {/* US to UK */}
+                <path d="M255 195 Q370 120 485 140" />
+                {/* UK to India */}
+                <path d="M485 140 Q600 130 710 233" />
+                {/* India to Kenya */}
+                <path d="M710 233 Q640 310 568 305" />
+                {/* India to Bangladesh */}
+                <path d="M710 233 Q726 220 742 230" />
+                {/* UK to Kenya */}
+                <path d="M485 140 Q520 220 568 305" />
+              </g>
+
+              {/* Hub Radar Nodes */}
+              {hubs.map((hub) => {
+                const labelWidth = hub.country.length * 7.5 + 24;
+                return (
+                  <g
+                    class="map-node group cursor-pointer"
+                    data-map-node={hub.id}
+                    tabindex="0"
+                    role="button"
+                    aria-label={`${hub.name} in ${hub.country}`}
+                  >
+                    {/* Outer pulsing radar ripple */}
+                    <circle
+                      cx={hub.cx}
+                      cy={hub.cy}
+                      r="20"
+                      fill="none"
+                      stroke="#D19C33"
+                      stroke-width="1.8"
+                      class="node-radar"
+                    />
+                    {/* Glow halo */}
+                    <circle
+                      cx={hub.cx}
+                      cy={hub.cy}
+                      r="12"
+                      fill="url(#hubGlowGrad)"
+                      class="node-glow"
+                    />
+                    {/* Solid core pin */}
+                    <circle
+                      cx={hub.cx}
+                      cy={hub.cy}
+                      r="5.5"
+                      fill="#D19C33"
+                      stroke="#FFFFFF"
+                      stroke-width="2.5"
+                      class="node-core drop-shadow-md transition-all duration-200"
+                    />
+
+                    {/* Interactive Tooltip Badge (Hidden by default, revealed on hover/active) */}
+                    <g class="node-badge transition-all duration-200 pointer-events-none">
+                      <rect
+                        x={hub.cx - labelWidth / 2}
+                        y={hub.cy - 30}
+                        width={labelWidth}
+                        height="20"
+                        rx="10"
+                        fill="#12173B"
+                        stroke="#D19C33"
+                        stroke-width="1.5"
+                        class="badge-bg drop-shadow-lg"
+                      />
+                      <circle
+                        cx={hub.cx - labelWidth / 2 + 10}
+                        cy={hub.cy - 20}
+                        r="3"
+                        fill="#D19C33"
+                      />
+                      <text
+                        x={hub.cx + 4}
+                        y={hub.cy - 16}
+                        text-anchor="middle"
+                        fill="#FFFFFF"
+                        font-size="10"
+                        font-weight="700"
+                        letter-spacing="0.4"
+                        class="node-text select-none"
+                      >
+                        {hub.country}
+                      </text>
+                    </g>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        </div>
+
+        {/* Selected Hub Focus Card */}
+        <div class="lg:col-span-4 flex flex-col justify-between h-full space-y-6">
+          <div
+            class="rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-8 backdrop-blur-md transition-all duration-base shadow-xl"
+            data-hub-tooltip
+          >
+            <div class="flex items-center justify-between gap-2 mb-4">
+              <span
+                class="inline-block rounded-full bg-gold/20 px-3 py-1 text-xs font-bold uppercase tracking-wider text-gold"
+                data-tooltip-year
+              >
+                Established 2010
+              </span>
+              <span class="text-xs text-white/60 font-mono">SOVEREIGN HUB</span>
+            </div>
+
+            <h4
+              class="text-xl sm:text-2xl font-bold !text-white mb-2"
+              data-tooltip-title
+            >
+              India HQ & Core Lab
+            </h4>
+
+            <p
+              class="text-sm sm:text-base text-white/85 leading-relaxed font-light mt-3"
+              data-tooltip-role
+            >
+              Global founding headquarters, applied AI labs & core engineering center
+            </p>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
+              <span>Status: <strong class="text-emerald-400 font-bold">Operational</strong></span>
+              <span class="text-gold font-semibold">Active Practice</span>
+            </div>
+          </div>
+
+          {/* Quick Hub Navigation Pills */}
+          <div class="space-y-2">
+            <div class="text-xs uppercase tracking-wider font-bold text-white/60 mb-2">
+              Select Operating Center:
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+              {hubs.map((hub) => (
+                <button
+                  type="button"
+                  data-hub-id={hub.id}
+                  class="hub-btn flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5 text-left text-xs font-medium text-white/90 hover:bg-white/15 hover:border-gold transition-all"
+                >
+                  <div class="flex items-center gap-2.5">
+                    <span class="h-2 w-2 rounded-full bg-gold"></span>
+                    <span class="font-bold">{hub.country}</span>
+                  </div>
+                  <span class="text-[0.6875rem] text-white/60">{hub.badge}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* ==================== 3. DISTINCTION BANNER (GLOBAL + FT RANKING) ==================== */}
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    {/* Left: Global Delivery Infrastructure */}
+    <div class="lg:col-span-7 rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col justify-between hover:border-smoke hover:shadow-lg transition-all duration-base">
+      <div>
+        <div class="inline-flex items-center gap-2 rounded-full bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-navy mb-4">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+          Athena Infonomics Ecosystem
+        </div>
+        <h4 class="text-2xl sm:text-3xl font-bold text-navy mb-4">
+          Global Delivery Infrastructure
+        </h4>
+        <p class="text-lg text-mid-navy leading-relaxed">
+          Founded in India in 2010. Offices in the <strong class="font-bold text-navy">US, UK, Kenya and Bangladesh</strong>, with delivery hubs across Africa and South Asia, providing the sovereign institutional access required to deploy AI at population scale.
+        </p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-hair flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-wider text-mid-navy">
+        <span class="flex items-center gap-1.5">
+          <svg class="h-4 w-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          Sovereign Data Governance
+        </span>
+        <span class="flex items-center gap-1.5">
+          <svg class="h-4 w-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          Frontline Field Operations
+        </span>
+      </div>
+    </div>
+
+    {/* Right: Financial Times Ranking Emblem */}
+    <div class="lg:col-span-5 rounded-3xl border border-hair bg-gradient-to-br from-white via-paper to-pale-navy/30 p-8 sm:p-12 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:border-gold hover:shadow-xl transition-all duration-base">
+      <div class="relative z-10">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-gold">
+            <svg class="h-3.5 w-3.5 fill-gold" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            FT Global Ranking
+          </span>
+          <span class="text-xs font-bold text-mid-navy/60 uppercase">Recognized Excellence</span>
+        </div>
+
+        <h4 class="text-2xl sm:text-3xl font-bold text-navy leading-snug">
+          FT High-Growth Companies Asia-Pacific
+        </h4>
+
+        <p class="text-base text-mid-navy leading-relaxed mt-3">
+          Independent verification by the Financial Times and Statista, recognizing verified institutional growth and impact delivery across the Asia-Pacific region.
+        </p>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-hair flex items-center gap-2">
+        <span class="inline-flex items-center justify-center rounded-lg bg-navy text-white text-xs font-bold px-3 py-1.5">
+          2021
+        </span>
+        <span class="inline-flex items-center justify-center rounded-lg bg-navy text-white text-xs font-bold px-3 py-1.5">
+          2022
+        </span>
+        <span class="inline-flex items-center justify-center rounded-lg bg-gold text-white text-xs font-bold px-3 py-1.5 shadow-sm">
+          2025
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Pulse Animation for Map Nodes */
+  .node-radar {
+    transform-origin: center;
+    animation: radarPulse 2.8s ease-out infinite;
+  }
+  @keyframes radarPulse {
+    0% {
+      r: 6;
+      opacity: 0.9;
+    }
+    100% {
+      r: 30;
+      opacity: 0;
+    }
+  }
+
+  .network-arcs path {
+    stroke-dashoffset: 240;
+    animation: arcDash 10s linear infinite;
+  }
+  @keyframes arcDash {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Region Button Active State */
+  .region-btn.is-active {
+    background-color: #D19C33;
+    color: #FFFFFF !important;
+    box-shadow: 0 2px 8px rgba(209, 156, 51, 0.4);
+  }
+
+  /* Hub Button Active State */
+  .hub-btn.is-active {
+    border-color: #D19C33;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  /* Map Node Active / Hover State */
+  .map-node .node-badge {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .map-node:hover .node-badge,
+  .map-node:focus-visible .node-badge,
+  .map-node.is-active .node-badge {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .map-node.is-active .node-core,
+  .map-node:hover .node-core {
+    fill: #FFFFFF;
+    stroke: #D19C33;
+    stroke-width: 3.5;
+    r: 7.5;
+  }
+
+  .map-node .node-badge .badge-bg {
+    fill: #12173B !important;
+    stroke: #D19C33 !important;
+    stroke-width: 1.5px;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+  }
+
+  .map-node .node-badge text {
+    fill: #FFFFFF !important;
+    font-weight: 700;
+  }
+
+  .map-node:hover .node-badge .badge-bg,
+  .map-node.is-active .node-badge .badge-bg {
+    fill: #1C2353 !important;
+    stroke: #FFFFFF !important;
+    stroke-width: 2px;
+  }
+
+  .map-node:hover .node-badge text,
+  .map-node.is-active .node-badge text {
+    fill: #FFFFFF !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .node-radar,
+    .network-arcs path {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  import { initInteractiveFootprint } from '../scripts/interactiveFootprint';
+  initInteractiveFootprint();
+  document.addEventListener('astro:page-load', initInteractiveFootprint);
+</script>
