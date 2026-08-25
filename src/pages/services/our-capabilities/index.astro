@@ -1,0 +1,242 @@
+---
+import Base from '../../../layouts/Base.astro';
+import SectionEyebrow from '../../../components/SectionEyebrow.astro';
+import Button from '../../../components/Button.astro';
+import AudienceSwitcher from '../../../components/AudienceSwitcher.astro';
+
+const sectors = [
+  {
+    id: 'government',
+    title: 'For Government',
+    subtitle: 'Build AI into public systems and sovereign capability',
+    desc: "We work with government institutions across the full AI implementation journey, from assessing readiness and identifying the right use cases to building systems and establishing the capability to operate and improve them over time.",
+    href: '/services/our-capabilities/government',
+    tag: 'Public Systems & Policy',
+    capabilities: [
+      'AI portfolio and readiness',
+      'Public-service solutions',
+      'Field evidence and service design',
+      'Capability and ownership',
+    ],
+    cta: 'Explore Government',
+  },
+  {
+    id: 'nonprofits',
+    title: 'For Nonprofits',
+    subtitle: 'Make AI useful across strategy and delivery',
+    desc: 'We work with nonprofits and development organisations to apply AI across strategy, programme operations and delivery, building the systems, capabilities and safeguards required for responsible adoption.',
+    href: '/services/our-capabilities/nonprofits',
+    tag: 'Strategy & Delivery',
+    capabilities: [
+      'Strategy and prioritisation',
+      'Operations and partner support',
+      'Responsible adoption',
+      'Learning and scale',
+    ],
+    cta: 'Explore Nonprofits',
+  },
+  {
+    id: 'philanthropy',
+    title: 'For Philanthropy',
+    subtitle: 'Turn portfolio evidence into better decisions',
+    desc: 'We work with funders who want their portfolios to make better decisions, moving from reading evidence across a grant portfolio to independent assurance that keeps future allocations honest.',
+    href: '/services/our-capabilities/philanthropy',
+    tag: 'Funders & Portfolios',
+    capabilities: [
+      'Portfolio strategy',
+      'Ecosystem infrastructure',
+      'Grantee capability',
+      'Independent assurance',
+    ],
+    cta: 'Explore Philanthropy',
+  },
+];
+
+const matrix = [
+  {
+    dimension: 'Primary Operating Objective',
+    gov: 'Modernise population-scale public service delivery with sovereign ownership.',
+    nonprofit: 'Strengthen frontline partner operations and extract strategic evidence.',
+    philanthropy: 'Inform capital allocation and build shared digital public goods.',
+  },
+  {
+    dimension: 'Core Technical Architecture',
+    gov: 'Interoperable MIS pipelines, triage engines, and sovereign security controls.',
+    nonprofit: 'Knowledge retrieval RAG, operations copilots, and low-bandwidth workflows.',
+    philanthropy: 'Cross-portfolio synthesis engines and shared open-source platforms.',
+  },
+  {
+    dimension: 'Adoption & Handover Focus',
+    gov: 'Civil servant training, institutional SOPs, and internal maintenance playbooks.',
+    nonprofit: 'Field partner enablement, responsible AI guardrails, and product stewardship.',
+    philanthropy: 'Grantee capability clinics and self-sustaining post-grant governance.',
+  },
+  {
+    dimension: 'Assurance & Evaluation',
+    gov: 'Independent model audits for fairness, accuracy, and citizen outcome metrics.',
+    nonprofit: 'Workflow adoption telemetry, privacy scrubbing, and impact readouts.',
+    philanthropy: 'Structurally separated third-party readouts to inform next-round allocations.',
+  },
+];
+---
+
+<Base
+  title="Our Capabilities | Applied AI Across Sectors | APLYD"
+  description="Explore APLYD's specialized AI capabilities tailored for government institutions, nonprofits, and philanthropic funders."
+  keywords="APLYD Capabilities, Government AI, Nonprofit AI, Philanthropy AI Strategy, Institutional AI"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          Services · Our Capabilities
+        </div>
+
+        <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Applied AI capabilities tailored for institutional scale
+        </h1>
+
+        <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          Whether you are modernising citizen public services, scaling development programmes, or allocating philanthropic capital, our capabilities are structured around the operational realities of your sector.
+        </p>
+
+        {/* Audience Segment Switcher */}
+        <div class="mt-12 max-w-3xl">
+          <AudienceSwitcher activeSector="all" />
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ 3 SECTOR OVERVIEW CARDS ============================ */}
+    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-16">
+          <SectionEyebrow label="Sector Overview" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            Choose your institutional domain
+          </h2>
+          <p class="mt-4 text-lg sm:text-xl text-mid-navy leading-relaxed">
+            Explore our dedicated capabilities, delivery frameworks, and case examples tailored for each institutional domain.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+          {sectors.map((s, idx) => (
+            <div
+              class="rounded-3xl border border-hair bg-paper/50 p-8 sm:p-10 shadow-sm hover:border-smoke hover:bg-white hover:shadow-xl transition-all duration-base flex flex-col justify-between group"
+              data-card-spotlight
+            >
+              <div>
+                <div class="flex items-center justify-between gap-4 mb-6">
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-navy">
+                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                    {s.tag}
+                  </span>
+                  <span class="text-2xl font-serif font-light text-gold">0{idx + 1}</span>
+                </div>
+
+                <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-2">
+                  {s.title}
+                </h3>
+                <h4 class="text-base font-semibold text-deep-gold mb-4">
+                  {s.subtitle}
+                </h4>
+
+                <p class="text-sm sm:text-base text-mid-navy leading-relaxed mb-8">
+                  {s.desc}
+                </p>
+
+                <div class="pt-6 border-t border-hair/80 mb-8">
+                  <div class="text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-3">
+                    Four Core Capabilities:
+                  </div>
+                  <ul class="space-y-2 text-xs sm:text-sm font-bold text-navy">
+                    {s.capabilities.map((cap) => (
+                      <li class="flex items-center gap-2">
+                        <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
+                        <span>{cap}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <Button href={s.href} variant="outline" class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-navy group-hover:!text-white group-hover:!border-navy transition-all">
+                <span>{s.cta}</span>
+                <span class="inline-block transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
+              </Button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTOR COMPARISON MATRIX ============================ */}
+    <section class="py-20 sm:py-28 bg-paper border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-3xl mb-14">
+          <SectionEyebrow label="Institutional Comparison" />
+          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+            Tailored for each institutional environment
+          </h2>
+          <p class="mt-4 text-base sm:text-lg text-mid-navy">
+            How APLYD adapts architecture, governance, and operating procedures to the distinct realities of governments, civil society, and philanthropic funders.
+          </p>
+        </div>
+
+        <div class="rounded-3xl border border-hair bg-white p-6 sm:p-10 shadow-sm overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[720px]">
+            <thead>
+              <tr class="border-b border-hair text-xs font-bold uppercase tracking-wider text-mid-navy">
+                <th class="py-4 px-4 w-1/4">Capability Dimension</th>
+                <th class="py-4 px-4 w-1/4 text-navy bg-pale-navy/30 rounded-t-lg">For Government</th>
+                <th class="py-4 px-4 w-1/4 text-navy">For Nonprofits</th>
+                <th class="py-4 px-4 w-1/4 text-navy bg-pale-navy/30 rounded-t-lg">For Philanthropy</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hair/60 text-xs sm:text-sm">
+              {matrix.map((row) => (
+                <tr class="hover:bg-paper/40 transition-colors">
+                  <td class="py-5 px-4 font-bold text-navy align-top">
+                    {row.dimension}
+                  </td>
+                  <td class="py-5 px-4 text-mid-navy font-medium bg-pale-navy/20 align-top">
+                    {row.gov}
+                  </td>
+                  <td class="py-5 px-4 text-mid-navy font-medium align-top">
+                    {row.nonprofit}
+                  </td>
+                  <td class="py-5 px-4 text-mid-navy font-medium bg-pale-navy/20 align-top">
+                    {row.philanthropy}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ LIFECYCLE CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-white">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-paper p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Methodology</div>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-3">
+              Learn how we take systems from strategy to assurance.
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              Explore the four-stage delivery journey underpinning all our institutional work.
+            </p>
+          </div>
+          <Button href="/services/our-approach" variant="primary" class="whitespace-nowrap">
+            See our approach &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

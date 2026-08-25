@@ -1,0 +1,129 @@
+---
+// CapabilityWorkbench.astro — Clean Editorial Capability Presentation (100% Pure Client Copy)
+import type { CapabilityItem } from '../data/capabilities';
+
+interface Props {
+  sectorTitle: string;
+  capabilities: CapabilityItem[];
+}
+
+const { sectorTitle, capabilities } = Astro.props;
+---
+
+<div class="capability-workbench w-full space-y-8" data-capability-workbench>
+  {/* Capability Selector Tabs */}
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 p-2 bg-pale-navy/50 rounded-2xl border border-hair">
+    {capabilities.map((cap, idx) => (
+      <button
+        type="button"
+        class={`cap-tab-btn group flex flex-col items-start p-4 sm:p-5 rounded-xl text-left transition-all duration-base border ${
+          idx === 0
+            ? 'bg-white text-navy shadow-md border-hair font-bold is-active'
+            : 'bg-transparent text-mid-navy hover:bg-white/60 hover:text-navy border-transparent font-medium'
+        }`}
+        data-cap-target={cap.id}
+        aria-selected={idx === 0 ? 'true' : 'false'}
+      >
+        <div class="flex items-center justify-between w-full mb-2">
+          <span class="text-xs font-bold uppercase tracking-widest text-gold">
+            Capability {cap.num}
+          </span>
+          <span class="h-2 w-2 rounded-full bg-mid-navy/30 group-[.is-active]:bg-gold group-[.is-active]:ring-4 group-[.is-active]:ring-gold/20 transition-all"></span>
+        </div>
+        <span class="cap-title text-sm sm:text-base font-bold text-navy line-clamp-2">
+          {cap.title}
+        </span>
+      </button>
+    ))}
+  </div>
+
+  {/* Capability Editorial Content Panels */}
+  <div class="relative">
+    {capabilities.map((cap, idx) => (
+      <div
+        id={`cap-panel-${cap.id}`}
+        class={`cap-panel transition-all duration-300 ${
+          idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
+        }`}
+        data-cap-panel={cap.id}
+      >
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 lg:p-14 shadow-sm space-y-8">
+          {/* Header */}
+          <div class="flex items-center gap-4 pb-6 border-b border-hair">
+            <span class="text-3xl sm:text-4xl font-light text-gold">{cap.num}</span>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-widest text-mid-navy/70 mb-1">
+                {sectorTitle} · Capability
+              </div>
+              <h3 class="text-2xl sm:text-3xl font-light text-navy leading-tight">
+                {cap.title}
+              </h3>
+            </div>
+          </div>
+
+          {/* 2 Paragraphs of Exact Client Copy */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
+            <div class="space-y-4">
+              <p>{cap.p1}</p>
+            </div>
+            <div class="space-y-4">
+              <p>{cap.p2}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  function initCapabilityWorkbench() {
+    const workbenches = document.querySelectorAll('[data-capability-workbench]');
+    workbenches.forEach((root) => {
+      const tabs = root.querySelectorAll<HTMLButtonElement>('[data-cap-target]');
+      const panels = root.querySelectorAll<HTMLElement>('[data-cap-panel]');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const targetId = tab.getAttribute('data-cap-target');
+          if (!targetId) return;
+
+          // Update active tab styles
+          tabs.forEach((t) => {
+            const isMatch = t.getAttribute('data-cap-target') === targetId;
+            t.classList.toggle('bg-white', isMatch);
+            t.classList.toggle('text-navy', isMatch);
+            t.classList.toggle('shadow-md', isMatch);
+            t.classList.toggle('border-hair', isMatch);
+            t.classList.toggle('font-bold', isMatch);
+            t.classList.toggle('is-active', isMatch);
+
+            t.classList.toggle('bg-transparent', !isMatch);
+            t.classList.toggle('text-mid-navy', !isMatch);
+            t.classList.toggle('border-transparent', !isMatch);
+            t.classList.toggle('font-medium', !isMatch);
+            t.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+          });
+
+          // Update panels
+          panels.forEach((p) => {
+            const isMatch = p.getAttribute('data-cap-panel') === targetId;
+            if (isMatch) {
+              p.classList.remove('hidden');
+              requestAnimationFrame(() => {
+                p.classList.remove('opacity-0');
+                p.classList.add('opacity-100');
+              });
+            } else {
+              p.classList.add('hidden', 'opacity-0');
+              p.classList.remove('opacity-100');
+            }
+          });
+        });
+      });
+    });
+  }
+
+  initCapabilityWorkbench();
+  document.addEventListener('astro:page-load', initCapabilityWorkbench);
+</script>

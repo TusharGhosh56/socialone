@@ -1,0 +1,139 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+
+const stages = [
+  {
+    num: '01',
+    phase: 'Explore',
+    title: 'Strategy and direction (Explore)',
+    paragraphs: [
+      'The first stage is about establishing where AI can create meaningful value and what it will take to deliver it. Rather than beginning with a technology or a predetermined solution, we start with the decision, service or workflow that needs to improve, and the people and institutions it affects.',
+      'This means assessing the mandate, availability and quality of data, existing infrastructure, operational workflows and institutional capacity required for implementation. We examine where AI can improve decision-making or service delivery, and where it may introduce unnecessary cost, risk or operational complexity.',
+      'Readiness and risk are assessed together. A promising use case is only viable when the underlying data, institutional mandate, operating environment and ownership arrangements can support it. The outcome of this stage is a clear view of the opportunity, the conditions required for implementation, and whether the use case is ready to move forward.',
+    ],
+  },
+  {
+    num: '02',
+    phase: 'Design',
+    title: 'Field and delivery (Design)',
+    paragraphs: [
+      'Good design begins with the delivery setting. Before deciding what to build, we understand how work actually happens, where systems fall short, and what people do to bridge those gaps.',
+      'We observe frontline workflows, trace cases through the system, and work alongside the teams responsible for delivery. This brings forward the last-mile evidence that is often lost between frontline experience and institutional decision-making, while making the real constraints of implementation visible.',
+      'We then co-design and prototype with the people who will use the system, testing early versions against real workflows rather than assumed ones. The result is not simply a better-designed tool, but one shaped by the context in which it needs to work. At the end of this stage, the idea is either refined into something worth building or stopped before further resources are committed.',
+    ],
+  },
+  {
+    num: '03',
+    phase: 'Deliver',
+    title: 'Design, build and scale (Deliver)',
+    paragraphs: [
+      'The third stage turns a validated prototype into a system that can operate reliably within an institution’s existing environment. This requires aligning the product, architecture, data, workflows and governance arrangements needed for sustained use.',
+      'We undertake the AI and data engineering, integrate the system with existing pipelines and operational systems, and define requirements for interoperability, security, access and decision rights as part of the design.',
+      'Rollout is treated as part of implementation. We establish the training, documentation, support and operating structures needed for institutional teams to manage the system from the outset. The aim is not simply to deploy a working system, but to build the capability and ownership required to sustain it over time. Scale follows evidence and operational readiness.',
+    ],
+  },
+  {
+    num: '04',
+    phase: 'Assure',
+    title: 'Evaluation and assurance (Assure)',
+    paragraphs: [
+      'The final stage assesses whether a system is performing as intended and delivering value for the people and institutions it was designed to serve.',
+      'We assess model performance, user adoption and workflow outcomes, alongside safety, fairness and broader impact. The findings inform a clear decision: improve, hold or scale. Where the evidence does not support continued use, stopping is a valid outcome.',
+      'Evaluation is kept independent from delivery, including from our own work. We do not evaluate systems built by our group, and we do not bid to build systems we have evaluated. This separation allows institutions to assess performance, risks and outcomes without a conflict of interest.',
+      'The objective is to ensure that decisions about improvement and scale are based on evidence, not simply on whether a system has been deployed.',
+    ],
+  },
+];
+---
+
+<Base
+  title="Our Approach | From Strategy to Assurance | APLYD"
+  description="How APLYD moves an institution from the decision worth improving, through build, to independent assurance."
+  keywords="APLYD Approach, AI Implementation Journey, Strategy to Assurance, Institutional AI Delivery"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          Services · Our Approach
+        </div>
+
+        <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          From the decision worth improving to a system that lasts
+        </h1>
+
+        <div class="mt-8 max-w-4xl space-y-6 text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          <p>
+            Applied AI is easier to pilot than to sustain. Whether it creates lasting value depends on the decisions made before implementation: the problem being addressed, the evidence behind it, the conditions for deployment, and the institutional capacity to own and operate what is built.
+          </p>
+          <p class="text-lg sm:text-xl text-pale-navy/80">
+            We organise our work across four stages, from strategy and direction through design, delivery and assurance. Institutions can engage at any stage based on their needs, or work with us across the full journey.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ INTRO LEAD ============================ */}
+    <section class="py-12 sm:py-16 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-4xl">
+          <p class="text-xl sm:text-2xl text-navy leading-relaxed font-light">
+            Each stage is designed to strengthen the next. A poorly defined problem can lead to the wrong solution. A system without clear measures of performance cannot be improved or responsibly scaled. And a solution without institutional ownership is difficult to sustain. The four stages below set out how we move from identifying the right opportunity to building systems that can be used, measured and maintained.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ FOUR STAGES (EDITORIAL FLOW) ============================ */}
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
+      <div class="container-x space-y-12 sm:space-y-16">
+        {stages.map((stage) => (
+          <article class="rounded-3xl border border-hair bg-white p-8 sm:p-12 lg:p-14 shadow-sm space-y-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-hair">
+              <div class="flex items-center gap-4">
+                <span class="text-3xl sm:text-4xl font-light text-gold">{stage.num}</span>
+                <div>
+                  <div class="text-xs font-bold uppercase tracking-widest text-mid-navy/70 mb-1">
+                    Stage {stage.num} · {stage.phase}
+                  </div>
+                  <h2 class="text-2xl sm:text-3xl font-light text-navy leading-tight">
+                    {stage.title}
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-6 max-w-4xl text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
+              {stage.paragraphs.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    {/* ============================ CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Step</div>
+            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+              Explore our capabilities
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              See how our capabilities apply across government public systems, nonprofit delivery, and philanthropic portfolios.
+            </p>
+          </div>
+          <Button href="/services/our-capabilities/government" variant="primary" class="whitespace-nowrap">
+            Explore our capabilities &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

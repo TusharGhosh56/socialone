@@ -1,0 +1,142 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import InteractiveFootprint from '../../components/InteractiveFootprint.astro';
+
+const bedrockPillars = [
+  {
+    num: '01',
+    title: 'Policy research and advisory',
+    desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
+  },
+  {
+    num: '02',
+    title: 'Measurement and evaluation',
+    desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
+  },
+  {
+    num: '03',
+    title: 'Digital tools and systems',
+    desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
+  },
+  {
+    num: '04',
+    title: 'Last-mile data networks',
+    desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
+  },
+];
+---
+
+<Base
+  title="16 Years of Proof | APLYD by Athena Infonomics"
+  description="APLYD is built on sixteen years of Athena Infonomics work in research, measurement, digital systems and last-mile data across governments and funders."
+  keywords="Athena Infonomics, APLYD Heritage, Global Public Sector Experience, Evidence-Driven AI"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · 16 Years of Proof
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Sixteen years of delivery behind a new kind of AI practice
+        </h1>
+
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          APLYD builds on sixteen years of Athena Infonomics’ work across governments, funders and public institutions, with a focus on evidence, measurement and implementation. That experience provides the institutional and sector context needed to apply AI within real public systems, where data, workflows, governance and delivery conditions matter as much as the technology.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 1: THE BEDROCK ============================ */}
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+      <div class="container-x space-y-12">
+        <div class="max-w-4xl space-y-4">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">Foundation</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            The bedrock
+          </h2>
+          <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+            Athena Infonomics has built its work around four complementary capabilities. Together, they provide the sector knowledge, evidence infrastructure and delivery experience that underpin APLYD’s approach to applied AI.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {bedrockPillars.map((item) => (
+            <div class="rounded-3xl border border-hair bg-paper/50 p-8 sm:p-10 space-y-4">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold uppercase tracking-widest text-gold">{item.num}</span>
+                <h3 class="text-xl sm:text-2xl font-bold text-navy">
+                  {item.title}
+                </h3>
+              </div>
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                {item.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 2: WHAT APLYD ADDS ============================ */}
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="rounded-3xl gradient-navy gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-lg">
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+              Capability
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white">
+              What APLYD adds
+            </h2>
+            <p class="text-lg sm:text-2xl font-light text-pale-navy leading-relaxed">
+              APLYD brings AI-native capabilities across technology strategy, domain engineering and deployment. This builds on Athena Infonomics’ sector knowledge, institutional relationships, evidence and last-mile infrastructure to develop and implement AI systems for institutions operating at population scale.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 3: FOOTPRINT ============================ */}
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
+      <div class="container-x space-y-12">
+        <div class="max-w-4xl space-y-4">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">Reach</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            Footprint
+          </h2>
+          <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+            Founded in India in 2010. Offices in the US, UK, Kenya and Bangladesh, with delivery hubs across Africa and South Asia. Named to the Financial Times list of high-growth companies in Asia-Pacific in 2021, 2022 and 2025.
+          </p>
+        </div>
+
+        <InteractiveFootprint />
+      </div>
+    </section>
+
+    {/* ============================ CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+              See what we build
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              Explore our applied AI capabilities across government public systems, nonprofit delivery, and philanthropic portfolios.
+            </p>
+          </div>
+          <Button href="/services/our-capabilities/government" variant="primary" class="whitespace-nowrap">
+            See what we build &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>

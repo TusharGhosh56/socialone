@@ -1,0 +1,59 @@
+---
+// AudienceSwitcher.astro — Segmented institutional audience selector for Capabilities pages
+interface Props {
+  activeSector: 'government' | 'nonprofits' | 'philanthropy' | 'all';
+}
+
+const { activeSector } = Astro.props;
+
+const sectors = [
+  {
+    id: 'government',
+    label: 'For Government',
+    href: '/services/our-capabilities/government',
+    tag: 'Public Systems & Policy',
+    icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4',
+  },
+  {
+    id: 'nonprofits',
+    label: 'For Nonprofits',
+    href: '/services/our-capabilities/nonprofits',
+    tag: 'Strategy & Delivery',
+    icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+  },
+  {
+    id: 'philanthropy',
+    label: 'For Philanthropy',
+    href: '/services/our-capabilities/philanthropy',
+    tag: 'Funders & Portfolios',
+    icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  },
+];
+---
+
+<div class="w-full">
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-md">
+    <div class="text-xs font-bold uppercase tracking-wider text-pale-navy/80 px-3 hidden md:block">
+      Select Institutional Domain:
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full md:w-auto">
+      {sectors.map((s) => {
+        const isActive = activeSector === s.id;
+        return (
+          <a
+            href={s.href}
+            class={`flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-small font-bold transition-all duration-base no-underline border ${
+              isActive
+                ? 'bg-white text-navy shadow-md border-white'
+                : 'bg-white/10 text-white/90 hover:bg-white/20 hover:text-white border-white/10'
+            }`}
+          >
+            <span class={`h-2 w-2 rounded-full ${isActive ? 'bg-gold' : 'bg-white/40'}`}></span>
+            <span>{s.label}</span>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</div>

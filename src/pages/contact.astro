@@ -23,21 +23,21 @@ import { FIELD_LIMITS } from '../data/contactLimits';
 >
   <div class="pt-16 sm:pt-[4.5rem]">
     {/* ============================ 1. HERO + CONTACT FORM ============================ */}
-    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-hair/60 bg-paper py-12 sm:py-16 lg:py-20">
-      <div class="container-x grid items-start gap-12 lg:grid-cols-12 lg:gap-14">
+    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-white/10 bg-institutional-grid text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+      <div class="container-x grid items-start gap-12 lg:grid-cols-12 lg:gap-14 relative z-10">
         {/* Left Column: Heading, Value Prop, Direct Contact Details (5 cols) */}
         <div class="space-y-8 lg:col-span-5">
           <div>
             <Reveal>
-              <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+              <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
                 <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                 Get In Touch
               </div>
             </Reveal>
-            <Reveal as="h1" delay={40} class="text-display font-black text-navy leading-[1.08]">
+            <Reveal as="h1" delay={40} class="text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl">
               <span id="contact-h1">Let's talk about what applied AI can do for your institution.</span>
             </Reveal>
-            <Reveal as="p" delay={80} class="mt-5 text-lede font-normal text-mid-navy leading-relaxed">
+            <Reveal as="p" delay={80} class="mt-5 text-lede font-normal text-pale-navy/90 leading-relaxed">
               Whether you're exploring a partnership, evaluating a program, or just have a question — tell us a bit
               about what you're working on and we'll route it to the right person on the team.
             </Reveal>

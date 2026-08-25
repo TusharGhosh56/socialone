@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+---
+
+<Base
+  title="Built for Government | Applied AI for Public Systems | APLYD"
+  description="APLYD applies AI within real policy, data and operating constraints, moving government work from pilot to public service that institutions can run and own."
+  keywords="Government AI, Public Sector AI, Applied AI, Athena Infonomics, Institutional AI Systems"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · Built for Government
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Built for government, and the institutions that serve at scale
+        </h1>
+
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          APLYD is the applied AI venture of Athena Infonomics. We work with institutions that operate at scale, including governments, funders, multilaterals and impact-focused organisations. Our work focuses on the point where AI moves from a pilot or prototype into a system that can be implemented, operated and improved within an institution.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 1: WHY AI STALLS ============================ */}
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-4xl space-y-6">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">The Challenge</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            Why AI stalls inside institutions
+          </h2>
+          <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+            AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 2: WHAT BUILT FOR GOV MEANS ============================ */}
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
+      <div class="container-x">
+        <div class="max-w-4xl space-y-8">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">Our Approach</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            What "built for government" means
+          </h2>
+
+          <div class="space-y-6 text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+            <p>
+              We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
+            </p>
+            <p>
+              We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ SECTION 3: BEYOND GOVERNMENT ============================ */}
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+      <div class="container-x">
+        <div class="rounded-3xl gradient-navy gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-lg">
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+              Application
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white">
+              Beyond government
+            </h2>
+            <p class="text-lg sm:text-2xl font-light text-pale-navy leading-relaxed">
+              The same approach applies to other institutions working at scale, including nonprofits and funders. Across these contexts, our work is guided by a common standard: <span class="text-white font-medium">AI that is responsible, measurable and institutionally owned.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-paper">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+              See how we work
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              Explore the four principles behind every APLYD engagement and how we ensure durable capability.
+            </p>
+          </div>
+          <Button href="/about/how-we-work" variant="primary" class="whitespace-nowrap">
+            See how we work &rarr;
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
