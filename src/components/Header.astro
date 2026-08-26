@@ -26,7 +26,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
   data-header
 >
   <div class="container-x flex h-16 items-center justify-between gap-4 sm:h-[72px]">
-    <a href={linkHref('#top')} aria-label="APLYD — home" class="flex items-center">
+    <a href="/" aria-label="APLYD — home" class="flex items-center">
       <span
         class="block h-[3.025rem] w-auto [&>svg]:h-[3.025rem] [&>svg]:w-auto"
         data-header-wordmark
@@ -118,7 +118,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
 <!-- Standalone logomark: fades/scales in when the header hides on scroll-down
      (req 6), giving the wordmark→mark morph; hidden at top / on scroll-up. -->
 <a
-  href={linkHref('#top')}
+  href="/"
   id="floating-mark"
   aria-label="APLYD — home"
   class="fixed left-[clamp(3rem,9vw,7rem)] top-3 z-50 grid h-10 w-10 place-items-center rounded-md bg-white/80 p-1.5 shadow-sm backdrop-blur transition-[opacity,transform] duration-base ease-out [&>svg]:h-full [&>svg]:w-full"
