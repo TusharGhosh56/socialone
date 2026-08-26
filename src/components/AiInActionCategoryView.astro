@@ -3,6 +3,7 @@
 import { caseStudyCategories, type CaseStudyCategory } from '../data/caseStudies';
 import CaseStudyDossier from './CaseStudyDossier.astro';
 import CaseStudyConversationCTA from './CaseStudyConversationCTA.astro';
+import AtmosphericCanvas from './AtmosphericCanvas.astro';
 
 interface Props {
   initialCategory: string;
@@ -31,7 +32,10 @@ const buttonItems = [
 
 <div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="bg-institutional-grid text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden border-b border-white/10">
+  <section class="bg-institutional-grid text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden">
+    <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
     <div class="container-x relative z-10">
       {/* Category Dynamic Hero Headers */}
       {categoriesList.map((cat) => {
@@ -87,32 +91,37 @@ const buttonItems = [
     </div>
   </section>
 
-  {/* ============================ CASE STUDIES EDITORIAL SECTION ============================ */}
-  <section class="py-16 sm:py-24 bg-white border-b border-hair">
-    <div class="container-x">
-      {categoriesList.map((cat) => {
-        const isInit = cat.id === initialCategory;
-        return (
-          <div
-            id={`ai-body-${cat.id}`}
-            class={`ai-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
-            data-ai-body={cat.id}
-          >
-            {cat.caseStudies.map((cs, idx) => (
-              <CaseStudyDossier
-                caseStudy={cs}
-                index={idx}
-                total={cat.caseStudies.length}
-              />
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  </section>
+  {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+  <AtmosphericCanvas>
+    {/* ============================ CASE STUDIES EDITORIAL SECTION ============================ */}
+    <section class="relative z-10">
+      <div class="container-x">
+        {categoriesList.map((cat) => {
+          const isInit = cat.id === initialCategory;
+          return (
+            <div
+              id={`ai-body-${cat.id}`}
+              class={`ai-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
+              data-ai-body={cat.id}
+            >
+              {cat.caseStudies.map((cs, idx) => (
+                <CaseStudyDossier
+                  caseStudy={cs}
+                  index={idx}
+                  total={cat.caseStudies.length}
+                />
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </section>
 
-  {/* ============================ CONVERSATION CTA ============================ */}
-  <CaseStudyConversationCTA />
+    {/* ============================ CONVERSATION CTA ============================ */}
+    <section class="relative z-10">
+      <CaseStudyConversationCTA />
+    </section>
+  </AtmosphericCanvas>
 </div>
 
 <style>

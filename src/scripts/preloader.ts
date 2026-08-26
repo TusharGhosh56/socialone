@@ -40,6 +40,14 @@ export function initPreloader(): void {
   const root = document.querySelector<HTMLElement>('[data-preloader]');
   if (!root) return;
 
+  // Limit preloader to once per site visit (sessionStorage)
+  try {
+    if (sessionStorage.getItem('aplyd_preloader_seen')) {
+      root.remove();
+      return;
+    }
+  } catch (e) {}
+
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) {
     root.remove();
@@ -83,6 +91,9 @@ export function initPreloader(): void {
   tri.style.strokeDasharray = `${triLen}`;
 
   const finish = () => {
+    try {
+      sessionStorage.setItem('aplyd_preloader_seen', 'true');
+    } catch (e) {}
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
     // Final resync, tied to the preloader's own guaranteed-late completion

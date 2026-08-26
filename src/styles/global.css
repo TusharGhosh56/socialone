@@ -293,31 +293,37 @@
   left: 0;
   overflow: visible;
   pointer-events: none;
-  z-index: 5;
+  z-index: 15;
 }
 .flow-line-path {
   fill: none;
-  /* Smoke, was var(--gold). This path runs the whole scroll length of the
-     document, which made gold the single most present colour on the site and
-     put the guidelines' 70/25/5 ratio out of reach on its own. Gold is
-     described there as marking "the dot in the mark, a key statistic, a single
-     line of emphasis" — moments, not continuous surfaces. So the TRACK is now
-     neutral and only the milestone dots below stay gold: the line connects, the
-     gold marks. Neutral also sits correctly against both the paper sections and
-     the navy ones this path crosses, which one gold value never quite did. */
-  stroke: var(--smoke);
-  stroke-width: 2;
+  stroke: rgba(209, 156, 51, 0.65);
+  stroke-width: 2.25;
   stroke-linecap: round;
-  stroke-dasharray: 1 11;
+  stroke-dasharray: 2 10;
 }
 .flow-line-dot {
   fill: var(--gold);
-  stroke: none;
+  stroke: #ffffff;
+  stroke-width: 1.5;
 }
 @media (prefers-reduced-motion: reduce) {
   .flow-line-dot {
     opacity: 1 !important;
   }
+}
+
+/* Ensure all interactive cards paint ABOVE the flowing background line */
+.team-marquee,
+.team-card,
+.case-card,
+.service-card,
+.principle-card,
+.step-carousel,
+.friction-card,
+.metric-row {
+  position: relative;
+  z-index: 30;
 }
 
 /* ------------------------------------------------------------------ */
@@ -363,3 +369,79 @@
     0 20px 45px -14px rgba(26, 33, 80, 0.2),
     0 0 26px 2px rgba(209, 156, 51, 0.28);
 }
+
+/* ------------------------------------------------------------------ */
+/* Atmospheric Subpage Canvas & Hero Horizon Blends                    */
+/* ------------------------------------------------------------------ */
+/* Pure Static High-Performance Atmospheric Canvas */
+.bg-atmospheric-canvas {
+  position: relative;
+  background-color: var(--off-white, #f9f9fb);
+  background-image: 
+    radial-gradient(circle at 15% 20%, rgba(209, 156, 51, 0.045) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(26, 33, 80, 0.035) 0%, transparent 40%);
+}
+
+/* Precision Institutional Dot Matrix Canvas — Brand Gold (Zero-JS, Hardware Accelerated) */
+.institutional-dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(209, 156, 51, 0.18) 1.25px, transparent 1.25px);
+  background-size: 32px 32px;
+  background-position: 0 0;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateZ(0);
+  contain: strict;
+  will-change: auto;
+}
+
+/* Architectural Guideline Rails */
+.margin-guide-rail-left {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: max(1rem, calc((100vw - 1760px) / 2 + 1rem));
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(26, 33, 80, 0) 0%, rgba(26, 33, 80, 0.08) 15%, rgba(209, 156, 51, 0.18) 50%, rgba(26, 33, 80, 0.08) 85%, rgba(26, 33, 80, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.margin-guide-rail-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: max(1rem, calc((100vw - 1760px) / 2 + 1rem));
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(26, 33, 80, 0) 0%, rgba(26, 33, 80, 0.08) 15%, rgba(209, 156, 51, 0.18) 50%, rgba(26, 33, 80, 0.08) 85%, rgba(26, 33, 80, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* GPU-Accelerated Hardware-Composited Cursor Spotlight — Contained strictly to light dotted canvas */
+.ambient-spotlight-follower {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 700px;
+  height: 700px;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at center,
+    rgba(209, 156, 51, 0.12) 0%,
+    rgba(209, 156, 51, 0.05) 30%,
+    rgba(26, 33, 80, 0.02) 55%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 2;
+  transform: translate3d(-1000px, -1000px, 0);
+  will-change: transform, opacity;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  contain: strict;
+}
+
+
+

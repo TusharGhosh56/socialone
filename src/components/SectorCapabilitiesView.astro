@@ -3,6 +3,7 @@
 import { sectorDataList, type SectorData } from '../data/capabilities';
 import Button from './Button.astro';
 import CapabilityWorkbench from './CapabilityWorkbench.astro';
+import AtmosphericCanvas from './AtmosphericCanvas.astro';
 
 interface Props {
   initialSector: 'government' | 'nonprofits' | 'philanthropy';
@@ -19,7 +20,10 @@ const sectors: SectorData[] = [
 
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+  <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+    <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
     <div class="container-x relative z-10">
       {/* Sector Dynamic Hero Headers */}
       {sectors.map((sec) => {
@@ -81,63 +85,67 @@ const sectors: SectorData[] = [
     </div>
   </section>
 
-  {/* ============================ SECTOR CAPABILITIES WORKBENCH ============================ */}
-  <section class="py-16 sm:py-24 bg-paper border-b border-hair">
-    <div class="container-x">
-      {sectors.map((sec) => {
-        const isInit = sec.id === initialSector;
-        return (
-          <div
-            id={`sector-body-${sec.id}`}
-            class={`sector-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
-            data-sector-body={sec.id}
-          >
-            <div class="max-w-4xl mb-12 space-y-4">
-              <div class="text-xs font-bold uppercase tracking-widest text-gold">Capabilities</div>
-              <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
-                {sec.sectionLead}
-              </p>
-            </div>
-
-            <CapabilityWorkbench
-              capabilities={sec.capabilities}
-            />
-          </div>
-        );
-      })}
-    </div>
-  </section>
-
-  {/* ============================ NEXT SECTION CTA ============================ */}
-  <section class="py-16 sm:py-24 bg-paper">
-    <div class="container-x">
-      {sectors.map((sec) => {
-        const isInit = sec.id === initialSector;
-        return (
-          <div
-            id={`sector-cta-${sec.id}`}
-            class={`sector-cta-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
-            data-sector-cta={sec.id}
-          >
-            <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-              <div class="max-w-2xl">
-                <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Sector Domain</div>
-                <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                  {sec.ctaTitle}
-                </h3>
-                <p class="text-base text-mid-navy leading-relaxed font-normal">
-                  {sec.ctaDesc}
+  {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+  <AtmosphericCanvas>
+    {/* ============================ SECTOR CAPABILITIES WORKBENCH ============================ */}
+    <section class="relative z-10">
+      <div class="container-x">
+        {sectors.map((sec) => {
+          const isInit = sec.id === initialSector;
+          return (
+            <div
+              id={`sector-body-${sec.id}`}
+              class={`sector-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
+              data-sector-body={sec.id}
+            >
+              <div class="max-w-4xl mb-12 space-y-4">
+                <div class="text-xs font-bold uppercase tracking-widest text-gold">Capabilities</div>
+                <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+                  {sec.sectionLead}
                 </p>
               </div>
-              <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap">
-                {sec.ctaText}
-              </Button>
+
+              <CapabilityWorkbench
+                capabilities={sec.capabilities}
+                sectorId={sec.id}
+              />
             </div>
-          </div>
-        );
-      })}
-    </div>
-  </section>
+          );
+        })}
+      </div>
+    </section>
+
+    {/* ============================ NEXT SECTION CTA ============================ */}
+    <section class="relative z-10">
+      <div class="container-x">
+        {sectors.map((sec) => {
+          const isInit = sec.id === initialSector;
+          return (
+            <div
+              id={`sector-cta-${sec.id}`}
+              class={`sector-cta-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
+              data-sector-cta={sec.id}
+            >
+              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                <div class="max-w-2xl">
+                  <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Sector Domain</div>
+                  <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                    {sec.ctaTitle}
+                  </h3>
+                  <p class="text-base text-mid-navy leading-relaxed font-normal">
+                    {sec.ctaDesc}
+                  </p>
+                </div>
+                <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap shadow-sm">
+                  {sec.ctaText} &rarr;
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  </AtmosphericCanvas>
 </div>
 
 <script>

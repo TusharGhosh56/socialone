@@ -133,10 +133,9 @@ export function initInteractiveFootprint(): void {
   const tooltipYear = root.querySelector<HTMLElement>('[data-tooltip-year]');
   const filterBtns = root.querySelectorAll<HTMLButtonElement>('[data-region-filter]');
 
-  let activeHubId = 'india';
+  let currentRegion: string = 'all';
 
   const selectHub = (hubId: string) => {
-    activeHubId = hubId;
     const hub = HUBS.find((h) => h.id === hubId);
     if (!hub) return;
 
@@ -157,6 +156,41 @@ export function initInteractiveFootprint(): void {
 
     if (hubTooltip) {
       hubTooltip.classList.add('is-visible');
+    }
+  };
+
+  const applyRegionFilter = (region: string) => {
+    currentRegion = region;
+    filterBtns.forEach((b) => b.classList.toggle('is-active', b.getAttribute('data-region-filter') === region));
+
+    if (region === 'all') {
+      mapNodes.forEach((n) => {
+        n.style.opacity = '1';
+        n.style.pointerEvents = 'auto';
+      });
+      hubButtons.forEach((b) => {
+        b.style.opacity = '1';
+        b.style.pointerEvents = 'auto';
+      });
+    } else {
+      const matchingHubs = HUBS.filter((h) => h.region === region);
+      mapNodes.forEach((n) => {
+        const id = n.getAttribute('data-map-node');
+        const matches = matchingHubs.some((h) => h.id === id);
+        n.style.opacity = matches ? '1' : '0.15';
+        n.style.pointerEvents = matches ? 'auto' : 'none';
+      });
+      hubButtons.forEach((b) => {
+        const id = b.getAttribute('data-hub-id');
+        const matches = matchingHubs.some((h) => h.id === id);
+        b.style.opacity = matches ? '1' : '0.35';
+        b.style.pointerEvents = matches ? 'auto' : 'none';
+      });
+
+      // Automatically focus on the primary hub of this selected region
+      if (matchingHubs.length > 0) {
+        selectHub(matchingHubs[0].id);
+      }
     }
   };
 
@@ -182,33 +216,20 @@ export function initInteractiveFootprint(): void {
     });
   });
 
-  // 3. Region Filter
+  // 3. Region Filter Click Handlers
   filterBtns.forEach((fBtn) => {
     fBtn.addEventListener('click', () => {
-      const region = fBtn.getAttribute('data-region-filter');
-      filterBtns.forEach((b) => b.classList.toggle('is-active', b === fBtn));
-
-      if (region === 'all') {
-        mapNodes.forEach((n) => (n.style.opacity = '1'));
-        hubButtons.forEach((b) => (b.style.opacity = '1'));
-      } else {
-        const matchingHubs = HUBS.filter((h) => h.region === region);
-        mapNodes.forEach((n) => {
-          const id = n.getAttribute('data-map-node');
-          const matches = matchingHubs.some((h) => h.id === id);
-          n.style.opacity = matches ? '1' : '0.2';
-        });
-        hubButtons.forEach((b) => {
-          const id = b.getAttribute('data-hub-id');
-          const matches = matchingHubs.some((h) => h.id === id);
-          b.style.opacity = matches ? '1' : '0.35';
-        });
-        if (matchingHubs.length > 0) {
-          selectHub(matchingHubs[0].id);
-        }
-      }
+      const region = fBtn.getAttribute('data-region-filter') || 'all';
+      applyRegionFilter(region);
     });
   });
 
+  // Initialize with All Hubs and India selected
+  applyRegionFilter('all');
   selectHub('india');
+}
+
+if (typeof document !== 'undefined') {
+  initInteractiveFootprint();
+  document.addEventListener('astro:page-load', initInteractiveFootprint);
 }

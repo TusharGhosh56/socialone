@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import { Image } from 'astro:assets';
 
 import img01 from '../../assets/images/how-we-work/card_01-web.jpg';
@@ -12,6 +13,7 @@ const principles = [
   {
     num: '01',
     phase: 'Embedded Practice',
+    hud: 'LOC: 28.61° N · IN-01',
     title: 'We work inside the institution',
     image: img01,
     alt: 'Embedded delivery team inside government institution',
@@ -29,6 +31,7 @@ const principles = [
   {
     num: '02',
     phase: 'Sovereign Handover',
+    hud: 'SYS: SOVEREIGN_CORE · 02',
     title: 'We hand the system over',
     image: img02,
     alt: 'Capability transfer and workforce training',
@@ -46,6 +49,7 @@ const principles = [
   {
     num: '03',
     phase: 'Empirical Verification',
+    hud: 'DATA: FIELD_TELEMETRY · 03',
     title: 'We decide from evidence',
     image: img03,
     alt: 'Evidence-driven decision making and field telemetry',
@@ -63,6 +67,7 @@ const principles = [
   {
     num: '04',
     phase: 'Structural Assurance',
+    hud: 'AUDIT: INDEPENDENT · 04',
     title: 'We evaluate independently',
     image: img04,
     alt: 'Independent algorithmic evaluation and auditing',
@@ -91,7 +96,10 @@ const principles = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
       <div class="container-x relative z-10">
         <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-2 w-2 rounded-full bg-gold"></span>
@@ -108,118 +116,126 @@ const principles = [
       </div>
     </section>
 
-    {/* ============================ 4 PRINCIPLES EDITORIAL SHOWCASE ============================ */}
-    <section class="py-16 sm:py-24 bg-white border-b border-hair">
-      <div class="container-x space-y-20 lg:space-y-28">
-        {principles.map((p, idx) => (
-          <article class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            
-            {/* Left Column: Principle Narrative */}
-            <div class={`space-y-6 lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
-              <div class="flex items-center gap-3">
-                <span class="text-xs font-bold uppercase tracking-widest text-gold">
-                  Principle {p.num}
-                </span>
-                <span class="text-hair">·</span>
-                <span class="text-xs font-bold uppercase tracking-wider text-mid-navy">
-                  {p.phase}
-                </span>
-              </div>
+    {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      {/* ============================ 4 PRINCIPLES EDITORIAL SHOWCASE ============================ */}
+      <section class="relative z-10">
+        <div class="container-x space-y-20 lg:space-y-28">
+          {principles.map((p, idx) => (
+            <article class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              
+              {/* Left Column: Principle Narrative */}
+              <div class={`space-y-6 lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold uppercase tracking-widest text-gold">
+                    Principle {p.num}
+                  </span>
+                  <span class="text-ash/40">·</span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-mid-navy">
+                    {p.phase}
+                  </span>
+                </div>
 
-              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
-                {p.title}
-              </h2>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+                  {p.title}
+                </h2>
 
-              <div class="space-y-4 text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                {p.paragraphs.map((para) => (
-                  <p>{para}</p>
-                ))}
-              </div>
-
-              {p.subheading && (
-                <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-6 space-y-3">
-                  <div class="text-xs font-bold uppercase tracking-widest text-deep-gold">
-                    {p.subheading}
-                  </div>
-                  {p.subParagraphs?.map((subPara) => (
-                    <p class="text-small font-medium text-navy leading-relaxed">{subPara}</p>
+                <div class="space-y-4 text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  {p.paragraphs.map((para) => (
+                    <p>{para}</p>
                   ))}
                 </div>
-              )}
 
-              {/* Principle Key Commitments */}
-              <div class="pt-2 space-y-2">
-                <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
-                  Institutional Commitments
-                </div>
-                <div class="grid grid-cols-1 gap-2">
-                  {p.takeaways.map((item) => (
-                    <div class="flex items-center gap-2.5 text-small font-medium text-navy">
-                      <span class="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-[10px] font-bold text-deep-gold">
-                        ✓
-                      </span>
-                      <span>{item}</span>
+                {p.subheading && (
+                  <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-6 space-y-3 shadow-xs">
+                    <div class="text-xs font-bold uppercase tracking-widest text-deep-gold">
+                      {p.subheading}
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+                    {p.subParagraphs?.map((subPara) => (
+                      <p class="text-small font-medium text-navy leading-relaxed">{subPara}</p>
+                    ))}
+                  </div>
+                )}
 
-            {/* Right Column: Visual Frame */}
-            <div class={`lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
-              <div class="group relative overflow-hidden rounded-3xl border border-hair bg-paper shadow-lg">
-                <div class="relative aspect-[16/11] w-full overflow-hidden bg-navy">
-                  <Image
-                    src={p.image}
-                    alt={p.alt}
-                    width={800}
-                    height={550}
-                    format="webp"
-                    quality={85}
-                    class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent"></div>
-                  
-                  <div class="absolute bottom-0 inset-x-0 p-6 flex items-center justify-between">
-                    <div>
-                      <span class="text-xs font-bold uppercase tracking-widest text-gold block mb-1">
-                        {p.tag}
-                      </span>
-                      <div class="text-small font-bold text-white">
-                        APLYD Operating Standard
+                {/* Principle Key Commitments */}
+                <div class="pt-2 space-y-2">
+                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
+                    Institutional Commitments
+                  </div>
+                  <div class="grid grid-cols-1 gap-2">
+                    {p.takeaways.map((item) => (
+                      <div class="flex items-center gap-2.5 text-small font-medium text-navy">
+                        <span class="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-[10px] font-bold text-deep-gold">
+                          ✓
+                        </span>
+                        <span>{item}</span>
                       </div>
-                    </div>
-                    <span class="rounded-full bg-white/20 backdrop-blur-md px-3 py-1 text-xs font-bold text-white border border-white/20">
-                      0{idx + 1} / 04
-                    </span>
+                    ))}
                   </div>
                 </div>
               </div>
-            </div>
 
-          </article>
-        ))}
-      </div>
-    </section>
+              {/* Right Column: Visual Frame */}
+              <div class={`lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
+                <div class="group relative overflow-hidden rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-2.5 shadow-lg transition-all duration-500 hover:border-gold/40 hover:shadow-xl">
+                  <div class="relative aspect-[16/11] w-full overflow-hidden rounded-2xl bg-navy">
+                    <Image
+                      src={p.image}
+                      alt={p.alt}
+                      width={800}
+                      height={550}
+                      format="webp"
+                      quality={85}
+                      class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/20 to-transparent"></div>
+                    
+                    {/* Top HUD Tag */}
+                    <div class="absolute top-4 left-4 rounded-full bg-navy/60 backdrop-blur-md px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-pale-navy border border-white/10">
+                      {p.hud}
+                    </div>
 
-    {/* ============================ CTA ============================ */}
-    <section class="py-16 sm:py-24 bg-paper">
-      <div class="container-x">
-        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div class="max-w-2xl">
-            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
-            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-              Meet the people behind APLYD
-            </h3>
-            <p class="text-base text-mid-navy leading-relaxed">
-              Explore the leadership, AI engineers, and evaluation specialists who bring these principles into practice.
-            </p>
-          </div>
-          <Button href="/about/people" variant="primary" class="whitespace-nowrap">
-            Meet our team &rarr;
-          </Button>
+                    <div class="absolute bottom-0 inset-x-0 p-6 flex items-center justify-between">
+                      <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-gold block mb-1">
+                          {p.tag}
+                        </span>
+                        <div class="text-small font-bold text-white">
+                          APLYD Operating Standard
+                        </div>
+                      </div>
+                      <span class="rounded-full bg-white/20 backdrop-blur-md px-3 py-1 text-xs font-bold text-white border border-white/20">
+                        0{idx + 1} / 04
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </article>
+          ))}
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ============================ CTA ============================ */}
+      <section class="relative z-10">
+        <div class="container-x">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div class="max-w-2xl">
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                Meet the people behind APLYD
+              </h3>
+              <p class="text-base text-mid-navy leading-relaxed font-normal">
+                Explore the leadership, AI engineers, and evaluation specialists who bring these principles into practice.
+              </p>
+            </div>
+            <Button href="/about/people" variant="primary" class="whitespace-nowrap shadow-sm">
+              Meet our team &rarr;
+            </Button>
+          </div>
+        </div>
+      </section>
+    </AtmosphericCanvas>
   </div>
 </Base>
