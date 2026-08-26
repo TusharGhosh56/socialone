@@ -1,32 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
+import ApproachStageExplorer from '../../components/ApproachStageExplorer.astro';
 
-const stages = [
-  {
-    num: '01',
-    stageName: 'Explore',
-    title: 'Strategy and direction',
-    desc: 'We help institutions identify where AI can deliver measurable public value. This starts with the problem: understanding operational bottlenecks, the decisions being made, and the evidence needed to support them. We assess institutional readiness, evaluate available data, and define use cases with clear outcomes and delivery paths.',
-  },
-  {
-    num: '02',
-    stageName: 'Design',
-    title: 'Field and delivery',
-    desc: 'Before building, we examine the environment in which the system will operate. This means understanding frontline workflows, user needs, connectivity and operational constraints. We design systems that integrate with existing processes, address data quality and representation, and account for the realities of field implementation.',
-  },
-  {
-    num: '03',
-    stageName: 'Deliver',
-    title: 'Design, build and scale',
-    desc: 'We build production-ready systems designed for institutional use. We work alongside existing teams throughout implementation, ensuring solutions fit operational realities. Every engagement includes capability transfer: leaving institutions with the technical infrastructure, documentation and trained staff to own and manage the system.',
-  },
-  {
-    num: '04',
-    stageName: 'Assure',
-    title: 'Evaluation and assurance',
-    desc: 'We evaluate whether systems work as intended in practice. We conduct rigorous, independent assessments of performance, accuracy, fairness and user adoption. Crucially, evaluation is kept separate from delivery: we only evaluate systems we did not build, giving institutions objective evidence to inform decisions about continuation, refinement or scale.',
-  },
+const pipelinePhases = [
+  { step: '01', name: 'Explore', title: 'Strategy & Direction', tag: 'Problem First' },
+  { step: '02', name: 'Design', title: 'Field & Delivery', tag: 'Frontline Context' },
+  { step: '03', name: 'Deliver', title: 'Design, Build & Scale', tag: 'Capability Transfer' },
+  { step: '04', name: 'Assure', title: 'Evaluation & Assurance', tag: 'Independent Audit' },
 ];
 ---
 
@@ -59,42 +40,41 @@ const stages = [
       </div>
     </section>
 
-    {/* ============================ INTERCONNECTED LIFECYCLE ============================ */}
-    <section class="py-16 sm:py-20 bg-white border-b border-hair">
-      <div class="container-x">
-        <div class="max-w-4xl space-y-4">
-          <div class="text-xs font-bold uppercase tracking-widest text-gold">The Delivery Journey</div>
-          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
-            Each stage is designed to strengthen the next
-          </h2>
-          <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
-            A poorly defined problem can lead to the wrong solution. A system without clear measures of performance cannot be improved or responsibly scaled. And a solution without institutional ownership is difficult to sustain. The four stages below set out how we move from identifying the right opportunity to building systems that can be used, measured and maintained.
+    {/* ============================ CONNECTED PIPELINE OVERVIEW ============================ */}
+    <section class="py-14 sm:py-16 bg-paper border-b border-hair">
+      <div class="container-x space-y-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-gold mb-1">
+              End-to-End Methodology
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-light text-navy">
+              The four stages of institutional AI delivery
+            </h2>
+          </div>
+          <p class="text-small text-mid-navy max-w-md">
+            Each stage addresses a specific point of failure in standard AI initiatives, ensuring solutions fit operational realities.
           </p>
         </div>
-      </div>
-    </section>
 
-    {/* ============================ THE FOUR STAGES ============================ */}
-    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
-      <div class="container-x space-y-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {stages.map((stage) => (
-            <div class="rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6">
-              <div class="space-y-4">
+        {/* Connected Step Pipeline */}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+          {pipelinePhases.map((phase, pIdx) => (
+            <div class="relative flex flex-col justify-between rounded-2xl bg-white p-6 border border-hair shadow-sm hover:border-gold/50 transition-colors">
+              <div class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold uppercase tracking-widest text-gold">
-                    Stage {stage.num}
+                    {phase.step}
                   </span>
-                  <span class="inline-flex items-center rounded-pill bg-pale-navy px-3 py-1 text-xs font-bold uppercase tracking-wider text-navy">
-                    {stage.stageName}
+                  <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-pale-navy text-navy">
+                    {phase.tag}
                   </span>
                 </div>
-                <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
-                  {stage.title}
-                </h3>
-                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                  {stage.desc}
-                </p>
+                <div class="text-lg font-bold text-navy">{phase.title}</div>
+              </div>
+              <div class="pt-4 mt-4 border-t border-hair/60 flex items-center justify-between text-xs text-mid-navy">
+                <span>Phase: <strong class="text-navy">{phase.name}</strong></span>
+                <span class="text-gold font-bold">&rarr;</span>
               </div>
             </div>
           ))}
@@ -102,21 +82,60 @@ const stages = [
       </div>
     </section>
 
-    {/* ============================ CTA ============================ */}
-    <section class="py-16 sm:py-24 bg-paper">
+    {/* ============================ INTERACTIVE STAGE EXPLORER WORKBENCH ============================ */}
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+      <div class="container-x space-y-12">
+        <div class="max-w-3xl space-y-3">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">
+            Interactive Stage Deep-Dive
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            Explore the four delivery stages
+          </h2>
+          <p class="text-lg text-mid-navy leading-relaxed font-normal">
+            Click on any phase below to examine our operational methodology, core objectives, and architectural deliverables.
+          </p>
+        </div>
+
+        <ApproachStageExplorer />
+      </div>
+    </section>
+
+    {/* ============================ STRUCTURAL INDEPENDENCE CALLOUT ============================ */}
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
       <div class="container-x">
-        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div class="max-w-2xl">
-            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in Services</div>
-            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-              Explore our capabilities across sectors
-            </h3>
-            <p class="text-base text-mid-navy leading-relaxed">
-              See how our approach translates into applied capabilities for government, nonprofits, and philanthropy.
+        <div class="rounded-3xl gradient-navy gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-xl">
+          <div class="relative z-10 max-w-4xl space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+              Independent by Design
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight">
+              Evaluation is structurally separate from delivery
+            </h2>
+            <p class="text-lg sm:text-2xl font-light text-pale-navy/90 leading-relaxed">
+              We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with complete independence—ensuring evaluation findings are never influenced by an interest in a delivery outcome.
             </p>
           </div>
-          <Button href="/services/our-capabilities/government" variant="primary" class="whitespace-nowrap">
-            Explore our capabilities &rarr;
+        </div>
+      </div>
+    </section>
+
+    {/* ============================ CTA ============================ */}
+    <section class="py-16 sm:py-24 bg-white">
+      <div class="container-x">
+        <div class="rounded-3xl border border-hair bg-paper p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
+            <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Engage With APLYD</div>
+            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+              Ready to explore an implementation?
+            </h3>
+            <p class="text-base text-mid-navy leading-relaxed font-normal">
+              Talk to our practice leads about your institution's specific delivery objectives and AI readiness.
+            </p>
+          </div>
+          <Button href="/contact" variant="primary" class="whitespace-nowrap">
+            Partner With APLYD &rarr;
           </Button>
         </div>
       </div>

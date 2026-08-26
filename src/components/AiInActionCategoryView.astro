@@ -1,0 +1,234 @@
+---
+// AiInActionCategoryView.astro — Smooth in-place cross-fade category switcher (Zero scroll jumps)
+import { caseStudyCategories, type CaseStudyCategory } from '../data/caseStudies';
+import CaseStudyDossier from './CaseStudyDossier.astro';
+import CaseStudyConversationCTA from './CaseStudyConversationCTA.astro';
+
+interface Props {
+  initialCategory: string;
+}
+
+const { initialCategory } = Astro.props;
+
+const categoriesList: CaseStudyCategory[] = [
+  caseStudyCategories.education,
+  caseStudyCategories.agriculture,
+  caseStudyCategories.msmes,
+  caseStudyCategories.utilities,
+  caseStudyCategories['public-services-government'],
+  caseStudyCategories['monitoring-evaluation-responsible-ai'],
+];
+
+const buttonItems = [
+  { id: 'education', label: 'Education', href: '/ai-in-action/education' },
+  { id: 'agriculture', label: 'Agriculture', href: '/ai-in-action/agriculture' },
+  { id: 'msmes', label: 'MSMEs', href: '/ai-in-action/msmes' },
+  { id: 'utilities', label: 'Utilities', href: '/ai-in-action/utilities' },
+  { id: 'public-services-government', label: 'Public Services / Gov', href: '/ai-in-action/public-services-government' },
+  { id: 'monitoring-evaluation-responsible-ai', label: 'M&E / Responsible AI', href: '/ai-in-action/monitoring-evaluation-responsible-ai' },
+];
+---
+
+<div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
+  {/* ============================ HERO SECTION ============================ */}
+  <section class="bg-institutional-grid text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden border-b border-white/10">
+    <div class="container-x relative z-10">
+      {/* Category Dynamic Hero Headers */}
+      {categoriesList.map((cat) => {
+        const isInit = cat.id === initialCategory;
+        return (
+          <div
+            id={`ai-hero-${cat.id}`}
+            class={`ai-hero-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
+            data-ai-hero={cat.id}
+          >
+            <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+              AI in Action · {cat.navLabel}
+            </div>
+
+            <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+              {cat.title}
+            </h1>
+
+            <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+              {cat.lead}
+            </p>
+          </div>
+        );
+      })}
+
+      {/* In-Place Interactive Category Switcher */}
+      <div class="mt-10 max-w-4xl">
+        <nav aria-label="AI in Action Categories" class="w-full">
+          <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 p-1.5 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-md">
+            {buttonItems.map((item) => {
+              const isActive = initialCategory === item.id;
+              return (
+                <button
+                  type="button"
+                  class={`ai-category-btn group flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-small font-bold transition-all duration-base cursor-pointer border ${
+                    isActive
+                      ? 'bg-white text-navy shadow-md border-white is-active'
+                      : 'bg-white/10 text-white/90 hover:bg-white/20 hover:text-white border-white/10'
+                  }`}
+                  data-category-btn={item.id}
+                  data-category-href={item.href}
+                  aria-pressed={isActive ? 'true' : 'false'}
+                >
+                  <span class={`category-dot h-1.5 w-1.5 rounded-full transition-colors ${isActive ? 'bg-gold' : 'bg-white/40 group-hover:bg-gold'}`}></span>
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  {/* ============================ CASE STUDIES EDITORIAL SECTION ============================ */}
+  <section class="py-16 sm:py-24 bg-white border-b border-hair">
+    <div class="container-x">
+      {categoriesList.map((cat) => {
+        const isInit = cat.id === initialCategory;
+        return (
+          <div
+            id={`ai-body-${cat.id}`}
+            class={`ai-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
+            data-ai-body={cat.id}
+          >
+            {cat.caseStudies.map((cs, idx) => (
+              <CaseStudyDossier
+                caseStudy={cs}
+                index={idx}
+                total={cat.caseStudies.length}
+              />
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  {/* ============================ CONVERSATION CTA ============================ */}
+  <CaseStudyConversationCTA />
+</div>
+
+<style>
+  .ai-category-btn.is-active {
+    background-color: #ffffff !important;
+    color: #171D47 !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+  }
+  .ai-category-btn.is-active .category-dot {
+    background-color: #D19C33 !important;
+  }
+  .ai-category-btn:not(.is-active):hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  function initAiCategoryView() {
+    const root = document.querySelector('[data-ai-category-view]');
+    if (!root) return;
+
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-category-btn]');
+    const heroBlocks = root.querySelectorAll<HTMLElement>('[data-ai-hero]');
+    const bodyBlocks = root.querySelectorAll<HTMLElement>('[data-ai-body]');
+
+    function switchCategory(targetId: string, updateHistory = true) {
+      // 1. Update buttons
+      buttons.forEach((btn) => {
+        const isActive = btn.getAttribute('data-category-btn') === targetId;
+        btn.classList.toggle('bg-white', isActive);
+        btn.classList.toggle('text-navy', isActive);
+        btn.classList.toggle('shadow-md', isActive);
+        btn.classList.toggle('border-white', isActive);
+        btn.classList.toggle('is-active', isActive);
+
+        btn.classList.toggle('bg-white/10', !isActive);
+        btn.classList.toggle('text-white/90', !isActive);
+        btn.classList.toggle('border-white/10', !isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+
+        const dot = btn.querySelector('.category-dot');
+        if (dot) {
+          dot.classList.toggle('bg-gold', isActive);
+          dot.classList.toggle('bg-white/40', !isActive);
+        }
+
+        if (isActive && updateHistory) {
+          const href = btn.getAttribute('data-category-href');
+          if (href && window.location.pathname !== href) {
+            window.history.pushState({ category: targetId }, '', href);
+          }
+        }
+      });
+
+      // 2. Smoothly cross-fade hero headers
+      heroBlocks.forEach((hero) => {
+        const matches = hero.getAttribute('data-ai-hero') === targetId;
+        if (matches) {
+          hero.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            hero.classList.remove('opacity-0');
+            hero.classList.add('opacity-100');
+          });
+        } else {
+          hero.classList.add('hidden', 'opacity-0');
+          hero.classList.remove('opacity-100');
+        }
+      });
+
+      // 3. Smoothly cross-fade editorial case study bodies
+      bodyBlocks.forEach((body) => {
+        const matches = body.getAttribute('data-ai-body') === targetId;
+        if (matches) {
+          body.classList.remove('hidden');
+          requestAnimationFrame(() => {
+            body.classList.remove('opacity-0');
+            body.classList.add('opacity-100');
+          });
+        } else {
+          body.classList.add('hidden', 'opacity-0');
+          body.classList.remove('opacity-100');
+        }
+      });
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = btn.getAttribute('data-category-btn');
+        if (targetId) {
+          switchCategory(targetId, true);
+        }
+      });
+    });
+
+    // Handle back / forward browser navigation seamlessly
+    window.addEventListener('popstate', () => {
+      const path = window.location.pathname;
+      if (path.includes('agriculture')) {
+        switchCategory('agriculture', false);
+      } else if (path.includes('msmes')) {
+        switchCategory('msmes', false);
+      } else if (path.includes('utilities')) {
+        switchCategory('utilities', false);
+      } else if (path.includes('public-services-government')) {
+        switchCategory('public-services-government', false);
+      } else if (path.includes('monitoring-evaluation-responsible-ai')) {
+        switchCategory('monitoring-evaluation-responsible-ai', false);
+      } else {
+        switchCategory('education', false);
+      }
+    });
+  }
+
+  initAiCategoryView();
+  document.addEventListener('astro:page-load', initAiCategoryView);
+</script>

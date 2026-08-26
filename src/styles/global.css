@@ -114,14 +114,8 @@
 @layer components {
   .container-x {
     width: 100%;
-    /* 1440px per the guidelines' website webgrid spec (12 columns / 1440px
-       max / 80px outer margins) — was 1200px, i.e. ~240px narrower than the
-       brand's own grid on any display wide enough to show the difference.
-       Paired with --container-pad's new 80px ceiling, a 1440px viewport now
-       yields exactly the specified 1280px content area inside 80px margins.
-       Line lengths are governed separately (.prose-x, per-block max-w-[Nch]),
-       so widening this does not stretch any paragraph past its own measure. */
-    max-width: 1440px;
+    /* Expansive full-width layout for wide displays (max 1760px) with fluid margins */
+    max-width: 1760px;
     margin-inline: auto;
     padding-inline: var(--container-pad);
   }

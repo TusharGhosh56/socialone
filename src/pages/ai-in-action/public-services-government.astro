@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { caseStudyCategories } from '../../data/caseStudies';
+import AiInActionCategoryView from '../../components/AiInActionCategoryView.astro';
+
+const data = caseStudyCategories['public-services-government'];
+---
+
+<Base
+  title={data.metaTitle}
+  description={data.metaDescription}
+  keywords="AI for Public Services, Government AI, Kampala Capital City Authority, Citizen Services Assistant, WhatsApp AI Assistant"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    <AiInActionCategoryView initialCategory="public-services-government" />
+  </div>
+</Base>
