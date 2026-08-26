@@ -1,34 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import SectionEyebrow from '../../components/SectionEyebrow.astro';
 import Button from '../../components/Button.astro';
-
-const frictionPoints = [
-  {
-    num: '01',
-    title: 'Data Disconnect',
-    desc: 'Data may not adequately reflect the real people, geographies, and last-mile communities a public service is intended to reach.',
-    icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-  },
-  {
-    num: '02',
-    title: 'Workflow Friction',
-    desc: 'Systems designed in isolation fail to fit established frontline operational routines, causing low adoption and operational drift.',
-    icon: 'M4 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5zm0 8a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-6zm10 0a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6z',
-  },
-  {
-    num: '03',
-    title: 'Vendor Lock-in',
-    desc: 'Implementation knowledge remains trapped with external providers, leaving the institution without the capacity to maintain or adapt systems.',
-    icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
-  },
-  {
-    num: '04',
-    title: 'Measurement Void',
-    desc: 'Without rigorous, independent measurement, institutions have limited evidence on whether an AI system delivers its intended citizen outcomes.',
-    icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z',
-  },
-];
 ---
 
 <Base
@@ -38,109 +10,58 @@ const frictionPoints = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="border-b border-hair bg-paper py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
       <div class="container-x relative z-10">
-        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-2 w-2 rounded-full bg-gold"></span>
           About APLYD · Built for Government
         </div>
 
-        <h1 class="max-w-4xl text-display font-light text-navy leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
           Built for government, and the institutions that serve at scale
         </h1>
 
-        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-mid-navy leading-relaxed">
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
           APLYD is the applied AI venture of Athena Infonomics. We work with institutions that operate at scale, including governments, funders, multilaterals and impact-focused organisations. Our work focuses on the point where AI moves from a pilot or prototype into a system that can be implemented, operated and improved within an institution.
         </p>
       </div>
     </section>
 
     {/* ============================ SECTION 1: WHY AI STALLS ============================ */}
-    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
       <div class="container-x">
-        <div class="max-w-3xl mb-14">
-          <SectionEyebrow label="The Institutional Challenge" />
-          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
+        <div class="max-w-3xl space-y-6">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">The Reality</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
             Why AI stalls inside institutions
           </h2>
-          <p class="mt-4 text-lg sm:text-xl text-mid-navy leading-relaxed">
+          <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
             AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
           </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {frictionPoints.map((item) => (
-            <div class="group relative rounded-3xl border border-hair bg-paper/50 p-8 sm:p-10 transition-all duration-base hover:border-smoke hover:bg-white hover:shadow-lg">
-              <div class="flex items-center justify-between gap-4 mb-6">
-                <span class="inline-flex items-center justify-center rounded-full bg-navy text-white text-xs font-bold px-3 py-1 tracking-wider uppercase">
-                  Friction {item.num}
-                </span>
-                <div class="h-10 w-10 rounded-full bg-gold/10 text-gold flex items-center justify-center transition-colors group-hover:bg-gold group-hover:text-white">
-                  <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d={item.icon} />
-                  </svg>
-                </div>
-              </div>
-              <h3 class="text-2xl font-bold text-navy mb-3 group-hover:text-navy">
-                {item.title}
-              </h3>
-              <p class="text-base sm:text-lg text-mid-navy leading-relaxed">
-                {item.desc}
-              </p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
 
     {/* ============================ SECTION 2: WHAT BUILT FOR GOV MEANS ============================ */}
-    <section class="py-20 sm:py-28 bg-paper border-b border-hair">
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
       <div class="container-x">
-        <div class="max-w-3xl mb-14">
-          <SectionEyebrow label="The APLYD Standard" />
-          <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
-            What "built for government" means
+        <div class="max-w-4xl space-y-8">
+          <div class="text-xs font-bold uppercase tracking-widest text-gold">Our Approach</div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            What “built for government” means
           </h2>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col justify-between hover:border-smoke hover:shadow-lg transition-all duration-base">
-            <div>
-              <div class="h-12 w-12 rounded-2xl bg-navy text-white flex items-center justify-center mb-8 shadow-sm">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-4">
-                Workflow & Constraint Alignment
-              </h3>
-              <p class="text-lg text-mid-navy leading-relaxed">
-                We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+            <div class="rounded-3xl border border-hair bg-white p-8 sm:p-10 space-y-4 shadow-sm">
+              <h3 class="text-xl font-bold text-navy">Population scale & public trust</h3>
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                Public institutions operate under distinct conditions. They serve entire populations, navigate complex regulatory and accountability environments, and need systems that last beyond the involvement of an external partner. Systems must work for diverse users, integrate with legacy infrastructure, protect public trust and deliver measurable value.
               </p>
             </div>
-            <div class="mt-8 pt-6 border-t border-hair flex items-center gap-2 text-xs uppercase tracking-wider font-bold text-mid-navy">
-              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-              Policy-compliant by design
-            </div>
-          </div>
-
-          <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col justify-between hover:border-smoke hover:shadow-lg transition-all duration-base">
-            <div>
-              <div class="h-12 w-12 rounded-2xl bg-gold/15 text-gold flex items-center justify-center mb-8 shadow-sm">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-4">
-                Durable Institutional Capability
-              </h3>
-              <p class="text-lg text-mid-navy leading-relaxed">
-                We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
+            <div class="rounded-3xl border border-hair bg-white p-8 sm:p-10 space-y-4 shadow-sm">
+              <h3 class="text-xl font-bold text-navy">Institutional ownership</h3>
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery.
               </p>
-            </div>
-            <div class="mt-8 pt-6 border-t border-hair flex items-center gap-2 text-xs uppercase tracking-wider font-bold text-mid-navy">
-              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-              Built to work ourselves out of the role
             </div>
           </div>
         </div>
@@ -148,37 +69,40 @@ const frictionPoints = [
     </section>
 
     {/* ============================ SECTION 3: BEYOND GOVERNMENT ============================ */}
-    <section class="py-20 sm:py-28 bg-white border-b border-hair">
+    <section class="py-16 sm:py-24 bg-white border-b border-hair">
       <div class="container-x">
-        <div class="gradient-navy gradient-sheen rounded-3xl p-10 sm:p-16 lg:p-20 text-white relative overflow-hidden shadow-2xl">
-          <div class="relative z-10 max-w-3xl">
-            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold mb-6 backdrop-blur-sm">
+        <div class="rounded-3xl gradient-navy gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-lg">
+          <div class="relative z-10 max-w-3xl space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
               <span class="h-2 w-2 rounded-full bg-gold"></span>
-              Across Nonprofits & Philanthropy
+              Wider Impact
             </div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-6 !text-white">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white">
               Beyond government
             </h2>
-            <p class="text-lg sm:text-2xl font-light text-white/90 leading-relaxed">
-              The same approach applies to other institutions working at scale, including nonprofits and funders. Across these contexts, our work is guided by a common standard: <span class="text-gold font-bold">AI that is responsible, measurable and institutionally owned.</span>
+            <p class="text-lg sm:text-2xl font-light text-pale-navy leading-relaxed">
+              While our approach is shaped by working with government, the same principles apply across the social and development sectors. Funders, philanthropies, nonprofits and multilateral organisations face similar challenges when moving AI from experimentation to implementation: ensuring equity, managing risk, building internal capacity and demonstrating impact.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    {/* ============================ NEXT SECTION CTA ============================ */}
+    {/* ============================ CTA ============================ */}
     <section class="py-16 sm:py-24 bg-paper">
       <div class="container-x">
-        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-          <div>
+        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+          <div class="max-w-2xl">
             <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
-            <h3 class="text-2xl sm:text-3xl font-bold text-navy">
-              Explore the four principles behind every engagement.
+            <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+              Sixteen years of delivery proof
             </h3>
+            <p class="text-base text-mid-navy leading-relaxed">
+              Explore how our heritage across 65+ countries and 440+ engagements powers our AI practice.
+            </p>
           </div>
-          <Button href="/about/how-we-work" variant="primary" class="whitespace-nowrap">
-            See how we work &rarr;
+          <Button href="/about/16-years-of-proof" variant="primary" class="whitespace-nowrap">
+            See our sixteen years of delivery proof &rarr;
           </Button>
         </div>
       </div>

@@ -1,7 +1,6 @@
 ---
 // SectorCapabilitiesView.astro — Smooth, in-place sector switcher without scroll jumping
 import { sectorDataList, type SectorData } from '../data/capabilities';
-import SectionEyebrow from './SectionEyebrow.astro';
 import Button from './Button.astro';
 import CapabilityWorkbench from './CapabilityWorkbench.astro';
 
@@ -20,7 +19,7 @@ const sectors: SectorData[] = [
 
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="border-b border-hair bg-paper py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+  <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden border-b border-white/10">
     <div class="container-x relative z-10">
       {/* Sector Dynamic Hero Headers */}
       {sectors.map((sec) => {
@@ -31,16 +30,16 @@ const sectors: SectorData[] = [
             class={`sector-hero-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
             data-sector-hero={sec.id}
           >
-            <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-pale-navy/80 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+            <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
               <span class="h-2 w-2 rounded-full bg-gold"></span>
               {sec.pillBadge}
             </div>
 
-            <h1 class="max-w-5xl text-display font-light text-navy leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+            <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
               {sec.heroH1}
             </h1>
 
-            <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-mid-navy leading-relaxed">
+            <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
               {sec.heroLead}
             </p>
           </div>
@@ -50,8 +49,8 @@ const sectors: SectorData[] = [
       {/* Interactive Segmented Audience Switcher */}
       <div class="mt-12 max-w-3xl">
         <div class="w-full">
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-pale-navy/50 rounded-2xl border border-hair">
-            <div class="text-xs font-bold uppercase tracking-wider text-mid-navy px-3 hidden md:block">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-sm">
+            <div class="text-xs font-bold uppercase tracking-wider text-pale-navy/80 px-3 hidden md:block">
               Select Institutional Domain:
             </div>
 
@@ -63,14 +62,14 @@ const sectors: SectorData[] = [
                     type="button"
                     class={`sector-switch-btn flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-small font-bold transition-all duration-base cursor-pointer border ${
                       isActive
-                        ? 'bg-navy text-white shadow-md border-navy is-active'
-                        : 'bg-white/80 text-navy hover:bg-white hover:text-deep-gold border-hair/80'
+                        ? 'bg-white text-navy shadow-md border-white is-active'
+                        : 'bg-white/5 text-white hover:bg-white/15 border-white/10'
                     }`}
                     data-sector-btn={s.id}
                     data-sector-href={s.href}
                     aria-pressed={isActive ? 'true' : 'false'}
                   >
-                    <span class={`sector-switch-dot h-2 w-2 rounded-full ${isActive ? 'bg-gold' : 'bg-mid-navy/40'}`}></span>
+                    <span class={`sector-switch-dot h-2 w-2 rounded-full ${isActive ? 'bg-gold' : 'bg-white/40'}`}></span>
                     <span>{s.label}</span>
                   </button>
                 );
@@ -83,7 +82,7 @@ const sectors: SectorData[] = [
   </section>
 
   {/* ============================ SECTOR CAPABILITIES WORKBENCH ============================ */}
-  <section class="py-20 sm:py-28 bg-white border-b border-hair">
+  <section class="py-16 sm:py-24 bg-paper border-b border-hair">
     <div class="container-x">
       {sectors.map((sec) => {
         const isInit = sec.id === initialSector;
@@ -93,21 +92,15 @@ const sectors: SectorData[] = [
             class={`sector-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
             data-sector-body={sec.id}
           >
-            <div class="max-w-3xl mb-16">
-              <SectionEyebrow label={sec.sectionEyebrow} />
-              <h2 class="mt-3 text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-tight">
-                {sec.sectionTitle}
-              </h2>
-              <p class="mt-4 text-lg sm:text-xl text-mid-navy leading-relaxed">
+            <div class="max-w-4xl mb-12 space-y-4">
+              <div class="text-xs font-bold uppercase tracking-widest text-gold">Capabilities</div>
+              <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
                 {sec.sectionLead}
               </p>
             </div>
 
             <CapabilityWorkbench
-              sectorTitle={sec.label}
-              sectorTag={sec.sectorTag}
               capabilities={sec.capabilities}
-              barriers={sec.barriers}
             />
           </div>
         );
@@ -128,16 +121,16 @@ const sectors: SectorData[] = [
           >
             <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
               <div class="max-w-2xl">
-                <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">{sec.ctaLabel}</div>
-                <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-3">
+                <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Sector Domain</div>
+                <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                   {sec.ctaTitle}
                 </h3>
-                <p class="text-base text-mid-navy leading-relaxed">
+                <p class="text-base text-mid-navy leading-relaxed font-normal">
                   {sec.ctaDesc}
                 </p>
               </div>
               <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap">
-                {sec.ctaButtonText} &rarr;
+                {sec.ctaText}
               </Button>
             </div>
           </div>
@@ -161,21 +154,21 @@ const sectors: SectorData[] = [
       // 1. Update buttons
       buttons.forEach((btn) => {
         const isActive = btn.getAttribute('data-sector-btn') === targetId;
-        btn.classList.toggle('bg-navy', isActive);
-        btn.classList.toggle('text-white', isActive);
+        btn.classList.toggle('bg-white', isActive);
+        btn.classList.toggle('text-navy', isActive);
         btn.classList.toggle('shadow-md', isActive);
-        btn.classList.toggle('border-navy', isActive);
+        btn.classList.toggle('border-white', isActive);
         btn.classList.toggle('is-active', isActive);
 
-        btn.classList.toggle('bg-white/80', !isActive);
-        btn.classList.toggle('text-navy', !isActive);
-        btn.classList.toggle('border-hair/80', !isActive);
+        btn.classList.toggle('bg-white/5', !isActive);
+        btn.classList.toggle('text-white', !isActive);
+        btn.classList.toggle('border-white/10', !isActive);
         btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
 
         const dot = btn.querySelector('.sector-switch-dot');
         if (dot) {
           dot.classList.toggle('bg-gold', isActive);
-          dot.classList.toggle('bg-mid-navy/40', !isActive);
+          dot.classList.toggle('bg-white/40', !isActive);
         }
 
         if (isActive && updateHistory) {
@@ -201,7 +194,7 @@ const sectors: SectorData[] = [
         }
       });
 
-      // 3. Smoothly switch body blocks (workbench & diagnostic)
+      // 3. Smoothly switch body blocks
       bodyBlocks.forEach((body) => {
         const matches = body.getAttribute('data-sector-body') === targetId;
         if (matches) {
