@@ -62,15 +62,28 @@ const socials = [
 
 const columns = [
   {
-    title: 'Explore',
+    title: 'About APLYD',
     links: [
-      { label: 'Case Studies', href: '#ai-in-action' }, // TODO: real destination (§16)
-      { label: 'About Us', href: '#top' },
+      { label: 'Built for Government', href: '/about/built-for-government' },
+      { label: '16 Years of Proof', href: '/about/16-years-of-proof' },
+      { label: 'Purpose & Direction', href: '/about/purpose-and-direction' },
+      { label: 'How We Work', href: '/about/how-we-work' },
+      { label: 'Our Team', href: '/about/people' },
     ],
   },
   {
-    title: 'Company',
+    title: 'Services',
     links: [
+      { label: 'Our Approach', href: '/services/our-approach' },
+      { label: 'For Government', href: '/services/our-capabilities/government' },
+      { label: 'For Nonprofits', href: '/services/our-capabilities/nonprofits' },
+      { label: 'For Philanthropy', href: '/services/our-capabilities/philanthropy' },
+    ],
+  },
+  {
+    title: 'Explore',
+    links: [
+      { label: 'AI in Action', href: '#ai-in-action' },
       { label: 'The Athena Group', href: 'https://www.athenainfonomics.com/' },
       { label: 'Get In Touch', href: '/contact' },
     ],
@@ -90,7 +103,7 @@ const columns = [
          the big mark) gets its own Reveal, staggered, same fade+rise-in-on-
          viewport-entry convention used everywhere else on this page. -->
     <Reveal class="flex flex-wrap items-start gap-x-20 gap-y-12">
-      <a href={linkHref('#top')} aria-label="APLYD — home" class="block shrink-0">
+      <a href="/" aria-label="APLYD — home" class="block shrink-0">
         <span class="block h-[76px] w-auto [&>svg]:h-[76px] [&>svg]:w-auto" set:html={wordmarkWhite} />
       </a>
       {

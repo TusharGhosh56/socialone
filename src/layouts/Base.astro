@@ -20,15 +20,35 @@ interface Props {
 }
 
 const {
-  title = 'APLYD | Applied AI for Governments & Public Institutions',
-  description = 'APLYD helps governments and impact-focused institutions apply artificial intelligence to strengthen public systems, improve decisions, and build lasting capability.',
-  keywords = 'Applied AI, Government AI, Public Sector Artificial Intelligence, Decision Intelligence, Institutional AI Capability, Athena Infonomics, Field Intelligence, AI Evaluation',
+  title = 'APLYD | Applied AI for Governments & Impact-Focused Institutions',
+  description = 'APLYD moves artificial intelligence from pilot to public service—engineering sovereign, field-tested AI solutions and institutional capability for governments, multilaterals, and global impact organizations.',
+  keywords = 'Applied AI, Government AI, Public Sector Artificial Intelligence, Decision Intelligence, Institutional AI Capability, Athena Infonomics, Field Intelligence, AI Evaluation, Sovereign AI Systems, Public Systems AI',
 } = Astro.props;
 
 // Canonical from configured `site` (astro.config.mjs → aplyd.ai). Falls back safely.
 const site = Astro.site ?? new URL('https://aplyd.ai');
+const isHome = Astro.url.pathname === '/';
 const canonical = new URL(Astro.url.pathname, site).href;
 const ogImage = new URL('/og-image.png', site).href;
+
+// Dynamic Path-aware Breadcrumb Schema
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const breadcrumbs = [
+  { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+  ...pathSegments.map((segment, index) => {
+    const itemUrl = new URL('/' + pathSegments.slice(0, index + 1).join('/'), site).href;
+    const formattedName = segment
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+    return {
+      '@type': 'ListItem',
+      position: index + 2,
+      name: segment === 'about' ? 'About APLYD' : formattedName,
+      item: itemUrl,
+    };
+  }),
+];
 
 // --- Unified Schema.org Graph Structured Data (§12) ---
 const schemaGraph = {
@@ -124,12 +144,7 @@ const schemaGraph = {
     {
       '@type': 'BreadcrumbList',
       '@id': `${canonical}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
-        ...(Astro.url.pathname.startsWith('/contact')
-          ? [{ '@type': 'ListItem', position: 2, name: 'Contact', item: canonical }]
-          : []),
-      ],
+      itemListElement: breadcrumbs,
     },
   ],
 };
@@ -174,7 +189,7 @@ const schemaGraph = {
     <script type="application/ld+json" set:html={JSON.stringify(schemaGraph)} />
   </head>
   <body>
-    <Preloader />
+    {isHome && <Preloader />}
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <main id="main">
@@ -182,14 +197,11 @@ const schemaGraph = {
     </main>
     <Footer />
 
-    {/* Page-wide flowing connector line (src/scripts/flowLine.ts). One svg,
-        raw page-pixel coordinates via the "0x1 svg, overflow:visible" trick —
-        no viewBox/scale bookkeeping needed. pointer-events:none so it can
-        never block clicks; z-index sits below the fixed header (z-50) and
-        mobile menu (z-60) but above normal section content. */}
-    <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
-      <path class="flow-line-path" />
-      <g class="flow-line-dots"></g>
-    </svg>
+    {isHome && (
+      <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
+        <path class="flow-line-path" />
+        <g class="flow-line-dots"></g>
+      </svg>
+    )}
   </body>
 </html>

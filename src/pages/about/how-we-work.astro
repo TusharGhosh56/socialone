@@ -1,0 +1,241 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import { Image } from 'astro:assets';
+
+import img01 from '../../assets/images/how-we-work/card_01-web.jpg';
+import img02 from '../../assets/images/how-we-work/card_02-web.jpg';
+import img03 from '../../assets/images/how-we-work/card_03-web.jpg';
+import img04 from '../../assets/images/how-we-work/card_04-web.jpg';
+
+const principles = [
+  {
+    num: '01',
+    phase: 'Embedded Practice',
+    hud: 'LOC: 28.61° N · IN-01',
+    title: 'We work inside the institution',
+    image: img01,
+    alt: 'Embedded delivery team inside government institution',
+    tag: 'Institutional Grounding',
+    paragraphs: [
+      'We work alongside the teams responsible for implementation, aligning with delivery objectives and staying engaged through deployment and beyond. This helps ensure that the system reflects existing workflows, operational requirements and the realities of the institution in which it will be used.',
+      'Effective implementation depends on this context. Solutions designed without an understanding of how work is actually carried out can struggle with adoption. Working within the institution allows those constraints to inform design from the outset.',
+    ],
+    takeaways: [
+      'Aligned with actual frontline workflows',
+      'Continuous co-design with operating staff',
+      'Zero disconnect between lab models and field realities',
+    ],
+  },
+  {
+    num: '02',
+    phase: 'Sovereign Handover',
+    hud: 'SYS: SOVEREIGN_CORE · 02',
+    title: 'We hand the system over',
+    image: img02,
+    alt: 'Capability transfer and workforce training',
+    tag: 'Durable Ownership',
+    paragraphs: [
+      'Capability transfer is built into every engagement. We leave trained teams, documentation and operating routines that enable the institution to manage the system after implementation.',
+      'From the outset, we consider who will operate the system, how it will be supported and maintained, and what capabilities are required to manage it effectively. The objective is durable institutional ownership, not continued dependence on an external provider.',
+    ],
+    takeaways: [
+      'Complete transfer of codebase and documentation',
+      'Dedicated operating routines and staff training',
+      'Freedom from external vendor lock-in',
+    ],
+  },
+  {
+    num: '03',
+    phase: 'Empirical Verification',
+    hud: 'DATA: FIELD_TELEMETRY · 03',
+    title: 'We decide from evidence',
+    image: img03,
+    alt: 'Evidence-driven decision making and field telemetry',
+    tag: 'Continuous Measurement',
+    paragraphs: [
+      'Evidence informs decisions throughout the engagement, from selecting and prioritising use cases to assessing readiness for scale. We combine field data, user experience and measurement to understand how a system performs in practice and what it changes for the people and services it is intended to support.',
+      'This includes looking beyond aggregate performance to identify gaps in coverage, adoption and outcomes. Decisions to improve, continue or scale are based on evidence from implementation rather than demonstration alone.',
+    ],
+    takeaways: [
+      'Real-world telemetry over lab benchmarks',
+      'Granular equity and coverage verification',
+      'Empirical go / no-go scaling gates',
+    ],
+  },
+  {
+    num: '04',
+    phase: 'Structural Assurance',
+    hud: 'AUDIT: INDEPENDENT · 04',
+    title: 'We evaluate independently',
+    image: img04,
+    alt: 'Independent algorithmic evaluation and auditing',
+    tag: 'Independent by Design',
+    paragraphs: [
+      'We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Evaluation is kept structurally separate from delivery.',
+    ],
+    subheading: 'Independent by Design',
+    subParagraphs: [
+      'Evaluation is most useful when its findings are not shaped by an interest in a particular outcome. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with greater independence.',
+      'This approach also enables us to evaluate systems developed by other providers without creating a conflict between evaluation and implementation. The principle applies equally to our own work: systems we build are not evaluated by us.',
+    ],
+    takeaways: [
+      'Zero conflict of interest between build and audit',
+      'Third-party objectivity for leadership decisions',
+      'Unbiased assessment of safety, fairness, and scale',
+    ],
+  },
+];
+---
+
+<Base
+  title="How We Work | Four Principles | APLYD"
+  description="Four principles behind every APLYD engagement, and why each one matters when AI has to work inside a real public institution."
+  keywords="APLYD Principles, AI Delivery Methodology, Embedded AI Practice, Independent AI Evaluation"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · How We Work
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Four principles behind every engagement
+        </h1>
+
+        <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          Technology alone does not create lasting public value. Whether an AI system delivers and endures depends on how it is designed, implemented and measured within the realities of an institution. Four principles guide our work, each addressing a common challenge in taking AI from a pilot to sustained institutional use.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      {/* ============================ 4 PRINCIPLES EDITORIAL SHOWCASE ============================ */}
+      <section class="relative z-10">
+        <div class="container-x space-y-20 lg:space-y-28">
+          {principles.map((p, idx) => (
+            <article class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              
+              {/* Left Column: Principle Narrative */}
+              <div class={`space-y-6 lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs font-bold uppercase tracking-widest text-gold">
+                    Principle {p.num}
+                  </span>
+                  <span class="text-ash/40">·</span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-mid-navy">
+                    {p.phase}
+                  </span>
+                </div>
+
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+                  {p.title}
+                </h2>
+
+                <div class="space-y-4 text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  {p.paragraphs.map((para) => (
+                    <p>{para}</p>
+                  ))}
+                </div>
+
+                {p.subheading && (
+                  <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-6 space-y-3 shadow-xs">
+                    <div class="text-xs font-bold uppercase tracking-widest text-deep-gold">
+                      {p.subheading}
+                    </div>
+                    {p.subParagraphs?.map((subPara) => (
+                      <p class="text-small font-medium text-navy leading-relaxed">{subPara}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* Principle Key Commitments */}
+                <div class="pt-2 space-y-2">
+                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
+                    Institutional Commitments
+                  </div>
+                  <div class="grid grid-cols-1 gap-2">
+                    {p.takeaways.map((item) => (
+                      <div class="flex items-center gap-2.5 text-small font-medium text-navy">
+                        <span class="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-[10px] font-bold text-deep-gold">
+                          ✓
+                        </span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Visual Frame */}
+              <div class={`lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
+                <div class="group relative overflow-hidden rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-2.5 shadow-lg transition-all duration-500 hover:border-gold/40 hover:shadow-xl">
+                  <div class="relative aspect-[16/11] w-full overflow-hidden rounded-2xl bg-navy">
+                    <Image
+                      src={p.image}
+                      alt={p.alt}
+                      width={800}
+                      height={550}
+                      format="webp"
+                      quality={85}
+                      class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/85 via-navy/20 to-transparent"></div>
+                    
+                    {/* Top HUD Tag */}
+                    <div class="absolute top-4 left-4 rounded-full bg-navy/60 backdrop-blur-md px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-pale-navy border border-white/10">
+                      {p.hud}
+                    </div>
+
+                    <div class="absolute bottom-0 inset-x-0 p-6 flex items-center justify-between">
+                      <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-gold block mb-1">
+                          {p.tag}
+                        </span>
+                        <div class="text-small font-bold text-white">
+                          APLYD Operating Standard
+                        </div>
+                      </div>
+                      <span class="rounded-full bg-white/20 backdrop-blur-md px-3 py-1 text-xs font-bold text-white border border-white/20">
+                        0{idx + 1} / 04
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================ CTA ============================ */}
+      <section class="relative z-10">
+        <div class="container-x">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div class="max-w-2xl">
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                Meet the people behind APLYD
+              </h3>
+              <p class="text-base text-mid-navy leading-relaxed font-normal">
+                Explore the leadership, AI engineers, and evaluation specialists who bring these principles into practice.
+              </p>
+            </div>
+            <Button href="/about/people" variant="primary" class="whitespace-nowrap shadow-sm">
+              Meet our team &rarr;
+            </Button>
+          </div>
+        </div>
+      </section>
+    </AtmosphericCanvas>
+  </div>
+</Base>

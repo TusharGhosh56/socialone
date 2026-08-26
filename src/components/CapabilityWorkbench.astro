@@ -1,0 +1,132 @@
+---
+import type { CapabilityItem } from '../data/capabilities';
+
+interface Props {
+  capabilities: CapabilityItem[];
+  sectorId?: string;
+}
+
+const { capabilities, sectorId = 'capabilities' } = Astro.props;
+---
+
+<div class="capability-stack-container relative py-4 pb-28" data-capability-stack data-stack-id={sectorId}>
+  {/* Stacked Cards Track */}
+  <div class="cards-stack-track relative">
+    {capabilities.map((cap, idx) => {
+      const stickyTop = 100 + idx * 32; // Progressive sticky tab offset
+      return (
+        <div
+          class="stack-card-wrapper sticky transition-all duration-200 mb-20 sm:mb-32 last:mb-0"
+          style={`top: ${stickyTop}px; z-index: ${idx + 10};`}
+          data-stack-card={idx}
+        >
+          <article class="stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden">
+            {/* Clean Header Bar */}
+            <div class="flex items-center gap-3 border-b border-hair/70 pb-6 mb-8">
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-navy text-white font-mono text-sm font-bold shadow-sm">
+                {cap.num}
+              </span>
+              <span class="text-xs font-bold uppercase tracking-widest text-gold font-mono">
+                Capability {cap.num}
+              </span>
+            </div>
+
+            {/* 2-Column Balanced Content Grid */}
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+              {/* Left Column: Title & Overview */}
+              <div class="lg:col-span-5 space-y-6">
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-navy leading-tight tracking-tight">
+                  {cap.title}
+                </h3>
+                <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
+                  {cap.p1}
+                </p>
+              </div>
+
+              {/* Right Column: Implementation Detail Container */}
+              <div class="lg:col-span-7">
+                <div class="rounded-2xl border border-hair bg-paper/60 p-6 sm:p-8 lg:p-10">
+                  <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
+                    {cap.p2}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+<style>
+  .stack-card-wrapper {
+    will-change: transform;
+  }
+
+  .stack-card {
+    transform-origin: top center;
+    box-shadow: 0 12px 32px -12px rgba(18, 23, 59, 0.12), 0 24px 48px -18px rgba(18, 23, 59, 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-card-wrapper {
+      position: static !important;
+      top: auto !important;
+      transform: none !important;
+    }
+  }
+</style>
+
+<script>
+  function initCapabilityStacking() {
+    const stacks = document.querySelectorAll<HTMLElement>('[data-capability-stack]');
+    if (!stacks.length) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    function updateStackTransforms() {
+      stacks.forEach((stack) => {
+        const wrappers = stack.querySelectorAll<HTMLElement>('[data-stack-card]');
+        const total = wrappers.length;
+
+        wrappers.forEach((wrapper, idx) => {
+          if (idx === total - 1) return; // Topmost final card stays at scale 1
+
+          const nextWrapper = wrappers[idx + 1];
+          if (!nextWrapper) return;
+
+          const nextRect = nextWrapper.getBoundingClientRect();
+          const targetTop = 100 + (idx + 1) * 32;
+
+          // When the next card reaches near its sticky position
+          if (nextRect.top <= targetTop + 200) {
+            const progress = Math.max(0, Math.min(1, (targetTop + 200 - nextRect.top) / 200));
+            const scale = 1 - progress * 0.04;
+            const brightness = 1 - progress * 0.06;
+            const translateY = progress * -4;
+
+            const card = wrapper.querySelector<HTMLElement>('.stack-card');
+            if (card) {
+              card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+              card.style.filter = `brightness(${brightness})`;
+            }
+          } else {
+            const card = wrapper.querySelector<HTMLElement>('.stack-card');
+            if (card) {
+              card.style.transform = 'scale(1) translateY(0px)';
+              card.style.filter = 'brightness(1)';
+            }
+          }
+        });
+      });
+    }
+
+    window.addEventListener('scroll', updateStackTransforms, { passive: true });
+    window.addEventListener('resize', updateStackTransforms, { passive: true });
+    updateStackTransforms();
+  }
+
+  initCapabilityStacking();
+  document.addEventListener('astro:page-load', initCapabilityStacking);
+</script>
