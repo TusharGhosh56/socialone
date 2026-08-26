@@ -1,0 +1,25 @@
+---
+// CaseStudyConversationCTA.astro — Institutional conversation CTA matching site design system
+import Button from './Button.astro';
+---
+
+<section class="pt-4 pb-16 sm:pt-4 sm:pb-24 relative z-10">
+  <div class="container-x">
+    <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <div class="max-w-2xl">
+        <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">
+          Start a conversation
+        </div>
+        <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-3">
+          Explore how APLYD can support your institution.
+        </h3>
+        <p class="text-base text-mid-navy leading-relaxed">
+          From independent evaluation and system design to sovereign deployment and frontline adoption.
+        </p>
+      </div>
+      <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
+        Get in touch &rarr;
+      </Button>
+    </div>
+  </div>
+</section>

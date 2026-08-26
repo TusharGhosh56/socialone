@@ -307,7 +307,6 @@ const hubs = [
               >
                 Established 2010
               </span>
-              <span class="text-xs text-white/60 font-mono">SOVEREIGN HUB</span>
             </div>
 
             <h4
@@ -399,7 +398,6 @@ const hubs = [
             </svg>
             FT Global Ranking
           </span>
-          <span class="text-xs font-bold text-mid-navy/60 uppercase">Recognized Excellence</span>
         </div>
 
         <h4 class="text-2xl sm:text-3xl font-bold text-navy leading-snug">
@@ -466,14 +464,24 @@ const hubs = [
     background-color: rgba(255, 255, 255, 0.15);
   }
 
-  /* Map Node Active / Hover State */
-  .map-node .node-badge {
+  .map-node,
+  .map-node * {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .map-node:focus,
+  .map-node:focus-visible {
+    outline: none !important;
+  }
+
+  .node-badge {
     opacity: 0;
     transform: translateY(4px);
     transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .map-node:hover .node-badge,
+  .map-node:focus .node-badge,
   .map-node:focus-visible .node-badge,
   .map-node.is-active .node-badge {
     opacity: 1;

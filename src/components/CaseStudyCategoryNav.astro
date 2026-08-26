@@ -1,0 +1,39 @@
+---
+// CaseStudyCategoryNav.astro — Sleek, modern category selector without ugly scrollbars
+interface Props {
+  activeCategory: string;
+}
+
+const { activeCategory } = Astro.props;
+
+const categories = [
+  { id: 'education', label: 'Education', href: '/ai-in-action/education' },
+  { id: 'agriculture', label: 'Agriculture', href: '/ai-in-action/agriculture' },
+  { id: 'msmes', label: 'MSMEs', href: '/ai-in-action/msmes' },
+  { id: 'utilities', label: 'Utilities', href: '/ai-in-action/utilities' },
+  { id: 'public-services-government', label: 'Public Services / Gov', href: '/ai-in-action/public-services-government' },
+  { id: 'monitoring-evaluation-responsible-ai', label: 'M&E / Responsible AI', href: '/ai-in-action/monitoring-evaluation-responsible-ai' },
+];
+---
+
+<nav aria-label="AI in Action Categories" class="w-full">
+  <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 p-1.5 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-md">
+    {categories.map((cat) => {
+      const isActive = activeCategory === cat.id;
+      return (
+        <a
+          href={cat.href}
+          class={`group flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-small font-bold transition-all duration-base no-underline border ${
+            isActive
+              ? 'bg-white text-navy shadow-md border-white'
+              : 'bg-white/10 text-white/90 hover:bg-white/20 hover:text-white border-white/10'
+          }`}
+          aria-current={isActive ? 'page' : undefined}
+        >
+          <span class={`h-1.5 w-1.5 rounded-full transition-colors ${isActive ? 'bg-gold' : 'bg-white/40 group-hover:bg-gold'}`}></span>
+          <span>{cat.label}</span>
+        </a>
+      );
+    })}
+  </div>
+</nav>

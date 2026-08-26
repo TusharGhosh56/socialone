@@ -57,7 +57,47 @@ export const navLinks: NavLink[] = [
       },
     ],
   },
-  { label: 'AI in Action', href: '#ai-in-action' },
+  {
+    label: 'AI in Action',
+    href: '/ai-in-action',
+    children: [
+      {
+        label: 'All Case Studies',
+        href: '/ai-in-action',
+        description: 'Overview of applied AI across public systems.',
+      },
+      {
+        label: 'Education',
+        href: '/ai-in-action/education',
+        description: 'Early-warning models and teacher quality analytics.',
+      },
+      {
+        label: 'Agriculture',
+        href: '/ai-in-action/agriculture',
+        description: 'Farmer advisory hubs and agricultural data governance.',
+      },
+      {
+        label: 'MSMEs & Enterprise',
+        href: '/ai-in-action/msmes',
+        description: 'AI adoption and productivity diagnostics for MSMEs.',
+      },
+      {
+        label: 'Public Services & Government',
+        href: '/ai-in-action/public-services-government',
+        description: 'Citizen grievance routing and urban public delivery.',
+      },
+      {
+        label: 'Utilities & Infrastructure',
+        href: '/ai-in-action/utilities',
+        description: 'Municipal utility telemetry and non-revenue water.',
+      },
+      {
+        label: 'Responsible AI & Assurance',
+        href: '/ai-in-action/monitoring-evaluation-responsible-ai',
+        description: 'Independent algorithmic auditing, fairness, and safety.',
+      },
+    ],
+  },
 ];
 
 export const primaryCta = { label: 'Partner With APLYD', href: '/contact' };
