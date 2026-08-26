@@ -4,16 +4,31 @@ import Button from '../../components/Button.astro';
 
 const sectors = [
   {
+    id: 'gov',
+    num: '01',
     title: 'For government',
+    badge: 'Public Systems',
     desc: 'Building AI into public systems, frontline decision-making and workforce capability, within real policy, data and operational constraints.',
+    impact: 'Equitable citizen delivery at national and state scale.',
+    focus: ['Frontline decision support', 'Sovereign infrastructure', 'Long-term workforce capability'],
   },
   {
+    id: 'ngo',
+    num: '02',
     title: 'For nonprofits',
+    badge: 'Programme Operations',
     desc: 'Connecting programme evidence, partner knowledge and workflows to strengthen strategy, programme operations and delivery.',
+    impact: 'Maximizing frontline programme efficacy and resource efficiency.',
+    focus: ['Partner knowledge graphs', 'Workflow automation', 'Frontline evidence synthesis'],
   },
   {
+    id: 'phil',
+    num: '03',
     title: 'For philanthropy',
+    badge: 'Portfolio Evidence',
     desc: 'Using portfolio evidence and shared infrastructure to strengthen investment decisions, grantee capability and responsible adoption.',
+    impact: 'Catalytic investment targeting and grantee field sustainability.',
+    focus: ['Grantee AI readiness', 'Portfolio evaluation data', 'Responsible AI adoption'],
   },
 ];
 ---
@@ -44,57 +59,96 @@ const sectors = [
 
     {/* ============================ SECTION 1: OUR MISSION ============================ */}
     <section class="py-16 sm:py-24 bg-white border-b border-hair">
-      <div class="container-x space-y-12">
-        <div class="max-w-3xl space-y-4">
-          <div class="text-xs font-bold uppercase tracking-widest text-gold">Our Purpose Today</div>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
-            Our mission
-          </h2>
-        </div>
+      <div class="container-x space-y-14">
+        
+        {/* Mission Monument */}
+        <div class="rounded-3xl border border-hair bg-paper p-8 sm:p-14 lg:p-16 relative overflow-hidden shadow-sm">
+          <div class="space-y-6 max-w-4xl">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+              Our Mission
+            </div>
 
-        {/* Mission Statement Block */}
-        <div class="rounded-3xl border border-hair bg-paper/60 p-8 sm:p-12 lg:p-16 relative overflow-hidden shadow-sm">
-          <div class="border-l-4 border-gold pl-6 sm:pl-10 space-y-6">
-            <blockquote class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-snug">
+            <blockquote class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-snug">
               “To help institutions build the systems, capabilities, and intelligence to make better decisions at scale.”
             </blockquote>
-            <p class="text-base sm:text-lg text-mid-navy leading-relaxed max-w-4xl font-normal">
+
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
               The challenge in public-sector AI is not only developing the technology. It is creating the conditions for institutions to adopt, operate and improve it. We work across that journey, from identifying the decisions and services where AI can add value, to understanding delivery realities, building systems that fit institutional workflows, and measuring what changes in practice.
             </p>
           </div>
         </div>
 
-        {/* 3 Sector Focus Cards */}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-          {sectors.map((sector) => (
-            <div class="rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-4">
-              <h3 class="text-xl sm:text-2xl font-bold text-navy">
-                {sector.title}
-              </h3>
-              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                {sector.desc}
-              </p>
+        {/* 3 Sector Focus Showcase */}
+        <div class="space-y-6">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-gold mb-1">
+              Sector Horizons
             </div>
-          ))}
+            <h2 class="text-2xl sm:text-3xl font-light text-navy">
+              Where we apply our mission
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {sectors.map((sec) => (
+              <div class="rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6 transition-all duration-300 hover:border-gold/50 hover:shadow-md">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between border-b border-hair/60 pb-3">
+                    <span class="text-xs font-bold uppercase tracking-widest text-gold">
+                      Sector {sec.num}
+                    </span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy">
+                      {sec.badge}
+                    </span>
+                  </div>
+
+                  <h3 class="text-2xl font-bold text-navy">
+                    {sec.title}
+                  </h3>
+
+                  <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                    {sec.desc}
+                  </p>
+                </div>
+
+                <div class="pt-4 border-t border-hair/60 space-y-2">
+                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Focus Areas</div>
+                  <div class="space-y-1.5">
+                    {sec.focus.map((f) => (
+                      <div class="flex items-center gap-2 text-xs font-medium text-navy">
+                        <span class="text-gold font-bold">✓</span>
+                        <span>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+
       </div>
     </section>
 
     {/* ============================ SECTION 2: OUR VISION ============================ */}
-    <section class="py-16 sm:py-24 bg-white border-b border-hair">
+    <section class="py-16 sm:py-24 bg-paper border-b border-hair">
       <div class="container-x">
         <div class="gradient-navy gradient-sheen rounded-3xl p-10 sm:p-16 lg:p-20 text-white relative overflow-hidden shadow-2xl">
           <div class="relative z-10 max-w-4xl space-y-8">
             <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
               <span class="h-2 w-2 rounded-full bg-gold"></span>
-              Where We Are Headed
+              Our Vision
             </div>
+
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight">
-              Our vision
+              Where we are headed
             </h2>
+
             <blockquote class="text-2xl sm:text-3xl lg:text-4xl font-light text-white leading-snug border-l-4 border-gold pl-6 sm:pl-8">
               “A future where public institutions are powered by applied intelligence—enabling faster, fairer, and more informed decisions for the populations they serve.”
             </blockquote>
+
             <p class="text-lg sm:text-xl font-light text-pale-navy/90 leading-relaxed max-w-3xl">
               When institutions have the systems and capability to use AI effectively, the impact extends across public services: faster access for citizens, better allocation of public resources, stronger evidence for policy, and decisions shaped by real-time data from the populations being served. That is the future APLYD is working to build.
             </p>
@@ -104,20 +158,20 @@ const sectors = [
     </section>
 
     {/* ============================ CTA ============================ */}
-    <section class="py-16 sm:py-24 bg-paper">
+    <section class="py-16 sm:py-24 bg-white">
       <div class="container-x">
-        <div class="rounded-3xl border border-hair bg-white p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <div class="rounded-3xl border border-hair bg-paper p-8 sm:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div class="max-w-2xl">
             <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
             <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-              How we work
+              How we work in practice
             </h3>
-            <p class="text-base text-mid-navy leading-relaxed">
-              Discover the four principles behind every APLYD engagement and how we ensure durable capability transfer.
+            <p class="text-base text-mid-navy leading-relaxed font-normal">
+              Read the four principles that govern our delivery, sovereign handover, and independent evaluation.
             </p>
           </div>
           <Button href="/about/how-we-work" variant="primary" class="whitespace-nowrap">
-            Learn how we work &rarr;
+            Explore our operating principles &rarr;
           </Button>
         </div>
       </div>

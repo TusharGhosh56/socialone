@@ -1,0 +1,108 @@
+---
+// CaseStudyDossier.astro — Full-Bleed Editorial Case Study Briefing (Zero generic box-in-a-box)
+import type { CaseStudyItem } from '../data/caseStudies';
+
+interface Props {
+  caseStudy: CaseStudyItem;
+  index: number;
+  total: number;
+}
+
+const { caseStudy, index, total } = Astro.props;
+---
+
+<article class="case-study-editorial relative py-10 sm:py-12 first:pt-2 last:pb-4 border-b border-hair/90 last:border-b-0 space-y-10">
+  {/* Header Meta & Index */}
+  <div class="space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-hair">
+      <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-gold">
+        <span>CASE STUDY {String(index + 1).padStart(2, '0')}</span>
+        {total > 1 && <span class="text-ash font-normal">/ {String(total).padStart(2, '0')}</span>}
+        <span class="text-hair">•</span>
+        <span class="text-navy">{caseStudy.sector}</span>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs font-bold text-mid-navy uppercase tracking-widest bg-pale-navy/60 px-3 py-1 rounded-full border border-hair/60">
+        <svg class="h-3.5 w-3.5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{caseStudy.geography}</span>
+      </div>
+    </div>
+
+    {/* H2 Title */}
+    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-[1.12] tracking-tight max-w-5xl">
+      {caseStudy.title}
+    </h2>
+
+    {/* Standalone Executive Summary */}
+    <p class="text-xl sm:text-2xl text-mid-navy font-normal leading-relaxed max-w-4xl pt-2">
+      {caseStudy.summary}
+    </p>
+  </div>
+
+  {/* Structured Metadata Ribbon (Clean Horizontal Table) */}
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 border-y border-hair bg-paper/30">
+    <div class="space-y-1">
+      <span class="text-[0.68rem] uppercase font-bold tracking-[0.14em] text-ash block">Client / Partner</span>
+      <span class="text-base font-bold text-navy block">{caseStudy.client}</span>
+    </div>
+
+    <div class="space-y-1">
+      <span class="text-[0.68rem] uppercase font-bold tracking-[0.14em] text-ash block">Sector</span>
+      <span class="text-base font-semibold text-navy block">{caseStudy.sector}</span>
+    </div>
+
+    <div class="space-y-1">
+      <span class="text-[0.68rem] uppercase font-bold tracking-[0.14em] text-ash block">Capabilities</span>
+      <span class="text-base font-semibold text-navy block">{caseStudy.capabilities}</span>
+    </div>
+
+    <div class="space-y-1">
+      <span class="text-[0.68rem] uppercase font-bold tracking-[0.14em] text-ash block">Engagement Type</span>
+      <span class="text-base font-semibold text-navy block">{caseStudy.type}</span>
+    </div>
+  </div>
+
+  {/* 3-Act Narrative Breakdown */}
+  <div class="space-y-8 pt-4">
+    {/* Grid for Context & What We Did */}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+      {/* 01 Context */}
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 pb-2 border-b border-hair/70">
+          <span class="text-xs uppercase font-bold tracking-[0.14em] text-gold">01</span>
+          <h3 class="text-xl font-bold text-navy">Context</h3>
+        </div>
+        <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+          {caseStudy.context}
+        </p>
+      </div>
+
+      {/* 02 What We Did */}
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 pb-2 border-b border-hair/70">
+          <span class="text-xs uppercase font-bold tracking-[0.14em] text-gold">02</span>
+          <h3 class="text-xl font-bold text-navy">What we did</h3>
+        </div>
+        <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+          {caseStudy.whatWeDid}
+        </p>
+      </div>
+    </div>
+
+    {/* 03 Why It Matters (Full-Width Impact Callout) */}
+    <div class="rounded-3xl gradient-navy gradient-sheen text-white p-8 sm:p-12 lg:p-14 shadow-lg space-y-4 relative overflow-hidden">
+      <div class="flex items-center gap-2">
+        <span class="h-2 w-2 rounded-full bg-gold"></span>
+        <span class="text-xs uppercase font-bold tracking-[0.16em] text-gold">03</span>
+        <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+          Why it matters
+        </h3>
+      </div>
+      <p class="text-base sm:text-xl text-pale-navy font-normal leading-relaxed max-w-4xl pt-1">
+        {caseStudy.whyItMatters}
+      </p>
+    </div>
+  </div>
+</article>

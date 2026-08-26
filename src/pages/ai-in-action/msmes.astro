@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import { caseStudyCategories } from '../../data/caseStudies';
+import AiInActionCategoryView from '../../components/AiInActionCategoryView.astro';
+
+const data = caseStudyCategories.msmes;
+---
+
+<Base
+  title={data.metaTitle}
+  description={data.metaDescription}
+  keywords="AI for MSMEs, IndiaAI Mission, Small Manufacturer AI Readiness, AI Adoption Roadmap, Enterprise AI Diagnostics"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    <AiInActionCategoryView initialCategory="msmes" />
+  </div>
+</Base>
