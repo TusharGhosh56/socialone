@@ -1,0 +1,302 @@
+---
+// ApproachStageExplorer.astro — Interactive 4-Stage Delivery System & Architecture Studio
+interface Stage {
+  id: string;
+  num: string;
+  phase: string;
+  title: string;
+  body: string;
+  focus: string;
+  deliverables: string[];
+  nodes: { label: string; sub: string; type: 'active' | 'gate' | 'flow' }[];
+}
+
+const stages: Stage[] = [
+  {
+    id: 'explore',
+    num: '01',
+    phase: 'Explore',
+    title: 'Strategy and direction',
+    body: 'We help institutions identify where AI can deliver measurable public value. This starts with the problem: understanding operational bottlenecks, the decisions being made, and the evidence needed to support them. We assess institutional readiness, evaluate available data, and define use cases with clear outcomes and delivery paths.',
+    focus: 'Starts with the problem: understanding operational bottlenecks and the decisions being made.',
+    deliverables: [
+      'Understanding operational bottlenecks',
+      'Assessing institutional readiness',
+      'Evaluating available data & evidence',
+      'Defining use cases with clear delivery paths',
+    ],
+    nodes: [
+      { label: 'Operational Bottlenecks', sub: 'Understand decisions being made', type: 'active' },
+      { label: 'Institutional Readiness', sub: 'Assess institutional capacity', type: 'active' },
+      { label: 'Data Evaluation', sub: 'Evaluate available data & evidence', type: 'flow' },
+      { label: 'Defined Delivery Path', sub: 'Clear outcomes & delivery path', type: 'gate' },
+    ],
+  },
+  {
+    id: 'design',
+    num: '02',
+    phase: 'Design',
+    title: 'Field and delivery',
+    body: 'Before building, we examine the environment in which the system will operate. This means understanding frontline workflows, user needs, connectivity and operational constraints. We design systems that integrate with existing processes, address data quality and representation, and account for the realities of field implementation.',
+    focus: 'Examines the environment in which the system will operate before building.',
+    deliverables: [
+      'Understanding frontline workflows & user needs',
+      'Accounting for connectivity & operational constraints',
+      'Integrating with existing processes',
+      'Addressing data quality & representation',
+    ],
+    nodes: [
+      { label: 'Frontline Workflows', sub: 'Understand frontline user needs', type: 'active' },
+      { label: 'Operating Constraints', sub: 'Examine connectivity & constraints', type: 'active' },
+      { label: 'Process Integration', sub: 'Integrate with existing processes', type: 'flow' },
+      { label: 'Field Reality Check', sub: 'Account for field implementation', type: 'gate' },
+    ],
+  },
+  {
+    id: 'deliver',
+    num: '03',
+    phase: 'Deliver',
+    title: 'Design, build and scale',
+    body: 'We build production-ready systems designed for institutional use. We work alongside existing teams throughout implementation, ensuring solutions fit operational realities. Every engagement includes capability transfer: leaving institutions with the technical infrastructure, documentation and trained staff to own and manage the system.',
+    focus: 'Every engagement includes capability transfer to own and manage the system.',
+    deliverables: [
+      'Production-ready systems for institutional use',
+      'Working alongside existing teams throughout implementation',
+      'Leaving institutions with technical infrastructure',
+      'Documentation & trained staff for institutional ownership',
+    ],
+    nodes: [
+      { label: 'Production System', sub: 'Designed for institutional use', type: 'active' },
+      { label: 'Embedded Implementation', sub: 'Work alongside existing teams', type: 'active' },
+      { label: 'Technical Infrastructure', sub: 'Complete infrastructure & docs', type: 'flow' },
+      { label: 'Institutional Ownership', sub: 'Trained staff to own and manage', type: 'gate' },
+    ],
+  },
+  {
+    id: 'assure',
+    num: '04',
+    phase: 'Assure',
+    title: 'Evaluation and assurance',
+    body: 'We evaluate whether systems work as intended in practice. We conduct rigorous, independent assessments of performance, accuracy, fairness and user adoption. Crucially, evaluation is kept separate from delivery: we only evaluate systems we did not build, giving institutions objective evidence to inform decisions about continuation, refinement or scale.',
+    focus: 'Crucially, evaluation is kept separate from delivery to provide objective evidence.',
+    deliverables: [
+      'Rigorous, independent assessments of performance',
+      'Evaluating accuracy, fairness and user adoption',
+      'Structurally separate evaluation from delivery',
+      'Objective evidence for continuation, refinement or scale',
+    ],
+    nodes: [
+      { label: 'Independent Assessment', sub: 'Only evaluate systems we did not build', type: 'active' },
+      { label: 'Performance & Accuracy', sub: 'Assess accuracy, fairness & adoption', type: 'active' },
+      { label: 'Objective Evidence', sub: 'Evidence from real-world practice', type: 'flow' },
+      { label: 'Continuation Decision', sub: 'Inform continuation, refinement or scale', type: 'gate' },
+    ],
+  },
+];
+---
+
+<div class="stage-explorer w-full space-y-10" data-stage-explorer>
+  {/* ===================== 1. Interactive Stage Selector Bar ===================== */}
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-hair shadow-sm">
+    {stages.map((stage, idx) => (
+      <button
+        type="button"
+        class={`stage-tab group relative flex flex-col p-4 sm:p-5 rounded-xl text-left transition-all duration-300 ${
+          idx === 0 ? 'is-active' : ''
+        }`}
+        data-stage-trigger={stage.id}
+        data-index={idx}
+        aria-selected={idx === 0 ? 'true' : 'false'}
+      >
+        <div class="flex items-center justify-between w-full mb-2">
+          <span class="stage-tab-num text-xs font-bold uppercase tracking-widest text-gold">
+            Stage {stage.num}
+          </span>
+          <span class="stage-tab-badge text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors">
+            {stage.phase}
+          </span>
+        </div>
+        <div class="stage-tab-title text-base sm:text-lg font-bold leading-tight transition-colors">
+          {stage.title}
+        </div>
+      </button>
+    ))}
+  </div>
+
+  {/* ===================== 2. Dynamic Stage Canvas ===================== */}
+  <div class="relative min-h-[520px]">
+    {stages.map((stage, idx) => (
+      <div
+        class={`stage-panel rounded-3xl border border-hair bg-white p-6 sm:p-10 lg:p-14 shadow-sm transition-all duration-500 ${
+          idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
+        }`}
+        data-stage-panel={stage.id}
+      >
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          
+          {/* Left Column: Stage Narrative & Official Client Copy (7 cols) */}
+          <div class="lg:col-span-7 space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+              Stage {stage.num} · {stage.phase} Phase
+            </div>
+
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+              {stage.title}
+            </h2>
+
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+              {stage.body}
+            </p>
+
+            {/* Strategic Focus Callout */}
+            <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-5 space-y-1.5">
+              <div class="text-xs font-bold uppercase tracking-wider text-deep-gold">Core Focus</div>
+              <p class="text-small font-medium text-navy leading-relaxed">
+                {stage.focus}
+              </p>
+            </div>
+
+            {/* Deliverables Checklist */}
+            <div class="pt-4 space-y-3">
+              <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Key Outcomes</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {stage.deliverables.map((item) => (
+                  <div class="flex items-start gap-2.5 text-small font-medium text-navy bg-paper/60 p-3 rounded-xl border border-hair">
+                    <span class="text-gold font-bold mt-0.5">✓</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Architectural Pipeline Studio (5 cols) */}
+          <div class="lg:col-span-5 flex flex-col justify-between rounded-2xl bg-institutional-grid text-white p-6 sm:p-8 shadow-xl border border-white/10 relative overflow-hidden">
+            <div class="relative z-10 space-y-6">
+              <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="text-xs font-bold uppercase tracking-widest text-gold">
+                  Delivery Architecture
+                </div>
+                <div class="text-[11px] font-mono uppercase text-pale-navy/70">
+                  Stage Flow
+                </div>
+              </div>
+
+              {/* Connected Stage Nodes */}
+              <div class="space-y-3 relative">
+                {/* Vertical connecting line */}
+                <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-white/20 -z-0"></div>
+
+                {stage.nodes.map((node, nIdx) => (
+                  <div class="relative z-10 flex items-start gap-3.5 bg-white/5 border border-white/10 p-3.5 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/40">
+                    <div class={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold ${
+                      node.type === 'gate'
+                        ? 'bg-gold text-navy shadow-md'
+                        : 'bg-white/15 text-white'
+                    }`}>
+                      {nIdx + 1}
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <div class="text-small font-bold text-white leading-tight flex items-center justify-between">
+                        <span>{node.label}</span>
+                        {node.type === 'gate' && (
+                          <span class="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-gold/20 text-gold border border-gold/30">
+                            Decision
+                          </span>
+                        )}
+                      </div>
+                      <div class="text-xs text-pale-navy/70 leading-snug mt-0.5">
+                        {node.sub}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Handover Guarantee footer */}
+              <div class="border-t border-white/10 pt-4 flex items-center justify-between text-xs text-pale-navy/80">
+                <span>Implementation Standard</span>
+                <span class="font-bold text-gold">Institutional Handover</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .stage-tab {
+    background-color: rgba(245, 245, 242, 0.6);
+    color: var(--navy);
+  }
+  .stage-tab .stage-tab-title {
+    color: var(--navy);
+  }
+  .stage-tab .stage-tab-badge {
+    background-color: var(--white);
+    color: var(--mid-navy);
+    border: 1px solid var(--hair);
+  }
+  .stage-tab:hover {
+    background-color: var(--paper);
+  }
+
+  .stage-tab.is-active {
+    background-color: var(--deep-navy) !important;
+    box-shadow: 0 10px 25px -5px rgba(26, 33, 80, 0.35);
+  }
+  .stage-tab.is-active .stage-tab-title {
+    color: var(--white) !important;
+  }
+  .stage-tab.is-active .stage-tab-badge {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: var(--pale-navy) !important;
+    border-color: transparent !important;
+  }
+</style>
+
+<script>
+  function initStageExplorer() {
+    const root = document.querySelector('[data-stage-explorer]');
+    if (!root) return;
+
+    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-stage-trigger]');
+    const panels = root.querySelectorAll<HTMLElement>('[data-stage-panel]');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.getAttribute('data-stage-trigger');
+
+        // Update tabs active state
+        tabs.forEach((t) => {
+          const isActive = t === tab;
+          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          if (isActive) {
+            t.classList.add('is-active');
+          } else {
+            t.classList.remove('is-active');
+          }
+        });
+
+        // Update panels
+        panels.forEach((p) => {
+          if (p.getAttribute('data-stage-panel') === targetId) {
+            p.classList.remove('hidden', 'opacity-0');
+            p.classList.add('block', 'opacity-100');
+          } else {
+            p.classList.remove('block', 'opacity-100');
+            p.classList.add('hidden', 'opacity-0');
+          }
+        });
+      });
+    });
+  }
+
+  // Run on page load
+  initStageExplorer();
+  document.addEventListener('astro:page-load', initStageExplorer);
+</script>

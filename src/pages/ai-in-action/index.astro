@@ -1,0 +1,102 @@
+---
+import Base from '../../layouts/Base.astro';
+import { caseStudyCategories } from '../../data/caseStudies';
+import CaseStudyCategoryNav from '../../components/CaseStudyCategoryNav.astro';
+import CaseStudyConversationCTA from '../../components/CaseStudyConversationCTA.astro';
+import Button from '../../components/Button.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+
+const categories = Object.values(caseStudyCategories);
+---
+
+<Base
+  title="AI in Action | Applied Case Studies & Evidence | APLYD"
+  description="Explore APLYD's portfolio of applied AI work across Education, Agriculture, MSMEs, Utilities, Public Services, and Responsible AI Evaluation."
+  keywords="APLYD Case Studies, Applied AI in Action, Government AI Deployments, Responsible AI Evaluation"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* Hero Section */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          AI in Action · Case Studies Directory
+        </div>
+
+        <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Applied AI across institutions and public systems
+        </h1>
+
+        <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+          Explore our applied work across education, agriculture, small business adoption, municipal services, utilities, and independent AI assurance.
+        </p>
+
+        <div class="mt-12 max-w-4xl">
+          <CaseStudyCategoryNav activeCategory="all" />
+        </div>
+      </div>
+    </section>
+
+    {/* Rich Atmospheric Canvas */}
+    <AtmosphericCanvas>
+      {/* All Categories Grid */}
+      <section class="relative z-10">
+        <div class="container-x">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {categories.map((cat, idx) => (
+              <div
+                class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm hover:border-gold/40 hover:shadow-xl transition-all duration-base flex flex-col justify-between group"
+                data-card-spotlight
+              >
+                <div>
+                  <div class="flex items-center justify-between gap-4 mb-6">
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-navy">
+                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                      {cat.caseStudies.length} Case {cat.caseStudies.length === 1 ? 'Study' : 'Studies'}
+                    </span>
+                    <span class="text-2xl font-serif font-light text-gold">0{idx + 1}</span>
+                  </div>
+
+                  <h2 class="text-2xl sm:text-3xl font-bold text-navy mb-3">
+                    {cat.title}
+                  </h2>
+
+                  <p class="text-sm sm:text-base text-mid-navy leading-relaxed mb-8">
+                    {cat.lead}
+                  </p>
+
+                  <div class="pt-6 border-t border-hair/80 mb-8">
+                    <div class="text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-3">
+                      Featured Implementations:
+                    </div>
+                    <ul class="space-y-2 text-xs sm:text-sm font-bold text-navy">
+                      {cat.caseStudies.map((cs) => (
+                        <li class="flex items-center gap-2">
+                          <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
+                          <span class="line-clamp-1">{cs.title}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <Button href={`/ai-in-action/${cat.slug}`} variant="outline" class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-navy group-hover:!text-white group-hover:!border-navy transition-all">
+                  <span>Explore {cat.navLabel}</span>
+                  <span class="inline-block transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
+                </Button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Start a conversation CTA */}
+      <section class="relative z-10">
+        <CaseStudyConversationCTA />
+      </section>
+    </AtmosphericCanvas>
+  </div>
+</Base>

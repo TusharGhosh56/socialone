@@ -1,365 +1,132 @@
 ---
-// CapabilityWorkbench.astro — Interactive Capability Studio, Blueprint Engine & Diagnostic
-import { Image } from 'astro:assets';
-
-export interface CapabilityItem {
-  num: string;
-  id: string;
-  title: string;
-  tag: string;
-  lead: string;
-  p1: string;
-  p2: string;
-  highlights: string[];
-  flowSteps: { title: string; desc: string }[];
-  caseSnippet?: {
-    title: string;
-    metric: string;
-    label: string;
-    imageSrc?: string;
-  };
-}
-
-export interface InstitutionalBarrier {
-  id: string;
-  title: string;
-  symptom: string;
-  solution: string;
-  mechanism: string;
-}
+import type { CapabilityItem } from '../data/capabilities';
 
 interface Props {
-  sectorTitle: string;
-  sectorTag: string;
   capabilities: CapabilityItem[];
-  barriers: InstitutionalBarrier[];
+  sectorId?: string;
 }
 
-const { sectorTitle, sectorTag, capabilities, barriers } = Astro.props;
+const { capabilities, sectorId = 'capabilities' } = Astro.props;
 ---
 
-<div class="capability-workbench w-full space-y-16" data-capability-workbench>
-  {/* ==================== 1. CAPABILITY BLUEPRINT STUDIO ==================== */}
-  <div class="space-y-8">
-    {/* Capability Selector Tabs */}
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 p-2 bg-pale-navy/50 rounded-2xl border border-hair">
-      {capabilities.map((cap, idx) => (
-        <button
-          type="button"
-          class={`cap-tab-btn group flex flex-col items-start p-4 sm:p-5 rounded-xl text-left transition-all duration-base border ${
-            idx === 0 ? 'is-active' : ''
-          }`}
-          data-cap-target={cap.id}
-          aria-selected={idx === 0 ? 'true' : 'false'}
-        >
-          <div class="flex items-center justify-between w-full mb-2">
-            <span class="text-xs font-bold uppercase tracking-widest text-gold">
-              0{idx + 1} · {cap.tag}
-            </span>
-            <span class="h-2 w-2 rounded-full bg-gold/60 group-[.is-active]:bg-gold group-[.is-active]:ring-4 group-[.is-active]:ring-gold/20"></span>
-          </div>
-          <span class="cap-title text-sm sm:text-base font-bold transition-colors line-clamp-1">
-            {cap.title}
-          </span>
-        </button>
-      ))}
-    </div>
-
-    {/* Capability Interactive Panels */}
-    <div class="relative">
-      {capabilities.map((cap, idx) => (
+<div class="capability-stack-container relative py-4 pb-28" data-capability-stack data-stack-id={sectorId}>
+  {/* Stacked Cards Track */}
+  <div class="cards-stack-track relative">
+    {capabilities.map((cap, idx) => {
+      const stickyTop = 100 + idx * 32; // Progressive sticky tab offset
+      return (
         <div
-          id={`cap-panel-${cap.id}`}
-          class={`cap-panel transition-all duration-base ${
-            idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
-          }`}
-          data-cap-panel={cap.id}
+          class="stack-card-wrapper sticky transition-all duration-200 mb-20 sm:mb-32 last:mb-0"
+          style={`top: ${stickyTop}px; z-index: ${idx + 10};`}
+          data-stack-card={idx}
         >
-          <div class="rounded-3xl border border-hair bg-white p-8 sm:p-12 lg:p-14 shadow-sm" data-card-spotlight>
-            {/* Header Area */}
-            <div class="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-hair">
-              <div class="flex items-center gap-4">
-                <span class="text-4xl sm:text-5xl font-light text-gold font-serif">{cap.num}</span>
-                <div>
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-navy mb-1">
-                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                    {sectorTag} · Capability {cap.num}
-                  </span>
-                  <h3 class="text-2xl sm:text-4xl font-black text-navy">{cap.title}</h3>
-                </div>
-              </div>
-              <div class="text-right hidden sm:block">
-                <span class="text-xs uppercase font-bold tracking-widest text-mid-navy/70 block">Discipline</span>
-                <span class="text-xs font-bold text-navy bg-paper px-3 py-1.5 rounded-lg border border-hair inline-block mt-1">
-                  {cap.tag}
-                </span>
-              </div>
+          <article class="stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden">
+            {/* Clean Header Bar */}
+            <div class="flex items-center gap-3 border-b border-hair/70 pb-6 mb-8">
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-navy text-white font-mono text-sm font-bold shadow-sm">
+                {cap.num}
+              </span>
+              <span class="text-xs font-bold uppercase tracking-widest text-gold font-mono">
+                Capability {cap.num}
+              </span>
             </div>
 
-            {/* Architecture Pipeline Flow */}
-            <div class="my-8 p-6 rounded-2xl bg-paper/80 border border-hair">
-              <div class="flex items-center justify-between mb-4">
-                <span class="text-xs uppercase font-bold tracking-widest text-mid-navy">
-                  Deployment Architecture & Information Flow
-                </span>
-                <span class="text-xs font-medium text-mid-navy/70">
-                  Four-Step Progression
-                </span>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {cap.flowSteps.map((step, sIdx) => (
-                  <div class="relative flex flex-col justify-between p-4 rounded-xl bg-white border border-hair/90 shadow-xs">
-                    <div>
-                      <div class="flex items-center justify-between mb-2">
-                        <span class="text-[0.7rem] font-bold uppercase tracking-wider text-mid-navy/70">
-                          Step {sIdx + 1}
-                        </span>
-                        <span class="h-2 w-2 rounded-full bg-navy/60"></span>
-                      </div>
-                      <h4 class="text-sm font-bold text-navy mb-1">{step.title}</h4>
-                      <p class="text-xs text-mid-navy font-normal">{step.desc}</p>
-                    </div>
-                    {sIdx < cap.flowSteps.length - 1 && (
-                      <div class="hidden lg:block absolute -right-2 top-1/2 -translate-y-1/2 z-10 text-gold text-xs font-bold">
-                        →
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Content Body & Deliverables Matrix */}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              <div class="lg:col-span-7 space-y-6">
-                <p class="text-base sm:text-lg text-navy font-medium leading-relaxed">
-                  {cap.lead}
-                </p>
-                <p class="text-base text-mid-navy leading-relaxed">
+            {/* 2-Column Balanced Content Grid */}
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
+              {/* Left Column: Title & Overview */}
+              <div class="lg:col-span-5 space-y-6">
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-navy leading-tight tracking-tight">
+                  {cap.title}
+                </h3>
+                <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
                   {cap.p1}
                 </p>
-                <p class="text-base text-mid-navy leading-relaxed">
-                  {cap.p2}
-                </p>
               </div>
 
-              <div class="lg:col-span-5 space-y-6">
-                {/* Deliverables Box */}
-                <div class="rounded-2xl border border-hair bg-paper p-6">
-                  <div class="flex items-center gap-2 text-xs uppercase font-bold tracking-wider text-navy mb-3">
-                    <span class="h-2 w-2 rounded-full bg-gold"></span>
-                    Delivered Capabilities & Controls:
-                  </div>
-                  <div class="space-y-2.5">
-                    {cap.highlights.map((h) => (
-                      <div class="flex items-start gap-2.5 text-xs font-bold text-navy bg-white p-3 rounded-xl border border-hair shadow-xs">
-                        <svg class="h-4 w-4 text-gold shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                        </svg>
-                        <span>{h}</span>
-                      </div>
-                    ))}
-                  </div>
+              {/* Right Column: Implementation Detail Container */}
+              <div class="lg:col-span-7">
+                <div class="rounded-2xl border border-hair bg-paper/60 p-6 sm:p-8 lg:p-10">
+                  <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
+                    {cap.p2}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
+          </article>
         </div>
-      ))}
-    </div>
-  </div>
-
-  {/* ==================== 2. INTERACTIVE BARRIER RESOLVER DIAGNOSTIC ==================== */}
-  <div class="rounded-3xl border border-hair bg-navy text-white p-8 sm:p-12 lg:p-14 shadow-xl">
-    <div class="max-w-3xl mb-8">
-      <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-gold mb-3">
-        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-        Institutional Diagnostic
-      </div>
-      <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
-        Overcoming the standard failure modes of institutional AI
-      </h3>
-      <p class="text-sm sm:text-base text-white/80 mt-2">
-        Select a common operational barrier below to inspect how APLYD's architecture resolves it in practice:
-      </p>
-    </div>
-
-    {/* Barrier Selector Buttons */}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
-      {barriers.map((bar, bIdx) => (
-        <button
-          type="button"
-          class={`barrier-btn group p-4 rounded-xl text-left transition-all duration-base border ${
-            bIdx === 0 ? 'is-active' : ''
-          }`}
-          data-barrier-target={bar.id}
-          aria-selected={bIdx === 0 ? 'true' : 'false'}
-        >
-          <span class="text-[0.7rem] uppercase font-bold tracking-widest text-gold block mb-1">
-            Barrier 0{bIdx + 1}
-          </span>
-          <span class="barrier-title text-xs sm:text-sm font-bold block">
-            {bar.title}
-          </span>
-        </button>
-      ))}
-    </div>
-
-    {/* Barrier Solution Panels */}
-    <div>
-      {barriers.map((bar, bIdx) => (
-        <div
-          id={`barrier-panel-${bar.id}`}
-          class={`barrier-panel transition-all duration-base ${
-            bIdx === 0 ? 'block opacity-100' : 'hidden opacity-0'
-          }`}
-          data-barrier-panel={bar.id}
-        >
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 sm:p-8 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md">
-            <div class="lg:col-span-5 space-y-3">
-              <span class="text-xs uppercase font-bold tracking-wider text-gold block">
-                The Institutional Challenge
-              </span>
-              <h4 class="text-xl sm:text-2xl font-bold text-white">
-                {bar.title}
-              </h4>
-              <p class="text-xs sm:text-sm text-white/80 leading-relaxed">
-                {bar.symptom}
-              </p>
-            </div>
-
-            <div class="lg:col-span-7 space-y-4 border-t lg:border-t-0 lg:border-l border-white/15 pt-4 lg:pt-0 lg:pl-6">
-              <span class="text-xs uppercase font-bold tracking-wider text-gold block">
-                APLYD Architectural Resolution
-              </span>
-              <p class="text-sm sm:text-base text-white font-medium leading-relaxed">
-                {bar.solution}
-              </p>
-              <div class="p-3.5 rounded-xl bg-white/10 border border-white/10 text-xs text-white/90">
-                <span class="text-gold font-bold">Verifiable Mechanism:</span> {bar.mechanism}
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+      );
+    })}
   </div>
 </div>
 
 <style>
-  /* Capability Tab Buttons */
-  .cap-tab-btn {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #232B65;
-    border-color: rgba(228, 228, 223, 0.8);
-  }
-  .cap-tab-btn:not(.is-active):hover {
-    background-color: #ffffff;
-    border-color: #d1d5db;
-  }
-  .cap-tab-btn.is-active {
-    background-color: #232B65 !important;
-    color: #ffffff !important;
-    border-color: #232B65 !important;
-    box-shadow: 0 10px 25px -5px rgba(35, 43, 101, 0.25) !important;
-  }
-  .cap-tab-btn.is-active .cap-title {
-    color: #ffffff !important;
-  }
-  .cap-tab-btn:not(.is-active) .cap-title {
-    color: #232B65;
+  .stack-card-wrapper {
+    will-change: transform;
   }
 
-  /* Barrier Tab Buttons */
-  .barrier-btn {
-    background-color: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.9);
-    border-color: rgba(255, 255, 255, 0.15);
+  .stack-card {
+    transform-origin: top center;
+    box-shadow: 0 12px 32px -12px rgba(18, 23, 59, 0.12), 0 24px 48px -18px rgba(18, 23, 59, 0.08);
   }
-  .barrier-btn:not(.is-active):hover {
-    background-color: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.25);
-  }
-  .barrier-btn.is-active {
-    background-color: #ffffff !important;
-    color: #232B65 !important;
-    border-color: #ffffff !important;
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2) !important;
-  }
-  .barrier-btn.is-active .barrier-title {
-    color: #232B65 !important;
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-card-wrapper {
+      position: static !important;
+      top: auto !important;
+      transform: none !important;
+    }
   }
 </style>
 
 <script>
-  function initCapabilityWorkbench() {
-    const roots = document.querySelectorAll<HTMLElement>('[data-capability-workbench]');
-    if (!roots.length) return;
+  function initCapabilityStacking() {
+    const stacks = document.querySelectorAll<HTMLElement>('[data-capability-stack]');
+    if (!stacks.length) return;
 
-    roots.forEach((root) => {
-      // 1. Capability Tabs
-      const capBtns = root.querySelectorAll<HTMLButtonElement>('[data-cap-target]');
-      const capPanels = root.querySelectorAll<HTMLElement>('[data-cap-panel]');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-      capBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const target = btn.getAttribute('data-cap-target');
+    function updateStackTransforms() {
+      stacks.forEach((stack) => {
+        const wrappers = stack.querySelectorAll<HTMLElement>('[data-stack-card]');
+        const total = wrappers.length;
 
-          capBtns.forEach((b) => {
-            const isActive = b === btn;
-            b.classList.toggle('is-active', isActive);
-            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          });
+        wrappers.forEach((wrapper, idx) => {
+          if (idx === total - 1) return; // Topmost final card stays at scale 1
 
-          capPanels.forEach((p) => {
-            const matches = p.getAttribute('data-cap-panel') === target;
-            if (matches) {
-              p.classList.remove('hidden');
-              requestAnimationFrame(() => {
-                p.classList.remove('opacity-0');
-                p.classList.add('opacity-100');
-              });
-            } else {
-              p.classList.add('hidden', 'opacity-0');
-              p.classList.remove('opacity-100');
+          const nextWrapper = wrappers[idx + 1];
+          if (!nextWrapper) return;
+
+          const nextRect = nextWrapper.getBoundingClientRect();
+          const targetTop = 100 + (idx + 1) * 32;
+
+          // When the next card reaches near its sticky position
+          if (nextRect.top <= targetTop + 200) {
+            const progress = Math.max(0, Math.min(1, (targetTop + 200 - nextRect.top) / 200));
+            const scale = 1 - progress * 0.04;
+            const brightness = 1 - progress * 0.06;
+            const translateY = progress * -4;
+
+            const card = wrapper.querySelector<HTMLElement>('.stack-card');
+            if (card) {
+              card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+              card.style.filter = `brightness(${brightness})`;
             }
-          });
+          } else {
+            const card = wrapper.querySelector<HTMLElement>('.stack-card');
+            if (card) {
+              card.style.transform = 'scale(1) translateY(0px)';
+              card.style.filter = 'brightness(1)';
+            }
+          }
         });
       });
+    }
 
-      // 2. Barrier Tabs
-      const barBtns = root.querySelectorAll<HTMLButtonElement>('[data-barrier-target]');
-      const barPanels = root.querySelectorAll<HTMLElement>('[data-barrier-panel]');
-
-      barBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const target = btn.getAttribute('data-barrier-target');
-
-          barBtns.forEach((b) => {
-            const isActive = b === btn;
-            b.classList.toggle('is-active', isActive);
-            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          });
-
-          barPanels.forEach((p) => {
-            const matches = p.getAttribute('data-barrier-panel') === target;
-            if (matches) {
-              p.classList.remove('hidden');
-              requestAnimationFrame(() => {
-                p.classList.remove('opacity-0');
-                p.classList.add('opacity-100');
-              });
-            } else {
-              p.classList.add('hidden', 'opacity-0');
-              p.classList.remove('opacity-100');
-            }
-          });
-        });
-      });
-    });
+    window.addEventListener('scroll', updateStackTransforms, { passive: true });
+    window.addEventListener('resize', updateStackTransforms, { passive: true });
+    updateStackTransforms();
   }
 
-  initCapabilityWorkbench();
-  document.addEventListener('astro:page-load', initCapabilityWorkbench);
+  initCapabilityStacking();
+  document.addEventListener('astro:page-load', initCapabilityStacking);
 </script>
