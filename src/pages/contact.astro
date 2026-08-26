@@ -11,6 +11,7 @@
 // must be on the Lambda's ALLOWED_ORIGIN list or CORS will reject it.
 import Base from '../layouts/Base.astro';
 import Reveal from '../components/Reveal.astro';
+import AtmosphericCanvas from '../components/AtmosphericCanvas.astro';
 import { contactEmails, offices } from '../data/contactInfo';
 import { serviceOptions, enquiryOptions } from '../data/contactOptions';
 import { FIELD_LIMITS } from '../data/contactLimits';
@@ -246,8 +247,9 @@ import { FIELD_LIMITS } from '../data/contactLimits';
     </section>
 
     {/* ============================ 2. OUR OFFICES ============================ */}
-    <section aria-labelledby="offices-h2" class="bg-off-white py-14 sm:py-20">
-      <div class="container-x">
+    <AtmosphericCanvas>
+      <section aria-labelledby="offices-h2" class="relative z-10">
+        <div class="container-x">
         <div class="mb-10 max-w-2xl">
           <Reveal>
             <span class="text-eyebrow font-bold uppercase tracking-[0.14em] text-deep-gold">Global Presence</span>
@@ -309,10 +311,10 @@ import { FIELD_LIMITS } from '../data/contactLimits';
               referrerpolicy="no-referrer-when-downgrade"
             />
           </Reveal>
-        </div>
       </div>
     </section>
-  </div>
+  </AtmosphericCanvas>
+</div>
 </Base>
 
 <style>

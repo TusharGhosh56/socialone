@@ -1,0 +1,231 @@
+---
+// PilotVsInstitutionalToggle.astro — Interactive Comparison Switcher
+const comparisons = [
+  {
+    category: 'Delivery Context',
+    pilot: {
+      title: 'Lab Assumptions',
+      desc: 'Built around synthetic benchmarks and controlled test data, disconnected from real frontline workflows.',
+      badge: 'Pilot Fragility',
+    },
+    institutional: {
+      title: 'Embedded Frontline Integration',
+      desc: 'Co-designed directly within daily operating routines to fit institutional constraints and workforce realities.',
+      badge: 'Institutional Scale',
+    },
+  },
+  {
+    category: 'System Ownership',
+    pilot: {
+      title: 'External Vendor Lock-In',
+      desc: 'Implementation knowledge remains external, creating recurring dependency and costly closed-platform subscriptions.',
+      badge: 'Vendor Dependency',
+    },
+    institutional: {
+      title: '100% Sovereign Handover',
+      desc: 'Leaves institutions with sovereign codebase, full documentation, and trained staff to own and run the system.',
+      badge: 'Durable Ownership',
+    },
+  },
+  {
+    category: 'Data & Equity',
+    pilot: {
+      title: 'Uniform Model Assumptions',
+      desc: 'Overlooks last-mile field realities, creating algorithmic blindspots and unequal citizen access.',
+      badge: 'Coverage Gaps',
+    },
+    institutional: {
+      title: 'Last-Mile Representation',
+      desc: 'Grounded in ground-truth data collection and verification that accounts for diverse users and connectivity.',
+      badge: 'Equitable Delivery',
+    },
+  },
+  {
+    category: 'Performance Assurance',
+    pilot: {
+      title: 'Self-Reported Vendor Claims',
+      desc: 'Demonstration-only success metrics without objective proof of whether the system creates lasting public value.',
+      badge: 'Unverified Outcomes',
+    },
+    institutional: {
+      title: 'Structurally Independent Audit',
+      desc: 'Evaluated only by independent teams with zero interest in delivery outcomes, providing uncompromised evidence.',
+      badge: 'Independent Verification',
+    },
+  },
+];
+---
+
+<div class="pilot-toggle-studio w-full space-y-8" data-pilot-toggle-studio>
+  {/* Switcher Controls */}
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-paper rounded-2xl border border-hair">
+    <div class="text-xs font-bold uppercase tracking-wider text-mid-navy px-3">
+      Select Operating Model
+    </div>
+    
+    <div class="inline-flex rounded-xl bg-white p-1.5 border border-hair shadow-xs w-full sm:w-auto">
+      <button
+        type="button"
+        class="toggle-btn px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 w-1/2 sm:w-auto text-center"
+        data-toggle-mode="pilot"
+      >
+        Standard AI Pilot
+      </button>
+      <button
+        type="button"
+        class="toggle-btn is-active px-5 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-300 w-1/2 sm:w-auto text-center bg-navy text-white shadow-sm"
+        data-toggle-mode="institutional"
+      >
+        APLYD Institutional System
+      </button>
+    </div>
+  </div>
+
+  {/* Comparison Display Grid */}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {comparisons.map((item, idx) => (
+      <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-7 sm:p-8 space-y-4 shadow-sm transition-all duration-300 hover:border-gold/40">
+        <div class="flex items-center justify-between border-b border-hair/60 pb-3">
+          <span class="text-xs font-bold uppercase tracking-widest text-gold">
+            0{idx + 1} · {item.category}
+          </span>
+          
+          <span class="mode-badge text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy transition-all" data-badge-container>
+            {item.institutional.badge}
+          </span>
+        </div>
+
+        {/* Dynamic Content Block */}
+        <div class="space-y-2 min-h-[90px]">
+          <h4 class="mode-title text-xl font-bold text-navy transition-all" data-title-container>
+            {item.institutional.title}
+          </h4>
+          <p class="mode-desc text-base text-mid-navy leading-relaxed font-normal transition-all" data-desc-container>
+            {item.institutional.desc}
+          </p>
+        </div>
+
+        <div class="mode-footer pt-3 border-t border-hair/60 text-xs font-medium flex items-center justify-between text-mid-navy" data-footer-container>
+          <span>Result: <strong class="text-navy font-bold">Institutional Scale</strong></span>
+          <span class="text-gold font-bold">✓</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .toggle-btn:not(.is-active) {
+    color: var(--mid-navy);
+  }
+  .toggle-btn:not(.is-active):hover {
+    color: var(--navy);
+    background-color: var(--paper);
+  }
+</style>
+
+<script>
+  function initPilotToggle() {
+    const root = document.querySelector('[data-pilot-toggle-studio]');
+    if (!root) return;
+
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-toggle-mode]');
+    const rawData = [
+      {
+        pilot: {
+          title: 'Lab Assumptions',
+          desc: 'Built around synthetic benchmarks and controlled test data, disconnected from real frontline workflows.',
+          badge: 'Pilot Fragility',
+          footer: 'Fragile Pilot',
+        },
+        institutional: {
+          title: 'Embedded Frontline Integration',
+          desc: 'Co-designed directly within daily operating routines to fit institutional constraints and workforce realities.',
+          badge: 'Institutional Scale',
+          footer: 'Institutional Scale',
+        },
+      },
+      {
+        pilot: {
+          title: 'External Vendor Lock-In',
+          desc: 'Implementation knowledge remains external, creating recurring dependency and costly closed-platform subscriptions.',
+          badge: 'Vendor Dependency',
+          footer: 'Vendor Dependency',
+        },
+        institutional: {
+          title: '100% Sovereign Handover',
+          desc: 'Leaves institutions with sovereign codebase, full documentation, and trained staff to own and run the system.',
+          badge: 'Durable Ownership',
+          footer: 'Durable Ownership',
+        },
+      },
+      {
+        pilot: {
+          title: 'Uniform Model Assumptions',
+          desc: 'Overlooks last-mile field realities, creating algorithmic blindspots and unequal citizen access.',
+          badge: 'Coverage Gaps',
+          footer: 'Coverage Gaps',
+        },
+        institutional: {
+          title: 'Last-Mile Representation',
+          desc: 'Grounded in ground-truth data collection and verification that accounts for diverse users and connectivity.',
+          badge: 'Equitable Delivery',
+          footer: 'Equitable Delivery',
+        },
+      },
+      {
+        pilot: {
+          title: 'Self-Reported Vendor Claims',
+          desc: 'Demonstration-only success metrics without objective proof of whether the system creates lasting public value.',
+          badge: 'Unverified Outcomes',
+          footer: 'Unverified Outcomes',
+        },
+        institutional: {
+          title: 'Structurally Independent Audit',
+          desc: 'Evaluated only by independent teams with zero interest in delivery outcomes, providing uncompromised evidence.',
+          badge: 'Independent Verification',
+          footer: 'Independent Verification',
+        },
+      },
+    ];
+
+    const titleEls = root.querySelectorAll('[data-title-container]');
+    const descEls = root.querySelectorAll('[data-desc-container]');
+    const badgeEls = root.querySelectorAll('[data-badge-container]');
+    const footerEls = root.querySelectorAll('[data-footer-container]');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-toggle-mode') as 'pilot' | 'institutional';
+
+        buttons.forEach((b) => {
+          if (b === btn) {
+            b.classList.add('is-active', 'bg-navy', 'text-white', 'shadow-sm');
+          } else {
+            b.classList.remove('is-active', 'bg-navy', 'text-white', 'shadow-sm');
+          }
+        });
+
+        rawData.forEach((item, i) => {
+          const activeData = item[mode];
+          if (titleEls[i]) titleEls[i].textContent = activeData.title;
+          if (descEls[i]) descEls[i].textContent = activeData.desc;
+          if (badgeEls[i]) {
+            badgeEls[i].textContent = activeData.badge;
+            if (mode === 'pilot') {
+              badgeEls[i].className = 'mode-badge text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-paper text-ash border border-hair';
+            } else {
+              badgeEls[i].className = 'mode-badge text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy';
+            }
+          }
+          if (footerEls[i]) {
+            footerEls[i].innerHTML = `<span>Result: <strong class="font-bold ${mode === 'pilot' ? 'text-ash' : 'text-navy'}">${activeData.footer}</strong></span><span class="${mode === 'pilot' ? 'text-ash' : 'text-gold font-bold'}">${mode === 'pilot' ? '✕' : '✓'}</span>`;
+          }
+        });
+      });
+    });
+  }
+
+  initPilotToggle();
+  document.addEventListener('astro:page-load', initPilotToggle);
+</script>
