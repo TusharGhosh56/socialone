@@ -4,6 +4,7 @@ import Reveal from '../components/Reveal.astro';
 import Button from '../components/Button.astro';
 import MetricCard from '../components/MetricCard.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import ServiceOrbit from '../components/ServiceOrbit.astro';
 import StepCarousel from '../components/StepCarousel.astro';
 import PrincipleItem from '../components/PrincipleItem.astro';
 import CaseCarousel from '../components/CaseCarousel.astro';
@@ -58,7 +59,11 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
 
 ---
 
-<Base>
+<Base
+  title="APLYD | Applied AI for Governments & Impact-Focused Institutions"
+  description="APLYD moves artificial intelligence from pilot to public service—engineering sovereign, field-tested AI solutions and institutional capability for governments, multilaterals, and global impact organizations."
+  keywords="Applied AI, Government AI, Public Sector Artificial Intelligence, Decision Intelligence, Institutional AI Capability, Athena Infonomics, Field Intelligence, AI Evaluation, Sovereign AI Systems, Public Systems AI"
+>
   <span id="top" aria-hidden="true"></span>
 
   {/* Hero + FlowChart are two independent rounded cards on the page's normal
@@ -103,7 +108,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       <Reveal as="h2" class="max-w-[20ch] text-h2 font-bold">
         <span id="trust-h2">Trusted by institutions solving complex public challenges.</span>
       </Reveal>
-      <Reveal as="p" delay={60} class="mt-5 max-w-measure text-lede font-normal text-mid-navy">
+      <Reveal as="p" delay={60} class="mt-5 max-w-measure text-lede font-light text-mid-navy">
         Built on sixteen years of proven delivery through Athena Infonomics, across 5 continents for
         governments, donors, and impact-focused institutions.
       </Reveal>
@@ -125,10 +130,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     <Reveal delay={160} class="mt-12 gradient-navy gradient-sheen py-10 sm:py-14">
       <div class="container-x relative z-10">
         <div class="metric-row grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-          {/* `accent` on the first metric only — the guidelines allow gold to
-              mark "a key statistic", singular, so one number carries it and the
-              other four stay white. See MetricCard.astro. */}
-          {metrics.map((m, i) => <MetricCard {...m} accent={i === 0} />)}
+          {metrics.map((m) => <MetricCard {...m} />)}
         </div>
       </div>
     </Reveal>
@@ -191,32 +193,68 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
   </section>
 
   {/* ======================= 4 · WHAT APLYD DOES ======================= */}
-  <section id="what-we-do" aria-labelledby="what-h2" class="section-y scroll-mt-24 bg-paper relative">
+  <section id="what-we-do" aria-labelledby="what-h2" class="section-y scroll-mt-24 bg-off-white relative">
+    {/* Ambient burst (src/scripts/approachBurst.ts) — relocated here from
+        How We Work, per the user's redirect (not Future of AI). A direct
+        child of the section (sibling of .container-x below), plain
+        `inset:0` (see .approach-burst in the <style> block near the bottom
+        of this file) gives it the confirmed "full section-width bleed"
+        with zero alignment JS needed — unlike its old How We Work home,
+        which had to stretch it out past a column by hand. Its origin lands
+        on the SECTION's own visual centre rather than being pixel-matched
+        to .connect-dot's exact position below (that'd need new measurement
+        JS); close enough for an ambient background layer. .container-x
+        below gets `relative z-10` so the orbit/card content paints above
+        this z-index:0 layer — same stacking-context requirement the old
+        How We Work version needed. */}
+    <Reveal delay={140} class="approach-burst" data-approach-burst>
+      <canvas class="approach-burst__canvas" data-approach-canvas aria-hidden="true"></canvas>
+    </Reveal>
     <div class="container-x relative z-10">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-        <div>
-          <Reveal as="h2" class="text-h2 font-black text-navy">
-            <span id="what-h2">What APLYD does</span>
-          </Reveal>
-          <Reveal as="h3" delay={100} id="what-subhead" class="mt-4 max-w-xl text-h3 font-bold text-mid-navy">
-            We help institutions move from AI ambition to real-world impact.
-          </Reveal>
+      <Reveal as="h2" class="text-h2 font-bold">
+        <span id="what-h2">What APLYD does</span>
+      </Reveal>
+      {/* max-w-md forces a clean two-line wrap (was max-w-measure/68ch,
+          nearly one long line reaching well past centre) so the text stays
+          clear of the flowing line's vertical run down the centre rail.
+          id="what-subhead" is flowLine.ts's own mobile-only jog anchor (see
+          that file's whatWeDoJogY()) — needed since ServiceCard.astro's own
+          card titles are ALSO <h3>s inside this section, so a plain
+          `#what-we-do h3` selector would ambiguously match those too. */}
+      <Reveal as="h3" delay={100} id="what-subhead" class="mt-4 max-w-md text-h3 font-bold text-mid-navy">
+        We help institutions move from AI ambition to real-world impact.
+      </Reveal>
+
+      {/* .connect-dot is the master flowing line's milestone anchor for this
+          section (an invisible 0-size positional marker — flowLine.ts reads
+          its centre point) — untouched by the orbit infographic below; it
+          stays a plain sibling `<span>` so flowLine.ts's `.connect-dot`
+          query and screenCenterX() math keep working exactly as before. At
+          md+ the ServiceOrbit lives in the SAME centred wrapper so its own
+          visual centre lands on this span's 50%/50% point for free — below
+          md, ServiceOrbit is hidden entirely (a circular infographic has no
+          room to breathe at phone widths) in favour of the plain card grid,
+          same as this section always rendered pre-orbit. Only one of the
+          two is ever in-flow at a time, so the wrapper's height (and thus
+          .connect-dot's centred position) always matches whichever is
+          visible. mx-auto centres this on the true CSS viewport width
+          (document.documentElement.clientWidth) — same as flowLine.ts's
+          screenCenterX() now uses, after fixing that it was previously
+          reading window.innerWidth (includes the scrollbar) and drifting a
+          few px off from where content actually centres. */}
+      <Reveal delay={140} class="connect-wrap relative mt-16">
+        <div class="relative mx-auto max-w-2xl">
+          <span class="connect-dot absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></span>
+
+          <div class="hidden md:flex md:justify-center">
+            <ServiceOrbit services={services} />
+          </div>
+
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 md:hidden">
+            {services.map((s) => <ServiceCard {...s} />)}
+          </div>
         </div>
-      </div>
-
-      {/* Invisible anchor for flowing connector line */}
-      <span class="connect-dot absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></span>
-
-      <!-- Modern 4-Pillar Architectural Capability Grid -->
-      <div class="mt-12 sm:mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          services.map((s, i) => (
-            <Reveal delay={120 + i * 80} class="h-full">
-              <ServiceCard {...s} index={i} class="h-full" />
-            </Reveal>
-          ))
-        }
-      </div>
+      </Reveal>
     </div>
   </section>
 
@@ -235,14 +273,20 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       "how-h2" kept as-is (flowLine.ts's milestones + nav.ts's anchor still
       target them) even though the content is now Principles, same reasoning
       as the Challenge section keeping id="why-aplyd". */}
-  <section id="how-we-work" aria-labelledby="how-h2" class="section-y scroll-mt-24 relative overflow-hidden bg-institutional-grid">
+  <section id="how-we-work" aria-labelledby="how-h2" class="section-y scroll-mt-24 relative overflow-hidden">
+    <div class="how-we-work__video-wrap" aria-hidden="true">
+      <video class="how-we-work__video" autoplay loop muted playsinline preload="auto">
+        <source src="/video/gradient.mp4" type="video/mp4" />
+      </video>
+      <div class="how-we-work__video-fade"></div>
+    </div>
     <div class="container-x relative z-10">
       <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div>
-          <Reveal as="h2" class="text-h2 font-black text-white">
+          <Reveal as="h2" class="text-h2 font-bold text-white">
             <span id="how-h2">The principles behind every engagement</span>
           </Reveal>
-          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-normal text-pale-navy/90">
+          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-light text-pale-navy">
             Technology alone doesn't create lasting public value. The way programmes are
             designed, delivered and measured matters just as much. These four principles guide
             every engagement and shape how we work with governments and impact-focused institutions.
@@ -366,7 +410,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
           <Reveal as="h2" delay={60} class="mt-4 text-h2 font-bold text-white">
             <span id="how-h2">How we work</span>
           </Reveal>
-          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-normal text-pale-navy/90">
+          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-light text-pale-navy">
             One continuous partnership across the full arc — from assessment and field
             delivery, through AI design and independent evaluation, to long-term scale.
           </Reveal>
@@ -401,7 +445,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       <Reveal as="h2" class="text-h2 font-bold">
         <span id="cases-h2">AI in Action</span>
       </Reveal>
-      <Reveal as="p" delay={100} class="mt-4 text-lede font-normal text-mid-navy">
+      <Reveal as="p" delay={100} class="mt-4 text-lede font-light text-mid-navy">
         Applied intelligence, already at work.
       </Reveal>
     </div>
@@ -633,15 +677,21 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       .future-cta__video-wrap below. The section's existing flat navy
       gradient (bg-gradient-to-b) stays as the always-visible base
       underneath, unchanged when the video isn't showing. */}
-  <section id="contact" aria-labelledby="cta-h3" class="relative scroll-mt-24 bg-institutional-grid">
+  <section id="contact" aria-labelledby="cta-h3" class="relative scroll-mt-24 bg-gradient-to-b from-navy to-deep-navy">
+    <div class="future-cta__video-wrap" aria-hidden="true">
+      <video class="future-cta__video" autoplay loop muted playsinline preload="auto">
+        <source src="/video/gradient_yellow.mp4" type="video/mp4" />
+      </video>
+      <div class="future-cta__video-fade"></div>
+    </div>
     <div class="container-x section-y relative z-10 text-center">
-      <Reveal as="h2" delay={0} class="mx-auto max-w-[22ch] text-h2 font-black text-white">
+      <Reveal as="h2" delay={0} class="mx-auto max-w-[22ch] text-h2 font-bold text-white">
         <span id="cta-h3">The future of AI will be measured by better decisions.</span>
       </Reveal>
-      <Reveal as="p" delay={80} class="mx-auto mt-5 max-w-[42ch] text-lede font-normal text-pale-navy/90">
+      <Reveal as="p" delay={80} class="mx-auto mt-5 max-w-[42ch] text-lede font-light text-pale-navy">
         Not better algorithms. Not larger models. Better outcomes for people.
       </Reveal>
-      <Reveal as="p" delay={120} class="mt-4 text-lede font-medium text-gold">
+      <Reveal as="p" delay={120} class="mt-4 text-lede font-light text-gold">
         Let's build that future together.
       </Reveal>
       <Reveal delay={180} class="mt-9 flex justify-center">
@@ -694,22 +744,77 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
 
 <script>
   import { initTilt } from '../scripts/tilt';
-  import { initFlowLine } from '../scripts/flowLine';
+  import { initFlowLine, settledOffsetY } from '../scripts/flowLine';
+  import { initApproachBurst } from '../scripts/approachBurst';
+  import { initServiceOrbit } from '../scripts/serviceOrbit';
   import { initGoldWaveform } from '../scripts/goldWaveform';
   import { initCardSpotlight } from '../scripts/cardSpotlight';
   import { initTimelineTraveler } from '../scripts/timelineTraveler';
   initTilt();
+  initServiceOrbit();
   initFlowLine();
   initGoldWaveform();
   initCardSpotlight();
   initTimelineTraveler();
+
+  // The ambient burst lives in What We Do now, centred precisely on the
+  // same point flowLine.ts's "what-we-do" milestone anchors to (.connect-dot)
+  // — approachBurst.ts always draws its origin at its own box's vertical
+  // centre, so this sizes/positions that box (full section width already
+  // comes from CSS's left:0;right:0) symmetrically around the dot's real Y,
+  // clamped to whichever side (above/below) has less room so it never
+  // overflows the section's own bounds.
+  function alignWhatWeDoBurst() {
+    const section = document.getElementById('what-we-do');
+    const burst = section?.querySelector<HTMLElement>('[data-approach-burst]');
+    const dot = section?.querySelector<HTMLElement>('.connect-dot');
+    if (!section || !burst || !dot) return;
+    const sectionRect = section.getBoundingClientRect();
+    const dotRect = dot.getBoundingClientRect();
+    // Same not-yet-revealed-ancestor correction flowLine.ts's own milestone
+    // measurement needs (settledOffsetY) — .connect-dot lives inside a
+    // [data-reveal] wrapper (.connect-wrap), and measuring it before that
+    // reveal has fired reads its temporary pre-reveal position (translated
+    // down ~16px), which would otherwise get baked into this alignment.
+    const dotY = dotRect.top + dotRect.height / 2 - sectionRect.top - settledOffsetY(dot);
+    const half = Math.min(dotY, sectionRect.height - dotY);
+    burst.style.top = `${dotY - half}px`;
+    burst.style.height = `${half * 2}px`;
+  }
+  alignWhatWeDoBurst();
+  window.addEventListener('resize', alignWhatWeDoBurst, { passive: true });
+  // Same gap flowLine.ts's own milestone measurement already learned to
+  // close (see its screenCenterX/settledOffsetY comment: "nothing then
+  // corrects it until an unrelated resize event... forces a fresh measure()
+  // ... which is why 'zoom out then in' appeared to fix it") — this only had
+  // the resize listener, not the window.load one, so anything that settles
+  // between this initial call and full page load (images, the preloader's
+  // own body scroll-lock while it's up, etc.) could still bake in a stale
+  // measurement until a real resize (zoom) forced a recompute. Re-running
+  // here, plus a synthetic resize event so approachBurst.ts's own internal
+  // origin/W recompute too, closes it the same way flowLine.ts already does.
+  window.addEventListener('load', () => {
+    alignWhatWeDoBurst();
+    window.dispatchEvent(new Event('resize'));
+  });
+  // `load` doesn't cover everything either — web fonts fetch lazily and
+  // don't block it (that's the whole point of font-display:swap), so a
+  // font-swap reflow can still land AFTER `load` has already fired and
+  // already re-measured. document.fonts.ready resolves once fonts actually
+  // finish, which is the more precise signal for this specific case.
+  document.fonts?.ready?.then(() => {
+    alignWhatWeDoBurst();
+    window.dispatchEvent(new Event('resize'));
+  });
 
   // Our Foundation's rotating rings — sm+ only (see the markup comment in
   // that section for the full horizontal/vertical reasoning); below 640px
   // this is skipped entirely and a plain CSS rule takes over instead (the
   // rings' centre sits fixed on the section's own top-right corner there,
   // per explicit product decision — no text "centre" worth tracking once
-  // the section grew much taller on mobile).
+  // the section grew much taller on mobile). Same resync events as
+  // alignWhatWeDoBurst() above, for the same reasons (fonts/images settling
+  // after this first measurement, no `resize` event of its own to catch it).
   function positionFoundationRings() {
     const section = document.getElementById('about');
     const text = section?.querySelector<HTMLElement>('[data-foundation-text]');
@@ -728,6 +833,15 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
   window.addEventListener('resize', positionFoundationRings, { passive: true });
   window.addEventListener('load', positionFoundationRings);
   document.fonts?.ready?.then(positionFoundationRings);
+
+  // Must run AFTER alignWhatWeDoBurst()'s own initial call above: this
+  // measures the burst canvas's own box on load to size its pixel buffer,
+  // and needs to see the FINAL top/height set by that function, not the
+  // full-section-height box it started life at — same "measure after
+  // layout settles, then size the canvas" ordering this codebase already
+  // leans on elsewhere (getting it backwards previously caused the burst
+  // to render stretched/blurry).
+  initApproachBurst();
 </script>
 
 <style>
@@ -743,6 +857,32 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     }
   }
 
+  /* Ambient burst (src/scripts/approachBurst.ts) — now lives in What We Do,
+     see that section's markup/comment. No box of its own: the canvas paints
+     directly on whatever background sits behind it, full-bleed via a plain
+     `inset:0` — What We Do's own layout doesn't need alignment JS to
+     stretch it past a column the way How We Work's old full-bleed heading
+     did, so this is just the bare positioning rule. z-index:0 (+
+     pointer-events:none) keeps it strictly a background layer. */
+  .approach-burst {
+    /* left/right (full section width) come from here; top/height are set by
+       alignWhatWeDoBurst() in the page script so the box's own vertical
+       centre lands exactly on .connect-dot — top:0/height:100% below is
+       only the pre-JS fallback so it doesn't flash unpositioned. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .approach-burst__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 
   /* Ambient gold waveform (src/scripts/goldWaveform.ts) — used behind AI in
      Action and Our Foundation. Plain full-bleed background layer, no
@@ -822,7 +962,70 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     }
   }
 
+  /* How We Work's background video — same structure as HeroFlow's own
+     (.hero__video-wrap/.hero__video/.hero__video-fade in heroFlow.css):
+     full-bleed absolute layer behind the content, a flat semi-transparent
+     navy overlay on top for text contrast (flat rather than HeroFlow's
+     bottom-to-top fade, since content spans this whole section rather than
+     sitting in one corner over the video). Muted/looping/decorative, so it
+     stays visible even under reduced-motion rather than needing a static
+     fallback. */
+  .how-we-work__video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .how-we-work__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .how-we-work__video-fade {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 16, 48, 0.58);
+  }
 
+  /* Final CTA's background video — same structure as How We Work's own,
+     except it starts fully transparent and only fades in on hover/focus of
+     the "Partner with APLYD" button (.future-cta__trigger) via :has(),
+     scoped to #contact so it can't match the header's own separate CTA
+     link elsewhere on the page. The section's existing flat navy gradient
+     (bg-gradient-to-b, in the markup) is the always-visible base
+     underneath — unchanged when the video isn't showing. */
+  .future-cta__video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms var(--ease-out);
+  }
+  #contact:has(.future-cta__trigger:hover) .future-cta__video-wrap,
+  #contact:has(.future-cta__trigger:focus-visible) .future-cta__video-wrap {
+    opacity: 1;
+  }
+  .future-cta__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .future-cta__video-fade {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 16, 48, 0.55);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .future-cta__video-wrap {
+      transition: none;
+    }
+  }
 
   /* ------------------------------------------------------------------ */
   /* 3 · THE PROBLEM — friction cards (right column). Hover/focus swaps    */
