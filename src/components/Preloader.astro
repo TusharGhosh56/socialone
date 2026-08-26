@@ -9,6 +9,13 @@
      as Reveal.astro; reduced-motion removes it outright (handled in JS to
      match the rest of the codebase's convention — see tilt.ts/cardSpotlight.ts). -->
 
+<script is:inline>
+  if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('aplyd_preloader_seen')) {
+    const p = document.querySelector('[data-preloader]');
+    if (p) p.remove();
+  }
+</script>
+
 <div class="preloader" data-preloader aria-hidden="true">
   <div class="preloader__waveform" data-gold-waveform data-gold-waveform-alpha="1.8">
     <canvas class="preloader__waveform-canvas" data-gold-waveform-canvas></canvas>

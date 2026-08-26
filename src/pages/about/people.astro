@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import { Image } from 'astro:assets';
+import { team, type TeamTag } from '../../data/team';
+
+const groups: { tag: TeamTag; title: string }[] = [
+  {
+    tag: 'Leadership',
+    title: 'Leadership',
+  },
+  {
+    tag: 'AI & Digital Transformation',
+    title: 'AI & Digital Transformation',
+  },
+  {
+    tag: 'Evaluation & Consulting',
+    title: 'Evaluation & Consulting',
+  },
+];
+
+function getInitials(fullName: string): string {
+  const parts = fullName.replace(/^Dr\.?\s+/i, '').split(' ').filter(Boolean);
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+---
+
+<Base
+  title="The People Behind APLYD | Team & Leadership"
+  description="The leadership and specialists behind APLYD and Athena Infonomics, across AI, delivery and evaluation."
+  keywords="APLYD Leadership, Athena Infonomics Founders, AI Practice Leaders, Public Sector AI Specialists"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+
+      <div class="container-x relative z-10">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-2 w-2 rounded-full bg-gold"></span>
+          About APLYD · The People Behind APLYD
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+          Specialists across AI, delivery and evaluation
+        </h1>
+      </div>
+    </section>
+
+    {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      {/* ============================ TEAM GROUPS ============================ */}
+      <section class="relative z-10">
+        <div class="container-x space-y-20">
+          {groups.map((group) => {
+            const members = team.filter((m) => m.tag === group.tag);
+            return (
+              <div class="space-y-8">
+                <div class="flex items-center gap-3 border-b border-hair pb-4">
+                  <span class="h-2.5 w-2.5 rounded-full bg-gold"></span>
+                  <h2 class="text-2xl sm:text-3xl font-bold text-navy leading-tight">
+                    {group.title}
+                  </h2>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                  {members.map((member) => (
+                    <article class="group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between transition-all duration-300 hover:border-gold/40 hover:shadow-md">
+                      <div>
+                        <div class="relative mb-5 aspect-[4/5] w-full overflow-hidden rounded-2xl bg-paper">
+                          {member.linkedin && (
+                            <a
+                              href={member.linkedin}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`${member.name} on LinkedIn`}
+                              class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-hair bg-white/90 text-navy opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 hover:border-gold hover:text-gold"
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M6.94 8.5H4.06V19.5H6.94V8.5ZM5.5 7.25A1.75 1.75 0 1 0 5.5 3.75A1.75 1.75 0 0 0 5.5 7.25ZM19.94 19.5H17.06V13.75C17.06 12.35 16.5 11.5 15.28 11.5C14.36 11.5 13.81 12.12 13.56 12.72C13.47 12.94 13.44 13.24 13.44 13.55V19.5H10.56S10.6 9.34 10.56 8.5H13.44V9.79C13.83 9.16 14.55 8.26 16.48 8.26C18.88 8.26 19.94 9.86 19.94 12.68V19.5Z" />
+                              </svg>
+                            </a>
+                          )}
+                          {member.photo ? (
+                            <Image
+                              src={member.photo}
+                              alt={member.name}
+                              width={320}
+                              height={400}
+                              format="webp"
+                              quality={85}
+                              class="h-full w-full object-cover grayscale contrast-105 transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                            />
+                          ) : (
+                            <div class="flex h-full w-full items-center justify-center bg-pale-navy/50 font-serif text-3xl font-light text-navy">
+                              {getInitials(member.name)}
+                            </div>
+                          )}
+                        </div>
+
+                        <h3 class="text-lg font-bold text-navy leading-snug">
+                          {member.name}
+                        </h3>
+
+                        <div class="mt-1 text-xs font-bold uppercase tracking-wider text-deep-gold">
+                          {member.title}
+                        </div>
+
+                        {member.subtitle && (
+                          <div class="mt-0.5 text-xs text-mid-navy/80">
+                            {member.subtitle}
+                          </div>
+                        )}
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ============================ CTA ============================ */}
+      <section class="relative z-10">
+        <div class="container-x">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+            <div class="max-w-2xl">
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Connect With APLYD</div>
+              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                Work with our specialists
+              </h3>
+              <p class="text-base text-mid-navy leading-relaxed font-normal">
+                Reach out to discuss your institutional AI challenges and explore how our team can support your delivery.
+              </p>
+            </div>
+            <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
+              Get in touch &rarr;
+            </Button>
+          </div>
+        </div>
+      </section>
+    </AtmosphericCanvas>
+  </div>
+</Base>

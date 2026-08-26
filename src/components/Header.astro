@@ -26,7 +26,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
   data-header
 >
   <div class="container-x flex h-16 items-center justify-between gap-4 sm:h-[72px]">
-    <a href={linkHref('#top')} aria-label="APLYD — home" class="flex items-center">
+    <a href="/" aria-label="APLYD — home" class="flex items-center">
       <span
         class="block h-[3.025rem] w-auto [&>svg]:h-[3.025rem] [&>svg]:w-auto"
         data-header-wordmark
@@ -37,14 +37,62 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
     <!-- desktop nav -->
     <nav aria-label="Primary" class="hidden items-center gap-7 lg:flex">
       {
-        navLinks.map((l) => (
-          <a
-            href={linkHref(l.href)}
-            class="link-underline text-small font-bold text-navy no-underline transition-colors duration-micro hover:text-deep-gold"
-          >
-            {l.label}
-          </a>
-        ))
+        navLinks.map((l) =>
+          l.children ? (
+            <div class="nav-dropdown-wrapper relative group">
+              <button
+                type="button"
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="link-underline flex items-center gap-1.5 text-small font-bold text-navy no-underline transition-colors duration-micro hover:text-deep-gold focus:outline-none"
+              >
+                <span>{l.label}</span>
+                <svg
+                  class="h-3.5 w-3.5 text-navy/60 transition-transform duration-base group-hover:rotate-180 group-focus-within:rotate-180 group-hover:text-deep-gold"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              <div class="nav-dropdown-menu invisible opacity-0 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:pointer-events-auto absolute left-0 top-full pt-3 w-80 transition-all duration-base ease-out">
+                <div class="rounded-xl border border-hair bg-white/95 p-2 shadow-xl backdrop-blur-md">
+                  <div class="px-3 py-2 border-b border-hair/60 mb-1">
+                    <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">{l.label}</p>
+                  </div>
+                  {l.children.map((sub) => (
+                    <a
+                      href={sub.href}
+                      class="group/sub flex flex-col rounded-lg p-2.5 text-left transition-colors duration-micro hover:bg-pale-navy/60 focus:bg-pale-navy/60 no-underline"
+                    >
+                      <span class="text-small font-bold text-navy group-hover/sub:text-deep-gold transition-colors">
+                        {sub.label}
+                      </span>
+                      {sub.description && (
+                        <span class="text-[0.78rem] text-ash font-normal leading-snug mt-0.5">
+                          {sub.description}
+                        </span>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <a
+              href={linkHref(l.href!)}
+              class="link-underline text-small font-bold text-navy no-underline transition-colors duration-micro hover:text-deep-gold"
+            >
+              {l.label}
+            </a>
+          )
+        )
       }
       <Button href={primaryCta.href} variant="gold" class="!px-5 !py-2 text-small shadow-sm">
         {primaryCta.label}
@@ -70,7 +118,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
 <!-- Standalone logomark: fades/scales in when the header hides on scroll-down
      (req 6), giving the wordmark→mark morph; hidden at top / on scroll-up. -->
 <a
-  href={linkHref('#top')}
+  href="/"
   id="floating-mark"
   aria-label="APLYD — home"
   class="fixed left-[clamp(3rem,9vw,7rem)] top-3 z-50 grid h-10 w-10 place-items-center rounded-md bg-white/80 p-1.5 shadow-sm backdrop-blur transition-[opacity,transform] duration-base ease-out [&>svg]:h-full [&>svg]:w-full"
@@ -85,7 +133,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
   aria-modal="true"
   aria-label="Menu"
   hidden
-  class="fixed inset-0 z-[60] gradient-navy gradient-sheen text-white lg:hidden"
+  class="fixed inset-0 z-[60] overflow-y-auto gradient-navy gradient-sheen text-white lg:hidden"
 >
   <div class="container-x flex h-16 items-center justify-between">
     <span class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">Menu</span>
@@ -100,17 +148,36 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
       </svg>
     </button>
   </div>
-  <nav aria-label="Mobile" class="container-x flex flex-col gap-1 pt-6">
+  <nav aria-label="Mobile" class="container-x flex flex-col gap-1 pb-10 pt-4">
     {
-      navLinks.map((l) => (
-        <a
-          href={linkHref(l.href)}
-          class="border-b border-white/10 py-4 text-2xl font-bold text-white no-underline transition-colors hover:text-gold"
-          data-menu-link
-        >
-          {l.label}
-        </a>
-      ))
+      navLinks.map((l) =>
+        l.children ? (
+          <div class="border-b border-white/10 py-3">
+            <div class="flex items-center justify-between text-xl font-bold text-gold">
+              <span>{l.label}</span>
+            </div>
+            <div class="mt-2 flex flex-col pl-3 space-y-2 border-l-2 border-gold/40 my-2">
+              {l.children.map((sub) => (
+                <a
+                  href={sub.href}
+                  class="py-1.5 text-base font-bold text-white/90 no-underline transition-colors hover:text-gold"
+                  data-menu-link
+                >
+                  {sub.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={linkHref(l.href!)}
+            class="border-b border-white/10 py-4 text-xl font-bold text-white no-underline transition-colors hover:text-gold"
+            data-menu-link
+          >
+            {l.label}
+          </a>
+        )
+      )
     }
     <Button
       href={primaryCta.href}
