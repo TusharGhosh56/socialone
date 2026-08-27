@@ -214,6 +214,9 @@ const buttonItems = [
           body.classList.remove('opacity-100');
         }
       });
+
+      // Dispatch resize event so flowLine recalculates trail for new active dossiers
+      window.dispatchEvent(new Event('resize'));
     }
 
     buttons.forEach((btn) => {

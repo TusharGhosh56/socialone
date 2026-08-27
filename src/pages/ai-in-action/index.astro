@@ -50,13 +50,14 @@ const categories = Object.values(caseStudyCategories);
     {/* Rich Atmospheric Canvas */}
     <AtmosphericCanvas>
       {/* All Categories Grid */}
-      <section class="relative z-10">
+      <section class="relative z-10" id="ai-directory-section">
         <div class="container-x">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {categories.map((cat) => (
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="ai-directory-grid">
+            {categories.map((cat, idx) => (
               <div
-                class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between group card-flip-hover"
+                class={`ai-directory-card ai-directory-card-${idx} ai-directory-card-${cat.slug} rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between group card-flip-hover`}
                 data-card-spotlight
+                data-category-index={idx}
               >
                 <div class="relative z-10">
                   <div class="flex items-center justify-between gap-4 mb-6">

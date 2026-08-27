@@ -68,7 +68,27 @@ const bedrockPillars = [
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: THE BEDROCK ============================ */}
+      {/* ============================ SECTION 1: GLOBAL FOOTPRINT MAP & STATS ============================ */}
+      <section class="relative z-10" id="global-reach-section">
+        <div class="container-x space-y-12">
+          <div class="max-w-3xl space-y-4">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="global-eyebrow">Global Reach</div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="global-heading">
+              Sixteen years of global delivery
+            </h2>
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+              Proven public sector impact across 5 continents, serving leading multilateral institutions, national governments, and global philanthropies.
+            </p>
+          </div>
+
+          {/* Global Interactive Footprint Matrix (Metrics + Live World Operations Map) */}
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-8 shadow-sm" id="footprint-matrix-wrap">
+            <InteractiveFootprint />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ SECTION 2: THE BEDROCK ============================ */}
       <section class="relative z-10" id="bedrock-section">
         <div class="container-x space-y-12">
           <div class="max-w-4xl space-y-4">
@@ -90,9 +110,6 @@ const bedrockPillars = [
                     <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold">
                       <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                       {item.phase}
-                    </span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy flip-badge transition-colors">
-                      Core Domain
                     </span>
                   </div>
 
@@ -118,26 +135,6 @@ const bedrockPillars = [
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ SECTION 2: GLOBAL FOOTPRINT MAP & STATS ============================ */}
-      <section class="relative z-10" id="global-reach-section">
-        <div class="container-x space-y-12">
-          <div class="max-w-3xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="global-eyebrow">Global Reach</div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="global-heading">
-              Sixteen years of global delivery
-            </h2>
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
-              Proven public sector impact across 5 continents, serving leading multilateral institutions, national governments, and global philanthropies.
-            </p>
-          </div>
-
-          {/* Global Interactive Footprint Matrix (Metrics + Live World Operations Map) */}
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-8 shadow-sm" id="footprint-matrix-wrap">
-            <InteractiveFootprint />
           </div>
         </div>
       </section>
