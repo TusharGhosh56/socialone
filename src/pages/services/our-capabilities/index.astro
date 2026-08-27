@@ -2,6 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import Button from '../../../components/Button.astro';
 import AtmosphericCanvas from '../../../components/AtmosphericCanvas.astro';
+import GoldWaveform from '../../../components/GoldWaveform.astro';
+import GradientVideo from '../../../components/GradientVideo.astro';
 import { sectorDataList } from '../../../data/capabilities';
 
 const sectors = [
@@ -19,6 +21,11 @@ const sectors = [
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Animated Fluid Gradient Video Background */}
+      <GradientVideo variant="blue" overlayOpacity={0.62} />
+      {/* Ambient Molestone Gold Particle Waveform */}
+      <GoldWaveform alpha="1.4" />
+
       <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -41,13 +48,14 @@ const sectors = [
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
       {/* ============================ SECTORS ============================ */}
-      <section class="relative z-10">
+      <section class="relative z-10" id="sector-overview-section">
         <div class="container-x space-y-12">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {sectors.map((sector) => (
-              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-8 hover:border-gold/40 hover:shadow-md transition-all duration-300">
-                <div class="space-y-4">
-                  <div class="text-xs font-bold uppercase tracking-widest text-gold">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="sector-overview-grid">
+            {sectors.map((sector, idx) => (
+              <div class={`sector-overview-card sector-overview-card-${idx} rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-8 hover:border-gold/40 hover:shadow-md transition-all duration-300 card-interactive-sheen`} data-sector-index={idx}>
+                <div class="space-y-4 relative z-10">
+                  <div class="sector-overview-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair transition-all duration-300">
+                    <span class="sector-overview-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-300"></span>
                     {sector.label}
                   </div>
                   <h2 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
@@ -58,7 +66,7 @@ const sectors = [
                   </p>
                 </div>
 
-                <div class="pt-6 border-t border-hair space-y-4">
+                <div class="pt-6 border-t border-hair space-y-4 relative z-10">
                   <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
                     Core Capabilities
                   </div>
@@ -86,8 +94,8 @@ const sectors = [
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div class="max-w-2xl">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Methodology</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 How we deliver across these capabilities
@@ -96,9 +104,11 @@ const sectors = [
                 Explore our four-stage delivery model from strategy and design to delivery and independent assurance.
               </p>
             </div>
-            <Button href="/services/our-approach" variant="primary" class="whitespace-nowrap shadow-sm">
-              Explore Our Approach &rarr;
-            </Button>
+            <div class="relative z-10">
+              <Button href="/services/our-approach" variant="primary" class="whitespace-nowrap shadow-sm">
+                Explore Our Approach &rarr;
+              </Button>
+            </div>
           </div>
         </div>
       </section>

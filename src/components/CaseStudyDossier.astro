@@ -12,12 +12,15 @@ interface Props {
 const { caseStudy, index, total } = Astro.props;
 ---
 
-<article class="case-study-editorial relative py-10 sm:py-12 first:pt-2 last:pb-4 border-b border-hair/90 last:border-b-0 space-y-10">
-  {/* Header Meta & Index */}
-  <div class="space-y-6">
+<article class={`case-study-editorial case-study-editorial-${index} relative py-10 sm:py-14 first:pt-2 last:pb-4 border-b border-hair/90 last:border-b-0 space-y-12 transition-colors duration-500`} data-dossier-index={index} id={`dossier-${caseStudy.id}`}>
+  {/* Header Meta & Title Block */}
+  <div class="dossier-header-block space-y-6" id={`dossier-header-${caseStudy.id}`}>
     <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-hair">
       <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-gold">
-        <span>FIELD DOSSIER</span>
+        <span class="dossier-pill-badge flex items-center gap-1.5 px-3 py-1 rounded-full bg-pale-navy border border-hair text-navy font-bold">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+          FIELD DOSSIER
+        </span>
         {total > 1 && <span class="text-ash font-normal">/ {caseStudy.sector}</span>}
         <span class="text-hair">•</span>
         <span class="text-navy">{caseStudy.client}</span>
@@ -43,7 +46,7 @@ const { caseStudy, index, total } = Astro.props;
   </div>
 
   {/* Structured Metadata Ribbon (Clean Horizontal Table) */}
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 py-6 border-y border-hair bg-paper/30">
+  <div class="dossier-ribbon-block grid grid-cols-2 md:grid-cols-4 gap-6 p-6 sm:p-8 rounded-2xl border border-hair bg-white/70 backdrop-blur-sm transition-all duration-500 shadow-sm" id={`dossier-ribbon-${caseStudy.id}`}>
     <div class="space-y-1">
       <span class="text-[0.68rem] uppercase font-bold tracking-[0.14em] text-ash block">Client / Partner</span>
       <span class="text-base font-bold text-navy block">{caseStudy.client}</span>
@@ -66,34 +69,38 @@ const { caseStudy, index, total } = Astro.props;
   </div>
 
   {/* 3-Act Narrative Breakdown */}
-  <div class="space-y-8 pt-4">
+  <div class="space-y-10 pt-2">
     {/* Grid for Context & What We Did */}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
       {/* Context */}
-      <div class="space-y-3">
-        <div class="flex items-center gap-2 pb-2 border-b border-hair/70">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          <h3 class="text-lg font-bold uppercase tracking-wider text-navy">Operational Context</h3>
+      <div class="dossier-context-box rounded-2xl border border-hair bg-white/90 p-7 sm:p-9 shadow-sm flex flex-col justify-between transition-all duration-500" id={`dossier-context-${caseStudy.id}`}>
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-hair/70">
+            <span class="h-2 w-2 rounded-full bg-gold"></span>
+            <h3 class="text-lg font-bold uppercase tracking-wider text-navy">Operational Context</h3>
+          </div>
+          <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+            {caseStudy.context}
+          </p>
         </div>
-        <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-          {caseStudy.context}
-        </p>
       </div>
 
       {/* What We Did */}
-      <div class="space-y-3">
-        <div class="flex items-center gap-2 pb-2 border-b border-hair/70">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          <h3 class="text-lg font-bold uppercase tracking-wider text-navy">Institutional Delivery</h3>
+      <div class="dossier-delivery-box rounded-2xl border border-hair bg-white/90 p-7 sm:p-9 shadow-sm flex flex-col justify-between transition-all duration-500" id={`dossier-delivery-${caseStudy.id}`}>
+        <div class="space-y-4">
+          <div class="flex items-center gap-2 pb-3 border-b border-hair/70">
+            <span class="h-2 w-2 rounded-full bg-gold"></span>
+            <h3 class="text-lg font-bold uppercase tracking-wider text-navy">Institutional Delivery</h3>
+          </div>
+          <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+            {caseStudy.whatWeDid}
+          </p>
         </div>
-        <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-          {caseStudy.whatWeDid}
-        </p>
       </div>
     </div>
 
     {/* Why It Matters (Full-Width Impact Callout) */}
-    <div class="rounded-3xl gradient-navy-mesh gradient-sheen text-white p-8 sm:p-12 lg:p-14 shadow-lg space-y-4 relative overflow-hidden card-hover-accent">
+    <div class="dossier-impact-box rounded-3xl gradient-navy-mesh gradient-sheen text-white p-8 sm:p-12 lg:p-14 shadow-lg space-y-4 relative overflow-hidden card-hover-accent transition-all duration-500" id={`dossier-impact-${caseStudy.id}`}>
       <GoldWaveform alpha="1.1" />
 
       <div class="relative z-10 space-y-3">

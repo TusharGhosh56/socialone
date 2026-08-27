@@ -133,8 +133,8 @@ const sectors: SectorData[] = [
               class={`sector-cta-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
               data-sector-cta={sec.id}
             >
-              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-                <div class="max-w-2xl">
+              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+                <div class="max-w-2xl relative z-10">
                   <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Sector Domain</div>
                   <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                     {sec.ctaTitle}
@@ -143,9 +143,11 @@ const sectors: SectorData[] = [
                     {sec.ctaDesc}
                   </p>
                 </div>
-                <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap shadow-sm">
-                  {sec.ctaText} &rarr;
-                </Button>
+                <div class="relative z-10">
+                  <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap shadow-sm">
+                    {sec.ctaText} &rarr;
+                  </Button>
+                </div>
               </div>
             </div>
           );
@@ -238,6 +240,11 @@ const sectors: SectorData[] = [
           cta.classList.remove('opacity-100');
         }
       });
+
+      // Notify flow line to measure active sector cards
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 50);
     }
 
     buttons.forEach((btn) => {

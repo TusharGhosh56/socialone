@@ -98,85 +98,56 @@ const frictionPoints = [
             </p>
           </div>
 
-          {/* Interactive Diagnostic Studio */}
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* Left: Operational Barrier Buttons */}
-            <div class="lg:col-span-5 flex flex-col gap-3">
-              {frictionPoints.map((pt, idx) => (
-                <button
-                  type="button"
-                  data-target={pt.id}
-                  class={`diag-btn group text-left rounded-2xl p-5 sm:p-6 border transition-all duration-300 relative overflow-hidden ${
-                    idx === 0
-                      ? 'bg-navy text-white border-navy shadow-md is-active'
-                      : 'bg-white/90 text-navy border-hair hover:border-gold/50 hover:bg-white'
-                  }`}
-                >
-                  <div class="flex items-center justify-between gap-4">
-                    <span class="text-xs font-bold uppercase tracking-widest text-gold flex items-center gap-2">
-                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                      {pt.category}
-                    </span>
-                    <span class="text-sm transition-transform duration-300 group-hover:translate-x-1 font-mono text-gold opacity-70 group-hover:opacity-100">
-                      &rarr;
-                    </span>
-                  </div>
-                  <div class="mt-2 text-sm sm:text-base font-normal opacity-90 line-clamp-2">
-                    {pt.teaser}
-                  </div>
-                </button>
-              ))}
-            </div>
-
-            {/* Right: Rich Interactive Resolution Panel */}
-            <div class="lg:col-span-7">
-              {frictionPoints.map((pt, idx) => (
-                <div
-                  id={`panel-${pt.id}`}
-                  class={`diag-panel rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 space-y-8 shadow-md transition-all duration-500 card-interactive-sheen ${
-                    idx === 0 ? 'block' : 'hidden'
-                  }`}
-                >
-                  <div class="space-y-4">
-                    <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
-                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                      Operational Barrier · {pt.category}
-                    </div>
-
-                    <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
-                      {pt.title}
-                    </h3>
-
-                    <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                      {pt.desc}
-                    </p>
+          {/* Editorial Diagnostic Ledger (Zero card boxes, 100% exact copy, no numbering) */}
+          <div class="space-y-0 divide-y divide-hair/80 pt-4">
+            {frictionPoints.map((pt) => (
+              <div class="py-10 sm:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start group">
+                {/* Column 1: Barrier Domain & Description */}
+                <div class="lg:col-span-5 space-y-4">
+                  <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold">
+                    <span class="h-2 w-2 rounded-full bg-gold shrink-0"></span>
+                    <span>{pt.category}</span>
                   </div>
 
-                  {/* Impact & Solution Breakdown */}
-                  <div class="space-y-4 pt-6 border-t border-hair">
-                    <div class="p-5 rounded-2xl bg-paper/80 border border-hair/80 space-y-1.5">
-                      <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
-                        Frontline Consequence
+                  <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug tracking-tight">
+                    {pt.title}
+                  </h3>
+
+                  <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                    {pt.desc}
+                  </p>
+                </div>
+
+                {/* Column 2: 2-Part Diagnosis vs. Sovereign Grounding */}
+                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch pt-2 lg:pt-0">
+                  {/* Frontline Consequence */}
+                  <div class="p-6 sm:p-7 rounded-2xl bg-paper/60 border border-hair space-y-2 flex flex-col justify-between">
+                    <div class="space-y-2">
+                      <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70 flex items-center gap-1.5">
+                        <span class="h-1.5 w-1.5 rounded-full bg-ash/60"></span>
+                        <span>Frontline Consequence</span>
                       </div>
-                      <p class="text-sm sm:text-base text-navy font-normal">
+                      <p class="text-sm sm:text-base text-navy font-normal leading-relaxed">
                         {pt.impact}
                       </p>
                     </div>
+                  </div>
 
-                    <div class="p-5 rounded-2xl bg-pale-gold/25 border border-gold/40 space-y-1.5">
-                      <div class="text-xs font-bold uppercase tracking-wider text-deep-gold">
-                        The APLYD Sovereign Solution
+                  {/* The APLYD Sovereign Solution */}
+                  <div class="p-6 sm:p-7 rounded-2xl bg-pale-gold/20 border border-gold/40 space-y-2 flex flex-col justify-between">
+                    <div class="space-y-2">
+                      <div class="text-xs font-bold uppercase tracking-wider text-deep-gold flex items-center gap-1.5">
+                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                        <span>The APLYD Sovereign Solution</span>
                       </div>
-                      <p class="text-sm sm:text-base text-navy font-medium">
+                      <p class="text-sm sm:text-base text-navy font-medium leading-relaxed">
                         {pt.solution}
                       </p>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-
+              </div>
+            ))}
           </div>
 
         </div>
@@ -356,76 +327,4 @@ const frictionPoints = [
   </div>
 </Base>
 
-<style>
-  .diag-btn {
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(8px);
-    border: 1px solid var(--hair);
-    color: var(--navy);
-    box-shadow: var(--shadow-xs);
-  }
-  .diag-btn:hover:not(.is-active) {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(245, 233, 209, 0.35) 100%);
-    border-color: rgba(209, 156, 51, 0.5);
-    box-shadow: 0 8px 20px -6px rgba(209, 156, 51, 0.2);
-    transform: translateX(4px);
-  }
-  .diag-btn:hover:not(.is-active) .diag-teaser {
-    color: var(--navy);
-  }
 
-  .diag-btn.is-active,
-  .diag-btn[aria-selected="true"] {
-    background: linear-gradient(135deg, #1a2150 0%, #232b65 100%) !important;
-    border-color: var(--navy) !important;
-    color: #ffffff !important;
-    box-shadow: 0 12px 28px -6px rgba(26, 33, 80, 0.35) !important;
-  }
-  .diag-btn.is-active .diag-cat,
-  .diag-btn[aria-selected="true"] .diag-cat {
-    color: var(--gold) !important;
-  }
-  .diag-btn.is-active .diag-teaser,
-  .diag-btn[aria-selected="true"] .diag-teaser {
-    color: #ffffff !important;
-  }
-</style>
-
-<script>
-  function initDiagnostics() {
-    const root = document.querySelector('[data-diagnostic-studio]');
-    if (!root) return;
-
-    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-diag-target]');
-    const panels = root.querySelectorAll<HTMLElement>('[data-diag-panel]');
-
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const targetId = btn.getAttribute('data-diag-target');
-
-        buttons.forEach((b) => {
-          const isActive = b === btn;
-          b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-          if (isActive) {
-            b.classList.add('is-active');
-          } else {
-            b.classList.remove('is-active');
-          }
-        });
-
-        panels.forEach((p) => {
-          if (p.getAttribute('data-diag-panel') === targetId) {
-            p.classList.remove('hidden');
-            p.classList.add('block');
-          } else {
-            p.classList.remove('block');
-            p.classList.add('hidden');
-          }
-        });
-      });
-    });
-  }
-
-  initDiagnostics();
-  document.addEventListener('astro:page-load', initDiagnostics);
-</script>

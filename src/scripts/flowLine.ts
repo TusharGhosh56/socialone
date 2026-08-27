@@ -179,8 +179,8 @@ function sectionTop(selector: string): number | null {
 // ============================================================================
 
 // Helper: Route directly into the CTA Card interior with a terminal connection port
-function pushCtaConnection(list: Milestone[], cta: HTMLElement | null, entryRail: 'left' | 'right' = 'left', prefix = 'cta') {
-  if (!cta) return;
+function pushCtaConnection(list: Milestone[], ctaOrGetter: HTMLElement | null | (() => HTMLElement | null), entryRail: 'left' | 'right' = 'left', prefix = 'cta') {
+  const getCta = () => (typeof ctaOrGetter === 'function' ? ctaOrGetter() : ctaOrGetter);
   const railXFn = entryRail === 'left' ? railLeftX : railRightX;
 
   // 1) Align on rail with the CTA header level
@@ -188,7 +188,10 @@ function pushCtaConnection(list: Milestone[], cta: HTMLElement | null, entryRail
     key: `${prefix}-cta-rail-level`,
     dot: false,
     getPoint: () => {
+      const cta = getCta();
+      if (!cta) return null;
       const cr = cta.getBoundingClientRect();
+      if (cr.height === 0) return null;
       return { x: railXFn(), y: cr.top + 52 + window.scrollY };
     },
   });
@@ -198,7 +201,10 @@ function pushCtaConnection(list: Milestone[], cta: HTMLElement | null, entryRail
     key: `${prefix}-cta-port`,
     dot: true,
     getPoint: () => {
+      const cta = getCta();
+      if (!cta) return null;
       const cr = cta.getBoundingClientRect();
+      if (cr.height === 0) return null;
       const portX = entryRail === 'left'
         ? cr.left + 36 + window.scrollX
         : cr.right - 36 + window.scrollX;
@@ -603,13 +609,13 @@ function buildOurApproachMilestones(): Milestone[] {
 // 5. 16 Years of Proof: Hero (Left) -> Bedrock Header (Left) -> Weaves 4 Foundation Cornerstones (Top-Left -> Top-Right -> Bottom-Right -> Bottom-Left) -> Global Reach Heading (Left) -> Global Footprint Map (Left Rail) -> Final CTA (Left Rail Plug)
 function build16YearsMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
+  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('footprint-map-wrap') || document.querySelector<HTMLElement>('#global-reach-section .rounded-3xl');
   const bedrockHeading = document.getElementById('bedrock-heading') || document.querySelector<HTMLElement>('#bedrock-section h2');
   const card0 = document.querySelector<HTMLElement>('.bedrock-card-0');
   const card1 = document.querySelector<HTMLElement>('.bedrock-card-1');
   const card2 = document.querySelector<HTMLElement>('.bedrock-card-2');
   const card3 = document.querySelector<HTMLElement>('.bedrock-card-3');
-  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
-  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('footprint-map-wrap') || document.querySelector<HTMLElement>('#global-reach-section .rounded-3xl');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
   const list: Milestone[] = [];
 
@@ -623,7 +629,25 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // Bedrock Heading on Left Rail
+  // 1. Global Reach Heading on Left Rail
+  list.push({
+    key: 'proof-global-heading',
+    getPoint: () => {
+      if (!globalHeading) return null;
+      return { x: railLeftX(), y: globalHeading.getBoundingClientRect().top + 16 + window.scrollY };
+    },
+  });
+
+  // 2. Global Footprint Matrix on Left Rail
+  list.push({
+    key: 'proof-matrix-left',
+    getPoint: () => {
+      if (!matrixWrap) return null;
+      return { x: railLeftX(), y: matrixWrap.getBoundingClientRect().top + 60 + window.scrollY };
+    },
+  });
+
+  // 3. Bedrock Heading on Left Rail
   list.push({
     key: 'proof-bedrock-heading',
     getPoint: () => {
@@ -632,11 +656,11 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // Check if 2-column layout is active (desktop/tablet)
+  // 4. Check if 2-column layout is active (desktop/tablet)
   const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 768;
 
   if (isMultiCol && card0 && card1 && card2 && card3) {
-    // 1. Enter Cornerstone 1 (Top-Left: Policy Research & Governance)
+    // 4a. Enter Cornerstone 1 (Top-Left: Policy Research & Governance)
     list.push({
       key: 'proof-pillar-0',
       getPoint: () => {
@@ -645,7 +669,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 2. Horizontal crossover across aisle to Cornerstone 2 (Top-Right: Evidence & Learning)
+    // 4b. Horizontal crossover across aisle to Cornerstone 2 (Top-Right: Evidence & Learning)
     list.push({
       key: 'proof-jog-0-to-1',
       dot: false,
@@ -662,7 +686,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 3. Drop vertically down along Right Rail to Cornerstone 4 (Bottom-Right: Field Intelligence)
+    // 4c. Drop vertically down along Right Rail to Cornerstone 4 (Bottom-Right: Field Intelligence)
     list.push({
       key: 'proof-pillar-3',
       getPoint: () => {
@@ -671,7 +695,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 4. Horizontal crossover back across aisle to Cornerstone 3 (Bottom-Left: Engineering & Systems)
+    // 4d. Horizontal crossover back across aisle to Cornerstone 3 (Bottom-Left: Engineering & Systems)
     list.push({
       key: 'proof-jog-3-to-2',
       dot: false,
@@ -688,24 +712,6 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
   }
-
-  // Global Reach Heading on Left Rail
-  list.push({
-    key: 'proof-global-heading',
-    getPoint: () => {
-      if (!globalHeading) return null;
-      return { x: railLeftX(), y: globalHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // Global Footprint Matrix on Left Rail
-  list.push({
-    key: 'proof-matrix-left',
-    getPoint: () => {
-      if (!matrixWrap) return null;
-      return { x: railLeftX(), y: matrixWrap.getBoundingClientRect().top + 60 + window.scrollY };
-    },
-  });
 
   // Final CTA plugged into card interior
   pushCtaConnection(list, cta, 'left', 'proof');
@@ -747,7 +753,336 @@ function buildPeopleMilestones(): Milestone[] {
   return list;
 }
 
-// 7. Intelligent Multi-Rail General Subpage Generator (For Sector Capabilities, AI in Action, Contact)
+// 7. Our Capabilities (Overview): Hero (Left) -> Top Splitter Manifold (Center) -> 3 Sector Triad -> Bottom Combiner Manifold (Center) -> Jog to Left Rail -> Final CTA (Left Rail Plug)
+function buildCapabilitiesOverviewMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const sec = document.getElementById('sector-overview-section');
+  const grid = document.getElementById('sector-overview-grid') || sec?.querySelector('.grid');
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const list: Milestone[] = [];
+
+  list.push({
+    key: 'cap-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  const getTopSplitterY = () => {
+    if (!grid) return 0;
+    const gr = grid.getBoundingClientRect();
+    return gr.top - 36 + window.scrollY;
+  };
+
+  list.push({
+    key: 'cap-split-jog-start',
+    dot: false,
+    getPoint: () => ({ x: railLeftX(), y: getTopSplitterY() }),
+  });
+  list.push({
+    key: 'cap-3way-splitter',
+    getPoint: () => ({ x: screenCenterX(), y: getTopSplitterY() }),
+  });
+
+  // Center Channel travels through Card 1 (Nonprofits)
+  list.push({
+    key: 'cap-sectors-mid-dot',
+    getPoint: () => {
+      if (!grid) return null;
+      const gr = grid.getBoundingClientRect();
+      return { x: screenCenterX(), y: gr.top + gr.height * 0.48 + window.scrollY };
+    },
+  });
+
+  const getBottomCombinerY = () => {
+    if (!grid) return 0;
+    const gr = grid.getBoundingClientRect();
+    return gr.bottom + 36 + window.scrollY;
+  };
+
+  list.push({
+    key: 'cap-3way-combiner',
+    dot: false,
+    getPoint: () => ({ x: screenCenterX(), y: getBottomCombinerY() }),
+  });
+  list.push({
+    key: 'cap-combiner-to-rail',
+    dot: false,
+    getPoint: () => ({ x: railLeftX(), y: getBottomCombinerY() }),
+  });
+
+  pushCtaConnection(list, cta, 'left', 'cap');
+  return list;
+}
+
+function getVisibleCapabilityCards(): HTMLElement[] {
+  const visibleBody = document.querySelector<HTMLElement>('.sector-body-block:not(.hidden)');
+  if (visibleBody) {
+    return Array.from(visibleBody.querySelectorAll<HTMLElement>('.capability-card'));
+  }
+  return Array.from(document.querySelectorAll<HTMLElement>('.capability-card')).filter(
+    (c) => c.offsetParent !== null && c.getBoundingClientRect().height > 0
+  );
+}
+
+function getVisibleSectorCta(): HTMLElement | null {
+  const visibleCta = document.querySelector<HTMLElement>('.sector-cta-block:not(.hidden) .final-cta-card');
+  if (visibleCta && visibleCta.getBoundingClientRect().height > 0) {
+    return visibleCta;
+  }
+  const allCards = Array.from(document.querySelectorAll<HTMLElement>('.final-cta-card'));
+  return allCards.find((c) => c.offsetParent !== null && c.getBoundingClientRect().height > 0) || document.querySelector<HTMLElement>('main .final-cta-card');
+}
+
+// 8. Sector Capabilities Dedicated Hubs (Government, Nonprofits, Philanthropy): Clean Left Rail Spine with Progressive Stacking Alignment
+function buildSectorCapabilitiesMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const list: Milestone[] = [];
+
+  list.push({
+    key: 'sec-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  const cards = getVisibleCapabilityCards();
+  cards.forEach((card, idx) => {
+    list.push({
+      key: `sec-cap-${idx}`,
+      getPoint: () => {
+        const liveCards = getVisibleCapabilityCards();
+        const liveCard = liveCards[idx] || card;
+        if (!liveCard) return null;
+        const cr = liveCard.getBoundingClientRect();
+        if (cr.height === 0) return null;
+        return { x: railLeftX(), y: cr.top + 52 + window.scrollY };
+      },
+    });
+  });
+
+  pushCtaConnection(list, getVisibleSectorCta, 'left', 'sec');
+  return list;
+}
+
+function getVisibleCaseStudyDossiers(): HTMLElement[] {
+  const visibleBody = document.querySelector<HTMLElement>('.ai-body-block:not(.hidden)');
+  if (visibleBody) {
+    return Array.from(visibleBody.querySelectorAll<HTMLElement>('.case-study-editorial'));
+  }
+  return Array.from(document.querySelectorAll<HTMLElement>('.case-study-editorial')).filter(
+    (c) => c.offsetParent !== null && c.getBoundingClientRect().height > 0
+  );
+}
+
+function getVisibleAiCta(): HTMLElement | null {
+  const visibleCta = document.querySelector<HTMLElement>('.final-cta-card');
+  if (visibleCta && visibleCta.getBoundingClientRect().height > 0) {
+    return visibleCta;
+  }
+  return document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
+}
+
+// 9. AI in Action Directory Hub (/ai-in-action) — 3-Column Serpentine Circuit Weave
+function buildAiInActionDirectoryMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const list: Milestone[] = [];
+
+  list.push({
+    key: 'ai-dir-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  const isDesktop = () => document.documentElement.clientWidth >= 1024;
+
+  const getCardCenter = (idx: number) => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.ai-directory-card'));
+    const card = cards[idx];
+    if (!card) return null;
+    const cr = card.getBoundingClientRect();
+    if (cr.height === 0) return null;
+    return {
+      x: cr.left + cr.width / 2 + window.scrollX,
+      y: cr.top + cr.height / 2 + window.scrollY,
+    };
+  };
+
+  if (typeof window !== 'undefined' && isDesktop()) {
+    // Desktop: Serpentine Weave across 3-Column Grid
+    // Row 1: Left (Card 0: Education) -> Center (Card 1: Agriculture) -> Right (Card 2: MSMEs)
+    // Row 2: Right (Card 5: M&E) -> Center (Card 4: Public Services) -> Left (Card 3: Utilities)
+    
+    // Top Row: 0 -> 1 -> 2
+    [0, 1, 2].forEach((idx) => {
+      list.push({
+        key: `ai-dir-card-${idx}`,
+        getPoint: () => getCardCenter(idx),
+      });
+    });
+
+    // Bottom Row: 5 -> 4 -> 3
+    [5, 4, 3].forEach((idx) => {
+      list.push({
+        key: `ai-dir-card-${idx}`,
+        getPoint: () => getCardCenter(idx),
+      });
+    });
+
+    // Drop down Left Rail before final CTA plug
+    list.push({
+      key: 'ai-dir-post-grid-jog',
+      dot: false,
+      getPoint: () => {
+        const c3 = getCardCenter(3);
+        if (!c3) return null;
+        return { x: railLeftX(), y: c3.y + 120 };
+      },
+    });
+  } else {
+    // Mobile / Tablet: Sequential Rail Track
+    for (let idx = 0; idx < 6; idx++) {
+      list.push({
+        key: `ai-dir-card-${idx}`,
+        getPoint: () => {
+          const cards = Array.from(document.querySelectorAll<HTMLElement>('.ai-directory-card'));
+          const card = cards[idx];
+          if (!card) return null;
+          const cr = card.getBoundingClientRect();
+          if (cr.height === 0) return null;
+          return { x: railLeftX(), y: cr.top + 48 + window.scrollY };
+        },
+      });
+    }
+  }
+
+  pushCtaConnection(list, cta, 'left', 'ai-dir');
+  return list;
+}
+
+// 10. AI in Action Dedicated Category Case Studies (/ai-in-action/[category]) — Multi-Act Narrative S-Weave
+function buildAiInActionCategoryMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const list: Milestone[] = [];
+
+  list.push({
+    key: 'ai-cat-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  const dossiers = getVisibleCaseStudyDossiers();
+  dossiers.forEach((dossier, idx) => {
+    // Act 1: Dossier Header on Left Rail
+    list.push({
+      key: `ai-dossier-${idx}-header`,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const hr = d.querySelector('.dossier-header-block')?.getBoundingClientRect() ?? d.getBoundingClientRect();
+        if (hr.height === 0) return null;
+        return { x: railLeftX(), y: hr.top + 28 + window.scrollY };
+      },
+    });
+
+    // Act 2: Metadata Ribbon Horizontal Traverse (Left Rail -> Right Rail)
+    list.push({
+      key: `ai-dossier-${idx}-ribbon-start`,
+      dot: false,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const rr = d.querySelector('.dossier-ribbon-block')?.getBoundingClientRect();
+        if (!rr || rr.height === 0) return null;
+        return { x: railLeftX(), y: rr.top + rr.height / 2 + window.scrollY };
+      },
+    });
+
+    list.push({
+      key: `ai-dossier-${idx}-ribbon-end`,
+      dot: true,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const rr = d.querySelector('.dossier-ribbon-block')?.getBoundingClientRect();
+        if (!rr || rr.height === 0) return null;
+        return { x: railRightX(), y: rr.top + rr.height / 2 + window.scrollY };
+      },
+    });
+
+    // Act 3: Institutional Delivery (Right Rail)
+    list.push({
+      key: `ai-dossier-${idx}-delivery`,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const delBox = d.querySelector('.dossier-delivery-box')?.getBoundingClientRect();
+        if (!delBox || delBox.height === 0) return null;
+        return { x: railRightX(), y: delBox.top + 50 + window.scrollY };
+      },
+    });
+
+    // Act 3 Jog: Cross from Right Rail to Left Rail between 2-col grid and impact monument
+    list.push({
+      key: `ai-dossier-${idx}-cross-jog-right`,
+      dot: false,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const delBox = d.querySelector('.dossier-delivery-box')?.getBoundingClientRect();
+        const impBox = d.querySelector('.dossier-impact-box')?.getBoundingClientRect();
+        if (!delBox || !impBox) return null;
+        const gapY = (delBox.bottom + impBox.top) / 2 + window.scrollY;
+        return { x: railRightX(), y: gapY };
+      },
+    });
+
+    list.push({
+      key: `ai-dossier-${idx}-cross-jog-left`,
+      dot: false,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const delBox = d.querySelector('.dossier-delivery-box')?.getBoundingClientRect();
+        const impBox = d.querySelector('.dossier-impact-box')?.getBoundingClientRect();
+        if (!delBox || !impBox) return null;
+        const gapY = (delBox.bottom + impBox.top) / 2 + window.scrollY;
+        return { x: railLeftX(), y: gapY };
+      },
+    });
+
+    // Act 4: Public Value & Lasting Impact Callout on Left Rail
+    list.push({
+      key: `ai-dossier-${idx}-impact`,
+      getPoint: () => {
+        const liveDossiers = getVisibleCaseStudyDossiers();
+        const d = liveDossiers[idx] || dossier;
+        if (!d) return null;
+        const impBox = d.querySelector('.dossier-impact-box')?.getBoundingClientRect();
+        if (!impBox || impBox.height === 0) return null;
+        return { x: railLeftX(), y: impBox.top + 50 + window.scrollY };
+      },
+    });
+  });
+
+  pushCtaConnection(list, getVisibleAiCta, 'left', 'ai-cat');
+  return list;
+}
+
+// 11. Intelligent Multi-Rail General Subpage Generator (For Contact, etc.)
 function buildGeneralSubpageMilestones(): Milestone[] {
   const list: Milestone[] = [];
   const heroH1 = document.querySelector<HTMLElement>('main h1');
@@ -930,8 +1265,20 @@ function buildMilestones(): Milestone[] {
   if (pathname.includes('/services/our-approach')) {
     return buildOurApproachMilestones();
   }
+  if (document.getElementById('sector-overview-grid') !== null || pathname.endsWith('/services/our-capabilities') || pathname.endsWith('/services/our-capabilities/')) {
+    return buildCapabilitiesOverviewMilestones();
+  }
+  if (document.querySelector('[data-sector-view]') !== null || pathname.includes('/services/our-capabilities/')) {
+    return buildSectorCapabilitiesMilestones();
+  }
+  if (document.getElementById('ai-directory-grid') !== null || pathname === '/ai-in-action' || pathname === '/ai-in-action/') {
+    return buildAiInActionDirectoryMilestones();
+  }
+  if (document.querySelector('[data-ai-category-view]') !== null || pathname.includes('/ai-in-action/')) {
+    return buildAiInActionCategoryMilestones();
+  }
 
-  // 3. Fallback for other subpages (Sector Capabilities, AI in Action, Contact)
+  // 3. Fallback for other subpages (Contact, etc.)
   return buildGeneralSubpageMilestones();
 }
 
@@ -957,9 +1304,18 @@ export function initFlowLine(): void {
   let running = false;
   let flourishes: Flourish[] = [];
 
+  interface ActiveBranch {
+    pathEl: SVGPathElement;
+    built: BuiltPath;
+    startKey: string;
+    endKey: string;
+  }
+  let activeBranches: ActiveBranch[] = [];
+
   function renderBranches() {
     if (!branchesRoot) return;
     branchesRoot.innerHTML = '';
+    activeBranches = [];
     const SVGNS = 'http://www.w3.org/2000/svg';
 
     // 1. Built for Government Dual Pillar Branching
@@ -979,21 +1335,17 @@ export function initFlowLine(): void {
 
       // Left Power Conduit Path
       const p1 = document.createElementNS(SVGNS, 'path');
-      p1.setAttribute('d', `M ${centerGapX} ${portY} L ${c1PortX} ${portY}`);
       p1.setAttribute('class', 'flow-line-branch flow-line-branch-left flow-line-branch-pillar');
       branchesRoot.appendChild(p1);
-      const p1Len = p1.getTotalLength();
-      p1.style.strokeDasharray = `${p1Len}`;
-      p1.style.strokeDashoffset = `${p1Len}`;
+      const b1 = buildRoundedPath([{ x: centerGapX, y: portY }, { x: c1PortX, y: portY }], CORNER_RADIUS);
+      activeBranches.push({ pathEl: p1, built: b1, startKey: 'bfg-power-splitter', endKey: 'bfg-power-splitter' });
 
       // Right Power Conduit Path
       const p2 = document.createElementNS(SVGNS, 'path');
-      p2.setAttribute('d', `M ${centerGapX} ${portY} L ${c2PortX} ${portY}`);
       p2.setAttribute('class', 'flow-line-branch flow-line-branch-right flow-line-branch-pillar');
       branchesRoot.appendChild(p2);
-      const p2Len = p2.getTotalLength();
-      p2.style.strokeDasharray = `${p2Len}`;
-      p2.style.strokeDashoffset = `${p2Len}`;
+      const b2 = buildRoundedPath([{ x: centerGapX, y: portY }, { x: c2PortX, y: portY }], CORNER_RADIUS);
+      activeBranches.push({ pathEl: p2, built: b2, startKey: 'bfg-power-splitter', endKey: 'bfg-power-splitter' });
 
       // Left Terminal Dot on Card 1
       const t1 = document.createElementNS(SVGNS, 'circle');
@@ -1035,21 +1387,43 @@ export function initFlowLine(): void {
 
       // Left Branch: Splitter cx -> Card 0 Center X -> Down Card 0 -> Combiner cx
       const leftBranch = document.createElementNS(SVGNS, 'path');
-      leftBranch.setAttribute('d', `M ${cx} ${topY} H ${c0x} V ${botY} H ${cx}`);
       leftBranch.setAttribute('class', 'flow-line-branch flow-line-branch-left flow-line-branch-sector');
       branchesRoot.appendChild(leftBranch);
-      const lLen = leftBranch.getTotalLength();
-      leftBranch.style.strokeDasharray = `${lLen}`;
-      leftBranch.style.strokeDashoffset = `${lLen}`;
+      const bLeft = buildRoundedPath(toOrthogonal([{ x: cx, y: topY }, { x: c0x, y: topY }, { x: c0x, y: botY }, { x: cx, y: botY }]).points, CORNER_RADIUS);
+      activeBranches.push({ pathEl: leftBranch, built: bLeft, startKey: 'pad-3way-splitter', endKey: 'pad-3way-combiner' });
 
       // Right Branch: Splitter cx -> Card 2 Center X -> Down Card 2 -> Combiner cx
       const rightBranch = document.createElementNS(SVGNS, 'path');
-      rightBranch.setAttribute('d', `M ${cx} ${topY} H ${c2x} V ${botY} H ${cx}`);
       rightBranch.setAttribute('class', 'flow-line-branch flow-line-branch-right flow-line-branch-sector');
       branchesRoot.appendChild(rightBranch);
-      const rLen = rightBranch.getTotalLength();
-      rightBranch.style.strokeDasharray = `${rLen}`;
-      rightBranch.style.strokeDashoffset = `${rLen}`;
+      const bRight = buildRoundedPath(toOrthogonal([{ x: cx, y: topY }, { x: c2x, y: topY }, { x: c2x, y: botY }, { x: cx, y: botY }]).points, CORNER_RADIUS);
+      activeBranches.push({ pathEl: rightBranch, built: bRight, startKey: 'pad-3way-splitter', endKey: 'pad-3way-combiner' });
+
+      // Top Diverging Corner Dots
+      const dotTopL = document.createElementNS(SVGNS, 'circle');
+      dotTopL.setAttribute('cx', String(c0x));
+      dotTopL.setAttribute('cy', String(topY));
+      dotTopL.setAttribute('class', 'flow-line-branch-dot flow-line-pad-corner-top');
+      branchesRoot.appendChild(dotTopL);
+
+      const dotTopR = document.createElementNS(SVGNS, 'circle');
+      dotTopR.setAttribute('cx', String(c2x));
+      dotTopR.setAttribute('cy', String(topY));
+      dotTopR.setAttribute('class', 'flow-line-branch-dot flow-line-pad-corner-top');
+      branchesRoot.appendChild(dotTopR);
+
+      // Bottom Converging Corner Dots
+      const dotBotL = document.createElementNS(SVGNS, 'circle');
+      dotBotL.setAttribute('cx', String(c0x));
+      dotBotL.setAttribute('cy', String(botY));
+      dotBotL.setAttribute('class', 'flow-line-branch-dot flow-line-pad-corner-bot');
+      branchesRoot.appendChild(dotBotL);
+
+      const dotBotR = document.createElementNS(SVGNS, 'circle');
+      dotBotR.setAttribute('cx', String(c2x));
+      dotBotR.setAttribute('cy', String(botY));
+      dotBotR.setAttribute('class', 'flow-line-branch-dot flow-line-pad-corner-bot');
+      branchesRoot.appendChild(dotBotR);
 
       // Terminal status dots on Card 0 and Card 2 badges
       const badge0 = secCard0.querySelector('.sector-badge');
@@ -1068,6 +1442,83 @@ export function initFlowLine(): void {
       t2.setAttribute('cy', String(badge0Y));
       t2.setAttribute('r', '4');
       t2.setAttribute('class', 'flow-line-terminal-dot flow-line-terminal-sector-2');
+      branchesRoot.appendChild(t2);
+    }
+
+    // 3. Capabilities Overview 3-Way Splitter and Combiner Branches
+    const capGrid = document.getElementById('sector-overview-grid');
+    const capCard0 = capGrid?.querySelector<HTMLElement>('.sector-overview-card-0');
+    const capCard1 = capGrid?.querySelector<HTMLElement>('.sector-overview-card-1');
+    const capCard2 = capGrid?.querySelector<HTMLElement>('.sector-overview-card-2');
+
+    if (capGrid && capCard0 && capCard1 && capCard2 && document.documentElement.clientWidth >= 1024) {
+      const gr = capGrid.getBoundingClientRect();
+      const c0r = capCard0.getBoundingClientRect();
+      const c2r = capCard2.getBoundingClientRect();
+
+      const topY = gr.top - 36 + window.scrollY;
+      const botY = gr.bottom + 36 + window.scrollY;
+      const cx = screenCenterX();
+      const c0x = c0r.left + c0r.width / 2 + window.scrollX;
+      const c2x = c2r.left + c2r.width / 2 + window.scrollX;
+
+      // Left Branch: Splitter cx -> Card 0 Center X -> Down Card 0 -> Combiner cx
+      const leftBranch = document.createElementNS(SVGNS, 'path');
+      leftBranch.setAttribute('class', 'flow-line-branch flow-line-branch-left flow-line-branch-cap');
+      branchesRoot.appendChild(leftBranch);
+      const bCapLeft = buildRoundedPath(toOrthogonal([{ x: cx, y: topY }, { x: c0x, y: topY }, { x: c0x, y: botY }, { x: cx, y: botY }]).points, CORNER_RADIUS);
+      activeBranches.push({ pathEl: leftBranch, built: bCapLeft, startKey: 'cap-3way-splitter', endKey: 'cap-3way-combiner' });
+
+      // Right Branch: Splitter cx -> Card 2 Center X -> Down Card 2 -> Combiner cx
+      const rightBranch = document.createElementNS(SVGNS, 'path');
+      rightBranch.setAttribute('class', 'flow-line-branch flow-line-branch-right flow-line-branch-cap');
+      branchesRoot.appendChild(rightBranch);
+      const bCapRight = buildRoundedPath(toOrthogonal([{ x: cx, y: topY }, { x: c2x, y: topY }, { x: c2x, y: botY }, { x: cx, y: botY }]).points, CORNER_RADIUS);
+      activeBranches.push({ pathEl: rightBranch, built: bCapRight, startKey: 'cap-3way-splitter', endKey: 'cap-3way-combiner' });
+
+      // Top Diverging Corner Dots
+      const dotTopCapL = document.createElementNS(SVGNS, 'circle');
+      dotTopCapL.setAttribute('cx', String(c0x));
+      dotTopCapL.setAttribute('cy', String(topY));
+      dotTopCapL.setAttribute('class', 'flow-line-branch-dot flow-line-cap-corner-top');
+      branchesRoot.appendChild(dotTopCapL);
+
+      const dotTopCapR = document.createElementNS(SVGNS, 'circle');
+      dotTopCapR.setAttribute('cx', String(c2x));
+      dotTopCapR.setAttribute('cy', String(topY));
+      dotTopCapR.setAttribute('class', 'flow-line-branch-dot flow-line-cap-corner-top');
+      branchesRoot.appendChild(dotTopCapR);
+
+      // Bottom Converging Corner Dots
+      const dotBotCapL = document.createElementNS(SVGNS, 'circle');
+      dotBotCapL.setAttribute('cx', String(c0x));
+      dotBotCapL.setAttribute('cy', String(botY));
+      dotBotCapL.setAttribute('class', 'flow-line-branch-dot flow-line-cap-corner-bot');
+      branchesRoot.appendChild(dotBotCapL);
+
+      const dotBotCapR = document.createElementNS(SVGNS, 'circle');
+      dotBotCapR.setAttribute('cx', String(c2x));
+      dotBotCapR.setAttribute('cy', String(botY));
+      dotBotCapR.setAttribute('class', 'flow-line-branch-dot flow-line-cap-corner-bot');
+      branchesRoot.appendChild(dotBotCapR);
+
+      // Terminal status dots on Card 0 and Card 2 badges
+      const badge0 = capCard0.querySelector('.sector-overview-badge');
+      const badge0r = badge0?.getBoundingClientRect() ?? c0r;
+      const badge0Y = badge0r.top + badge0r.height / 2 + window.scrollY;
+
+      const t0 = document.createElementNS(SVGNS, 'circle');
+      t0.setAttribute('cx', String(c0x));
+      t0.setAttribute('cy', String(badge0Y));
+      t0.setAttribute('r', '4');
+      t0.setAttribute('class', 'flow-line-terminal-dot flow-line-terminal-cap-0');
+      branchesRoot.appendChild(t0);
+
+      const t2 = document.createElementNS(SVGNS, 'circle');
+      t2.setAttribute('cx', String(c2x));
+      t2.setAttribute('cy', String(badge0Y));
+      t2.setAttribute('r', '4');
+      t2.setAttribute('class', 'flow-line-terminal-dot flow-line-terminal-cap-2');
       branchesRoot.appendChild(t2);
     }
   }
@@ -1125,27 +1576,39 @@ export function initFlowLine(): void {
       f.el.classList.toggle(f.className, currentLength >= f.getTriggerLength() - FLOURISH_LEAD);
     }
 
-    // 1. Power splitter synchronization & dynamic draw-in (Built for Government)
+    // Dynamic partialD draw-in for all active branched routes (keeps dotted stroke-dasharray styling)
+    activeBranches.forEach((b) => {
+      const startIdx = currentMilestonesWithPoints.findIndex((m) => m.key === b.startKey);
+      const endIdx = currentMilestonesWithPoints.findIndex((m) => m.key === b.endKey || m.key.includes('combiner-to-rail'));
+      if (startIdx >= 0) {
+        const startAt = milestoneCumulative[startIdx] ?? 0;
+        const endAt = endIdx >= 0 && endIdx !== startIdx ? (milestoneCumulative[endIdx] ?? startAt + 48) : startAt + 48;
+        const span = Math.max(1, endAt - startAt);
+        const progress = Math.min(1, Math.max(0, (currentLength - startAt) / span));
+
+        if (progress > 0) {
+          b.pathEl.setAttribute('d', partialD(b.built, progress * b.built.totalLength));
+          b.pathEl.classList.add('is-active');
+          b.pathEl.style.opacity = '1';
+        } else {
+          b.pathEl.setAttribute('d', '');
+          b.pathEl.classList.remove('is-active');
+          b.pathEl.style.opacity = '0';
+        }
+      }
+    });
+
+    // 1. Power splitter synchronization (Built for Government)
     const splitterIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'bfg-power-splitter');
     if (splitterIdx >= 0) {
       const splitterAt = milestoneCumulative[splitterIdx] ?? 0;
       const progress = Math.min(1, Math.max(0, (currentLength - splitterAt) / 48));
-      const isStarted = currentLength >= splitterAt - 4;
-
-      branchesRoot?.querySelectorAll<SVGPathElement>('.flow-line-branch-pillar').forEach((b) => {
-        b.classList.toggle('is-active', isStarted);
-        const len = Number(b.style.strokeDasharray || b.getTotalLength());
-        if (len > 0) {
-          b.style.strokeDashoffset = String(len * (1 - progress));
-        }
-      });
-
       const isPowered = progress >= 0.7;
       branchesRoot?.querySelectorAll('.flow-line-terminal-pillar').forEach((d) => d.classList.toggle('is-ignited', isPowered));
       document.querySelectorAll('.pillar-card-1, .pillar-card-2').forEach((c) => c.classList.toggle('is-powered', isPowered));
     }
 
-    // 2. 3-Way sector splitter and combiner dynamic flow animation (Purpose & Direction)
+    // 2. 3-Way sector splitter and combiner power states (Purpose & Direction)
     const padSplitterIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'pad-3way-splitter');
     const padCombinerIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'pad-3way-combiner' || m.key === 'pad-combiner-to-rail');
     if (padSplitterIdx >= 0 && padCombinerIdx >= 0) {
@@ -1154,17 +1617,13 @@ export function initFlowLine(): void {
       const span = Math.max(1, combineAt - splitAt);
       const progress = Math.min(1, Math.max(0, (currentLength - splitAt) / span));
 
-      const isStarted = currentLength >= splitAt - 4;
-      branchesRoot?.querySelectorAll<SVGPathElement>('.flow-line-branch-sector').forEach((b) => {
-        b.classList.toggle('is-active', isStarted);
-        const len = Number(b.style.strokeDasharray || b.getTotalLength());
-        if (len > 0) {
-          b.style.strokeDashoffset = String(len * (1 - progress));
-        }
-      });
-
+      const isTopLit = progress >= 0.05;
       const isMidway = progress >= 0.15;
+      const isBotLit = progress >= 0.85;
+
+      branchesRoot?.querySelectorAll('.flow-line-pad-corner-top').forEach((d) => d.classList.toggle('is-ignited', isTopLit));
       branchesRoot?.querySelectorAll('.flow-line-terminal-sector-0, .flow-line-terminal-sector-2').forEach((d) => d.classList.toggle('is-ignited', isMidway));
+      branchesRoot?.querySelectorAll('.flow-line-pad-corner-bot').forEach((d) => d.classList.toggle('is-ignited', isBotLit));
       document.querySelectorAll('.sector-card').forEach((c) => c.classList.toggle('is-powered', isMidway));
     }
 
@@ -1191,6 +1650,74 @@ export function initFlowLine(): void {
         grp?.querySelectorAll('.people-card').forEach((c) => c.classList.toggle('is-powered', isReached));
       }
     }
+
+    // 5. Capabilities Overview 3-Way sector splitter and combiner power states
+    const capSplitterIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'cap-3way-splitter');
+    const capCombinerIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'cap-3way-combiner' || m.key === 'cap-combiner-to-rail');
+    if (capSplitterIdx >= 0 && capCombinerIdx >= 0) {
+      const splitAt = milestoneCumulative[capSplitterIdx] ?? 0;
+      const combineAt = milestoneCumulative[capCombinerIdx] ?? 0;
+      const span = Math.max(1, combineAt - splitAt);
+      const progress = Math.min(1, Math.max(0, (currentLength - splitAt) / span));
+
+      const isTopLit = progress >= 0.05;
+      const isMidway = progress >= 0.15;
+      const isBotLit = progress >= 0.85;
+
+      branchesRoot?.querySelectorAll('.flow-line-cap-corner-top').forEach((d) => d.classList.toggle('is-ignited', isTopLit));
+      branchesRoot?.querySelectorAll('.flow-line-terminal-cap-0, .flow-line-terminal-cap-2').forEach((d) => d.classList.toggle('is-ignited', isMidway));
+      branchesRoot?.querySelectorAll('.flow-line-cap-corner-bot').forEach((d) => d.classList.toggle('is-ignited', isBotLit));
+      document.querySelectorAll('.sector-overview-card').forEach((c) => c.classList.toggle('is-powered', isMidway));
+    }
+
+    // 6. Sector Capabilities Dedicated Hubs sequential card power activation
+    for (let idx = 0; idx < 6; idx++) {
+      const cIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `sec-cap-${idx}`);
+      if (cIdx >= 0) {
+        const cAt = milestoneCumulative[cIdx] ?? 0;
+        const isReached = currentLength >= cAt - 8;
+        const cards = document.querySelectorAll<HTMLElement>(`.capability-card-${idx}`);
+        cards.forEach((c) => c.classList.toggle('is-powered', isReached));
+      }
+    }
+
+    // 7. AI in Action Directory Cards power activation
+    for (let idx = 0; idx < 6; idx++) {
+      const cIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `ai-dir-card-${idx}`);
+      if (cIdx >= 0) {
+        const cAt = milestoneCumulative[cIdx] ?? 0;
+        const isReached = currentLength >= cAt - 8;
+        const card = document.querySelector<HTMLElement>(`.ai-directory-card-${idx}`);
+        card?.classList.toggle('is-powered', isReached);
+      }
+    }
+
+    // 8. AI in Action Category Case Study Dossiers multi-act power activation
+    const visibleDossiers = getVisibleCaseStudyDossiers();
+    visibleDossiers.forEach((dossier, idx) => {
+      const headIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `ai-dossier-${idx}-header`);
+      const ribIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `ai-dossier-${idx}-ribbon-end` || m.key === `ai-dossier-${idx}-ribbon-start`);
+      const delIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `ai-dossier-${idx}-delivery`);
+      const impIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `ai-dossier-${idx}-impact`);
+
+      if (headIdx >= 0) {
+        const at = milestoneCumulative[headIdx] ?? 0;
+        dossier.classList.toggle('is-powered', currentLength >= at - 8);
+      }
+      if (ribIdx >= 0) {
+        const at = milestoneCumulative[ribIdx] ?? 0;
+        dossier.querySelector('.dossier-ribbon-block')?.classList.toggle('is-powered', currentLength >= at - 8);
+      }
+      if (delIdx >= 0) {
+        const at = milestoneCumulative[delIdx] ?? 0;
+        dossier.querySelector('.dossier-delivery-box')?.classList.toggle('is-powered', currentLength >= at - 8);
+        dossier.querySelector('.dossier-context-box')?.classList.toggle('is-powered', currentLength >= at - 8);
+      }
+      if (impIdx >= 0) {
+        const at = milestoneCumulative[impIdx] ?? 0;
+        dossier.querySelector('.dossier-impact-box')?.classList.toggle('is-powered', currentLength >= at - 8);
+      }
+    });
   }
 
   function renderDots(milestones: Milestone[], points: Point[]) {

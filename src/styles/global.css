@@ -321,6 +321,10 @@
     overflow: hidden;
     transition: transform 500ms var(--ease-out), border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out);
   }
+  .final-cta-card > * {
+    position: relative;
+    z-index: 2;
+  }
   .final-cta-card::before {
     content: '';
     position: absolute;
@@ -331,8 +335,8 @@
     pointer-events: none;
     transition: opacity 500ms var(--ease-out);
     background:
-      radial-gradient(circle at 85% 30%, rgba(255, 212, 102, 0.35) 0%, transparent 60%),
-      linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 233, 209, 0.55) 50%, rgba(209, 156, 51, 0.25) 100%);
+      radial-gradient(circle at 85% 30%, rgba(209, 156, 51, 0.22) 0%, transparent 65%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 233, 209, 0.45) 50%, rgba(209, 156, 51, 0.15) 100%);
   }
   .final-cta-card:hover::before,
   .final-cta-card.is-trail-ignited::before {
@@ -341,8 +345,27 @@
   .final-cta-card:hover,
   .final-cta-card.is-trail-ignited {
     border-color: rgba(209, 156, 51, 0.75) !important;
-    box-shadow: 0 24px 50px -10px rgba(26, 33, 80, 0.15), 0 0 32px rgba(209, 156, 51, 0.35) !important;
+    box-shadow: 0 24px 50px -10px rgba(26, 33, 80, 0.15), 0 0 32px rgba(209, 156, 51, 0.25) !important;
     transform: translateY(-2px);
+  }
+  /* Explicitly preserve bold, crisp text contrast across all states */
+  .final-cta-card h2,
+  .final-cta-card h3,
+  .final-cta-card:hover h2,
+  .final-cta-card:hover h3,
+  .final-cta-card.is-trail-ignited h2,
+  .final-cta-card.is-trail-ignited h3 {
+    color: var(--navy) !important;
+  }
+  .final-cta-card p,
+  .final-cta-card:hover p,
+  .final-cta-card.is-trail-ignited p {
+    color: var(--mid-navy) !important;
+  }
+  .final-cta-card .text-gold,
+  .final-cta-card:hover .text-gold,
+  .final-cta-card.is-trail-ignited .text-gold {
+    color: var(--gold) !important;
   }
 }
 
@@ -463,34 +486,35 @@
 /* Dual Pillar & 3-Way Sector Power Split Branch Lines & Hub */
 .flow-line-branch {
   fill: none;
-  stroke: var(--gold);
+  stroke: rgba(209, 156, 51, 0.7);
   stroke-width: 2.25;
   stroke-linecap: round;
-  stroke-dasharray: 2 6;
+  stroke-dasharray: 2 10;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 350ms var(--ease-out), stroke 350ms var(--ease-out), filter 350ms var(--ease-out);
+  transition: opacity 250ms var(--ease-out), filter 350ms var(--ease-out);
 }
 .flow-line-branch.is-active {
-  opacity: 1;
   stroke: #ffd466;
   stroke-width: 2.25;
   filter: drop-shadow(0 0 6px rgba(209, 156, 51, 0.95)) drop-shadow(0 0 12px rgba(209, 156, 51, 0.5));
 }
-.flow-line-terminal-dot {
+.flow-line-terminal-dot,
+.flow-line-branch-dot {
   fill: var(--gold);
   stroke: #ffffff;
-  stroke-width: 1.5;
+  stroke-width: 2;
   opacity: 0;
   transform: scale(0);
   transform-origin: center;
   transition: r 350ms var(--ease-out), fill 350ms var(--ease-out), opacity 350ms var(--ease-out), transform 350ms var(--ease-out), filter 350ms var(--ease-out);
 }
-.flow-line-terminal-dot.is-ignited {
+.flow-line-terminal-dot.is-ignited,
+.flow-line-branch-dot.is-ignited {
   opacity: 1;
   transform: scale(1);
   fill: #ffd466;
-  r: 4.5;
+  r: 5;
   filter: drop-shadow(0 0 8px rgba(209, 156, 51, 1)) drop-shadow(0 0 16px rgba(209, 156, 51, 0.6));
 }
 .flow-line-dot[data-flow-dot="bfg-power-splitter"],
@@ -503,7 +527,9 @@
 }
 .flow-line-dot[data-flow-dot="bfg-power-splitter"].is-ignited,
 .flow-line-dot[data-flow-dot="pad-3way-splitter"].is-ignited,
-.flow-line-dot[data-flow-dot="pad-3way-combiner"].is-ignited {
+.flow-line-dot[data-flow-dot="pad-3way-combiner"].is-ignited,
+.flow-line-dot[data-flow-dot="cap-3way-splitter"].is-ignited,
+.flow-line-dot[data-flow-dot="cap-3way-combiner"].is-ignited {
   r: 7.5;
   fill: #ffffff;
   stroke: #ffd466;
@@ -511,14 +537,33 @@
   filter: drop-shadow(0 0 12px rgba(209, 156, 51, 1)) drop-shadow(0 0 24px rgba(209, 156, 51, 0.7));
 }
 
-/* Pillar, Sector, Principle, & People Card Circuit Power Activation */
-.pillar-card, .sector-card, .principle-card, .people-card {
+/* Pillar, Sector, Principle, People, Sector Overview, Capability Card & Case Study Circuit Power Activation */
+.pillar-card, .sector-card, .principle-card, .people-card, .sector-overview-card, .capability-card, .ai-directory-card, .case-study-editorial {
   position: relative;
   transition: border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out), transform 500ms var(--ease-out);
 }
-.pillar-card.is-powered, .sector-card.is-powered, .principle-card.is-powered, .people-card.is-powered {
+.pillar-card.is-powered, .sector-card.is-powered, .principle-card.is-powered, .people-card.is-powered, .sector-overview-card.is-powered, .capability-card.is-powered, .ai-directory-card.is-powered {
   border-color: rgba(209, 156, 51, 0.6) !important;
   box-shadow: 0 16px 40px -10px rgba(209, 156, 51, 0.22), 0 4px 16px rgba(26, 33, 80, 0.08) !important;
+}
+.case-study-editorial.is-powered {
+  border-color: rgba(209, 156, 51, 0.65) !important;
+}
+.dossier-ribbon-block, .dossier-context-box, .dossier-delivery-box, .dossier-impact-box {
+  transition: border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out), transform 500ms var(--ease-out), background-color 500ms var(--ease-out);
+}
+.dossier-ribbon-block.is-powered {
+  border-color: rgba(209, 156, 51, 0.7) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 12px 32px -8px rgba(209, 156, 51, 0.18), 0 4px 16px rgba(26, 33, 80, 0.06) !important;
+}
+.dossier-context-box.is-powered, .dossier-delivery-box.is-powered {
+  border-color: rgba(209, 156, 51, 0.7) !important;
+  box-shadow: 0 16px 36px -10px rgba(209, 156, 51, 0.22), 0 4px 16px rgba(26, 33, 80, 0.08) !important;
+}
+.dossier-impact-box.is-powered {
+  box-shadow: 0 24px 60px -12px rgba(209, 156, 51, 0.3), 0 0 35px rgba(209, 156, 51, 0.18) !important;
+  border: 1px solid rgba(209, 156, 51, 0.6) !important;
 }
 .pillar-card .pillar-badge, .sector-card .sector-badge, .principle-badge, .people-group-badge {
   transition: all 450ms var(--ease-out);
