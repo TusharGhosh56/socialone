@@ -460,6 +460,122 @@
   }
 }
 
+/* Dual Pillar & 3-Way Sector Power Split Branch Lines & Hub */
+.flow-line-branch {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 2.25;
+  stroke-linecap: round;
+  stroke-dasharray: 2 6;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 350ms var(--ease-out), stroke 350ms var(--ease-out), filter 350ms var(--ease-out);
+}
+.flow-line-branch.is-active {
+  opacity: 1;
+  stroke: #ffd466;
+  stroke-width: 2.25;
+  filter: drop-shadow(0 0 6px rgba(209, 156, 51, 0.95)) drop-shadow(0 0 12px rgba(209, 156, 51, 0.5));
+}
+.flow-line-terminal-dot {
+  fill: var(--gold);
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  transition: r 350ms var(--ease-out), fill 350ms var(--ease-out), opacity 350ms var(--ease-out), transform 350ms var(--ease-out), filter 350ms var(--ease-out);
+}
+.flow-line-terminal-dot.is-ignited {
+  opacity: 1;
+  transform: scale(1);
+  fill: #ffd466;
+  r: 4.5;
+  filter: drop-shadow(0 0 8px rgba(209, 156, 51, 1)) drop-shadow(0 0 16px rgba(209, 156, 51, 0.6));
+}
+.flow-line-dot[data-flow-dot="bfg-power-splitter"],
+.flow-line-dot[data-flow-dot="pad-3way-splitter"],
+.flow-line-dot[data-flow-dot="pad-3way-combiner"] {
+  r: 6;
+  fill: var(--navy);
+  stroke: var(--gold);
+  stroke-width: 2;
+}
+.flow-line-dot[data-flow-dot="bfg-power-splitter"].is-ignited,
+.flow-line-dot[data-flow-dot="pad-3way-splitter"].is-ignited,
+.flow-line-dot[data-flow-dot="pad-3way-combiner"].is-ignited {
+  r: 7.5;
+  fill: #ffffff;
+  stroke: #ffd466;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 12px rgba(209, 156, 51, 1)) drop-shadow(0 0 24px rgba(209, 156, 51, 0.7));
+}
+
+/* Pillar, Sector, Principle, & People Card Circuit Power Activation */
+.pillar-card, .sector-card, .principle-card, .people-card {
+  position: relative;
+  transition: border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+.pillar-card.is-powered, .sector-card.is-powered, .principle-card.is-powered, .people-card.is-powered {
+  border-color: rgba(209, 156, 51, 0.6) !important;
+  box-shadow: 0 16px 40px -10px rgba(209, 156, 51, 0.22), 0 4px 16px rgba(26, 33, 80, 0.08) !important;
+}
+.pillar-card .pillar-badge, .sector-card .sector-badge, .principle-badge, .people-group-badge {
+  transition: all 450ms var(--ease-out);
+}
+.pillar-card.is-powered .pillar-badge, .sector-card.is-powered .sector-badge, .principle-row.is-powered .principle-badge, .people-group.is-powered .people-group-badge {
+  background-color: rgba(245, 233, 209, 0.65) !important;
+  border-color: rgba(209, 156, 51, 0.8) !important;
+  box-shadow: 0 0 20px rgba(209, 156, 51, 0.3) !important;
+}
+.pillar-card .pillar-dot, .sector-card .sector-dot, .principle-dot, .people-group-dot {
+  transition: all 450ms var(--ease-out);
+}
+.pillar-card.is-powered .pillar-dot, .sector-card.is-powered .sector-dot, .principle-row.is-powered .principle-dot, .people-group.is-powered .people-group-dot {
+  background-color: #ffd466 !important;
+  box-shadow: 0 0 8px rgba(209, 156, 51, 1), 0 0 14px rgba(209, 156, 51, 0.6) !important;
+  transform: scale(1.3);
+}
+
+/* Final CTA Card Luminous Power State */
+.final-cta-card {
+  transition: border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out);
+}
+.final-cta-card.is-trail-ignited {
+  border-color: rgba(209, 156, 51, 0.65) !important;
+  box-shadow: 0 20px 50px -12px rgba(209, 156, 51, 0.25), 0 0 30px rgba(209, 156, 51, 0.12) !important;
+}
+.pillar-card .pillar-power-terminal {
+  position: absolute;
+  top: 36px;
+  width: 18px;
+  height: 18px;
+  z-index: 25;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+}
+.pillar-card .pillar-power-terminal-right {
+  right: -9px;
+}
+.pillar-card .pillar-power-terminal-left {
+  left: -9px;
+}
+.pillar-card .pillar-terminal-core {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 1.5px solid var(--gold);
+  transition: all 400ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pillar-card.is-powered .pillar-terminal-core {
+  background: #ffd466;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(209, 156, 51, 1), 0 0 20px rgba(209, 156, 51, 0.6);
+  transform: scale(1.3);
+}
+
 /* Ensure all interactive cards, buttons, and photos paint cleanly ABOVE the flowing background line */
 .team-marquee,
 .team-card,

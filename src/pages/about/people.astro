@@ -62,20 +62,19 @@ function getInitials(fullName: string): string {
       {/* ============================ TEAM GROUPS ============================ */}
       <section class="relative z-10">
         <div class="container-x space-y-20">
-          {groups.map((group) => {
+          {groups.map((group, idx) => {
             const members = team.filter((m) => m.tag === group.tag);
             return (
-              <div class="space-y-8">
-                <div class="flex items-center gap-3 border-b border-hair pb-4">
-                  <span class="h-2.5 w-2.5 rounded-full bg-gold"></span>
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy leading-tight">
+              <div id={`people-group-${idx}`} class={`space-y-8 people-group-${idx}`}>
+                <div class="border-b border-hair pb-4 people-group-badge">
+                  <h2 id={`people-group-heading-${idx}`} class="text-2xl sm:text-3xl font-bold text-navy leading-tight">
                     {group.title}
                   </h2>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
                   {members.map((member) => (
-                    <article class="group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between card-interactive-sheen">
+                    <article class="people-card group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between card-interactive-sheen transition-all duration-300">
                       <div class="relative z-10">
                         <div class="relative mb-5 aspect-[4/5] w-full overflow-hidden rounded-2xl bg-paper">
                           {member.linkedin && (
