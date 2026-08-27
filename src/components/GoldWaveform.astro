@@ -1,0 +1,44 @@
+---
+// GoldWaveform.astro — Ambient gold particle strings/waveform background
+interface Props {
+  alpha?: number | string;
+  class?: string;
+  blendMode?: 'normal' | 'screen' | 'plus-lighter' | 'overlay';
+}
+
+const { alpha = '1.2', class: className = '', blendMode = 'normal' } = Astro.props;
+---
+
+<div
+  class={`gold-waveform pointer-events-none absolute inset-0 overflow-hidden ${className}`}
+  data-gold-waveform
+  data-gold-waveform-alpha={alpha}
+  aria-hidden="true"
+  style={blendMode !== 'normal' ? `mix-blend-mode: ${blendMode};` : undefined}
+>
+  <canvas class="gold-waveform__canvas absolute inset-0 h-full w-full" data-gold-waveform-canvas></canvas>
+</div>
+
+<style>
+  .gold-waveform {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .gold-waveform__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  import { initGoldWaveform } from '../scripts/goldWaveform';
+  initGoldWaveform();
+  document.addEventListener('astro:page-load', initGoldWaveform);
+</script>

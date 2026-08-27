@@ -20,14 +20,12 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
           style={`top: ${stickyTop}px; z-index: ${idx + 10};`}
           data-stack-card={idx}
         >
-          <article class="stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden">
+          <article class="stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden card-hover-accent">
             {/* Clean Header Bar */}
             <div class="flex items-center gap-3 border-b border-hair/70 pb-6 mb-8">
-              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-navy text-white font-mono text-sm font-bold shadow-sm">
-                {cap.num}
-              </span>
-              <span class="text-xs font-bold uppercase tracking-widest text-gold font-mono">
-                Capability {cap.num}
+              <span class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
+                <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                Practice Capability
               </span>
             </div>
 
@@ -99,22 +97,19 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
           const nextRect = nextWrapper.getBoundingClientRect();
           const targetTop = 100 + (idx + 1) * 32;
 
-          // When the next card reaches near its sticky position
-          if (nextRect.top <= targetTop + 200) {
-            const progress = Math.max(0, Math.min(1, (targetTop + 200 - nextRect.top) / 200));
-            const scale = 1 - progress * 0.04;
-            const brightness = 1 - progress * 0.06;
-            const translateY = progress * -4;
-
+          if (nextRect.top <= targetTop + 80) {
+            const progress = Math.max(0, Math.min(1, (targetTop + 80 - nextRect.top) / 80));
             const card = wrapper.querySelector<HTMLElement>('.stack-card');
             if (card) {
-              card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+              const scale = 1 - progress * 0.035;
+              const brightness = 1 - progress * 0.05;
+              card.style.transform = `scale(${scale})`;
               card.style.filter = `brightness(${brightness})`;
             }
           } else {
             const card = wrapper.querySelector<HTMLElement>('.stack-card');
             if (card) {
-              card.style.transform = 'scale(1) translateY(0px)';
+              card.style.transform = 'scale(1)';
               card.style.filter = 'brightness(1)';
             }
           }
@@ -123,7 +118,6 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
     }
 
     window.addEventListener('scroll', updateStackTransforms, { passive: true });
-    window.addEventListener('resize', updateStackTransforms, { passive: true });
     updateStackTransforms();
   }
 

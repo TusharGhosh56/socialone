@@ -1,13 +1,18 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import GoldWaveform from '../../components/GoldWaveform.astro';
+import GradientVideo from '../../components/GradientVideo.astro';
+import pillar1Img from '../../assets/images/how-we-work/card_01-web.jpg';
+import pillar2Img from '../../assets/images/how-we-work/card_02-web.jpg';
 
 const frictionPoints = [
   {
     id: 'data',
-    num: '01',
     category: 'Data Representation',
+    teaser: 'Algorithmic blindspots & unequal access across diverse populations',
     title: 'Data often fails to represent diverse users',
     desc: 'Data may not adequately reflect the people a service is intended to reach, creating algorithmic blindspots in frontline delivery and risking unequal access.',
     impact: 'Frontline staff face model bias or inaccurate predictions when serving vulnerable or rural populations.',
@@ -15,8 +20,8 @@ const frictionPoints = [
   },
   {
     id: 'workflow',
-    num: '02',
     category: 'Workflow Integration',
+    teaser: 'Operating routine mismatch & high drop-off among frontline staff',
     title: 'Systems do not fit frontline workflows',
     desc: 'Systems may not fit established operating routines, creating adoption friction, unnecessary complexity, and high drop-off among operating staff and citizens.',
     impact: 'Staff revert to manual workarounds while expensive software licenses go unused.',
@@ -24,33 +29,38 @@ const frictionPoints = [
   },
   {
     id: 'sovereignty',
-    num: '03',
     category: 'Knowledge Sovereignty',
-    title: 'Implementation knowledge remains external',
-    desc: 'Implementation knowledge may remain with external providers, creating permanent vendor lock-in, recurring consultancy costs, and zero institutional growth.',
-    impact: 'The institution cannot modify, debug, or evolve the system once the external contract expires.',
-    solution: '100% sovereign codebase handover, comprehensive documentation, and in-house staff training.',
+    teaser: 'Permanent vendor lock-in & external dependency without in-house growth',
+    title: 'Vendor lock-in prevents institutional capacity',
+    desc: 'Vendor dependency can leave institutions without the internal capacity or infrastructure needed to sustain, govern and adapt systems over time.',
+    impact: 'Every system change requires costly advisory contracts, slowing policy adaptation.',
+    solution: 'Open, auditable system architectures with structured in-house talent training.',
   },
   {
     id: 'evidence',
-    num: '04',
     category: 'Evidence & Impact',
-    title: 'Limited evidence on true public value',
-    desc: 'Without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes or justifying continued investment.',
-    impact: 'Leadership is forced to make renewal and scaling decisions based on vendor claims rather than verified facts.',
-    solution: 'Structurally independent algorithmic audit and empirical impact telemetry.',
+    teaser: 'Unverified vendor claims & lack of empirical public value measurement',
+    title: 'Value is claimed rather than verified',
+    desc: 'AI claims often outpace evidence, making it difficult for leaders to assess whether systems actually improve public service delivery.',
+    impact: 'Decision-makers cannot verify whether algorithm outputs translate to real citizen value.',
+    solution: 'Independent baseline vs endline empirical evaluation across all deployments.',
   },
 ];
 ---
 
 <Base
-  title="Built for Government | Applied AI for Public Systems | APLYD"
-  description="APLYD applies AI within real policy, data and operating constraints, moving government work from pilot to public service that institutions can run and own."
-  keywords="Government AI, Public Sector AI, GovTech AI Solutions, Sovereign AI Infrastructure, Institutional AI Systems, Sovereign Codebase Handover, Public Sector Digital Transformation, Frontline Systems Engineering, Athena Infonomics"
+  title="Built for Government | Sovereign AI Capabilities | APLYD"
+  description="How APLYD builds applied AI systems for public institutions: designed for scale, sovereign ownership, and real-world frontline workflows."
+  keywords="Built for Government, Sovereign AI, Public Sector AI, Institutional AI, Government Digital Transformation, Civic Tech, AI Sovereignty, Workflow Integration, Public Trust AI"
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Animated Fluid Gradient Video Background */}
+      <GradientVideo variant="blue" overlayOpacity={0.65} />
+      {/* Ambient Molestone Gold Particle Waveform */}
+      <GoldWaveform alpha="1.3" />
+
       <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -61,115 +71,129 @@ const frictionPoints = [
         </div>
 
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
-          Built for government, and the institutions that serve at scale
+          Systems designed for institutional reality
         </h1>
 
         <p class="mt-8 max-w-3xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
-          APLYD is the applied AI venture of Athena Infonomics. We work with institutions that operate at scale, including governments, funders, multilaterals and impact-focused organisations. Our work focuses on the point where AI moves from a pilot or prototype into a system that can be implemented, operated and improved within an institution.
+          Public institutions operate under distinct conditions. They serve entire populations, navigate complex regulatory environments, and need systems that last. Here is how we build for that reality.
         </p>
       </div>
     </section>
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: WHY AI STALLS (INTERACTIVE DIAGNOSTIC STUDIO) ============================ */}
-      <section class="relative z-10" data-diagnostic-studio>
+      {/* ============================ SECTION 1: THE OPERATIONAL REALITY ============================ */}
+      <section class="relative z-10" id="operational-reality">
         <div class="container-x space-y-12">
+          
           <div class="max-w-3xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">The Operational Reality</div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold">
+              The Operational Reality
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight">
               Why AI stalls inside institutions
             </h2>
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
               AI initiatives often encounter challenges beyond the model itself. Explore the four operational barriers that cause pilot projects to stall, and how institutional grounding overcomes them.
             </p>
           </div>
 
-          {/* Interactive Split Diagnostic Studio */}
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" data-diagnostic-studio>
+          {/* Interactive Diagnostic Studio */}
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left Column: Interactive Selector List (5 cols) */}
-            <div class="lg:col-span-5 space-y-3">
-              {frictionPoints.map((item, idx) => (
+            {/* Left: Operational Barrier Buttons */}
+            <div class="lg:col-span-5 flex flex-col gap-3">
+              {frictionPoints.map((pt, idx) => (
                 <button
                   type="button"
-                  class={`diag-btn w-full p-5 rounded-2xl border text-left flex items-center justify-between group transition-all duration-200 ${
-                    idx === 0 ? 'is-active' : ''
+                  data-target={pt.id}
+                  class={`diag-btn group text-left rounded-2xl p-5 sm:p-6 border transition-all duration-300 relative overflow-hidden ${
+                    idx === 0
+                      ? 'bg-navy text-white border-navy shadow-md is-active'
+                      : 'bg-white/90 text-navy border-hair hover:border-gold/50 hover:bg-white'
                   }`}
-                  data-diag-target={item.id}
-                  aria-selected={idx === 0 ? 'true' : 'false'}
                 >
-                  <div class="space-y-1">
-                    <div class="text-xs font-bold uppercase tracking-widest text-gold">
-                      Point {item.num} · {item.category}
-                    </div>
-                    <div class="diag-title text-base font-bold leading-tight">
-                      {item.title}
-                    </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <span class="text-xs font-bold uppercase tracking-widest text-gold flex items-center gap-2">
+                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                      {pt.category}
+                    </span>
+                    <span class="text-sm transition-transform duration-300 group-hover:translate-x-1 font-mono text-gold opacity-70 group-hover:opacity-100">
+                      &rarr;
+                    </span>
                   </div>
-                  <span class="diag-arrow text-gold font-bold ml-3 text-lg transition-transform duration-200 group-hover:translate-x-0.5">&rarr;</span>
+                  <div class="mt-2 text-sm sm:text-base font-normal opacity-90 line-clamp-2">
+                    {pt.teaser}
+                  </div>
                 </button>
               ))}
             </div>
 
-            {/* Right Column: Deep Dive Display Card (7 cols) */}
+            {/* Right: Rich Interactive Resolution Panel */}
             <div class="lg:col-span-7">
-              {frictionPoints.map((item, idx) => (
+              {frictionPoints.map((pt, idx) => (
                 <div
-                  class={`diag-panel rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 space-y-8 shadow-md transition-all duration-500 ${
+                  id={`panel-${pt.id}`}
+                  class={`diag-panel rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 space-y-8 shadow-md transition-all duration-500 card-interactive-sheen ${
                     idx === 0 ? 'block' : 'hidden'
                   }`}
-                  data-diag-panel={item.id}
                 >
                   <div class="space-y-4">
                     <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
                       <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                      Operational Barrier · {item.category}
+                      Operational Barrier · {pt.category}
                     </div>
+
                     <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
-                      {item.title}
+                      {pt.title}
                     </h3>
-                    <p class="text-lg text-mid-navy leading-relaxed font-normal">
-                      {item.desc}
+
+                    <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                      {pt.desc}
                     </p>
                   </div>
 
-                  {/* Frontline Impact */}
-                  <div class="rounded-2xl border border-hair/80 bg-paper/60 p-5 space-y-1.5">
-                    <div class="text-xs font-bold uppercase tracking-wider text-ash">Frontline Consequence</div>
-                    <p class="text-small text-mid-navy leading-relaxed">
-                      {item.impact}
-                    </p>
-                  </div>
-
-                  {/* APLYD Grounded Solution */}
-                  <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-6 space-y-2">
-                    <div class="text-xs font-bold uppercase tracking-widest text-deep-gold">
-                      APLYD Institutional Solution
+                  {/* Impact & Solution Breakdown */}
+                  <div class="space-y-4 pt-6 border-t border-hair">
+                    <div class="p-5 rounded-2xl bg-paper/80 border border-hair/80 space-y-1.5">
+                      <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
+                        Frontline Consequence
+                      </div>
+                      <p class="text-sm sm:text-base text-navy font-normal">
+                        {pt.impact}
+                      </p>
                     </div>
-                    <p class="text-base font-bold text-navy leading-relaxed">
-                      {item.solution}
-                    </p>
+
+                    <div class="p-5 rounded-2xl bg-pale-gold/25 border border-gold/40 space-y-1.5">
+                      <div class="text-xs font-bold uppercase tracking-wider text-deep-gold">
+                        The APLYD Sovereign Solution
+                      </div>
+                      <p class="text-sm sm:text-base text-navy font-medium">
+                        {pt.solution}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
           </div>
+
         </div>
       </section>
 
-
-
-      {/* ============================ SECTION 2: WHAT BUILT FOR GOV MEANS ============================ */}
+      {/* ============================ SECTION 2: ARCHITECTURAL REQUIREMENTS ============================ */}
       <section class="relative z-10">
         <div class="container-x space-y-12">
-          <div class="max-w-4xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">Architectural Requirements</div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+          
+          <div class="max-w-3xl space-y-4">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold">
+              Architectural Requirements
+            </div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight">
               What “built for government” means
             </h2>
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
               Public institutions operate under distinct conditions. APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery.
             </p>
           </div>
@@ -177,30 +201,44 @@ const frictionPoints = [
           {/* Dual Pillar Architecture Display */}
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Pillar 1 */}
-            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 space-y-6 shadow-md flex flex-col justify-between hover:border-gold/40 transition-colors">
-              <div class="space-y-4">
-                <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
-                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                  Pillar 01
+            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group">
+              <div class="space-y-5 relative z-10">
+                <div class="flex items-center justify-between border-b border-hair/60 pb-3">
+                  <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge">
+                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                    Population Scale & Trust
+                  </div>
                 </div>
-                <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
+
+                {/* Editorial Image Frame */}
+                <div class="relative w-full h-48 rounded-xl overflow-hidden border border-hair/80 shadow-xs">
+                  <Image
+                    src={pillar1Img}
+                    alt="Population scale and public trust"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    widths={[480, 720]}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                </div>
+
+                <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug transition-colors">
                   Population scale & public trust
                 </h3>
-                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
                   Public institutions operate under distinct conditions. They serve entire populations, navigate complex regulatory and accountability environments, and need systems that last beyond the involvement of an external partner. Systems must work for diverse users, integrate with legacy infrastructure, protect public trust and deliver measurable value.
                 </p>
               </div>
-              
-              <div class="pt-6 border-t border-hair space-y-2.5 text-small font-medium text-navy">
-                <div class="flex items-center gap-2">
+
+              <div class="pt-6 border-t border-hair space-y-2.5 text-small font-medium text-navy relative z-10">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Equitable across diverse populations</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Full regulatory & data privacy compliance</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Zero dependency on single-vendor APIs</span>
                 </div>
@@ -208,30 +246,44 @@ const frictionPoints = [
             </div>
 
             {/* Pillar 2 */}
-            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 space-y-6 shadow-md flex flex-col justify-between hover:border-gold/40 transition-colors">
-              <div class="space-y-4">
-                <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
-                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                  Pillar 02
+            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group">
+              <div class="space-y-5 relative z-10">
+                <div class="flex items-center justify-between border-b border-hair/60 pb-3">
+                  <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge">
+                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                    Institutional Sovereignty
+                  </div>
                 </div>
-                <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
+
+                {/* Editorial Image Frame */}
+                <div class="relative w-full h-48 rounded-xl overflow-hidden border border-hair/80 shadow-xs">
+                  <Image
+                    src={pillar2Img}
+                    alt="Institutional ownership and capability transfer"
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    widths={[480, 720]}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                  />
+                </div>
+
+                <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug transition-colors">
                   Institutional ownership & sovereignty
                 </h3>
-                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
                   APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery. Every project embeds capability transfer from the very start.
                 </p>
               </div>
 
-              <div class="pt-6 border-t border-hair space-y-2.5 text-small font-medium text-navy">
-                <div class="flex items-center gap-2">
+              <div class="pt-6 border-t border-hair space-y-2.5 text-small font-medium text-navy relative z-10">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Trained internal workforce & operating routines</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Open, auditable system documentation</span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flip-text transition-colors">
                   <span class="text-gold font-bold">✓</span>
                   <span>Long-term operational sustainability</span>
                 </div>
@@ -244,7 +296,12 @@ const frictionPoints = [
       {/* ============================ SECTION 3: BEYOND GOVERNMENT (FLOATING MONUMENT) ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl gradient-navy gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+          <div class="rounded-3xl gradient-navy-mesh gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+            {/* Animated Fluid Gradient Video in Monument */}
+            <GradientVideo variant="gold" overlayOpacity={0.6} />
+            {/* Ambient Molestone Wave in Monument */}
+            <GoldWaveform alpha="1.2" />
+
             <div class="relative z-10 max-w-4xl space-y-6">
               <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
                 <span class="h-2 w-2 rounded-full bg-gold"></span>
@@ -264,8 +321,8 @@ const frictionPoints = [
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div class="max-w-2xl">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 Sixteen years of delivery proof
@@ -274,9 +331,11 @@ const frictionPoints = [
                 Explore how our heritage across 65+ countries and 440+ engagements powers our AI practice.
               </p>
             </div>
-            <Button href="/about/16-years-of-proof" variant="primary" class="whitespace-nowrap shadow-sm">
-              See our sixteen years of delivery proof &rarr;
-            </Button>
+            <div class="relative z-10">
+              <Button href="/about/16-years-of-proof" variant="primary" class="whitespace-nowrap shadow-sm">
+                See our sixteen years of delivery proof &rarr;
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -292,24 +351,29 @@ const frictionPoints = [
     color: var(--navy);
     box-shadow: var(--shadow-xs);
   }
-  .diag-btn .diag-title {
-    color: var(--navy);
-    transition: color 0.2s ease;
-  }
   .diag-btn:hover:not(.is-active) {
-    border-color: rgba(209, 156, 51, 0.4);
-    box-shadow: var(--shadow-sm);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(245, 233, 209, 0.35) 100%);
+    border-color: rgba(209, 156, 51, 0.5);
+    box-shadow: 0 8px 20px -6px rgba(209, 156, 51, 0.2);
+    transform: translateX(4px);
+  }
+  .diag-btn:hover:not(.is-active) .diag-teaser {
+    color: var(--navy);
   }
 
   .diag-btn.is-active,
   .diag-btn[aria-selected="true"] {
-    background-color: var(--navy) !important;
+    background: linear-gradient(135deg, #1a2150 0%, #232b65 100%) !important;
     border-color: var(--navy) !important;
     color: #ffffff !important;
-    box-shadow: 0 10px 25px -5px rgba(26, 33, 80, 0.25) !important;
+    box-shadow: 0 12px 28px -6px rgba(26, 33, 80, 0.35) !important;
   }
-  .diag-btn.is-active .diag-title,
-  .diag-btn[aria-selected="true"] .diag-title {
+  .diag-btn.is-active .diag-cat,
+  .diag-btn[aria-selected="true"] .diag-cat {
+    color: var(--gold) !important;
+  }
+  .diag-btn.is-active .diag-teaser,
+  .diag-btn[aria-selected="true"] .diag-teaser {
     color: #ffffff !important;
   }
 </style>

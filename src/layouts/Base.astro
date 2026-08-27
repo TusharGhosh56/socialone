@@ -204,11 +204,19 @@ const schemaGraph = {
     </main>
     <Footer />
 
-    {isHome && (
-      <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
-        <path class="flow-line-path" />
-        <g class="flow-line-dots"></g>
-      </svg>
-    )}
+    <svg class="flow-line-svg" aria-hidden="true" width="1" height="1">
+      <path class="flow-line-path" />
+      <g class="flow-line-dots"></g>
+      <g class="flow-line-head-group" opacity="0">
+        <circle class="flow-line-head-halo" cx="0" cy="0" r="14" />
+        <circle class="flow-line-head" cx="0" cy="0" r="5" />
+      </g>
+    </svg>
+
+    <script>
+      import { initFlowLine } from '../scripts/flowLine';
+      initFlowLine();
+      document.addEventListener('astro:page-load', initFlowLine);
+    </script>
   </body>
 </html>
