@@ -1,181 +1,68 @@
 ---
-// HeroFlow — Full-Width Editorial Hero with Staggered Floating Sector Mosaic.
-// Left Column: Editorial Display Typography on Institutional Navy Grid.
-// Right Column: Staggered 2-Column Floating Image Mosaic representing core impact sectors.
+// HeroFlow — Screen 1 of the homepage, now a rounded inset card (Runway-
+// style) rather than a full-bleed section — see .hero in heroFlow.css for
+// the card treatment (margin, radius, overflow-hidden). Hero copy (tagline,
+// H1, subhead, CTAs) is left-aligned over the top, always visible.
+//
+// Background is a 5-video cross-fade carousel (see src/scripts/
+// heroVideoCarousel.ts) — all 5 mounted and playing simultaneously
+// (autoplay/loop/muted), only one visible (.is-active, opacity transition)
+// at a time, so switching is a clean cross-fade with no load/seek delay for
+// the incoming video. A navy gradient overlay (hero__video-fade) sits above
+// all of them, fading bottom-to-top (blends into the card's own bottom
+// edge) with an animated gold radial glow sweeping left-to-right-and-back.
+//
+// The cursor-reactive radial-burst canvas that used to live here (and later
+// spanned into FlowChart) has moved to How We Work's left column — see
+// src/components/HeroFlow/heroFlow.ts, now used from index.astro's How We
+// Work markup instead of from here.
 import './heroFlow.css';
 import Button from '../Button.astro';
-import { Image } from 'astro:assets';
 
-import imgAgri from '../../assets/images/cases/01-agriculture-india.jpg';
-import imgEdu from '../../assets/images/cases/03-education-mexico.jpg';
-import imgMsme from '../../assets/images/cases/04-msme.jpg';
-import imgSkill from '../../assets/images/cases/07-skilling.jpg';
-
-const mosaicCardsCol1 = [
-  {
-    image: imgAgri,
-    tag: 'AI in Agriculture',
-    title: 'AI advisory in agriculture, Andhra Pradesh',
-    alt: 'AI advisory in agriculture, Andhra Pradesh',
-    video: '/video/hero/1.mp4',
-    aspect: 'aspect-[4/3.2]',
-  },
-  {
-    image: imgSkill,
-    tag: 'AI for Public Services',
-    title: 'Citizen services assistant, Kampala',
-    alt: 'Citizen services assistant for Kampala Capital City Authority',
-    video: '/video/hero/3.mp4',
-    aspect: 'aspect-[4/4.5]',
-  },
-];
-
-const mosaicCardsCol2 = [
-  {
-    image: imgEdu,
-    tag: 'AI in Education',
-    title: 'Oral reading fluency model evaluation',
-    alt: 'Independent evaluation of an oral reading fluency model',
-    video: '/video/hero/2.mp4',
-    aspect: 'aspect-[4/4.5]',
-  },
-  {
-    image: imgMsme,
-    tag: 'AI for MSMEs',
-    title: "Advancing AI adoption among India's MSMEs",
-    alt: "Advancing AI adoption among India's MSMEs",
-    video: '/video/hero/4.mp4',
-    aspect: 'aspect-[4/3.2]',
-  },
-];
+// Drop the 5 video files at public/video/hero/1.mp4 .. 5.mp4 — see this
+// array if you want different filenames instead.
+const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
 ---
 
-<section class="hero bg-institutional-grid text-white relative overflow-hidden" id="hero" data-hero>
-  {/* Ambient glowing orbs in background */}
-  <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-  <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+<section class="hero" id="hero" data-hero>
+  <div class="hero__stage">
+    <div class="hero__video-wrap" aria-hidden="true">
+      {
+        VIDEO_SOURCES.map((src, i) => (
+          <video class:list={['hero__video', { 'is-active': i === 0 }]} data-hero-video={i} autoplay loop muted playsinline preload="auto">
+            <source src={src} type="video/mp4" />
+          </video>
+        ))
+      }
+      <div class="hero__video-fade"></div>
+    </div>
 
-  <div class="hero__stage container-x relative z-10 py-16 sm:py-20 lg:py-24 xl:py-28">
-    <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10 xl:gap-16">
-      
-      {/* ==================== LEFT COLUMN: Narrative & CTAs (5 cols) ==================== */}
-      <div class="flex flex-col justify-center space-y-8 lg:col-span-6 xl:col-span-5">
-        <div>
-          {/* Live Status Badge */}
-          <div class="mb-6 inline-flex items-center gap-2.5 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-md border border-white/15 shadow-sm">
-            <span class="relative flex h-2 w-2">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold opacity-75"></span>
-              <span class="relative inline-flex h-2 w-2 rounded-full bg-gold"></span>
-            </span>
-            <span>Intelligence, Applied</span>
-          </div>
-
-          {/* Headline */}
-          <h1 class="text-hero font-light text-white leading-[1.04] tracking-tight">
-            Applied AI for governments and <span class="font-normal text-pale-navy">impact focused</span> institutions
-          </h1>
-
-          {/* Subtitle */}
-          <p class="mt-6 max-w-[50ch] text-lg sm:text-xl lg:text-2xl font-normal text-pale-navy/90 leading-relaxed">
-            APLYD helps governments and impact-focused institutions apply artificial intelligence to
-            improve decisions, strengthen public systems, and build lasting institutional capability.
+    <div class="hero__content container-x">
+      <div class="hero__content-inner">
+        <span class="hero__tagline-badge">
+          <span class="hero__tagline-badge-ring" aria-hidden="true"></span>
+          <p class="hero__tagline-badge-inner text-eyebrow font-bold uppercase tracking-[0.14em] text-navy">
+            Intelligence, Applied
           </p>
-
-          {/* Dual CTAs */}
-          <div class="mt-8 flex flex-wrap items-center gap-4">
-            <Button href="/contact" variant="gold" class="shadow-lg hover:shadow-xl px-8 py-3.5 text-base font-bold">
-              Partner With APLYD
-            </Button>
-            <Button href="#trust" variant="outline-light" class="px-7 py-3.5 text-base">
-              Explore Our Work &rarr;
-            </Button>
-          </div>
-        </div>
-
-        {/* Institutional Proof Strip */}
-        <div class="flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-white/12 pt-6 text-xs sm:text-spec font-bold uppercase tracking-[0.14em] text-pale-navy/70">
-          <div class="flex items-center gap-2">
-            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-            <span>16+ Years Delivery</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-            <span>65+ Countries</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-            <span>Proven Public Value</span>
-          </div>
+        </span>
+        <h1 class="mt-3 text-display font-black text-white">
+          Applied AI for governments and <span class="whitespace-nowrap">impact focused</span>
+          institutions
+        </h1>
+        <p class="mt-6 max-w-[46ch] text-lede font-light text-pale-navy">
+          APLYD helps governments and impact focused institutions apply artificial intelligence to
+          improve decisions, strengthen public systems, and build lasting institutional capability.
+        </p>
+        <div class="hero__cta mt-8">
+          <Button href="/contact" variant="gold" class="hero-cta-primary">Partner With APLYD</Button>
+          <Button href="#ai-in-action" variant="outline-light">Explore Our Work</Button>
         </div>
       </div>
-
-      {/* ==================== RIGHT COLUMN: Staggered Floating Sector Mosaic (7 cols) ==================== */}
-      <div class="lg:col-span-6 xl:col-span-7 relative">
-        <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-6 xl:gap-8 items-center">
-          
-          {/* Mosaic Column 1: Staggered downwards */}
-          <div class="flex flex-col gap-4 sm:gap-6 lg:gap-6 xl:gap-8 translate-y-4 sm:translate-y-8 lg:translate-y-10">
-            {mosaicCardsCol1.map((item) => (
-              <div class="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/15 bg-white/5 p-2 shadow-2xl backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/50 hover:shadow-gold/10">
-                <div class={`relative ${item.aspect} w-full overflow-hidden rounded-xl sm:rounded-2xl bg-navy`}>
-                  <Image
-                    src={item.image}
-                    alt={item.alt}
-                    width={640}
-                    height={640}
-                    format="webp"
-                    quality={85}
-                    loading="eager"
-                    class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent"></div>
-                  
-                  <div class="absolute bottom-0 inset-x-0 p-3.5 sm:p-5">
-                    <span class="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gold mb-1">
-                      {item.tag}
-                    </span>
-                    <h3 class="text-xs sm:text-small font-bold text-white leading-snug">
-                      {item.title}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Mosaic Column 2: Staggered upwards */}
-          <div class="flex flex-col gap-4 sm:gap-6 lg:gap-6 xl:gap-8 -translate-y-4 sm:-translate-y-6 lg:-translate-y-8">
-            {mosaicCardsCol2.map((item) => (
-              <div class="group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/15 bg-white/5 p-2 shadow-2xl backdrop-blur-sm transition-all duration-500 hover:-translate-y-1.5 hover:border-gold/50 hover:shadow-gold/10">
-                <div class={`relative ${item.aspect} w-full overflow-hidden rounded-xl sm:rounded-2xl bg-navy`}>
-                  <Image
-                    src={item.image}
-                    alt={item.alt}
-                    width={640}
-                    height={640}
-                    format="webp"
-                    quality={85}
-                    loading="eager"
-                    class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent"></div>
-                  
-                  <div class="absolute bottom-0 inset-x-0 p-3.5 sm:p-5">
-                    <span class="inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gold mb-1">
-                      {item.tag}
-                    </span>
-                    <h3 class="text-xs sm:text-small font-bold text-white leading-snug">
-                      {item.title}
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
+
+<script>
+  import { initHeroVideoCarousel } from '../../scripts/heroVideoCarousel';
+  initHeroVideoCarousel();
+</script>
