@@ -183,30 +183,37 @@ const frictionPoints = [
       </section>
 
       {/* ============================ SECTION 2: ARCHITECTURAL REQUIREMENTS ============================ */}
-      <section class="relative z-10">
+      <section class="relative z-10" id="architectural-requirements">
         <div class="container-x space-y-12">
           
           <div class="max-w-3xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="arch-eyebrow">
               Architectural Requirements
             </div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight" id="arch-h2">
               What “built for government” means
             </h2>
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal" id="arch-desc">
               Public institutions operate under distinct conditions. APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery.
             </p>
           </div>
 
-          {/* Dual Pillar Architecture Display */}
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Dual Pillar Architecture Display with Central Power Conduits */}
+          <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-8 pillar-grid" id="dual-pillars">
+            
             {/* Pillar 1 */}
-            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group">
+            <div class="pillar-card pillar-card-1 relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group transition-all duration-500 hover:shadow-xl" data-pillar="1">
+              
+              {/* Power Input Terminal Node on Right Edge (facing center channel) */}
+              <div class="pillar-power-terminal pillar-power-terminal-right hidden lg:flex" aria-hidden="true">
+                <span class="pillar-terminal-core"></span>
+              </div>
+
               <div class="space-y-5 relative z-10">
                 <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                  <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge">
-                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                    Population Scale & Trust
+                  <div class="pillar-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge transition-all duration-500 border border-hair">
+                    <span class="pillar-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
+                    <span>Population Scale & Trust</span>
                   </div>
                 </div>
 
@@ -246,12 +253,18 @@ const frictionPoints = [
             </div>
 
             {/* Pillar 2 */}
-            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group">
+            <div class="pillar-card pillar-card-2 relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 shadow-md flex flex-col justify-between card-flip-hover group transition-all duration-500 hover:shadow-xl" data-pillar="2">
+              
+              {/* Power Input Terminal Node on Left Edge (facing center channel) */}
+              <div class="pillar-power-terminal pillar-power-terminal-left hidden lg:flex" aria-hidden="true">
+                <span class="pillar-terminal-core"></span>
+              </div>
+
               <div class="space-y-5 relative z-10">
                 <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                  <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge">
-                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                    Institutional Sovereignty
+                  <div class="pillar-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge transition-all duration-500 border border-hair">
+                    <span class="pillar-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
+                    <span>Institutional Sovereignty</span>
                   </div>
                 </div>
 

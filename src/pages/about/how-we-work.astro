@@ -121,16 +121,16 @@ const principles = [
       <section class="relative z-10">
         <div class="container-x space-y-20 lg:space-y-28">
           {principles.map((p, idx) => (
-            <article class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            <article id={`principle-row-${idx}`} class={`principle-row principle-row-${idx} grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center`}>
               
               {/* Left Column: Principle Narrative */}
               <div class={`space-y-6 lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
-                <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy/90 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair">
-                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                <div class="principle-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy/90 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair transition-all duration-300">
+                  <span class="principle-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-300"></span>
                   {p.phase}
                 </div>
 
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+                <h2 id={`principle-heading-${idx}`} class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
                   {p.title}
                 </h2>
 
@@ -171,7 +171,7 @@ const principles = [
 
               {/* Right Column: Visual Frame */}
               <div class={`lg:col-span-6 flex flex-col justify-center ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <div class="group relative overflow-hidden rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-2.5 shadow-lg transition-all duration-500 hover:border-gold/50 hover:shadow-2xl h-full flex flex-col justify-center">
+                <div class="principle-card group relative overflow-hidden rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-2.5 shadow-lg transition-all duration-500 hover:border-gold/50 hover:shadow-2xl h-full flex flex-col justify-center">
                   <div class="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] w-full min-h-[340px] sm:min-h-[400px] overflow-hidden rounded-2xl bg-paper">
                     <Image
                       src={p.image}

@@ -109,24 +109,24 @@ const sectors = [
           </div>
 
           {/* 3 Sector Focus Showcase */}
-          <div class="space-y-6">
-            <div>
-              <div class="text-xs font-bold uppercase tracking-widest text-gold mb-1">
+          <div class="pt-8 sm:pt-12 space-y-10 sm:space-y-12" id="sector-horizons-section">
+            <div class="space-y-3" id="sector-horizons-header">
+              <div class="text-xs font-bold uppercase tracking-widest text-gold" id="sector-horizons-eyebrow">
                 Sector Horizons
               </div>
-              <h2 class="text-2xl sm:text-3xl font-light text-navy">
+              <h2 class="text-3xl sm:text-4xl font-light text-navy leading-tight" id="sector-horizons-heading">
                 Where we apply our mission
               </h2>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {sectors.map((sec) => (
-                <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6 card-flip-hover group">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4" id="sector-horizons-grid">
+              {sectors.map((sec, idx) => (
+                <div class={`sector-card sector-card-${sec.id} sector-card-${idx} rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6 card-flip-hover group transition-all duration-500 hover:shadow-xl`} data-sector={sec.id}>
                   <div class="space-y-5 relative z-10">
                     <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                      <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold">
-                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                        {sec.badge}
+                      <span class="sector-badge inline-flex items-center gap-1.5 rounded-full bg-pale-navy/90 px-3 py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair flip-badge transition-all duration-500">
+                        <span class="sector-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
+                        <span>{sec.badge}</span>
                       </span>
                     </div>
 
