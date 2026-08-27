@@ -4,6 +4,8 @@ import { sectorDataList, type SectorData } from '../data/capabilities';
 import Button from './Button.astro';
 import CapabilityWorkbench from './CapabilityWorkbench.astro';
 import AtmosphericCanvas from './AtmosphericCanvas.astro';
+import GoldWaveform from './GoldWaveform.astro';
+import GradientVideo from './GradientVideo.astro';
 
 interface Props {
   initialSector: 'government' | 'nonprofits' | 'philanthropy';
@@ -21,6 +23,11 @@ const sectors: SectorData[] = [
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
   <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+    {/* Animated Fluid Gradient Video Background */}
+    <GradientVideo variant="blue" overlayOpacity={0.62} />
+    {/* Ambient Molestone Gold Particle Waveform */}
+    <GoldWaveform alpha="1.4" />
+
     <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
     <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 

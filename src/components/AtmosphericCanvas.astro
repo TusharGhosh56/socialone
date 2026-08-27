@@ -1,5 +1,5 @@
 ---
-// AtmosphericCanvas.astro — Institutional Canvas with Brand Gold Dot Lattice, Ambient Spotlight & Guide Rails
+// AtmosphericCanvas.astro — Clean, High-Performance Canvas with Brand Gold Dot Lattice & Ambient Cursor Spotlight
 interface Props {
   class?: string;
   padded?: boolean;
@@ -15,11 +15,7 @@ const { class: className = '', padded = true } = Astro.props;
   {/* 2. Hardware-Accelerated Cursor Spotlight Follower */}
   <div class="ambient-spotlight-follower" data-ambient-spotlight aria-hidden="true"></div>
 
-  {/* 3. Architectural Margin Guide Rails */}
-  <div class="margin-guide-rail-left hidden 2xl:block" aria-hidden="true"></div>
-  <div class="margin-guide-rail-right hidden 2xl:block" aria-hidden="true"></div>
-
-  {/* 4. Content Slot */}
+  {/* 3. Clean Content Slot with Generous Breathing Room */}
   <div class={`relative z-10 ${padded ? 'space-y-24 sm:space-y-32 py-16 sm:py-24 lg:py-32' : ''}`}>
     <slot />
   </div>
@@ -27,5 +23,7 @@ const { class: className = '', padded = true } = Astro.props;
 
 <script>
   import { initAmbientSpotlight } from '../scripts/ambientSpotlight';
+
   initAmbientSpotlight();
+  document.addEventListener('astro:page-load', initAmbientSpotlight);
 </script>

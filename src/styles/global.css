@@ -180,17 +180,24 @@
 
   /* Reusable disciplined deep navy background for navy sections sitewide
      (FlowChart, How We Work, Footer, etc.). Pure palette navy depth with
-     quiet authority — no abstract rainbow swirls or distracting moving sheen. */
+     quiet authority — rich multi-layer gradient depth. */
   .gradient-navy {
     position: relative;
-    background: linear-gradient(180deg, #0d1030 0%, #171d47 40%, #171d47 68%, #0d1030 100%);
+    background: linear-gradient(165deg, #0b0e2b 0%, #151a42 45%, #1a2150 75%, #0d1030 100%);
+  }
+  .gradient-navy-mesh {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(209, 156, 51, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, rgba(74, 83, 138, 0.25) 0%, transparent 60%),
+      linear-gradient(165deg, #0b0e2b 0%, #171d47 50%, #0d1030 100%);
   }
   .gradient-sheen::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: radial-gradient(circle at 50% 30%, rgba(74, 83, 138, 0.18) 0%, transparent 75%);
+    background: radial-gradient(circle at 50% 30%, rgba(74, 83, 138, 0.22) 0%, transparent 75%);
     pointer-events: none;
   }
 
@@ -198,11 +205,11 @@
      embodying data foundation and cartographic intelligence (§06 & §07). */
   .bg-institutional-grid {
     position: relative;
-    background-color: #0d1030;
+    background-color: #0b0e2b;
     background-image:
-      linear-gradient(rgba(74, 83, 138, 0.12) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(74, 83, 138, 0.12) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(rgba(74, 83, 138, 0.14) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(74, 83, 138, 0.14) 1px, transparent 1px);
+    background-size: 52px 52px;
     background-position: center center;
   }
   .bg-institutional-grid::before {
@@ -210,15 +217,13 @@
     position: absolute;
     inset: 0;
     z-index: 0;
-    background: radial-gradient(circle at 50% 40%, rgba(35, 43, 101, 0.45) 0%, #0d1030 85%);
+    background:
+      radial-gradient(circle at 75% 30%, rgba(209, 156, 51, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 50% 40%, rgba(35, 43, 101, 0.55) 0%, #0b0e2b 85%);
     pointer-events: none;
   }
 
-  /* Reusable "rounded inset card" shape — the same treatment Hero and
-     FlowChart already use locally (.hero/.flow in their own component CSS:
-     margin-inline + border-radius + overflow:hidden), so a full-bleed
-     section reads as a floating card on the page background rather than a
-     flat edge-to-edge band. */
+  /* Reusable "rounded inset card" shape — floating card on the page background */
   .section-card {
     margin: clamp(0.75rem, 2.5vw, 2rem);
     border-radius: 1.75rem;
@@ -226,6 +231,118 @@
   }
   .section-card.gradient-sheen::before {
     border-radius: inherit;
+  }
+
+  /* Interactive Hover Card Enhancements — breaks monotone color scheme */
+  .card-hover-accent {
+    transition: transform 300ms var(--ease-out), border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out), background-color 300ms var(--ease-out);
+  }
+  .card-hover-accent:hover {
+    transform: translateY(-2px);
+    border-color: rgba(209, 156, 51, 0.45);
+    box-shadow: 0 16px 36px -12px rgba(26, 33, 80, 0.14), 0 0 0 1px rgba(209, 156, 51, 0.2);
+  }
+
+  /* Interactive Card Hover Transforms — breaks white monotone look with ambient gradient sheen */
+  .card-interactive-sheen {
+    position: relative;
+    overflow: hidden;
+    transition: transform 350ms var(--ease-out), border-color 350ms var(--ease-out), box-shadow 350ms var(--ease-out);
+  }
+  .card-interactive-sheen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 350ms var(--ease-out);
+    background: radial-gradient(circle at 50% 0%, rgba(209, 156, 51, 0.15) 0%, rgba(74, 83, 138, 0.06) 50%, transparent 80%);
+  }
+  .card-interactive-sheen:hover {
+    transform: translateY(-3px);
+    border-color: rgba(209, 156, 51, 0.5);
+    box-shadow: 0 20px 40px -12px rgba(26, 33, 80, 0.16), 0 0 0 1px rgba(209, 156, 51, 0.25);
+  }
+  .card-interactive-sheen:hover::before {
+    opacity: 1;
+  }
+
+  /* Deep Flip on Hover — transforms white card into a navy gradient powerhouse on hover */
+  .card-flip-hover {
+    position: relative;
+    overflow: hidden;
+    transition: transform 400ms var(--ease-out), border-color 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+  }
+  .card-flip-hover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms var(--ease-out);
+    background:
+      linear-gradient(135deg, rgba(209, 156, 51, 0.18) 0%, transparent 60%),
+      linear-gradient(180deg, #111538 0%, #1a2150 50%, #0d1030 100%);
+  }
+  .card-flip-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(209, 156, 51, 0.6);
+    box-shadow: 0 24px 48px -12px rgba(13, 16, 48, 0.35);
+  }
+  .card-flip-hover:hover::before {
+    opacity: 1;
+  }
+  .card-flip-hover:hover h2,
+  .card-flip-hover:hover h3 {
+    color: #ffffff !important;
+  }
+  .card-flip-hover:hover p,
+  .card-flip-hover:hover .flip-text {
+    color: rgba(232, 234, 241, 0.9) !important;
+  }
+  .card-flip-hover:hover .flip-badge {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+  }
+  .card-flip-hover:hover .flip-tag {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+    border-color: rgba(209, 156, 51, 0.35) !important;
+  }
+
+  /* Final CTA Card — Ignited Golden Background State when the trail connects to it */
+  .final-cta-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 500ms var(--ease-out), border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out);
+  }
+  .final-cta-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: inherit;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms var(--ease-out);
+    background:
+      radial-gradient(circle at 85% 30%, rgba(255, 212, 102, 0.35) 0%, transparent 60%),
+      linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 233, 209, 0.55) 50%, rgba(209, 156, 51, 0.25) 100%);
+  }
+  .final-cta-card:hover::before,
+  .final-cta-card.is-trail-ignited::before {
+    opacity: 1;
+  }
+  .final-cta-card:hover,
+  .final-cta-card.is-trail-ignited {
+    border-color: rgba(209, 156, 51, 0.75) !important;
+    box-shadow: 0 24px 50px -10px rgba(26, 33, 80, 0.15), 0 0 32px rgba(209, 156, 51, 0.35) !important;
+    transform: translateY(-2px);
   }
 }
 
@@ -293,11 +410,11 @@
   left: 0;
   overflow: visible;
   pointer-events: none;
-  z-index: 15;
+  z-index: 2;
 }
 .flow-line-path {
   fill: none;
-  stroke: rgba(209, 156, 51, 0.65);
+  stroke: rgba(209, 156, 51, 0.7);
   stroke-width: 2.25;
   stroke-linecap: round;
   stroke-dasharray: 2 10;
@@ -305,15 +422,45 @@
 .flow-line-dot {
   fill: var(--gold);
   stroke: #ffffff;
+  stroke-width: 2;
+  transition: r 350ms var(--ease-out), fill 350ms var(--ease-out), filter 350ms var(--ease-out);
+}
+.flow-line-dot.is-ignited {
+  fill: #ffd466;
+  filter: drop-shadow(0 0 8px rgba(209, 156, 51, 0.95)) drop-shadow(0 0 16px rgba(209, 156, 51, 0.45));
+}
+.flow-line-head {
+  fill: #ffd466;
+  stroke: #ffffff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(209, 156, 51, 1)) drop-shadow(0 0 16px rgba(209, 156, 51, 0.6));
+}
+.flow-line-head-halo {
+  fill: none;
+  stroke: rgba(209, 156, 51, 0.6);
   stroke-width: 1.5;
+  animation: flow-head-pulse 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+@keyframes flow-head-pulse {
+  0% {
+    r: 4px;
+    opacity: 0.9;
+  }
+  100% {
+    r: 16px;
+    opacity: 0;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .flow-line-dot {
     opacity: 1 !important;
   }
+  .flow-line-head-halo {
+    animation: none;
+  }
 }
 
-/* Ensure all interactive cards paint ABOVE the flowing background line */
+/* Ensure all interactive cards, buttons, and photos paint cleanly ABOVE the flowing background line */
 .team-marquee,
 .team-card,
 .case-card,
@@ -321,9 +468,70 @@
 .principle-card,
 .step-carousel,
 .friction-card,
-.metric-row {
+.metric-row,
+.future-cta__trigger,
+.hero__cta,
+.btn,
+.diag-btn,
+.diag-panel {
   position: relative;
-  z-index: 30;
+  z-index: 10;
+}
+
+/* Final CTA Trigger Button — Resting State & Trail-Ignited Connection State */
+.future-cta__trigger {
+  position: relative;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+  border: 1.5px solid rgba(209, 156, 51, 0.45);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition:
+    background-color 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-image 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 450ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 450ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.future-cta__trigger:hover,
+.future-cta__trigger:focus-visible,
+.future-cta__trigger.is-trail-ignited {
+  background-color: #d19c33 !important;
+  background-image: linear-gradient(135deg, #ffd466 0%, #d19c33 100%) !important;
+  color: #0b0e2b !important;
+  border-color: #ffd466 !important;
+  box-shadow:
+    0 0 24px rgba(209, 156, 51, 0.9),
+    0 0 48px rgba(209, 156, 51, 0.45),
+    0 12px 30px rgba(11, 14, 43, 0.4) !important;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.future-cta__trigger.is-trail-ignited::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 212, 102, 0.6);
+  animation: cta-ignite-pulse 2.5s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes cta-ignite-pulse {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1.12);
+    opacity: 0;
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -394,29 +602,6 @@
   transform: translateZ(0);
   contain: strict;
   will-change: auto;
-}
-
-/* Architectural Guideline Rails */
-.margin-guide-rail-left {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: max(1rem, calc((100vw - 1760px) / 2 + 1rem));
-  width: 1px;
-  background: linear-gradient(to bottom, rgba(26, 33, 80, 0) 0%, rgba(26, 33, 80, 0.08) 15%, rgba(209, 156, 51, 0.18) 50%, rgba(26, 33, 80, 0.08) 85%, rgba(26, 33, 80, 0) 100%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.margin-guide-rail-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: max(1rem, calc((100vw - 1760px) / 2 + 1rem));
-  width: 1px;
-  background: linear-gradient(to bottom, rgba(26, 33, 80, 0) 0%, rgba(26, 33, 80, 0.08) 15%, rgba(209, 156, 51, 0.18) 50%, rgba(26, 33, 80, 0.08) 85%, rgba(26, 33, 80, 0) 100%);
-  pointer-events: none;
-  z-index: 2;
 }
 
 /* GPU-Accelerated Hardware-Composited Cursor Spotlight — Contained strictly to light dotted canvas */

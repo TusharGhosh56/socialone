@@ -1,32 +1,39 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import GoldWaveform from '../../components/GoldWaveform.astro';
+import GradientVideo from '../../components/GradientVideo.astro';
+import missionImg from '../../assets/images/purpose-direction/Institution.png';
+import govImg from '../../assets/images/purpose-direction/government.png';
+import ngoImg from '../../assets/images/cases/02-education-evaluation-india.jpg';
+import philImg from '../../assets/images/purpose-direction/donate.png';
 
 const sectors = [
   {
     id: 'gov',
-    num: '01',
     title: 'For government',
     badge: 'Public Systems',
+    image: govImg,
     desc: 'Building AI into public systems, frontline decision-making and workforce capability, within real policy, data and operational constraints.',
     impact: 'Equitable citizen delivery at national and state scale.',
     focus: ['Frontline decision support', 'Sovereign infrastructure', 'Long-term workforce capability'],
   },
   {
     id: 'ngo',
-    num: '02',
     title: 'For nonprofits',
     badge: 'Programme Operations',
+    image: ngoImg,
     desc: 'Connecting programme evidence, partner knowledge and workflows to strengthen strategy, programme operations and delivery.',
     impact: 'Maximizing frontline programme efficacy and resource efficiency.',
     focus: ['Partner knowledge graphs', 'Workflow automation', 'Frontline evidence synthesis'],
   },
   {
     id: 'phil',
-    num: '03',
     title: 'For philanthropy',
     badge: 'Portfolio Evidence',
+    image: philImg,
     desc: 'Using portfolio evidence and shared infrastructure to strengthen investment decisions, grantee capability and responsible adoption.',
     impact: 'Catalytic investment targeting and grantee field sustainability.',
     focus: ['Grantee AI readiness', 'Portfolio evaluation data', 'Responsible AI adoption'],
@@ -42,6 +49,11 @@ const sectors = [
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Animated Fluid Gradient Video Background */}
+      <GradientVideo variant="blue" overlayOpacity={0.62} />
+      {/* Ambient Molestone Gold Particle Waveform */}
+      <GoldWaveform alpha="1.4" />
+
       <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -67,21 +79,32 @@ const sectors = [
       <section class="relative z-10">
         <div class="container-x space-y-14">
           
-          {/* Mission Monument */}
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 lg:p-16 relative overflow-hidden shadow-md">
-            <div class="space-y-6 max-w-4xl">
+          {/* Mission Monument with Editorial Visual Framing */}
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-md card-interactive-sheen grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div class="space-y-6 lg:col-span-7 relative z-10">
               <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
                 <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                 Our Mission
               </div>
 
-              <blockquote class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-snug">
+              <blockquote class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-snug">
                 “To help institutions build the systems, capabilities, and intelligence to make better decisions at scale.”
               </blockquote>
 
-              <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal pt-2">
                 The challenge in public-sector AI is not only developing the technology. It is creating the conditions for institutions to adopt, operate and improve it. We work across that journey, from identifying the decisions and services where AI can add value, to understanding delivery realities, building systems that fit institutional workflows, and measuring what changes in practice.
               </p>
+            </div>
+
+            {/* Editorial Imagery Visual Frame */}
+            <div class="lg:col-span-5 relative z-10 w-full h-[280px] sm:h-[340px] rounded-2xl overflow-hidden shadow-md group border border-hair">
+              <Image
+                src={missionImg}
+                alt="Institutional intelligence and decision making"
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                widths={[480, 800]}
+                sizes="(min-width: 1024px) 40vw, 100vw"
+              />
             </div>
           </div>
 
@@ -98,31 +121,40 @@ const sectors = [
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {sectors.map((sec) => (
-                <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6 transition-all duration-300 hover:border-gold/50 hover:shadow-md">
-                  <div class="space-y-4">
+                <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-6 card-flip-hover group">
+                  <div class="space-y-5 relative z-10">
                     <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                      <span class="text-xs font-bold uppercase tracking-widest text-gold">
-                        Sector {sec.num}
-                      </span>
-                      <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy">
+                      <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold">
+                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                         {sec.badge}
                       </span>
                     </div>
 
-                    <h3 class="text-2xl font-bold text-navy">
+                    {/* Sector Visual Frame */}
+                    <div class="relative w-full h-44 rounded-xl overflow-hidden border border-hair/80 shadow-xs">
+                      <Image
+                        src={sec.image}
+                        alt={sec.title}
+                        class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        widths={[360, 600]}
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                      />
+                    </div>
+
+                    <h3 class="text-2xl font-light text-navy transition-colors">
                       {sec.title}
                     </h3>
 
-                    <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                    <p class="text-base text-mid-navy leading-relaxed font-normal flip-text transition-colors">
                       {sec.desc}
                     </p>
                   </div>
 
-                  <div class="pt-4 border-t border-hair/60 space-y-2">
-                    <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Focus Areas</div>
+                  <div class="pt-4 border-t border-hair/60 space-y-2 relative z-10">
+                    <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70 flip-text transition-colors">Focus Areas</div>
                     <div class="space-y-1.5">
                       {sec.focus.map((f) => (
-                        <div class="flex items-center gap-2 text-xs font-medium text-navy">
+                        <div class="flex items-center gap-2 text-xs font-medium text-navy flip-text transition-colors">
                           <span class="text-gold font-bold">✓</span>
                           <span>{f}</span>
                         </div>
@@ -140,7 +172,12 @@ const sectors = [
       {/* ============================ SECTION 2: OUR VISION ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="gradient-navy gradient-sheen rounded-3xl p-10 sm:p-16 lg:p-20 text-white relative overflow-hidden shadow-2xl">
+          <div class="gradient-navy-mesh gradient-sheen rounded-3xl p-10 sm:p-16 lg:p-20 text-white relative overflow-hidden shadow-2xl">
+            {/* Animated Fluid Gradient Video in Vision */}
+            <GradientVideo variant="gold" overlayOpacity={0.58} />
+            {/* Ambient Molestone Gold Particle Waveform in Vision Monument */}
+            <GoldWaveform alpha="1.2" />
+
             <div class="relative z-10 max-w-4xl space-y-8">
               <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
                 <span class="h-2 w-2 rounded-full bg-gold"></span>
@@ -166,8 +203,8 @@ const sectors = [
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div class="max-w-2xl">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 How we work in practice
@@ -176,9 +213,11 @@ const sectors = [
                 Read the four principles that govern our delivery, sovereign handover, and independent evaluation.
               </p>
             </div>
-            <Button href="/about/how-we-work" variant="primary" class="whitespace-nowrap shadow-sm">
-              Explore our operating principles &rarr;
-            </Button>
+            <div class="relative z-10">
+              <Button href="/about/how-we-work" variant="primary" class="whitespace-nowrap shadow-sm">
+                Explore our operating principles &rarr;
+              </Button>
+            </div>
           </div>
         </div>
       </section>

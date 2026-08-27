@@ -76,32 +76,31 @@ const hubs = [
 <div class="space-y-16" data-interactive-footprint>
   {/* ==================== 1. LIVE METRIC TILES ==================== */}
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-    {metrics.map((m, idx) => (
+    {metrics.map((m) => (
       <div
-        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base hover:border-smoke hover:shadow-xl flex flex-col justify-between"
+        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base flex flex-col justify-between card-flip-hover"
         data-card-spotlight
       >
-        <div class="flex items-center justify-between gap-4 mb-4">
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy">
+        <div class="flex items-center justify-between gap-4 mb-4 relative z-10">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
             <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
             {m.badge}
           </span>
-          <span class="text-xs font-mono font-bold text-mid-navy/40">0{idx + 1}</span>
         </div>
 
-        <div class="my-4">
+        <div class="my-4 relative z-10">
           <div
-            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left"
+            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left flip-text transition-colors"
             data-metric-target={m.value}
           >
             {m.value}
           </div>
-          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2">
+          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2 flip-text transition-colors">
             {m.label}
           </div>
         </div>
 
-        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed">
+        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed relative z-10 flip-text transition-colors">
           {m.detail}
         </p>
       </div>

@@ -1,0 +1,48 @@
+---
+// GradientVideo.astro — Ambient fluid gradient background video with customizable tint
+interface Props {
+  src?: string;
+  overlayOpacity?: number;
+  class?: string;
+  variant?: 'blue' | 'gold';
+}
+
+const {
+  variant = 'blue',
+  src = variant === 'gold' ? '/video/gradient_yellow.mp4' : '/video/gradient.mp4',
+  overlayOpacity = 0.55,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`gradient-video-wrap pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
+  <video class="gradient-video absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline preload="auto">
+    <source src={src} type="video/mp4" />
+  </video>
+  <div
+    class="gradient-video-fade absolute inset-0"
+    style={`background: rgba(11, 14, 43, ${overlayOpacity});`}
+  ></div>
+</div>
+
+<style>
+  .gradient-video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .gradient-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .gradient-video-fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+</style>

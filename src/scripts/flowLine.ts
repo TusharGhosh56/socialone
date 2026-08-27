@@ -15,7 +15,7 @@
 // whenever scrolled out of view, same as before this page-wide line existed.
 // This module only reads its entry/exit page-coordinates (getFlowWaypoints)
 // to route the path through it.
-import { buildRoundedPath, partialD, toOrthogonal, type BuiltPath, type Point } from './flowLinePath';
+import { buildRoundedPath, partialD, toOrthogonal, pointAtLength, type BuiltPath, type Point } from './flowLinePath';
 // Repointed to FlowChartV2 (the live duplicate) — the archived original at
 // ../components/FlowChart/flowChart no longer renders, so its own
 // getFlowWaypoints would stay stuck returning [] forever.
@@ -169,157 +169,142 @@ function fixedPoint(x: () => number, y: () => number | null): Milestone['getPoin
 // so the turn happens exactly where intended rather than wherever the next
 // real milestone's Y happens to be.
 function buildMilestones(): Milestone[] {
-  // Reverted per explicit request back to 0 — a previous session had tried
-  // offsetting this a bit PAST the section's real top edge (jogging exactly
-  // at the boundary read as invisible, coinciding with the section's own
-  // edge), but the jog should track the section's actual start with no
-  // offset.
-  const HOW_WE_WORK_JOG_OFFSET = 0;
-  const howWeWorkTop = () => {
-    const section = document.getElementById('how-we-work');
-    return section ? section.getBoundingClientRect().top + window.scrollY + HOW_WE_WORK_JOG_OFFSET : null;
-  };
-  // The Challenge section (id="why-aplyd" — holds the repurposed Why APLYD
-  // copy now, see index.astro's "3 · THE CHALLENGE" comment) and What We Do
-  // both need their own top edge for a mid-section rail jog, same idea as
-  // how-we-work-start/jog below.
-  const challengeTop = () => {
-    const section = document.getElementById('why-aplyd');
-    return section ? section.getBoundingClientRect().top + window.scrollY : null;
-  };
-  const whatWeDoTop = () => {
-    const section = document.getElementById('what-we-do');
-    return section ? section.getBoundingClientRect().top + window.scrollY : null;
-  };
-  // Desktop (md+, 768px — the same breakpoint ServiceOrbit/ServiceCard
-  // themselves switch on): jog into the centre rail at the section's own
-  // top edge, same as always (whatWeDoTop() — the centre rail then runs
-  // straight through the ServiceOrbit infographic's own visual middle).
-  // Mobile: ServiceOrbit is hidden and ServiceCard's plain grid shows
-  // instead, so jogging at the section's top edge would land well before
-  // the heading/subheading even appear — per explicit product decision,
-  // jog later instead, in the empty gap between the subheading and the
-  // first card ("Strategy & Direction"). Computed as the real midpoint
-  // between the subheading's own bottom edge (id="what-subhead", added
-  // specifically for this — ServiceCard's own card titles are ALSO <h3>s
-  // in this section, so a plain tag selector would be ambiguous) and the
-  // card grid's own top edge (.connect-wrap), not a guessed margin value.
-  const whatWeDoJogY = () => {
-    if (document.documentElement.clientWidth >= 768) return whatWeDoTop();
-    const subhead = document.getElementById('what-subhead');
-    const wrap = document.querySelector('.connect-wrap');
-    if (!subhead || !wrap) return whatWeDoTop();
-    const subRect = subhead.getBoundingClientRect();
-    const wrapRect = wrap.getBoundingClientRect();
-    return (subRect.bottom + wrapRect.top) / 2 + window.scrollY;
-  };
-  const flowExitY = () => {
-    const pts = getFlowWaypoints();
-    return pts.length ? pts[pts.length - 1].y : null;
-  };
-  // AI in Action's own bottom edge — into its empty bottom padding, after
-  // the case carousel. Used to jog from the left rail to the right rail
-  // before Our Team, in empty space rather than at Team's own heading
-  // height. This section is what now sits directly above Our Team — the
-  // Foundation section (heading/paragraph/rotating rings) that used to sit
-  // between them, and before that its own timeline, are both archived; see
-  // index.astro's "ARCHIVED — ORIGINAL FOUNDATION SECTION" comment.
-  const caseStudiesBottom = () => {
-    const section = document.getElementById('ai-in-action');
-    return section ? section.getBoundingClientRect().bottom + window.scrollY : null;
-  };
-  // Selects on .future-cta__trigger (a stable class already used by this
-  // button's own hover-video :has() selector in index.astro), not
-  // a[href="#contact"] — that href now points to /contact (the new Get in
-  // Touch page), so an href-based selector here would silently stop
-  // matching. section#contact stays as the scoping id even though the
-  // button no longer links to that fragment.
-  const finalCtaY = () => pageY(q('section#contact .future-cta__trigger'));
+  const isHome = typeof document !== 'undefined' && (document.querySelector('.hero-flow') !== null || document.getElementById('why-h2') !== null);
 
-  const list: Milestone[] = [
-    // Selects on .hero-cta-primary (a class added to this Button instance
-    // specifically so flowLine.ts can find it) rather than a[href="#contact"]
-    // — same reasoning as finalCtaY below, now that this button links to
-    // /contact instead of the #contact fragment.
-    { key: 'hero-cta', getPoint: atFixedX('.hero__cta a.hero-cta-primary', railLeftX) },
-    { key: 'flow-heading', getPoint: atFixedX('#flow-h2', railLeftX) },
-    { key: 'flow-entry', dot: false, getPoint: () => getFlowWaypoints()[0] ?? null },
-    {
-      key: 'flow-exit',
+  if (isHome) {
+    const whatWeDoTop = () => sectionTop('#what-we-do');
+    const howWeWorkTop = () => sectionTop('#how-we-work');
+    const challengeTop = () => sectionTop('#why-aplyd');
+    const whatWeDoJogY = () => {
+      if (document.documentElement.clientWidth >= 768) return whatWeDoTop();
+      const subhead = document.getElementById('what-subhead');
+      const wrap = document.querySelector('.connect-wrap');
+      if (!subhead || !wrap) return whatWeDoTop();
+      const subRect = subhead.getBoundingClientRect();
+      const wrapRect = wrap.getBoundingClientRect();
+      return (subRect.bottom + wrapRect.top) / 2 + window.scrollY;
+    };
+    const flowExitY = () => {
+      const pts = getFlowWaypoints();
+      return pts.length ? pts[pts.length - 1].y : null;
+    };
+    const caseStudiesBottom = () => {
+      const section = document.getElementById('ai-in-action');
+      return section ? section.getBoundingClientRect().bottom + window.scrollY : null;
+    };
+    const finalCtaY = () => pageY(q('section#contact .future-cta__trigger'));
+
+    return [
+      { key: 'hero-cta', getPoint: atFixedX('.hero__cta a.hero-cta-primary', railLeftX) },
+      { key: 'flow-heading', getPoint: atFixedX('#flow-h2', railLeftX) },
+      { key: 'flow-entry', dot: false, getPoint: () => getFlowWaypoints()[0] ?? null },
+      {
+        key: 'flow-exit',
+        dot: false,
+        getPoint: () => {
+          const pts = getFlowWaypoints();
+          return pts[pts.length - 1] ?? null;
+        },
+      },
+      { key: 'flow-exit-rail', dot: false, getPoint: fixedPoint(railRightX, flowExitY) },
+      { key: 'trust', getPoint: atFixedX('#trust .grid', railRightX) },
+      { key: 'challenge-turn', dot: false, getPoint: fixedPoint(railRightX, challengeTop) },
+      { key: 'challenge-jog', dot: false, getPoint: fixedPoint(railLeftX, challengeTop) },
+      { key: 'challenge', getPoint: atFixedX('#why-h2', railLeftX) },
+      { key: 'what-we-do-turn', dot: false, getPoint: fixedPoint(railLeftX, whatWeDoJogY) },
+      { key: 'what-we-do-jog', dot: false, getPoint: fixedPoint(screenCenterX, whatWeDoJogY) },
+      { key: 'what-we-do', getPoint: atFixedX('.connect-dot', screenCenterX) },
+      { key: 'how-we-work-start', dot: false, getPoint: fixedPoint(screenCenterX, howWeWorkTop) },
+      { key: 'how-we-work-jog', dot: false, getPoint: fixedPoint(railLeftX, howWeWorkTop) },
+      { key: 'how-we-work-title', getPoint: atFixedX('#how-h2', railLeftX) },
+      { key: 'case-studies', getPoint: atFixedX('#cases-h2', railLeftX) },
+      { key: 'case-studies-jog', dot: false, getPoint: fixedPoint(railRightX, caseStudiesBottom) },
+      { key: 'team', getPoint: atFixedX('#team-h2', railRightX) },
+      { key: 'cta-rail-end', dot: false, getPoint: fixedPoint(railRightX, finalCtaY) },
+      { key: 'final-cta', dot: false, getPoint: () => pagePoint(q('section#contact .future-cta__trigger'), 'center') },
+    ];
+  }
+
+  // Dynamic Subpage Trail: Connects Hero -> Section Milestones on the Left Rail -> Exits into CTA!
+  const list: Milestone[] = [];
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  if (heroH1) {
+    list.push({
+      key: 'subpage-hero',
+      getPoint: () => {
+        const r = heroH1.getBoundingClientRect();
+        return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
+      },
+    });
+  }
+
+  const sections = Array.from(document.querySelectorAll<HTMLElement>('main section'));
+  sections.forEach((sec, idx) => {
+    const heading = sec.querySelector<HTMLElement>('h2');
+    if (!heading) return;
+
+    // Place the milestone dot on the left rail in line with the section's heading
+    list.push({
+      key: `subpage-sec-dot-${idx}`,
+      getPoint: () => {
+        const r = heading.getBoundingClientRect();
+        return { x: railLeftX(), y: r.top + 16 + window.scrollY };
+      },
+    });
+
+    // If section has a special interactive hub/selector, branch into it
+    const interactiveTarget = sec.querySelector<HTMLElement>('.diag-btn.active, .stage-tab.active, [data-interactive-hub]');
+    if (interactiveTarget) {
+      list.push({
+        key: `subpage-interactive-${idx}`,
+        dot: false,
+        getPoint: () => {
+          const r = interactiveTarget.getBoundingClientRect();
+          return { x: r.left + 20 + window.scrollX, y: r.top + r.height / 2 + window.scrollY };
+        },
+      });
+      list.push({
+        key: `subpage-interactive-return-${idx}`,
+        dot: false,
+        getPoint: () => {
+          const r = sec.getBoundingClientRect();
+          return { x: railLeftX(), y: r.bottom - 20 + window.scrollY };
+        },
+      });
+    }
+  });
+
+  // Final CTA connection: jog from left rail into the center of the CTA button!
+  const bottomCta = document.querySelector<HTMLElement>('main section:last-of-type a, main section:last-of-type button, main .btn, .future-cta__trigger');
+  if (bottomCta) {
+    list.push({
+      key: 'subpage-cta-jog',
       dot: false,
       getPoint: () => {
-        const pts = getFlowWaypoints();
-        return pts[pts.length - 1] ?? null;
+        const r = bottomCta.getBoundingClientRect();
+        return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
       },
-    },
-    // Extend the trunk's exit out to the right rail BEFORE turning down —
-    // the vertical drop to Trust happens entirely on the right rail.
-    { key: 'flow-exit-rail', dot: false, getPoint: fixedPoint(railRightX, flowExitY) },
-    { key: 'trust', getPoint: atFixedX('#trust .grid', railRightX) },
-    // Jog from the right rail to the left rail exactly at the Challenge
-    // section's own top edge — same "turn on entry, dot on the heading"
-    // convention as how-we-work-start/jog below. This used to dogleg to the
-    // CENTRE rail instead, because the old Challenge section was a two-
-    // column layout (text/pointer-cards straddling the line) — now that
-    // this section is a plain single-column heading (the repurposed Why
-    // APLYD content, see index.astro), it gets the same left-rail treatment
-    // as How We Work/Case Studies/Foundations below.
-    { key: 'challenge-turn', dot: false, getPoint: fixedPoint(railRightX, challengeTop) },
-    { key: 'challenge-jog', dot: false, getPoint: fixedPoint(railLeftX, challengeTop) },
-    { key: 'challenge', getPoint: atFixedX('#why-h2', railLeftX) },
-    // Jog back from the left rail to the centre rail exactly at What We
-    // Do's own top edge — mirrors how-we-work-start/jog's centre→left jog
-    // below, just left→centre. What We Do's own dot then sits on the centre
-    // rail exactly, forcing x here to remove any residual drift from its
-    // real DOM position. It runs straight down to How We Work's own jog
-    // below — the click-controlled carousel in between (StepCarousel.astro)
-    // plays no part in scroll at all and has no milestone/dot of its own;
-    // the line just draws straight through at the normal scroll-driven
-    // rate, same as any other stretch of the page.
-    { key: 'what-we-do-turn', dot: false, getPoint: fixedPoint(railLeftX, whatWeDoJogY) },
-    { key: 'what-we-do-jog', dot: false, getPoint: fixedPoint(screenCenterX, whatWeDoJogY) },
-    { key: 'what-we-do', getPoint: atFixedX('.connect-dot', screenCenterX) },
-    // Jog from the centre rail to the left rail exactly at the point the
-    // navy "How We Work" section BEGINS — the turn happens on entry to the
-    // section, not at its end, then runs straight down the left rail
-    // through the whole section and on to Case Studies' heading.
-    { key: 'how-we-work-start', dot: false, getPoint: fixedPoint(screenCenterX, howWeWorkTop) },
-    { key: 'how-we-work-jog', dot: false, getPoint: fixedPoint(railLeftX, howWeWorkTop) },
-    // A real milestone dot once on the left rail, in line with the "How we
-    // work" title itself — same convention as case-studies below (a
-    // heading's own Y, pinned to the rail's fixed X).
-    { key: 'how-we-work-title', getPoint: atFixedX('#how-h2', railLeftX) },
-    { key: 'case-studies', getPoint: atFixedX('#cases-h2', railLeftX) },
-    // Continue straight down the left rail through the rest of AI in
-    // Action (the case carousel, no milestone of its own) to the
-    // section's own bottom edge, THEN jog right — same single-waypoint
-    // idiom as every other mid-section rail jog on this page (toOrthogonal
-    // auto-inserts the vertical leg on the PRIOR point's rail before
-    // turning, so only the turn's own destination needs stating).
-    { key: 'case-studies-jog', dot: false, getPoint: fixedPoint(railRightX, caseStudiesBottom) },
-    // The line is already on the right rail here and stays there all the
-    // way to the final CTA — no jog needed. Our Team's milestone dot just
-    // sits on that same right rail, in line with its own heading (per
-    // explicit product decision — an earlier version jogged over to the
-    // left rail like How We Work/Case Studies/Foundations do, which turned
-    // out to be an unwanted detour, not the intended look here).
-    { key: 'team', getPoint: atFixedX('#team-h2', railRightX) },
-    // Straight down the right rail to the final CTA's own height, then jog
-    // left to end behind the button (dot:false — the button gets its own
-    // stacking context in index.astro so it paints on top of the line here).
-    { key: 'cta-rail-end', dot: false, getPoint: fixedPoint(railRightX, finalCtaY) },
-    { key: 'final-cta', dot: false, getPoint: () => pagePoint(q('section#contact .future-cta__trigger'), 'center') },
-  ];
+    });
+    list.push({
+      key: 'subpage-cta',
+      dot: false,
+      getPoint: () => {
+        const r = bottomCta.getBoundingClientRect();
+        return { x: r.left + r.width / 2 + window.scrollX, y: r.top + r.height / 2 + window.scrollY };
+      },
+    });
+  }
+
   return list;
 }
 
 export function initFlowLine(): void {
-  if ((window as unknown as { __aplydFlowLine?: boolean }).__aplydFlowLine) return;
-  (window as unknown as { __aplydFlowLine?: boolean }).__aplydFlowLine = true;
-
   const svg = document.querySelector<SVGSVGElement>('.flow-line-svg');
   const path = document.querySelector<SVGPathElement>('.flow-line-path');
   const dotsRoot = document.querySelector<SVGGElement>('.flow-line-dots');
+  const headGroup = document.querySelector<SVGGElement>('.flow-line-head-group');
+  const head = headGroup?.querySelector<SVGCircleElement>('.flow-line-head');
+  const headHalo = headGroup?.querySelector<SVGCircleElement>('.flow-line-head-halo');
   if (!svg || !path || !dotsRoot) return;
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -423,12 +408,49 @@ export function initFlowLine(): void {
       const at = milestoneCumulative[i] ?? 0;
       const alpha = Math.max(0, Math.min(1, (currentLength - (at - 24)) / 24));
       dot.style.opacity = String(alpha);
+
+      if (currentLength >= at - 4 && alpha > 0.6) {
+        dot.classList.add('is-ignited');
+      } else {
+        dot.classList.remove('is-ignited');
+      }
+    });
+  }
+
+  function updateHead() {
+    if (!headGroup || !head || !headHalo) return;
+    if (currentLength <= 6 || built.totalLength === 0) {
+      headGroup.setAttribute('opacity', '0');
+      return;
+    }
+    const pt = pointAtLength(built, currentLength);
+    if (pt) {
+      headGroup.setAttribute('opacity', '1');
+      head.setAttribute('cx', String(pt.x));
+      head.setAttribute('cy', String(pt.y));
+      headHalo.setAttribute('cx', String(pt.x));
+      headHalo.setAttribute('cy', String(pt.y));
+    } else {
+      headGroup.setAttribute('opacity', '0');
+    }
+  }
+
+  function updateFinalCard() {
+    const finalElements = document.querySelectorAll<HTMLElement>(
+      'main section:last-of-type .card-interactive-sheen, main section:last-of-type .final-cta-card, main section:last-of-type .rounded-3xl, section#contact .future-cta__trigger'
+    );
+    if (finalElements.length === 0 || built.totalLength === 0) return;
+    const isReached = currentLength >= built.totalLength - 36;
+    finalElements.forEach((el) => {
+      el.classList.toggle('is-trail-ignited', isReached);
     });
   }
 
   function renderAll() {
     path!.setAttribute('d', partialD(built, currentLength));
     updateDotOpacity();
+    updateHead();
+    updateFinalCard();
     updateFlourishes();
   }
 

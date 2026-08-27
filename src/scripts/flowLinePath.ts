@@ -228,7 +228,24 @@ export function partialD(built: BuiltPath, targetLength: number): string {
   return d;
 }
 
+/** Returns the (x, y) coordinates on the path at a specific length. */
+export function pointAtLength(built: BuiltPath, targetLength: number): Point | null {
+  if (built.segments.length === 0) return null;
+  const clamped = Math.max(0, Math.min(targetLength, built.totalLength));
+  let consumed = 0;
+  for (const seg of built.segments) {
+    if (consumed + seg.length >= clamped) {
+      const remaining = clamped - consumed;
+      return pointOnSegment(seg, remaining);
+    }
+    consumed += seg.length;
+  }
+  const last = built.segments[built.segments.length - 1];
+  return last.type === 'line' ? last.to : pointOnSegment(last, last.length);
+}
+
 /** Convenience: the full, untruncated path. */
 export function fullD(built: BuiltPath): string {
   return partialD(built, built.totalLength);
 }
+

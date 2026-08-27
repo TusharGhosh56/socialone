@@ -2,6 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import GoldWaveform from '../../components/GoldWaveform.astro';
+import GradientVideo from '../../components/GradientVideo.astro';
 import { Image } from 'astro:assets';
 import { team, type TeamTag } from '../../data/team';
 
@@ -35,6 +37,11 @@ function getInitials(fullName: string): string {
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Animated Fluid Gradient Video Background */}
+      <GradientVideo variant="blue" overlayOpacity={0.62} />
+      {/* Ambient Molestone Gold Particle Waveform */}
+      <GoldWaveform alpha="1.4" />
+
       <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -68,8 +75,8 @@ function getInitials(fullName: string): string {
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
                   {members.map((member) => (
-                    <article class="group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between transition-all duration-300 hover:border-gold/40 hover:shadow-md">
-                      <div>
+                    <article class="group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between card-interactive-sheen">
+                      <div class="relative z-10">
                         <div class="relative mb-5 aspect-[4/5] w-full overflow-hidden rounded-2xl bg-paper">
                           {member.linkedin && (
                             <a
@@ -127,8 +134,8 @@ function getInitials(fullName: string): string {
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div class="max-w-2xl">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Connect With APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 Work with our specialists
@@ -137,9 +144,11 @@ function getInitials(fullName: string): string {
                 Reach out to discuss your institutional AI challenges and explore how our team can support your delivery.
               </p>
             </div>
-            <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
-              Get in touch &rarr;
-            </Button>
+            <div class="relative z-10">
+              <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
+                Get in touch &rarr;
+              </Button>
+            </div>
           </div>
         </div>
       </section>
