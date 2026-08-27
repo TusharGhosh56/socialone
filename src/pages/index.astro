@@ -4,13 +4,13 @@ import Reveal from '../components/Reveal.astro';
 import Button from '../components/Button.astro';
 import MetricCard from '../components/MetricCard.astro';
 import ServiceCard from '../components/ServiceCard.astro';
+import ServiceOrbit from '../components/ServiceOrbit.astro';
 import StepCarousel from '../components/StepCarousel.astro';
 import PrincipleItem from '../components/PrincipleItem.astro';
 import CaseCarousel from '../components/CaseCarousel.astro';
 import TeamCarousel from '../components/TeamCarousel.astro';
 import FaqItem from '../components/FaqItem.astro';
 import HeroFlow from '../components/HeroFlow/HeroFlow.astro';
-import AtmosphericCanvas from '../components/AtmosphericCanvas.astro';
 // FlowChart (the original 7-station version) is archived, not deleted — its
 // <FlowChart /> usage below is commented out, but the component files
 // themselves are untouched. FlowChartV2 is the live duplicate.
@@ -59,7 +59,11 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
 
 ---
 
-<Base>
+<Base
+  title="APLYD | Applied AI for Governments & Impact-Focused Institutions"
+  description="APLYD moves artificial intelligence from pilot to public service—engineering sovereign, field-tested AI solutions and institutional capability for governments, multilaterals, and global impact organizations."
+  keywords="Applied AI, Government AI, GovTech AI Solutions, Public Sector Digital Transformation, Decision Intelligence, Institutional AI Capability, Sovereign AI Infrastructure, Sovereign Codebase Handover, Athena Infonomics, Independent AI Evaluation, Responsible AI in Government, Civic AI, Public Systems AI, AI for Global Development"
+>
   <span id="top" aria-hidden="true"></span>
 
   {/* Hero + FlowChart are two independent rounded cards on the page's normal
@@ -99,129 +103,160 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       session accidentally swapped it with FlowChart's — FlowChartV2 now
       carries the "From AI pilots to institutional capability." copy that
       used to live here instead. */}
-  <AtmosphericCanvas padded={false}>
-    <section id="trust" aria-labelledby="trust-h2" class="section-y scroll-mt-24 relative z-10">
-      <div class="container-x">
-        <Reveal as="h2" class="max-w-[20ch] text-h2 font-bold">
-          <span id="trust-h2">Trusted by institutions solving complex public challenges.</span>
-        </Reveal>
-        <Reveal as="p" delay={60} class="mt-5 max-w-measure text-lede font-normal text-mid-navy">
-          Built on sixteen years of proven delivery through Athena Infonomics, across 5 continents for
-          governments, donors, and impact-focused institutions.
-        </Reveal>
-      </div>
-
-      {/* The card's BACKGROUND is full-bleed (sibling of the .container-x
-          above, not nested inside it — square corners, matches the rest of
-          this redesign), but the stat numbers themselves stay within a
-          nested .container-x so they align with the heading/paragraph above
-          rather than spreading edge to edge — two different "full width"s at
-          once. The card's own horizontal padding (px-6/px-10) moved to this
-          inner container-x's built-in padding-inline instead, so it isn't
-          double-applied on top of it; py-10/py-14 (vertical) stays on the
-          card. relative z-10 on the inner container-x (rather than
-          metric-row directly) is what keeps the stats above .gradient-sheen's
-          own absolutely-positioned z-index:1 sweep layer (the stacking-
-          context gotcha) — .gradient-navy already sets position:relative on
-          the card itself. */}
-      <Reveal delay={160} class="mt-12 gradient-navy gradient-sheen py-10 sm:py-14">
-        <div class="container-x relative z-10">
-          <div class="metric-row grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-            {/* `accent` on the first metric only — the guidelines allow gold to
-                mark "a key statistic", singular, so one number carries it and the
-                other four stay white. See MetricCard.astro. */}
-            {metrics.map((m, i) => <MetricCard {...m} accent={i === 0} />)}
-          </div>
-        </div>
+  <section id="trust" aria-labelledby="trust-h2" class="section-y scroll-mt-24 bg-off-white">
+    <div class="container-x">
+      <Reveal as="h2" class="max-w-[20ch] text-h2 font-bold">
+        <span id="trust-h2">Trusted by institutions solving complex public challenges.</span>
       </Reveal>
-    </section>
+      <Reveal as="p" delay={60} class="mt-5 max-w-measure text-lede font-light text-mid-navy">
+        Built on sixteen years of proven delivery through Athena Infonomics, across 5 continents for
+        governments, donors, and impact-focused institutions.
+      </Reveal>
+    </div>
 
-    {/* ========================= 3 · THE CHALLENGE =========================
-        Formerly "6 · WHY APLYD" — moved here to replace the old friction-card
-        Challenge section per explicit product decision (see the archived,
-        commented-out original further down, kept in place in case it's
-        reused for a different section later rather than deleted outright).
-        Heading/subheading text is carried over verbatim from that old
-        section; only the description paragraphs and the principle cards'
-        content changed. id="why-aplyd" kept as-is (nav.ts's anchor still
-        targets it) even though the eyebrow/nav label is now "The Challenge",
-        to avoid an unrelated id churn on top of everything else moving. */}
-    <section id="why-aplyd" aria-labelledby="why-h2" class="section-y scroll-mt-24 relative z-10">
-      <div class="container-x">
-        {/* Heading/subheading left, description right — same 2-col split as
-            the old friction-card Challenge section used (text/pointers), so
-            the heading still starts at the same left edge as every other
-            section. justify-center on the right column roughly aligns its
-            paragraph with the (taller, 2-line) left column's h3, same
-            vertical-centering convention that section used for its own right
-            column. */}
-        <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <Reveal as="h2" class="text-h2 font-bold">
-              <span id="why-h2">Why today's AI efforts struggle</span>
-            </Reveal>
-            <Reveal as="h3" delay={100} class="mt-6 text-h3 font-bold text-mid-navy">
-              Technology isn't the hardest part.
-            </Reveal>
-          </div>
-          <div class="flex max-w-measure flex-col justify-center lg:mt-2">
-            <Reveal as="p" delay={140} class="text-navy/90">
-              Governments and impact-focused institutions are investing in AI to improve how public
-              services are planned and delivered. Yet many AI initiatives struggle to move beyond
-              pilots or become part of everyday government operations.
-            </Reveal>
-            <Reveal as="p" delay={180} class="mt-4 text-navy/90">
-              Technology is only one piece of the puzzle. Successful AI implementation also depends on
-              data, institutions, governance, capability and continuous measurement. Without these, even
-              the most advanced AI systems rarely deliver lasting impact.
-            </Reveal>
-          </div>
-        </div>
-
-        {/* 1×4 — one row of portrait cards at lg+, stepping down to 2×2 then a
-            single column as the viewport narrows (same responsive shape as
-            every other multi-card grid on this page, e.g. ServiceCard's).
-            auto-rows/items-end reserve each row at PrincipleItem's own
-            hover-height and bottom-anchor every card within it, so a card
-            growing taller on hover never shifts the row (or the section
-            below it) — see the .challenge-cards rule near the bottom of this
-            file for the matching width-on-hover behaviour at lg+. */}
-        <div class="challenge-cards mt-14 grid grid-cols-1 auto-rows-[280px] items-end gap-6 sm:grid-cols-2 sm:auto-rows-[300px] lg:grid-cols-4 lg:auto-rows-[420px]">
-          {principles.map((p, i) => <Reveal delay={160 + i * 100}><PrincipleItem {...p} /></Reveal>)}
+    {/* The card's BACKGROUND is full-bleed (sibling of the .container-x
+        above, not nested inside it — square corners, matches the rest of
+        this redesign), but the stat numbers themselves stay within a
+        nested .container-x so they align with the heading/paragraph above
+        rather than spreading edge to edge — two different "full width"s at
+        once. The card's own horizontal padding (px-6/px-10) moved to this
+        inner container-x's built-in padding-inline instead, so it isn't
+        double-applied on top of it; py-10/py-14 (vertical) stays on the
+        card. relative z-10 on the inner container-x (rather than
+        metric-row directly) is what keeps the stats above .gradient-sheen's
+        own absolutely-positioned z-index:1 sweep layer (the stacking-
+        context gotcha) — .gradient-navy already sets position:relative on
+        the card itself. */}
+    <Reveal delay={160} class="mt-12 gradient-navy gradient-sheen py-10 sm:py-14">
+      <div class="container-x relative z-10">
+        <div class="metric-row grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+          {metrics.map((m) => <MetricCard {...m} />)}
         </div>
       </div>
-    </section>
+    </Reveal>
+  </section>
 
-    {/* ======================= 4 · WHAT APLYD DOES ======================= */}
-    <section id="what-we-do" aria-labelledby="what-h2" class="section-y scroll-mt-24 relative z-10">
-    <div class="container-x relative z-10">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+  {/* ========================= 3 · THE CHALLENGE =========================
+      Formerly "6 · WHY APLYD" — moved here to replace the old friction-card
+      Challenge section per explicit product decision (see the archived,
+      commented-out original further down, kept in place in case it's
+      reused for a different section later rather than deleted outright).
+      Heading/subheading text is carried over verbatim from that old
+      section; only the description paragraphs and the principle cards'
+      content changed. id="why-aplyd" kept as-is (nav.ts's anchor still
+      targets it) even though the eyebrow/nav label is now "The Challenge",
+      to avoid an unrelated id churn on top of everything else moving. */}
+  <section id="why-aplyd" aria-labelledby="why-h2" class="section-y scroll-mt-24 bg-paper">
+    <div class="container-x">
+      {/* Heading/subheading left, description right — same 2-col split as
+          the old friction-card Challenge section used (text/pointers), so
+          the heading still starts at the same left edge as every other
+          section. justify-center on the right column roughly aligns its
+          paragraph with the (taller, 2-line) left column's h3, same
+          vertical-centering convention that section used for its own right
+          column. */}
+      <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
         <div>
-          <Reveal as="h2" class="text-h2 font-black text-navy">
-            <span id="what-h2">What APLYD does</span>
+          <Reveal as="h2" class="text-h2 font-bold">
+            <span id="why-h2">Why today's AI efforts struggle</span>
           </Reveal>
-          <Reveal as="h3" delay={100} id="what-subhead" class="mt-4 max-w-xl text-h3 font-bold text-mid-navy">
-            We help institutions move from AI ambition to real-world impact.
+          <Reveal as="h3" delay={100} class="mt-6 text-h3 font-bold text-mid-navy">
+            Technology isn't the hardest part.
+          </Reveal>
+        </div>
+        <div class="flex max-w-measure flex-col justify-center lg:mt-2">
+          <Reveal as="p" delay={140} class="text-navy/90">
+            Governments and impact-focused institutions are investing in AI to improve how public
+            services are planned and delivered. Yet many AI initiatives struggle to move beyond
+            pilots or become part of everyday government operations.
+          </Reveal>
+          <Reveal as="p" delay={180} class="mt-4 text-navy/90">
+            Technology is only one piece of the puzzle. Successful AI implementation also depends on
+            data, institutions, governance, capability and continuous measurement. Without these, even
+            the most advanced AI systems rarely deliver lasting impact.
           </Reveal>
         </div>
       </div>
 
-      {/* Invisible anchor for flowing connector line */}
-      <span class="connect-dot absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></span>
-
-      <!-- Modern 4-Pillar Architectural Capability Grid -->
-      <div class="mt-12 sm:mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          services.map((s, i) => (
-            <Reveal delay={120 + i * 80} class="h-full">
-              <ServiceCard {...s} index={i} class="h-full" />
-            </Reveal>
-          ))
-        }
+      {/* 1×4 — one row of portrait cards at lg+, stepping down to 2×2 then a
+          single column as the viewport narrows (same responsive shape as
+          every other multi-card grid on this page, e.g. ServiceCard's).
+          auto-rows/items-end reserve each row at PrincipleItem's own
+          hover-height and bottom-anchor every card within it, so a card
+          growing taller on hover never shifts the row (or the section
+          below it) — see the .challenge-cards rule near the bottom of this
+          file for the matching width-on-hover behaviour at lg+. */}
+      <div class="challenge-cards mt-14 grid grid-cols-1 auto-rows-[280px] items-end gap-6 sm:grid-cols-2 sm:auto-rows-[300px] lg:grid-cols-4 lg:auto-rows-[420px]">
+        {principles.map((p, i) => <Reveal delay={160 + i * 100}><PrincipleItem {...p} /></Reveal>)}
       </div>
     </div>
   </section>
-  </AtmosphericCanvas>
+
+  {/* ======================= 4 · WHAT APLYD DOES ======================= */}
+  <section id="what-we-do" aria-labelledby="what-h2" class="section-y scroll-mt-24 bg-off-white relative">
+    {/* Ambient burst (src/scripts/approachBurst.ts) — relocated here from
+        How We Work, per the user's redirect (not Future of AI). A direct
+        child of the section (sibling of .container-x below), plain
+        `inset:0` (see .approach-burst in the <style> block near the bottom
+        of this file) gives it the confirmed "full section-width bleed"
+        with zero alignment JS needed — unlike its old How We Work home,
+        which had to stretch it out past a column by hand. Its origin lands
+        on the SECTION's own visual centre rather than being pixel-matched
+        to .connect-dot's exact position below (that'd need new measurement
+        JS); close enough for an ambient background layer. .container-x
+        below gets `relative z-10` so the orbit/card content paints above
+        this z-index:0 layer — same stacking-context requirement the old
+        How We Work version needed. */}
+    <Reveal delay={140} class="approach-burst" data-approach-burst>
+      <canvas class="approach-burst__canvas" data-approach-canvas aria-hidden="true"></canvas>
+    </Reveal>
+    <div class="container-x relative z-10">
+      <Reveal as="h2" class="text-h2 font-bold">
+        <span id="what-h2">What APLYD does</span>
+      </Reveal>
+      {/* max-w-md forces a clean two-line wrap (was max-w-measure/68ch,
+          nearly one long line reaching well past centre) so the text stays
+          clear of the flowing line's vertical run down the centre rail.
+          id="what-subhead" is flowLine.ts's own mobile-only jog anchor (see
+          that file's whatWeDoJogY()) — needed since ServiceCard.astro's own
+          card titles are ALSO <h3>s inside this section, so a plain
+          `#what-we-do h3` selector would ambiguously match those too. */}
+      <Reveal as="h3" delay={100} id="what-subhead" class="mt-4 max-w-md text-h3 font-bold text-mid-navy">
+        We help institutions move from AI ambition to real-world impact.
+      </Reveal>
+
+      {/* .connect-dot is the master flowing line's milestone anchor for this
+          section (an invisible 0-size positional marker — flowLine.ts reads
+          its centre point) — untouched by the orbit infographic below; it
+          stays a plain sibling `<span>` so flowLine.ts's `.connect-dot`
+          query and screenCenterX() math keep working exactly as before. At
+          md+ the ServiceOrbit lives in the SAME centred wrapper so its own
+          visual centre lands on this span's 50%/50% point for free — below
+          md, ServiceOrbit is hidden entirely (a circular infographic has no
+          room to breathe at phone widths) in favour of the plain card grid,
+          same as this section always rendered pre-orbit. Only one of the
+          two is ever in-flow at a time, so the wrapper's height (and thus
+          .connect-dot's centred position) always matches whichever is
+          visible. mx-auto centres this on the true CSS viewport width
+          (document.documentElement.clientWidth) — same as flowLine.ts's
+          screenCenterX() now uses, after fixing that it was previously
+          reading window.innerWidth (includes the scrollbar) and drifting a
+          few px off from where content actually centres. */}
+      <Reveal delay={140} class="connect-wrap relative mt-16">
+        <div class="relative mx-auto max-w-2xl">
+          <span class="connect-dot absolute left-1/2 top-1/2 h-0 w-0 -translate-x-1/2 -translate-y-1/2" aria-hidden="true"></span>
+
+          <div class="hidden md:flex md:justify-center">
+            <ServiceOrbit services={services} />
+          </div>
+
+          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 md:hidden">
+            {services.map((s) => <ServiceCard {...s} />)}
+          </div>
+        </div>
+      </Reveal>
+    </div>
+  </section>
 
   {/* ======================== 5 · PRINCIPLES ========================
       Was "How We Work" — same StepCarousel/StepRow expand-on-hover
@@ -238,14 +273,20 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
       "how-h2" kept as-is (flowLine.ts's milestones + nav.ts's anchor still
       target them) even though the content is now Principles, same reasoning
       as the Challenge section keeping id="why-aplyd". */}
-  <section id="how-we-work" aria-labelledby="how-h2" class="section-y scroll-mt-24 relative overflow-hidden bg-institutional-grid">
+  <section id="how-we-work" aria-labelledby="how-h2" class="section-y scroll-mt-24 relative overflow-hidden">
+    <div class="how-we-work__video-wrap" aria-hidden="true">
+      <video class="how-we-work__video" autoplay loop muted playsinline preload="auto">
+        <source src="/video/gradient.mp4" type="video/mp4" />
+      </video>
+      <div class="how-we-work__video-fade"></div>
+    </div>
     <div class="container-x relative z-10">
       <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
         <div>
-          <Reveal as="h2" class="text-h2 font-black text-white">
+          <Reveal as="h2" class="text-h2 font-bold text-white">
             <span id="how-h2">The principles behind every engagement</span>
           </Reveal>
-          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-normal text-pale-navy/90">
+          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-light text-pale-navy">
             Technology alone doesn't create lasting public value. The way programmes are
             designed, delivered and measured matters just as much. These four principles guide
             every engagement and shape how we work with governments and impact-focused institutions.
@@ -369,7 +410,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
           <Reveal as="h2" delay={60} class="mt-4 text-h2 font-bold text-white">
             <span id="how-h2">How we work</span>
           </Reveal>
-          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-normal text-pale-navy/90">
+          <Reveal as="p" delay={90} class="mt-4 max-w-[64ch] text-lede font-light text-pale-navy">
             One continuous partnership across the full arc — from assessment and field
             delivery, through AI design and independent evaluation, to long-term scale.
           </Reveal>
@@ -387,52 +428,279 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
 
   ================================================================= */}
 
-  {/* ======================= 7 · AI IN ACTION & 8 · OUR TEAM ======================= */}
-  <AtmosphericCanvas padded={false}>
-    <section id="ai-in-action" aria-labelledby="cases-h2" class="relative section-y scroll-mt-24 z-10">
-      <div class="gold-waveform" data-gold-waveform aria-hidden="true">
-        <canvas class="gold-waveform__canvas" data-gold-waveform-canvas></canvas>
-      </div>
-      <div class="container-x relative z-10">
-        <Reveal as="h2" class="text-h2 font-bold">
-          <span id="cases-h2">AI in Action</span>
-        </Reveal>
-        <Reveal as="p" delay={100} class="mt-4 text-lede font-normal text-mid-navy">
-          Applied intelligence, already at work.
-        </Reveal>
-      </div>
-
-      <div class="relative z-10 mt-12">
-        <CaseCarousel cases={cases} />
-      </div>
-    </section>
-
-    {/* ======================== 9 · OUR TEAM ======================== */}
-    <section id="team" aria-labelledby="team-h2" class="section-y scroll-mt-24 relative z-10">
-      <div class="container-x relative z-10">
-        <Reveal as="h2" class="text-h2 font-bold">
-          <span id="team-h2">The Team</span>
-        </Reveal>
-      </div>
-      <Reveal delay={140} class="relative z-10 mt-12">
-        <TeamCarousel rowA={teamRowA} rowB={teamRowB} />
+  {/* ======================= 7 · AI IN ACTION ======================= */}
+  {/* Ambient gold particle waveform (src/scripts/goldWaveform.ts, also used
+      below in Our Foundation) — a plain sibling of .container-x, full-bleed
+      via `inset:0` (see .gold-waveform in the <style> block near the bottom
+      of this file), needs no alignment JS since it isn't anchored to any
+      specific element the way What We Do's burst is. .container-x below
+      gets `relative z-10` so the heading and case cards paint above this
+      z-index:0 layer — same stacking-context requirement as every other
+      full-bleed background on this page. */}
+  <section id="ai-in-action" aria-labelledby="cases-h2" class="relative section-y scroll-mt-24 bg-off-white">
+    <div class="gold-waveform" data-gold-waveform aria-hidden="true">
+      <canvas class="gold-waveform__canvas" data-gold-waveform-canvas></canvas>
+    </div>
+    <div class="container-x relative z-10">
+      <Reveal as="h2" class="text-h2 font-bold">
+        <span id="cases-h2">AI in Action</span>
       </Reveal>
-    </section>
-  </AtmosphericCanvas>
+      <Reveal as="p" delay={100} class="mt-4 text-lede font-light text-mid-navy">
+        Applied intelligence, already at work.
+      </Reveal>
+    </div>
+
+    {/* Full-bleed (sibling of .container-x, not nested inside it — the
+        "full-bleed content inside a section" convention) so the peek cards
+        crop at the section's true edge, not container-x's 1200px cap. */}
+    <div class="relative z-10 mt-12">
+      <CaseCarousel cases={cases} />
+    </div>
+  </section>
+
+  {/* ================ 8 · ARCHIVED — ORIGINAL FOUNDATION SECTION ================
+      Removed and archived per explicit product decision, together with the
+      timeline it contained (2010s/2021/2022/2025 row — that was archived
+      first, then this request came in to take the whole section with it).
+      Kept here, commented out rather than deleted, in case it's reused
+      later. `positionFoundationRings()` in this file's own page script
+      block below, and src/scripts/timelineTraveler.ts's call/import, are
+      both left in place unused (same "left in place for the same reason"
+      convention as the archived FlowChart's own still-present import) —
+      both self-guard (early-return once their target elements no longer
+      exist), so nothing needs to change there to un-break the page.
+      flowLine.ts's own milestones/routing through this section were NOT
+      left similarly inert, though — it now jogs straight from Case
+      Studies' heading to Our Team instead of routing through here; restore
+      that too if this section ever comes back (see this project's memory
+      for exactly what changed and why). `navLinks`' "About Us" entry
+      (src/data/nav.ts) still points to href="#about" — that anchor no
+      longer resolves to anything now that this section is gone; flagged,
+      not fixed here, since it wasn't explicitly asked for.
+
+  8 · BACKED BY ATHENA
+  Same ambient gold waveform as AI in Action (src/scripts/goldWaveform.ts)
+  — `.gradient-navy` already sets `position:relative` on the section
+  itself, so no extra positioning needed there. `.container-x` gets
+  `relative z-10` so it paints above both this z-index:0 layer AND
+  `.gradient-sheen::before`'s own z-index:1 moving highlight — that sheen
+  previously painted above this section's plain in-flow content by
+  default (the stacking-context gotcha in CLAUDE.md), just without a
+  strong enough background to make it visually obvious.
+
+  <section
+    id="about"
+    aria-labelledby="about-h2"
+    class="section-y scroll-mt-24 gradient-navy gradient-sheen overflow-hidden"
+  >
+    <div class="gold-waveform" data-gold-waveform aria-hidden="true">
+      <canvas class="gold-waveform__canvas" data-gold-waveform-canvas></canvas>
+    </div>
+
+    Athena's own logo mark (Extra/SVG/Athena_logo.svg), split into its two
+    concentric rings and spun in opposite directions — a pure-CSS
+    rotation, but its POSITION needs one small JS assist at sm+
+    (positionFoundationRings() in the page script below): horizontally
+    it sits at the section's true right edge (right:0 + translateX(50%),
+    same as the section's own full-bleed edge — plenty of clearance from
+    the text column, unlike centring on the text column's OWN edge,
+    which cut into wherever the paragraph happened to wrap), but
+    vertically it needs to track .max-w-measure's centre specifically
+    (not the whole section's, which includes the timeline below and
+    reads too low) — two different reference elements for the two axes,
+    which plain CSS percentages against a single containing block can't
+    express, hence the small measure-and-set-top script, same
+    "measure, don't reconstruct" + resize/load/fonts.ready resync
+    convention as alignWhatWeDoBurst() nearby. `top:50%` below is just
+    the pre-JS fallback. Mobile (<640px) is a DIFFERENT, simpler, pure-
+    CSS treatment instead — centred right on the section's own top-right
+    corner (top:0, matching right:0, same 50%-bleed on both axes) — per
+    explicit product decision, scoped to mobile only (the section grew a
+    lot taller there, with no single obvious text "centre" left to
+    track); positionFoundationRings() below skips setting an inline top
+    on mobile so that CSS rule can apply. `overflow-hidden` on the
+    section is what clips the deliberate bleed past its true edges at
+    both breakpoints. Both rings share one viewBox (the original
+    382.96×383.83 logo canvas) so their paths are already correctly
+    concentric with no manual offset math — transform-box:view-box + an
+    explicit transform-origin at that viewBox's true centre (not
+    fill-box/center, which would use each ring's own slightly-asymmetric
+    bounding box) keeps both rotating around the exact same point.
+
+    <div class="foundation-rings" data-foundation-rings aria-hidden="true">
+      <svg viewBox="0 0 382.96 383.83" class="foundation-rings__svg">
+        <g class="foundation-rings__outer">
+          <path
+            d="M191.05,0c47.42,0,90.81,17.21,124.29,45.7l-44.39,27.52c-22.82-15.39-50.31-24.38-79.9-24.38-68.83,0-126.29,48.61-139.97,113.37l-49.58-.32C15.92,70.16,95.27,0,191.05,0"
+            fill="#fff"
+            fill-rule="evenodd"
+          />
+          <path
+            d="M349.07,83.01c21.37,30.94,33.89,68.46,33.89,108.9,0,105.99-85.92,191.92-191.92,191.92C91.17,383.83,9.13,307.53,0,210.04l49.32,1.44c9.54,69.76,69.35,123.52,141.73,123.52,79.02,0,143.08-64.06,143.08-143.08,0-31.4-10.12-60.44-27.28-84.03l42.23-24.87Z"
+            fill="#d89b28"
+            fill-rule="evenodd"
+          />
+        </g>
+        <g class="foundation-rings__inner">
+          <path
+            d="M191.74,307.07c-28.45,0-54.48-10.32-74.58-27.42l26.63-16.51c13.69,9.23,30.19,14.63,47.94,14.63,41.3,0,75.78-29.17,83.98-68.02l29.75.19c-8.65,55.04-56.26,97.13-113.73,97.13"
+            fill="#fff"
+            fill-rule="evenodd"
+          />
+          <path
+            d="M96.93,257.26c-12.82-18.56-20.33-41.07-20.33-65.34,0-63.6,51.55-115.15,115.15-115.15,59.93,0,109.15,45.79,114.63,104.28l-29.59-.86c-5.72-41.86-41.61-74.11-85.04-74.11-47.41,0-85.85,38.43-85.85,85.85,0,18.84,6.08,36.26,16.37,50.42l-25.34,14.92Z"
+            fill="#d89b28"
+            fill-rule="evenodd"
+          />
+        </g>
+      </svg>
+    </div>
+
+    <div class="container-x relative z-10">
+      <div class="max-w-measure" data-foundation-text>
+        <Reveal as="h2" class="text-h2 font-bold text-white">
+          <span id="about-h2">Backed by Athena Infonomics</span>
+        </Reveal>
+        <Reveal as="h3" delay={100} class="mt-6 text-h3 font-bold text-gold">
+          Built on sixteen years of delivery.
+        </Reveal>
+        <Reveal as="p" delay={140} class="mt-4 text-pale-navy text-justify">
+          APLYD is the AI-focused evolution of Athena Infonomics, a global research and advisory firm
+          that has spent 16+ years turning evidence into better public decisions. Athena has
+          delivered 440+ projects for 240+ client institutions across 5 continents, with a team of
+          120+ specialists spanning economics, data science, public policy, and field research. Its
+          growth has been recognised by the Financial Times, which named Athena among High-Growth
+          Asia-Pacific companies in 2021, 2022, and 2025. APLYD carries this track record forward:
+          the same rigour and reach, now focused on applied AI.
+        </Reveal>
+      </div>
+
+      ARCHIVED — ORIGINAL TIMELINE (removed first, ahead of the rest of
+      this section, same product decision either way):
+      Timeline (§9 §8). TODO: real data + world map (§16). Horizontal row
+      at sm+ (640px), single vertical column below that — per explicit
+      product decision (the old 2x2 grid's horizontal connector line
+      only ever visually spanned row 1, disconnected from row 2).
+      .timeline-line is the sm+ static track — the page-wide flowing
+      line (flowLine.ts) turns right along it and is what actually
+      crosses left-to-right, revealing each dot+text pair
+      ([data-flow-fade], reversible) as it passes. Track sits at
+      top-[37px] (= the <ol>'s sm:pt-8 plus half the dot's own h-2.5
+      height) so it lands exactly on the dots' vertical centre —
+      matching where the flowing line itself crosses — instead of
+      floating above them as a separate "channel". .timeline-line-v is
+      the mobile equivalent — a vertical track at left-[5px] (half the
+      dot's own width, centring it under the dots, which sit at the
+      li's own x:0 regardless of the li's own pl-6 text-offset padding,
+      since an absolutely-positioned child ignores its parent's padding
+      box). .timeline-traveler (src/scripts/timelineTraveler.ts) is a
+      SEPARATE small dot continuously retracing the 4 stops on its own
+      idle loop — same repeating-traveler mechanic as FlowChartV2's own
+      canvas traveler, generalized to drive either `left` (sm+ row) or
+      `top` (mobile column) since it measures each stop's own real
+      position rather than assuming an axis.
+
+      <Reveal delay={160} class="mt-14">
+        <div class="relative" data-timeline-wrap>
+          <span class="timeline-line absolute inset-x-0 top-[37px] hidden h-px bg-white/12 sm:block" aria-hidden="true"></span>
+          <span class="timeline-line-v absolute inset-y-0 left-[5px] w-px bg-white/12 sm:hidden" aria-hidden="true"></span>
+          <span
+            class="timeline-traveler absolute top-[37px] left-0 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold opacity-0"
+            data-timeline-traveler
+            aria-hidden="true"
+          ></span>
+          <ol class="relative flex flex-col gap-y-7 sm:grid sm:grid-cols-4 sm:gap-y-8 sm:pt-8">
+            {
+              [
+                { year: '2010s', label: 'Athena Infonomics founded' },
+                { year: '2021', label: 'FT High-Growth Asia-Pacific' },
+                { year: '2022', label: 'FT High-Growth Asia-Pacific' },
+                { year: '2025', label: 'FT High-Growth · APLYD emerges' },
+              ].map((t) => (
+                <li data-flow-fade class="relative flex items-start gap-x-3 pl-6 sm:block sm:gap-x-0 sm:pl-0 sm:pr-4">
+                  <span
+                    class="absolute left-0 top-[7px] h-2.5 w-2.5 rounded-full bg-gold sm:static sm:top-auto sm:mb-3 sm:block"
+                    aria-hidden="true"
+                  />
+                  <p class="text-h3 font-black text-white">{t.year}</p>
+                  <p class="text-small text-pale-navy/80 sm:mt-1">{t.label}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </Reveal>
+    </div>
+  </section>
+
+  ================================================================= */}
+
+  {/* ======================== 9 · OUR TEAM ======================== */}
+  {/* Light bg-paper between two dark navy sections (Backed by Athena above,
+      Final CTA below) for visual rhythm — matches the rest of the page's
+      alternating light/dark pattern rather than three dark sections in a
+      row. Marquee itself is full-bleed (sibling of .container-x, not
+      nested — "full-bleed content inside a section" convention, CLAUDE.md)
+      so its edge-fade mask (TeamCarousel.astro) reaches the section's true
+      edges, not container-x's 1200px cap. The single Reveal wrapping the
+      whole carousel (rather than per-card) is deliberate — a per-card
+      entrance stagger would fight the marquee's own continuous horizontal
+      motion; the carousel fades/rises in as one block instead, same
+      reversible replay-on-reentry as every other Reveal on this page.
+      Both content blocks get `relative z-10` — the page-wide flowing line
+      (flow-line-svg, global.css, z-index:5) is a positioned element with
+      its own stacking context, which paints ABOVE any plain in-flow
+      non-positioned content regardless of DOM order (the same stacking-
+      context gotcha CLAUDE.md documents for in-section ambient
+      backgrounds, just the other way around here — the LINE is the
+      positioned z-indexed layer, not this section's own content). This
+      section gets a left-rail milestone dot next to #team-h2
+      (flowLine.ts), so the line's actual drawn path runs directly through
+      here — without z-10 the cards would render behind it. */}
+  <section id="team" aria-labelledby="team-h2" class="section-y scroll-mt-24 bg-paper">
+    <div class="container-x relative z-10">
+      <Reveal as="h2" class="text-h2 font-bold">
+        <span id="team-h2">The Team</span>
+      </Reveal>
+    </div>
+    <Reveal delay={140} class="relative z-10 mt-12">
+      <TeamCarousel rowA={teamRowA} rowB={teamRowB} />
+    </Reveal>
+  </section>
 
   {/* ======================== 10 · FINAL CTA ======================== */}
-  <section id="contact" aria-labelledby="cta-h3" class="relative scroll-mt-24 bg-institutional-grid z-10">
+  {/* Same background video treatment as FlowChart (the 2nd section with a
+      video background, after Hero) — gradient_yellow.mp4 — but here it
+      stays invisible by default and only fades in on hover/focus of the
+      "Partner with APLYD" button (via :has(), scoped to this section so it
+      can't match the header's own separate CTA link) — see
+      .future-cta__video-wrap below. The section's existing flat navy
+      gradient (bg-gradient-to-b) stays as the always-visible base
+      underneath, unchanged when the video isn't showing. */}
+  <section id="contact" aria-labelledby="cta-h3" class="relative scroll-mt-24 bg-gradient-to-b from-navy to-deep-navy">
+    <div class="future-cta__video-wrap" aria-hidden="true">
+      <video class="future-cta__video" autoplay loop muted playsinline preload="auto">
+        <source src="/video/gradient_yellow.mp4" type="video/mp4" />
+      </video>
+      <div class="future-cta__video-fade"></div>
+    </div>
     <div class="container-x section-y relative z-10 text-center">
-      <Reveal as="h2" delay={0} class="mx-auto max-w-[22ch] text-h2 font-black text-white">
+      <Reveal as="h2" delay={0} class="mx-auto max-w-[22ch] text-h2 font-bold text-white">
         <span id="cta-h3">The future of AI will be measured by better decisions.</span>
       </Reveal>
-      <Reveal as="p" delay={80} class="mx-auto mt-5 max-w-[42ch] text-lede font-normal text-pale-navy/90">
+      <Reveal as="p" delay={80} class="mx-auto mt-5 max-w-[42ch] text-lede font-light text-pale-navy">
         Not better algorithms. Not larger models. Better outcomes for people.
       </Reveal>
-      <Reveal as="p" delay={120} class="mt-4 text-lede font-medium text-gold">
+      <Reveal as="p" delay={120} class="mt-4 text-lede font-light text-gold">
         Let's build that future together.
       </Reveal>
       <Reveal delay={180} class="mt-9 flex justify-center">
+        {/* on-navy primary: gold fill for AA + emphasis. relative z-10 so
+            this paints ABOVE the page-wide flowing line (flow-line-svg,
+            z-index:5) — the line's final milestone here is deliberately
+            dot:false and its path just runs behind this button.
+            future-cta__trigger is what .future-cta__video-wrap's :has()
+            selector above watches for hover/focus. */}
         <a
           href="/contact"
           class="future-cta__trigger group relative z-10 inline-flex items-center gap-0 rounded-pill bg-gold px-7 py-3.5 font-bold text-navy no-underline transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-px hover:shadow-lg"
@@ -448,44 +716,105 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
   </section>
 
   {/* =========================== FAQ =========================== */}
-  <AtmosphericCanvas padded={false}>
-    <section aria-labelledby="faq-h2" class="section-y scroll-mt-24 relative z-10">
-      <div class="container-x">
-        <Reveal as="h2" class="text-h2 font-bold">
-          <span id="faq-h2">Frequently asked questions</span>
-        </Reveal>
-        <Reveal delay={100} class="mt-8 flex flex-col sm:flex-row sm:items-start sm:gap-x-12">
-          {
-            faqColumns.map((col) => (
-              <div class="sm:flex-1">
-                {col.map((f) => <FaqItem {...f} />)}
-              </div>
-            ))
-          }
-        </Reveal>
-      </div>
-    </section>
-  </AtmosphericCanvas>
+  {/* Two columns at sm+ (was a single .prose-x-width column) — two
+      INDEPENDENT stacked columns (first half of `faqs` / second half), not
+      a CSS grid: a real grid ties both columns' row heights together, so
+      opening one item in the left column visibly pushed the right column's
+      items apart too, even though nothing in that column itself expanded —
+      explicitly reported as a bug and fixed by decoupling the columns
+      entirely instead of trying to contain the height change within a
+      shared row. See faqColumns above. */}
+  <section aria-labelledby="faq-h2" class="section-y scroll-mt-24 bg-paper">
+    <div class="container-x">
+      <Reveal as="h2" class="text-h2 font-bold">
+        <span id="faq-h2">Frequently asked questions</span>
+      </Reveal>
+      <Reveal delay={100} class="mt-8 flex flex-col sm:flex-row sm:items-start sm:gap-x-12">
+        {
+          faqColumns.map((col) => (
+            <div class="sm:flex-1">
+              {col.map((f) => <FaqItem {...f} />)}
+            </div>
+          ))
+        }
+      </Reveal>
+    </div>
+  </section>
 </Base>
 
 <script>
   import { initTilt } from '../scripts/tilt';
-  import { initFlowLine } from '../scripts/flowLine';
+  import { initFlowLine, settledOffsetY } from '../scripts/flowLine';
+  import { initApproachBurst } from '../scripts/approachBurst';
+  import { initServiceOrbit } from '../scripts/serviceOrbit';
   import { initGoldWaveform } from '../scripts/goldWaveform';
   import { initCardSpotlight } from '../scripts/cardSpotlight';
   import { initTimelineTraveler } from '../scripts/timelineTraveler';
   initTilt();
+  initServiceOrbit();
   initFlowLine();
   initGoldWaveform();
   initCardSpotlight();
   initTimelineTraveler();
+
+  // The ambient burst lives in What We Do now, centred precisely on the
+  // same point flowLine.ts's "what-we-do" milestone anchors to (.connect-dot)
+  // — approachBurst.ts always draws its origin at its own box's vertical
+  // centre, so this sizes/positions that box (full section width already
+  // comes from CSS's left:0;right:0) symmetrically around the dot's real Y,
+  // clamped to whichever side (above/below) has less room so it never
+  // overflows the section's own bounds.
+  function alignWhatWeDoBurst() {
+    const section = document.getElementById('what-we-do');
+    const burst = section?.querySelector<HTMLElement>('[data-approach-burst]');
+    const dot = section?.querySelector<HTMLElement>('.connect-dot');
+    if (!section || !burst || !dot) return;
+    const sectionRect = section.getBoundingClientRect();
+    const dotRect = dot.getBoundingClientRect();
+    // Same not-yet-revealed-ancestor correction flowLine.ts's own milestone
+    // measurement needs (settledOffsetY) — .connect-dot lives inside a
+    // [data-reveal] wrapper (.connect-wrap), and measuring it before that
+    // reveal has fired reads its temporary pre-reveal position (translated
+    // down ~16px), which would otherwise get baked into this alignment.
+    const dotY = dotRect.top + dotRect.height / 2 - sectionRect.top - settledOffsetY(dot);
+    const half = Math.min(dotY, sectionRect.height - dotY);
+    burst.style.top = `${dotY - half}px`;
+    burst.style.height = `${half * 2}px`;
+  }
+  alignWhatWeDoBurst();
+  window.addEventListener('resize', alignWhatWeDoBurst, { passive: true });
+  // Same gap flowLine.ts's own milestone measurement already learned to
+  // close (see its screenCenterX/settledOffsetY comment: "nothing then
+  // corrects it until an unrelated resize event... forces a fresh measure()
+  // ... which is why 'zoom out then in' appeared to fix it") — this only had
+  // the resize listener, not the window.load one, so anything that settles
+  // between this initial call and full page load (images, the preloader's
+  // own body scroll-lock while it's up, etc.) could still bake in a stale
+  // measurement until a real resize (zoom) forced a recompute. Re-running
+  // here, plus a synthetic resize event so approachBurst.ts's own internal
+  // origin/W recompute too, closes it the same way flowLine.ts already does.
+  window.addEventListener('load', () => {
+    alignWhatWeDoBurst();
+    window.dispatchEvent(new Event('resize'));
+  });
+  // `load` doesn't cover everything either — web fonts fetch lazily and
+  // don't block it (that's the whole point of font-display:swap), so a
+  // font-swap reflow can still land AFTER `load` has already fired and
+  // already re-measured. document.fonts.ready resolves once fonts actually
+  // finish, which is the more precise signal for this specific case.
+  document.fonts?.ready?.then(() => {
+    alignWhatWeDoBurst();
+    window.dispatchEvent(new Event('resize'));
+  });
 
   // Our Foundation's rotating rings — sm+ only (see the markup comment in
   // that section for the full horizontal/vertical reasoning); below 640px
   // this is skipped entirely and a plain CSS rule takes over instead (the
   // rings' centre sits fixed on the section's own top-right corner there,
   // per explicit product decision — no text "centre" worth tracking once
-  // the section grew much taller on mobile).
+  // the section grew much taller on mobile). Same resync events as
+  // alignWhatWeDoBurst() above, for the same reasons (fonts/images settling
+  // after this first measurement, no `resize` event of its own to catch it).
   function positionFoundationRings() {
     const section = document.getElementById('about');
     const text = section?.querySelector<HTMLElement>('[data-foundation-text]');
@@ -504,6 +833,15 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
   window.addEventListener('resize', positionFoundationRings, { passive: true });
   window.addEventListener('load', positionFoundationRings);
   document.fonts?.ready?.then(positionFoundationRings);
+
+  // Must run AFTER alignWhatWeDoBurst()'s own initial call above: this
+  // measures the burst canvas's own box on load to size its pixel buffer,
+  // and needs to see the FINAL top/height set by that function, not the
+  // full-section-height box it started life at — same "measure after
+  // layout settles, then size the canvas" ordering this codebase already
+  // leans on elsewhere (getting it backwards previously caused the burst
+  // to render stretched/blurry).
+  initApproachBurst();
 </script>
 
 <style>
@@ -519,6 +857,32 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     }
   }
 
+  /* Ambient burst (src/scripts/approachBurst.ts) — now lives in What We Do,
+     see that section's markup/comment. No box of its own: the canvas paints
+     directly on whatever background sits behind it, full-bleed via a plain
+     `inset:0` — What We Do's own layout doesn't need alignment JS to
+     stretch it past a column the way How We Work's old full-bleed heading
+     did, so this is just the bare positioning rule. z-index:0 (+
+     pointer-events:none) keeps it strictly a background layer. */
+  .approach-burst {
+    /* left/right (full section width) come from here; top/height are set by
+       alignWhatWeDoBurst() in the page script so the box's own vertical
+       centre lands exactly on .connect-dot — top:0/height:100% below is
+       only the pre-JS fallback so it doesn't flash unpositioned. */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .approach-burst__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
 
   /* Ambient gold waveform (src/scripts/goldWaveform.ts) — used behind AI in
      Action and Our Foundation. Plain full-bleed background layer, no
@@ -598,7 +962,70 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
     }
   }
 
+  /* How We Work's background video — same structure as HeroFlow's own
+     (.hero__video-wrap/.hero__video/.hero__video-fade in heroFlow.css):
+     full-bleed absolute layer behind the content, a flat semi-transparent
+     navy overlay on top for text contrast (flat rather than HeroFlow's
+     bottom-to-top fade, since content spans this whole section rather than
+     sitting in one corner over the video). Muted/looping/decorative, so it
+     stays visible even under reduced-motion rather than needing a static
+     fallback. */
+  .how-we-work__video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .how-we-work__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .how-we-work__video-fade {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 16, 48, 0.58);
+  }
 
+  /* Final CTA's background video — same structure as How We Work's own,
+     except it starts fully transparent and only fades in on hover/focus of
+     the "Partner with APLYD" button (.future-cta__trigger) via :has(),
+     scoped to #contact so it can't match the header's own separate CTA
+     link elsewhere on the page. The section's existing flat navy gradient
+     (bg-gradient-to-b, in the markup) is the always-visible base
+     underneath — unchanged when the video isn't showing. */
+  .future-cta__video-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 500ms var(--ease-out);
+  }
+  #contact:has(.future-cta__trigger:hover) .future-cta__video-wrap,
+  #contact:has(.future-cta__trigger:focus-visible) .future-cta__video-wrap {
+    opacity: 1;
+  }
+  .future-cta__video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .future-cta__video-fade {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 16, 48, 0.55);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .future-cta__video-wrap {
+      transition: none;
+    }
+  }
 
   /* ------------------------------------------------------------------ */
   /* 3 · THE PROBLEM — friction cards (right column). Hover/focus swaps    */
