@@ -1,78 +1,133 @@
 ---
-// FaqItem (§7) — native <details>/<summary> for zero-JS accessibility.
-// Question is an H3 (§12). Chevron rotates; a tiny script eases the height.
+// FaqItem.astro — Enhanced Accordion with rich elevation, left brand accent bar, circular chevron badge, and smooth content fade
 import type { Faq } from '../data/faqs';
 interface Props extends Faq {}
 const { question, answer } = Astro.props;
 ---
 
-<details class="faq group border-b border-hair">
+<details class="faq group rounded-2xl border border-hair/80 bg-white/70 transition-all duration-300 ease-out mb-3.5 overflow-hidden">
   <summary
-    class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden"
+    class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 sm:p-6 [&::-webkit-details-marker]:hidden select-none transition-colors duration-200"
   >
-    <h3 class="text-h3 font-bold text-navy">{question}</h3>
-    <svg
-      class="chevron shrink-0 text-mid-navy transition-all duration-base ease-out group-hover:text-deep-gold"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      aria-hidden="true"
-    >
-      <path d="M5 8l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
+    <div class="flex items-center gap-3 pr-2">
+      <span class="faq-indicator h-2 w-2 rounded-full bg-hair transition-all duration-300 group-open:bg-gold group-open:scale-125 group-open:shadow-[0_0_8px_rgba(209,156,51,0.8)]"></span>
+      <h3 class="text-base sm:text-lg font-bold text-navy transition-colors duration-200 group-hover:text-deep-gold group-open:text-navy">
+        {question}
+      </h3>
+    </div>
+
+    <div class="faq-chevron-badge flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-paper border border-hair text-mid-navy transition-all duration-300 group-hover:border-gold/50 group-hover:bg-pale-gold/30 group-hover:text-deep-gold group-open:bg-gold group-open:text-navy group-open:border-gold group-open:rotate-180 group-open:shadow-sm">
+      <svg
+        class="h-4 w-4"
+        viewBox="0 0 20 20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M5 8l5 5 5-5" />
+      </svg>
+    </div>
   </summary>
+
   <div class="faq-body overflow-hidden">
-    <p class="max-w-measure pb-6 text-navy/85">{answer}</p>
+    <div class="px-5 sm:px-6 pb-6 pt-1">
+      <div class="border-l-2 border-gold/50 pl-4 sm:pl-5 py-0.5 faq-content-fade">
+        <p class="text-base sm:text-lg font-normal leading-relaxed text-mid-navy">
+          {answer}
+        </p>
+      </div>
+    </div>
   </div>
 </details>
 
 <style>
-  details[open] .chevron {
-    transform: rotate(180deg);
-    color: var(--deep-gold);
+  details.faq {
+    box-shadow: 0 2px 8px -2px rgba(26, 33, 80, 0.04);
+  }
+  details.faq:hover {
+    border-color: rgba(209, 156, 51, 0.4);
+    box-shadow: 0 8px 24px -6px rgba(26, 33, 80, 0.08);
+  }
+  details.faq[open] {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 233, 209, 0.25) 100%);
+    border-color: rgba(209, 156, 51, 0.5);
+    box-shadow: 0 12px 32px -8px rgba(26, 33, 80, 0.12), 0 0 0 1px rgba(209, 156, 51, 0.2);
+  }
+
+  details.faq[open] .faq-content-fade {
+    animation: faq-content-slide 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes faq-content-slide {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
 <script>
-  // Progressive enhancement: ease the open/close height. Fully functional
-  // without JS (native <details>) and disabled under reduced-motion.
-  if (!(window as any).__aplydFaq) {
-    (window as any).__aplydFaq = true;
+  function initFaqAccordion() {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduce) {
-      document.querySelectorAll<HTMLDetailsElement>('details.faq').forEach((d) => {
-        const body = d.querySelector<HTMLElement>('.faq-body');
-        if (!body) return;
-        const summary = d.querySelector('summary');
-        summary?.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          if (d.open) {
-            body.style.height = body.scrollHeight + 'px';
-            requestAnimationFrame(() => (body.style.height = '0px'));
-            body.addEventListener(
-              'transitionend',
-              () => {
-                d.open = false;
-                body.style.height = '';
-              },
-              { once: true },
-            );
-          } else {
-            d.open = true;
-            const h = body.scrollHeight;
+    if (reduce) return;
+
+    document.querySelectorAll<HTMLDetailsElement>('details.faq').forEach((d) => {
+      const body = d.querySelector<HTMLElement>('.faq-body');
+      if (!body) return;
+      const summary = d.querySelector('summary');
+
+      // Prevent duplicate listeners on page navigation
+      if ((d as any).__faqInit) return;
+      (d as any).__faqInit = true;
+
+      summary?.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        if (d.open) {
+          body.style.height = body.scrollHeight + 'px';
+          requestAnimationFrame(() => {
             body.style.height = '0px';
-            requestAnimationFrame(() => (body.style.height = h + 'px'));
-            body.addEventListener('transitionend', () => (body.style.height = ''), { once: true });
-          }
-        });
+          });
+          body.addEventListener(
+            'transitionend',
+            () => {
+              d.open = false;
+              body.style.height = '';
+            },
+            { once: true },
+          );
+        } else {
+          d.open = true;
+          const h = body.scrollHeight;
+          body.style.height = '0px';
+          requestAnimationFrame(() => {
+            body.style.height = h + 'px';
+          });
+          body.addEventListener(
+            'transitionend',
+            () => {
+              body.style.height = '';
+            },
+            { once: true },
+          );
+        }
       });
-    }
+    });
   }
+
+  initFaqAccordion();
+  document.addEventListener('astro:page-load', initFaqAccordion);
 </script>
 
 <style is:global>
   .faq-body {
-    transition: height var(--dur-base) var(--ease-out);
+    transition: height 320ms cubic-bezier(0.25, 1, 0.5, 1);
   }
   @media (prefers-reduced-motion: reduce) {
     .faq-body {

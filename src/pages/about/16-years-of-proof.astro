@@ -3,45 +3,34 @@ import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import InteractiveFootprint from '../../components/InteractiveFootprint.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import GoldWaveform from '../../components/GoldWaveform.astro';
+import GradientVideo from '../../components/GradientVideo.astro';
 
 const bedrockPillars = [
   {
-    num: '01',
     phase: 'Governance & Strategy',
     title: 'Policy research and advisory',
     desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
     artifacts: ['Sector Readiness Baselines', 'Governance Frameworks', 'Regulatory Guidance'],
   },
   {
-    num: '02',
     phase: 'Evidence & Learning',
     title: 'Measurement and evaluation',
     desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
     artifacts: ['Independent MEL Frameworks', 'Baseline Assessments', 'Impact Evaluations'],
   },
   {
-    num: '03',
     phase: 'Engineering & Integration',
     title: 'Digital tools and systems',
     desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
     artifacts: ['Enterprise MIS Platforms', 'Data Pipeline Hookups', 'Workforce Tooling'],
   },
   {
-    num: '04',
     phase: 'Field Intelligence',
     title: 'Last-mile data networks',
     desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
     artifacts: ['Community Compass', 'Ground Truth Networks', 'Frontline Telemetry'],
   },
-];
-
-const footprintStats = [
-  { value: '440+', label: 'Engagements delivered' },
-  { value: '240+', label: 'Global clients' },
-  { value: '95+', label: 'Specialists across domains' },
-  { value: '65+', label: 'Countries with active projects' },
-  { value: '5', label: 'Continents with field operations' },
-  { value: '120+', label: 'People across the group' },
 ];
 ---
 
@@ -53,6 +42,11 @@ const footprintStats = [
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Animated Fluid Gradient Video Background */}
+      <GradientVideo variant="blue" overlayOpacity={0.62} />
+      {/* Ambient Molestone Gold Particle Waveform */}
+      <GoldWaveform alpha="1.4" />
+
       <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -74,12 +68,32 @@ const footprintStats = [
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: THE BEDROCK ============================ */}
-      <section class="relative z-10">
+      {/* ============================ SECTION 1: GLOBAL FOOTPRINT MAP & STATS ============================ */}
+      <section class="relative z-10" id="global-reach-section">
+        <div class="container-x space-y-12">
+          <div class="max-w-3xl space-y-4">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="global-eyebrow">Global Reach</div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="global-heading">
+              Sixteen years of global delivery
+            </h2>
+            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+              Proven public sector impact across 5 continents, serving leading multilateral institutions, national governments, and global philanthropies.
+            </p>
+          </div>
+
+          {/* Global Interactive Footprint Matrix (Metrics + Live World Operations Map) */}
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-8 shadow-sm" id="footprint-matrix-wrap">
+            <InteractiveFootprint />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ SECTION 2: THE BEDROCK ============================ */}
+      <section class="relative z-10" id="bedrock-section">
         <div class="container-x space-y-12">
           <div class="max-w-4xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">Institutional Foundation</div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="bedrock-eyebrow">Institutional Foundation</div>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="bedrock-heading">
               The bedrock: Four complementary capabilities
             </h2>
             <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal pt-2">
@@ -88,34 +102,32 @@ const footprintStats = [
           </div>
 
           {/* 4 Bedrock Pillars Connected Display */}
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {bedrockPillars.map((item) => (
-              <div class="group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 transition-all duration-300 hover:border-gold/50 hover:shadow-md flex flex-col justify-between">
-                <div class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="bedrock-grid">
+            {bedrockPillars.map((item, idx) => (
+              <div class={`bedrock-card bedrock-card-${idx} group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 space-y-6 card-flip-hover flex flex-col justify-between`} data-bedrock-index={idx}>
+                <div class="space-y-4 relative z-10">
                   <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-gold">
-                      Pillar {item.num}
-                    </span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-pale-navy text-navy">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold">
+                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                       {item.phase}
                     </span>
                   </div>
 
-                  <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
+                  <h3 class="text-2xl sm:text-3xl font-light text-navy leading-snug transition-colors">
                     {item.title}
                   </h3>
 
-                  <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
                     {item.desc}
                   </p>
                 </div>
 
                 {/* Artifacts checklist */}
-                <div class="pt-4 border-t border-hair/60 space-y-2">
-                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Institutional Focus</div>
+                <div class="pt-4 border-t border-hair/60 space-y-2 relative z-10">
+                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70 flip-text transition-colors">Institutional Deliverables</div>
                   <div class="flex flex-wrap gap-2">
                     {item.artifacts.map((art) => (
-                      <span class="text-xs font-medium px-3 py-1 rounded-pill bg-paper border border-hair text-navy">
+                      <span class="text-xs font-medium px-3 py-1 rounded-pill bg-paper border border-hair text-navy flip-tag transition-colors">
                         {art}
                       </span>
                     ))}
@@ -127,45 +139,11 @@ const footprintStats = [
         </div>
       </section>
 
-      {/* ============================ SECTION 2: GLOBAL FOOTPRINT MAP & STATS ============================ */}
-      <section class="relative z-10">
-        <div class="container-x space-y-12">
-          <div class="max-w-3xl space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">Global Reach</div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
-              Sixteen years of global delivery
-            </h2>
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
-              Proven public sector impact across 5 continents, serving leading multilateral institutions, national governments, and global philanthropies.
-            </p>
-          </div>
-
-          {/* 6 Stats Row */}
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {footprintStats.map((stat, idx) => (
-              <div class="rounded-2xl bg-white/95 backdrop-blur-md p-6 border border-hair shadow-xs text-center space-y-1 hover:border-gold/40 transition-colors">
-                <div class={`text-3xl sm:text-4xl font-light leading-tight ${idx === 0 ? 'text-deep-gold font-normal' : 'text-navy'}`}>
-                  {stat.value}
-                </div>
-                <div class="text-xs font-bold text-mid-navy/80 uppercase tracking-wider">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Global Interactive Footprint Map */}
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-8 shadow-sm">
-            <InteractiveFootprint />
-          </div>
-        </div>
-      </section>
-
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <div class="max-w-2xl">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 Explore our mission and vision
@@ -174,9 +152,11 @@ const footprintStats = [
                 Understand why APLYD exists and the future of applied intelligence in public systems.
               </p>
             </div>
-            <Button href="/about/purpose-and-direction" variant="primary" class="whitespace-nowrap shadow-sm">
-              Purpose & Direction &rarr;
-            </Button>
+            <div class="relative z-10">
+              <Button href="/about/purpose-and-direction" variant="primary" class="whitespace-nowrap shadow-sm">
+                Purpose & Direction &rarr;
+              </Button>
+            </div>
           </div>
         </div>
       </section>

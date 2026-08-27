@@ -4,6 +4,8 @@ import { caseStudyCategories, type CaseStudyCategory } from '../data/caseStudies
 import CaseStudyDossier from './CaseStudyDossier.astro';
 import CaseStudyConversationCTA from './CaseStudyConversationCTA.astro';
 import AtmosphericCanvas from './AtmosphericCanvas.astro';
+import GoldWaveform from './GoldWaveform.astro';
+import GradientVideo from './GradientVideo.astro';
 
 interface Props {
   initialCategory: string;
@@ -33,6 +35,11 @@ const buttonItems = [
 <div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
   {/* ============================ HERO SECTION ============================ */}
   <section class="bg-institutional-grid text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden">
+    {/* Animated Fluid Gradient Video Background */}
+    <GradientVideo variant="blue" overlayOpacity={0.62} />
+    {/* Ambient Molestone Gold Particle Waveform */}
+    <GoldWaveform alpha="1.4" />
+
     <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
     <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
 
@@ -207,6 +214,9 @@ const buttonItems = [
           body.classList.remove('opacity-100');
         }
       });
+
+      // Dispatch resize event so flowLine recalculates trail for new active dossiers
+      window.dispatchEvent(new Event('resize'));
     }
 
     buttons.forEach((btn) => {
