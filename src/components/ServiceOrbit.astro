@@ -216,23 +216,19 @@ const ANGLES = [45, 135, 225, 315];
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    /* Navy, was var(--gold) with a gold halo. Four identical node markers is
-       repetition, not emphasis — see .orbit__ring on this diagram's gold budget. */
-    background: var(--navy);
-    box-shadow: 0 0 0 4px rgba(35, 43, 101, 0.12);
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(209, 156, 51, 0.22), 0 0 10px rgba(209, 156, 51, 0.4);
     transition:
       transform var(--dur-base) var(--ease-out),
       background-color var(--dur-base) var(--ease-out),
       box-shadow var(--dur-base) var(--ease-out);
   }
-  /* Gold IS earned on interaction — hovering or activating a node is a single
-     deliberate moment, so the marker takes the accent then and only then. */
   .orbit__dot:hover .orbit__marker,
   .orbit__dot:focus-visible .orbit__marker,
   .orbit__dot.is-active .orbit__marker {
-    transform: scale(1.2);
-    background: var(--gold);
-    box-shadow: 0 0 0 6px rgba(209, 156, 51, 0.24);
+    transform: scale(1.3);
+    background: #ffd466;
+    box-shadow: 0 0 0 6px rgba(209, 156, 51, 0.35), 0 0 16px rgba(209, 156, 51, 0.7);
   }
   /* Same size as the friction cards' title (index.astro's .friction-card
      label) — that title is plain body text with no explicit Tailwind

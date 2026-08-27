@@ -75,33 +75,32 @@ const hubs = [
 
 <div class="space-y-16" data-interactive-footprint>
   {/* ==================== 1. LIVE METRIC TILES ==================== */}
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-    {metrics.map((m, idx) => (
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="footprint-metrics-grid">
+    {metrics.map((m) => (
       <div
-        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base hover:border-smoke hover:shadow-xl flex flex-col justify-between"
+        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base flex flex-col justify-between card-flip-hover"
         data-card-spotlight
       >
-        <div class="flex items-center justify-between gap-4 mb-4">
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy">
+        <div class="flex items-center justify-between gap-4 mb-4 relative z-10">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
             <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
             {m.badge}
           </span>
-          <span class="text-xs font-mono font-bold text-mid-navy/40">0{idx + 1}</span>
         </div>
 
-        <div class="my-4">
+        <div class="my-4 relative z-10">
           <div
-            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left"
+            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left flip-text transition-colors"
             data-metric-target={m.value}
           >
             {m.value}
           </div>
-          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2">
+          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2 flip-text transition-colors">
             {m.label}
           </div>
         </div>
 
-        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed">
+        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed relative z-10 flip-text transition-colors">
           {m.detail}
         </p>
       </div>
@@ -109,7 +108,7 @@ const hubs = [
   </div>
 
   {/* ==================== 2. INTERACTIVE GLOBAL MAP CONSOLE ==================== */}
-  <div class="rounded-3xl border border-hair bg-gradient-to-b from-[#101432] to-[#0A0D24] text-white p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden">
+  <div class="rounded-3xl border border-hair bg-gradient-to-b from-[#101432] to-[#0A0D24] text-white p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden" id="global-map-console">
     <div class="relative z-10">
       {/* Console Top Bar */}
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-white/10">
@@ -391,15 +390,6 @@ const hubs = [
     {/* Right: Financial Times Ranking Emblem */}
     <div class="lg:col-span-5 rounded-3xl border border-hair bg-gradient-to-br from-white via-paper to-pale-navy/30 p-8 sm:p-12 shadow-sm flex flex-col justify-between relative overflow-hidden group hover:border-gold hover:shadow-xl transition-all duration-base">
       <div class="relative z-10">
-        <div class="flex items-center justify-between gap-4 mb-4">
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-gold">
-            <svg class="h-3.5 w-3.5 fill-gold" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-            FT Global Ranking
-          </span>
-        </div>
-
         <h4 class="text-2xl sm:text-3xl font-bold text-navy leading-snug">
           FT High-Growth Companies Asia-Pacific
         </h4>

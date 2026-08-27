@@ -2,7 +2,6 @@
 // ApproachStageExplorer.astro — Interactive 4-Stage Delivery System & Architecture Studio
 interface Stage {
   id: string;
-  num: string;
   phase: string;
   title: string;
   body: string;
@@ -14,7 +13,6 @@ interface Stage {
 const stages: Stage[] = [
   {
     id: 'explore',
-    num: '01',
     phase: 'Explore',
     title: 'Strategy and direction',
     body: 'We help institutions identify where AI can deliver measurable public value. This starts with the problem: understanding operational bottlenecks, the decisions being made, and the evidence needed to support them. We assess institutional readiness, evaluate available data, and define use cases with clear outcomes and delivery paths.',
@@ -34,7 +32,6 @@ const stages: Stage[] = [
   },
   {
     id: 'design',
-    num: '02',
     phase: 'Design',
     title: 'Field and delivery',
     body: 'Before building, we examine the environment in which the system will operate. This means understanding frontline workflows, user needs, connectivity and operational constraints. We design systems that integrate with existing processes, address data quality and representation, and account for the realities of field implementation.',
@@ -54,7 +51,6 @@ const stages: Stage[] = [
   },
   {
     id: 'deliver',
-    num: '03',
     phase: 'Deliver',
     title: 'Design, build and scale',
     body: 'We build production-ready systems designed for institutional use. We work alongside existing teams throughout implementation, ensuring solutions fit operational realities. Every engagement includes capability transfer: leaving institutions with the technical infrastructure, documentation and trained staff to own and manage the system.',
@@ -74,7 +70,6 @@ const stages: Stage[] = [
   },
   {
     id: 'assure',
-    num: '04',
     phase: 'Assure',
     title: 'Evaluation and assurance',
     body: 'We evaluate whether systems work as intended in practice. We conduct rigorous, independent assessments of performance, accuracy, fairness and user adoption. Crucially, evaluation is kept separate from delivery: we only evaluate systems we did not build, giving institutions objective evidence to inform decisions about continuation, refinement or scale.',
@@ -101,7 +96,7 @@ const stages: Stage[] = [
     {stages.map((stage, idx) => (
       <button
         type="button"
-        class={`stage-tab group relative flex flex-col p-4 sm:p-5 rounded-xl text-left transition-all duration-300 ${
+        class={`stage-tab group relative flex flex-col p-4 sm:p-5 rounded-xl text-left transition-all duration-300 cursor-pointer ${
           idx === 0 ? 'is-active' : ''
         }`}
         data-stage-trigger={stage.id}
@@ -109,14 +104,12 @@ const stages: Stage[] = [
         aria-selected={idx === 0 ? 'true' : 'false'}
       >
         <div class="flex items-center justify-between w-full mb-2">
-          <span class="stage-tab-num text-xs font-bold uppercase tracking-widest text-gold">
-            Stage {stage.num}
-          </span>
-          <span class="stage-tab-badge text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full transition-colors">
+          <span class="stage-tab-badge inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full transition-colors">
+            <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
             {stage.phase}
           </span>
         </div>
-        <div class="stage-tab-title text-base sm:text-lg font-bold leading-tight transition-colors">
+        <div class="stage-tab-title text-base sm:text-lg font-bold leading-tight transition-colors text-navy">
           {stage.title}
         </div>
       </button>
@@ -127,7 +120,7 @@ const stages: Stage[] = [
   <div class="relative min-h-[520px]">
     {stages.map((stage, idx) => (
       <div
-        class={`stage-panel rounded-3xl border border-hair bg-white p-6 sm:p-10 lg:p-14 shadow-sm transition-all duration-500 ${
+        class={`stage-panel rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-sm transition-all duration-500 card-hover-accent ${
           idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
         }`}
         data-stage-panel={stage.id}
@@ -138,7 +131,7 @@ const stages: Stage[] = [
           <div class="lg:col-span-7 space-y-6">
             <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
               <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-              Stage {stage.num} · {stage.phase} Phase
+              {stage.phase} Phase · Methodology
             </div>
 
             <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
@@ -162,7 +155,7 @@ const stages: Stage[] = [
               <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Key Outcomes</div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {stage.deliverables.map((item) => (
-                  <div class="flex items-start gap-2.5 text-small font-medium text-navy bg-paper/60 p-3 rounded-xl border border-hair">
+                  <div class="flex items-start gap-2.5 text-small font-medium text-navy bg-paper/60 p-3 rounded-xl border border-hair hover:border-gold/30 transition-colors">
                     <span class="text-gold font-bold mt-0.5">✓</span>
                     <span>{item}</span>
                   </div>
@@ -179,7 +172,7 @@ const stages: Stage[] = [
                   Delivery Architecture
                 </div>
                 <div class="text-[11px] font-mono uppercase text-pale-navy/70">
-                  Stage Flow
+                  {stage.phase} Flow
                 </div>
               </div>
 
@@ -188,36 +181,30 @@ const stages: Stage[] = [
                 {/* Vertical connecting line */}
                 <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-white/20 -z-0"></div>
 
-                {stage.nodes.map((node, nIdx) => (
+                {stage.nodes.map((node) => (
                   <div class="relative z-10 flex items-start gap-3.5 bg-white/5 border border-white/10 p-3.5 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/40">
                     <div class={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold ${
                       node.type === 'gate'
                         ? 'bg-gold text-navy shadow-md'
                         : 'bg-white/15 text-white'
                     }`}>
-                      {nIdx + 1}
+                      ✓
                     </div>
                     <div class="min-w-0 flex-1">
-                      <div class="text-small font-bold text-white leading-tight flex items-center justify-between">
+                      <div class="text-sm font-bold text-white flex items-center justify-between">
                         <span>{node.label}</span>
                         {node.type === 'gate' && (
-                          <span class="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded bg-gold/20 text-gold border border-gold/30">
-                            Decision
+                          <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-gold/20 text-gold border border-gold/30">
+                            Decision Gate
                           </span>
                         )}
                       </div>
-                      <div class="text-xs text-pale-navy/70 leading-snug mt-0.5">
+                      <div class="text-xs text-pale-navy/70 mt-0.5">
                         {node.sub}
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Handover Guarantee footer */}
-              <div class="border-t border-white/10 pt-4 flex items-center justify-between text-xs text-pale-navy/80">
-                <span>Implementation Standard</span>
-                <span class="font-bold text-gold">Institutional Handover</span>
               </div>
             </div>
           </div>
@@ -230,32 +217,35 @@ const stages: Stage[] = [
 
 <style>
   .stage-tab {
-    background-color: rgba(245, 245, 242, 0.6);
-    color: var(--navy);
-  }
-  .stage-tab .stage-tab-title {
+    background-color: var(--paper);
+    border: 1px solid var(--hair);
     color: var(--navy);
   }
   .stage-tab .stage-tab-badge {
-    background-color: var(--white);
-    color: var(--mid-navy);
-    border: 1px solid var(--hair);
+    background-color: rgba(26, 33, 80, 0.08);
+    color: var(--navy);
   }
-  .stage-tab:hover {
-    background-color: var(--paper);
+  .stage-tab:hover:not(.is-active) {
+    background-color: #ffffff;
+    border-color: rgba(209, 156, 51, 0.4);
+    box-shadow: 0 4px 12px rgba(26, 33, 80, 0.06);
+    transform: translateY(-2px);
   }
-
-  .stage-tab.is-active {
-    background-color: var(--deep-navy) !important;
-    box-shadow: 0 10px 25px -5px rgba(26, 33, 80, 0.35);
+  .stage-tab.is-active,
+  .stage-tab[aria-selected="true"] {
+    background: linear-gradient(135deg, #1a2150 0%, #232b65 100%) !important;
+    border-color: var(--navy) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px -4px rgba(26, 33, 80, 0.3) !important;
   }
-  .stage-tab.is-active .stage-tab-title {
-    color: var(--white) !important;
-  }
-  .stage-tab.is-active .stage-tab-badge {
+  .stage-tab.is-active .stage-tab-badge,
+  .stage-tab[aria-selected="true"] .stage-tab-badge {
     background-color: rgba(255, 255, 255, 0.15) !important;
-    color: var(--pale-navy) !important;
-    border-color: transparent !important;
+    color: #ffffff !important;
+  }
+  .stage-tab.is-active .stage-tab-title,
+  .stage-tab[aria-selected="true"] .stage-tab-title {
+    color: #ffffff !important;
   }
 </style>
 
@@ -264,27 +254,25 @@ const stages: Stage[] = [
     const root = document.querySelector('[data-stage-explorer]');
     if (!root) return;
 
-    const tabs = root.querySelectorAll<HTMLButtonElement>('[data-stage-trigger]');
+    const triggers = root.querySelectorAll<HTMLButtonElement>('[data-stage-trigger]');
     const panels = root.querySelectorAll<HTMLElement>('[data-stage-panel]');
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const targetId = tab.getAttribute('data-stage-trigger');
+    triggers.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const stageId = btn.getAttribute('data-stage-trigger');
 
-        // Update tabs active state
-        tabs.forEach((t) => {
-          const isActive = t === tab;
-          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        triggers.forEach((b) => {
+          const isActive = b === btn;
+          b.setAttribute('aria-selected', isActive ? 'true' : 'false');
           if (isActive) {
-            t.classList.add('is-active');
+            b.classList.add('is-active');
           } else {
-            t.classList.remove('is-active');
+            b.classList.remove('is-active');
           }
         });
 
-        // Update panels
         panels.forEach((p) => {
-          if (p.getAttribute('data-stage-panel') === targetId) {
+          if (p.getAttribute('data-stage-panel') === stageId) {
             p.classList.remove('hidden', 'opacity-0');
             p.classList.add('block', 'opacity-100');
           } else {
@@ -296,7 +284,6 @@ const stages: Stage[] = [
     });
   }
 
-  // Run on page load
   initStageExplorer();
   document.addEventListener('astro:page-load', initStageExplorer);
 </script>
