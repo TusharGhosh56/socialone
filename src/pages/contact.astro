@@ -12,8 +12,7 @@
 import Base from '../layouts/Base.astro';
 import Reveal from '../components/Reveal.astro';
 import AtmosphericCanvas from '../components/AtmosphericCanvas.astro';
-import GoldWaveform from '../components/GoldWaveform.astro';
-import GradientVideo from '../components/GradientVideo.astro';
+import HeroVideo from '../components/HeroVideo.astro';
 import { contactEmails, offices } from '../data/contactInfo';
 import { serviceOptions, enquiryOptions } from '../data/contactOptions';
 import { FIELD_LIMITS } from '../data/contactLimits';
@@ -26,11 +25,13 @@ import { FIELD_LIMITS } from '../data/contactLimits';
 >
   <div class="pt-16 sm:pt-[4.5rem]">
     {/* ============================ 1. HERO + CONTACT FORM ============================ */}
-    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-white/10 bg-institutional-grid text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
+    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-white/10 bg-navy text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video: Collaborative Dialogue & Strategic Partnership */}
+      <HeroVideo
+        src="/video/hero/6.mp4"
+        storyTag="Institutional Dialogue · Direct Specialist Routing"
+        overlayOpacity={0.68}
+      />
 
       <div class="container-x grid items-start gap-12 lg:grid-cols-12 lg:gap-14 relative z-10">
         {/* Left Column: Heading, Value Prop, Direct Contact Details (5 cols) */}

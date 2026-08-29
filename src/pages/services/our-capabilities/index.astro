@@ -2,8 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import Button from '../../../components/Button.astro';
 import AtmosphericCanvas from '../../../components/AtmosphericCanvas.astro';
-import GoldWaveform from '../../../components/GoldWaveform.astro';
-import GradientVideo from '../../../components/GradientVideo.astro';
+import HeroVideo from '../../../components/HeroVideo.astro';
 import { sectorDataList } from '../../../data/capabilities';
 
 const sectors = [
@@ -20,14 +19,13 @@ const sectors = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
-
-      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+    <section class="bg-navy text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video: Vibrant Community & Multi-Sector Impact */}
+      <HeroVideo
+        src="/video/hero-community-6981412.mp4"
+        storyTag="Applied AI Capabilities · Multi-Sector Transformation"
+        overlayOpacity={0.62}
+      />
 
       <div class="container-x relative z-10">
         <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">

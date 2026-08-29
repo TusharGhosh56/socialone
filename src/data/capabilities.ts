@@ -5,6 +5,8 @@ export interface CapabilityItem {
   title: string;
   p1: string;
   p2: string;
+  image: string;
+  imageAlt: string;
 }
 
 export interface SectorData {
@@ -38,6 +40,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'AI portfolio and readiness',
         p1: "Before anything is built, we assess where AI can create meaningful value and what it will take to implement it effectively. This includes the institution's mandate, data maturity and ownership, existing infrastructure, workflows and workforce.",
         p2: 'We use this assessment to identify and prioritise the decisions and services where AI has a credible role, and develop a sequenced roadmap covering use cases, data and infrastructure requirements, and procurement. The aim is to establish a clear basis for investment before resources are committed to implementation.',
+        image: '/src/assets/images/capabilities/work-governance.jpg',
+        imageAlt: 'Institutional AI readiness assessment and governance roadmap',
       },
       {
         num: '02',
@@ -45,6 +49,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Public-service solutions',
         p1: 'When a use case is ready to move forward, we design and build solutions around the needs of the public service. This can include advisory and planning systems, triage and supervision tools, and data integrations that connect with existing MIS and operational systems.',
         p2: 'Interoperability, security and decision rights are addressed as part of the system design, alongside the product and technical architecture. The result is a documented solution with the architecture, requirements and controls needed for implementation, operation and future development.',
+        image: '/src/assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png',
+        imageAlt: 'Frontline public service delivery and civic digital solutions',
       },
       {
         num: '03',
@@ -52,6 +58,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Field evidence and service design',
         p1: 'A system is only as effective as its adoption in practice. We spend time where the service is delivered to understand frontline workflows, user constraints, language and connectivity realities, and operational incentives.',
         p2: 'We use these insights to design products that work in the field and create evidence-collection systems that track adoption, user experience and service delivery. This ensures implementation decisions are informed by data from the point of delivery.',
+        image: '/src/assets/images/capabilities/hero-fieldwork.jpg',
+        imageAlt: 'Field researchers gathering evidence from frontline workers and citizens',
       },
       {
         num: '04',
@@ -59,6 +67,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Institutional AI capability',
         p1: 'AI systems require ongoing management, governance and improvement. We help institutions build the internal capability to own, operate and oversee their systems over time.',
         p2: 'This includes technical documentation, operating and governance routines, and targeted training for the teams responsible for managing, maintaining and using the system. The objective is durable institutional capacity, reducing reliance on external partners.',
+        image: '/src/assets/images/how-we-work-page/building.png',
+        imageAlt: 'Institutional capacity building and sovereign codebase handover',
       },
     ],
     ctaText: 'For nonprofits',
@@ -81,6 +91,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Programme AI strategy and readiness',
         p1: 'We work with nonprofit leadership and programme teams to identify where AI can support organisational goals. This includes assessing programme data, workflows, staff capacity and resource constraints.',
         p2: 'We help define practical use cases, establish data requirements and create an adoption roadmap aligned with funding and delivery timelines.',
+        image: '/src/assets/images/purpose-direction/institution.png',
+        imageAlt: 'Nonprofit institutional strategy and programme readiness assessment',
       },
       {
         num: '02',
@@ -88,6 +100,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Programme solutions and tooling',
         p1: 'We build AI-enabled tools designed for nonprofit operating environments. These include frontline worker assistance, programme monitoring dashboards, resource allocation models and communication tools that work across low-connectivity and multi-language settings.',
         p2: 'Solutions are designed to integrate with existing data collection and reporting systems.',
+        image: '/src/assets/images/capabilities/case-agri-digital.jpg',
+        imageAlt: 'Mobile tooling and digital workflows for community programme teams',
       },
       {
         num: '03',
@@ -95,6 +109,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Field testing and community-informed design',
         p1: 'We test and refine tools directly with programme participants and frontline staff. This ensures solutions are accessible, culturally appropriate and genuinely useful in daily operations.',
         p2: 'We design lightweight feedback loops that help organisations understand how tools are being used and where improvements are needed.',
+        image: '/src/assets/images/how-we-work-page/evidence.png',
+        imageAlt: 'Community-informed service design and grassroots feedback loops',
       },
       {
         num: '04',
@@ -102,6 +118,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Organisational capacity and data practice',
         p1: 'We help nonprofits develop the internal skills, data practices and governance needed to manage AI tools responsibly.',
         p2: 'This includes staff training, data management frameworks and documentation that enable teams to maintain and adapt systems independently.',
+        image: '/src/assets/images/how-we-work-page/transfer.png',
+        imageAlt: 'Internal staff capability building and sustainable data governance',
       },
     ],
     ctaText: 'For philanthropy',
@@ -124,6 +142,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Portfolio AI strategy and landscape assessment',
         p1: 'We help funders understand the AI landscape within their focus areas, identifying high-potential opportunities, common barriers and ecosystem gaps.',
         p2: 'We support the development of investment theses, grantmaking criteria and portfolio-level theories of change that guide responsible and impactful funding.',
+        image: '/src/assets/images/purpose-direction/philanthropy.png',
+        imageAlt: 'Philanthropic portfolio AI landscape assessment and strategy',
       },
       {
         num: '02',
@@ -131,6 +151,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Grantee support and shared infrastructure',
         p1: 'We provide technical and strategic support to grantee organisations, helping them design, implement and evaluate AI initiatives.',
         p2: 'Where appropriate, we help develop shared data assets, open-source tools and common standards that benefit multiple organisations across a portfolio or sector.',
+        image: '/src/assets/images/capabilities/insight-ai.jpg',
+        imageAlt: 'Grantee technical assistance and shared social sector infrastructure',
       },
       {
         num: '03',
@@ -138,6 +160,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Independent evaluation and portfolio learning',
         p1: 'We evaluate the performance, adoption and impact of AI investments across grantee portfolios. Our evaluations are structurally independent, providing funders and grantees with objective evidence on what is working, what needs adjustment and what is ready for scale.',
         p2: 'We synthesize lessons across investments to inform future grantmaking.',
+        image: '/src/assets/images/how-we-work-page/evaluation.png',
+        imageAlt: 'Independent evaluation and synthesis across social investment portfolios',
       },
       {
         num: '04',
@@ -145,6 +169,8 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Responsible AI frameworks and governance',
         p1: 'We help funders establish clear principles, assessment frameworks and governance standards for AI funding. This includes guidance on data ethics, algorithmic fairness, intellectual property and long-term sustainability.',
         p2: 'We support funders in setting expectations that protect public trust and promote equitable outcomes.',
+        image: '/src/assets/images/built-for-gov/public-trust.png',
+        imageAlt: 'Responsible AI frameworks, data ethics, and algorithmic governance',
       },
     ],
     ctaText: 'For government',

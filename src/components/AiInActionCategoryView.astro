@@ -4,8 +4,7 @@ import { caseStudyCategories, type CaseStudyCategory } from '../data/caseStudies
 import CaseStudyDossier from './CaseStudyDossier.astro';
 import CaseStudyConversationCTA from './CaseStudyConversationCTA.astro';
 import AtmosphericCanvas from './AtmosphericCanvas.astro';
-import GoldWaveform from './GoldWaveform.astro';
-import GradientVideo from './GradientVideo.astro';
+import HeroVideo from './HeroVideo.astro';
 
 interface Props {
   initialCategory: string;
@@ -22,6 +21,15 @@ const categoriesList: CaseStudyCategory[] = [
   caseStudyCategories['monitoring-evaluation-responsible-ai'],
 ];
 
+const categoryVideos = [
+  { id: 'education', src: '/video/hero-children-village.webm', storyTag: 'Education · Youth Empowerment & Learning' },
+  { id: 'agriculture', src: '/video/hero/3.mp4', storyTag: 'Agriculture · Smallholder Climate Resilience' },
+  { id: 'msmes', src: '/video/hero-community-6981412.mp4', storyTag: 'MSMEs · Local Enterprise & Digital Commerce' },
+  { id: 'utilities', src: '/video/hero/5.mp4', storyTag: 'Utilities · Clean Water & Energy Grids' },
+  { id: 'public-services-government', src: '/video/hero/1.mp4', storyTag: 'Public Services · Civic Administration & Safety Nets' },
+  { id: 'monitoring-evaluation-responsible-ai', src: '/video/hero-fieldwork-3195394.mp4', storyTag: 'Responsible AI · Algorithmic Assurance & Ethics' },
+];
+
 const buttonItems = [
   { id: 'education', label: 'Education', href: '/ai-in-action/education' },
   { id: 'agriculture', label: 'Agriculture', href: '/ai-in-action/agriculture' },
@@ -34,14 +42,9 @@ const buttonItems = [
 
 <div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="bg-institutional-grid text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden">
-    {/* Animated Fluid Gradient Video Background */}
-    <GradientVideo variant="blue" overlayOpacity={0.62} />
-    {/* Ambient Molestone Gold Particle Waveform */}
-    <GoldWaveform alpha="1.4" />
-
-    <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+  <section class="bg-navy text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden">
+    {/* Dynamic Thematic Cinematic Stock Video Background */}
+    <HeroVideo videos={categoryVideos} activeId={initialCategory} overlayOpacity={0.65} />
 
     <div class="container-x relative z-10">
       {/* Category Dynamic Hero Headers */}
@@ -155,8 +158,32 @@ const buttonItems = [
     const buttons = root.querySelectorAll<HTMLButtonElement>('[data-category-btn]');
     const heroBlocks = root.querySelectorAll<HTMLElement>('[data-ai-hero]');
     const bodyBlocks = root.querySelectorAll<HTMLElement>('[data-ai-body]');
+    const bgVideos = root.querySelectorAll<HTMLVideoElement>('[data-hero-bg-video]');
+
+    const categoryTagMap: Record<string, string> = {
+      education: 'Education · Youth Empowerment & Learning',
+      agriculture: 'Agriculture · Smallholder Climate Resilience',
+      msmes: 'MSMEs · Local Enterprise & Digital Commerce',
+      utilities: 'Utilities · Clean Water & Energy Grids',
+      'public-services-government': 'Public Services · Civic Administration & Safety Nets',
+      'monitoring-evaluation-responsible-ai': 'Responsible AI · Algorithmic Assurance & Ethics',
+    };
 
     function switchCategory(targetId: string, updateHistory = true) {
+      // 0. Update background video & story tag
+      bgVideos.forEach((vid) => {
+        const matches = vid.getAttribute('data-hero-bg-video') === targetId;
+        vid.classList.toggle('opacity-100', matches);
+        vid.classList.toggle('is-active', matches);
+        vid.classList.toggle('opacity-0', !matches);
+        vid.classList.toggle('pointer-events-none', !matches);
+      });
+
+      const storyTagEl = root.querySelector('[data-hero-story-tag]');
+      if (storyTagEl && categoryTagMap[targetId]) {
+        storyTagEl.textContent = categoryTagMap[targetId];
+      }
+
       // 1. Update buttons
       buttons.forEach((btn) => {
         const isActive = btn.getAttribute('data-category-btn') === targetId;
