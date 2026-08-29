@@ -64,14 +64,6 @@ const currentActiveItem = videoList.find((v) => v.id === currentActiveId) || vid
   {/* Ambient Golden & Azure Atmospheric Glows */}
   <div class="pointer-events-none absolute -right-24 top-10 h-[36rem] w-[36rem] rounded-full bg-gold/15 blur-[130px]"></div>
   <div class="pointer-events-none absolute -left-28 bottom-0 h-80 w-80 rounded-full bg-navy/60 blur-[100px]"></div>
-
-  {/* Emotional Storyline Footnote Tag (Desktop only) */}
-  {showBadge && (
-    <div class="hero-story-badge hidden lg:flex items-center gap-2 absolute bottom-6 right-8 z-10 px-3.5 py-1.5 rounded-pill bg-white/10 backdrop-blur-md border border-white/15 text-[11px] font-medium tracking-wider text-pale-navy/90 uppercase">
-      <span class="h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
-      <span data-hero-story-tag>{currentActiveItem.storyTag || storyTag}</span>
-    </div>
-  )}
 </div>
 
 <style>

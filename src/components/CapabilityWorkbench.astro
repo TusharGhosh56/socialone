@@ -4,7 +4,7 @@ import type { CapabilityItem } from '../data/capabilities';
 import bulbOffImg from '../assets/images/services/lightbulb.png';
 import bulbOnImg from '../assets/images/services/lightbulb (1).png';
 
-// Sector-specific curated stock image assets with embedded visual treatment
+// Sector-specific curated stock image assets
 import gov01 from '../assets/images/capabilities/work-governance.jpg';
 import gov02 from '../assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png';
 import gov03 from '../assets/images/capabilities/hero-fieldwork.jpg';
@@ -36,189 +36,140 @@ const capabilityImages: Record<string, any[]> = {
 const currentImages = capabilityImages[sectorId] || capabilityImages.government;
 ---
 
-<div class="capability-file-stack w-full py-4 pb-16 select-none" data-file-stack data-sector-id={sectorId}>
-  
-  {/* Sticky File Navigation Pills (Always accessible on scroll & click) */}
-  <div class="sticky-nav-wrap sticky top-20 sm:top-24 z-40 mb-10 py-3 backdrop-blur-xl bg-white/85 rounded-2xl border border-hair/90 shadow-sm px-4 sm:px-6">
-    <div class="flex items-center justify-between gap-3 flex-wrap">
-      <div class="flex items-center gap-2">
-        <span class="h-2 w-2 rounded-full bg-gold animate-pulse"></span>
-        <span class="text-xs font-bold uppercase tracking-widest text-navy">
-          Select Capability:
-        </span>
-      </div>
-
-      <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" role="tablist" aria-label="Capability Selection">
-        {capabilities.map((cap, idx) => (
-          <button
-            type="button"
-            role="tab"
-            aria-selected={idx === 0 ? 'true' : 'false'}
-            aria-controls={`capability-card-${sectorId}-${idx}`}
-            data-stack-tab-btn={idx}
-            class={`stack-tab-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 shrink-0 border cursor-pointer ${
-              idx === 0
-                ? 'bg-navy text-white shadow-md border-navy is-active'
-                : 'bg-white/90 text-navy hover:bg-pale-navy border-hair'
-            }`}
-          >
-            <span class="tab-num font-mono text-[11px] opacity-75">{cap.num}</span>
-            <span class="tab-title truncate max-w-[120px] sm:max-w-[180px]">{cap.title}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  </div>
-
-  {/* Progressive Sticky Scroll Track & Clickable Physical Stack */}
-  <div class="stack-deck-track relative">
+<div class="kinetic-horizon-studio w-full py-4 pb-12 select-none" data-kinetic-studio data-sector-id={sectorId}>
+  {/* Panoramic Horizon Shutter Deck */}
+  <div class="horizon-deck flex flex-col lg:flex-row gap-3.5 h-auto lg:h-[620px] w-full" role="tablist" aria-label="Capabilities Horizon">
     {capabilities.map((cap, idx) => {
       const cardImg = currentImages[idx] || gov01;
-      const initialIsActive = idx === 0;
-      const stickyTopOffset = 130 + idx * 36; // Progressive cascade offset
+      const isInit = idx === 0;
 
       return (
         <div
-          class="stack-step-wrapper relative sticky transition-all duration-300 mb-32 sm:mb-48 last:mb-12"
-          style={`top: ${stickyTopOffset}px; z-index: ${idx + 10};`}
-          data-stack-step={idx}
+          id={`horizon-panel-${sectorId}-${idx}`}
+          role="tabpanel"
+          data-horizon-panel={idx}
+          tabindex="0"
+          class={`horizon-panel relative rounded-3xl overflow-hidden border transition-all duration-700 ease-[cubic-bezier(0.25,1,0.3,1)] cursor-pointer group flex flex-col justify-between ${
+            isInit
+              ? 'is-expanded border-gold/70 shadow-2xl ring-1 ring-gold/30'
+              : 'is-collapsed border-hair hover:border-gold/40 shadow-md'
+          }`}
         >
-          <article
-            id={`capability-card-${sectorId}-${idx}`}
-            role="tabpanel"
-            data-file-card={idx}
-            data-card-index={idx}
-            tabindex="0"
-            class={`file-stack-card file-card-${idx} relative rounded-3xl border bg-white/98 backdrop-blur-2xl shadow-xl transition-all duration-500 cursor-pointer overflow-hidden group ${
-              initialIsActive
-                ? 'is-active is-powered border-gold/40 shadow-2xl'
-                : 'border-hair/90 hover:border-gold/40 hover:shadow-2xl'
-            }`}
-            aria-label={`${cap.num} - ${cap.title}`}
-          >
-            {/* File Folder Top Tab / Header Strip */}
-            <div class="card-tab-handle flex items-center justify-between px-6 sm:px-10 py-3.5 bg-pale-navy/40 border-b border-hair/60 transition-colors group-hover:bg-pale-navy/70">
-              <div class="flex items-center gap-3">
-                <span class="file-tag inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-white border border-hair text-[11px] font-mono font-bold text-navy shadow-2xs">
-                  <span>FILE {cap.num}</span>
-                </span>
-                <span class="file-tab-title text-xs sm:text-sm font-semibold text-navy tracking-tight truncate">
+          {/* Background Full-Bleed Photograph */}
+          <div class="panel-bg-image-wrap absolute inset-0 overflow-hidden pointer-events-none">
+            <Image
+              src={cardImg}
+              alt={cap.title}
+              class="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              widths={[640, 1024, 1440]}
+              sizes="(min-width: 1024px) 60vw, 100vw"
+            />
+            {/* Dynamic Multi-Layer Cinematic Scrim */}
+            <div class="panel-scrim-dark absolute inset-0 bg-navy/80 transition-opacity duration-500"></div>
+            <div class="panel-scrim-expanded absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/70 via-55% to-transparent transition-opacity duration-500"></div>
+          </div>
+
+          {/* ==================== COLLAPSED VIEW (Vertical Ribbon Spine on Desktop) ==================== */}
+          <div class="collapsed-content relative z-10 p-5 sm:p-6 flex flex-row lg:flex-col justify-between items-center h-full w-full pointer-events-none">
+            {/* Top Indicator */}
+            <div class="flex flex-row lg:flex-col items-center gap-3">
+              <div class="collapsed-bulb-wrap flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-gold transition-transform duration-300 group-hover:scale-110">
+                <Image
+                  src={bulbOffImg}
+                  alt=""
+                  width={18}
+                  height={18}
+                  class="h-4.5 w-4.5 object-contain opacity-75"
+                />
+              </div>
+            </div>
+
+            {/* Rotated Vertical Title on Desktop */}
+            <div class="hidden lg:flex flex-1 items-center justify-center my-8">
+              <span class="vertical-title text-sm font-bold text-white/90 tracking-wider uppercase whitespace-nowrap transform -rotate-90 origin-center transition-colors group-hover:text-gold">
+                {cap.title}
+              </span>
+            </div>
+
+            {/* Mobile Fallback Title */}
+            <div class="lg:hidden flex-1 px-4">
+              <span class="text-sm font-bold text-white leading-tight block">
+                {cap.title}
+              </span>
+            </div>
+
+            {/* Bottom Status Dot */}
+            <div class="flex items-center justify-center">
+              <span class="h-2 w-2 rounded-full bg-gold/60 transition-transform duration-300 group-hover:scale-150"></span>
+            </div>
+          </div>
+
+          {/* ==================== EXPANDED VIEW (Rich Architectural Blueprint - Bottom Grouped) ==================== */}
+          <div class="expanded-content relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col justify-end gap-5 sm:gap-6 h-full w-full pointer-events-none overflow-y-auto scrollbar-none">
+            
+            {/* Header: Power Bulb + Display Title inline */}
+            <div class="space-y-3">
+              <div class="flex items-center gap-3.5 sm:gap-4">
+                <div class="expanded-bulb-wrap relative flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-pale-gold border border-gold/60 shadow-lg overflow-hidden">
+                  <Image
+                    src={bulbOnImg}
+                    alt=""
+                    width={24}
+                    height={24}
+                    class="h-6 w-6 sm:h-6.5 sm:w-6.5 object-contain"
+                  />
+                </div>
+
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight max-w-2xl">
                   {cap.title}
-                </span>
+                </h3>
               </div>
 
-              <div class="flex items-center gap-2">
-                <span class="file-action-hint text-[11px] font-medium text-mid-navy/70 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
-                  Click to focus & read file
-                </span>
-                <span class="card-status-dot h-2 w-2 rounded-full bg-gold/60 transition-transform duration-300 group-hover:scale-125"></span>
+              <p class="text-sm sm:text-base lg:text-lg text-pale-navy/95 font-normal leading-relaxed max-w-3xl">
+                {cap.p1}
+              </p>
+            </div>
+
+            {/* Bottom Blueprint: Execution Card & Verification Badges */}
+            <div class="space-y-3.5 pt-4 border-t border-white/15">
+              {/* Technical Execution Container */}
+              <div class="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 sm:p-5 space-y-2 shadow-lg">
+                <div class="flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-gold">
+                    Implementation & Technical Execution
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-white/90 font-normal leading-relaxed">
+                  {cap.p2}
+                </p>
+              </div>
+
+              {/* Proof Verification Highlights */}
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div class="flex items-center gap-2.5 p-2.5 px-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xs">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gold text-navy font-bold text-[11px]">
+                    ✓
+                  </span>
+                  <span class="text-xs font-semibold text-white/90 leading-snug">
+                    Production & Institutional Rigour
+                  </span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 px-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xs">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gold text-navy font-bold text-[11px]">
+                    ✓
+                  </span>
+                  <span class="text-xs font-semibold text-white/90 leading-snug">
+                    Durable Knowledge Handover
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Main Card Content Body */}
-            <div class="p-6 sm:p-10 lg:p-12">
-              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                
-                {/* Left Column: Title, Overview Narrative & Embedded Imagery */}
-                <div class="lg:col-span-5 space-y-6">
-                  <div class="flex items-start gap-4">
-                    {/* Dynamic Light Bulb Power Indicator */}
-                    <div class="capability-bulb-wrap relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pale-navy/40 border border-hair transition-all duration-400 mt-1 overflow-hidden shadow-xs">
-                      <Image
-                        src={bulbOffImg}
-                        alt="Capability indicator"
-                        width={24}
-                        height={24}
-                        class="capability-bulb-img bulb-off absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                      />
-                      <Image
-                        src={bulbOnImg}
-                        alt="Active capability indicator"
-                        width={24}
-                        height={24}
-                        class="capability-bulb-img bulb-on absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                      />
-                    </div>
+          </div>
 
-                    <div>
-                      <span class="text-[11px] font-bold uppercase tracking-widest text-gold block mb-1">
-                        Capability {cap.num}
-                      </span>
-                      <h3 class="capability-heading text-2xl sm:text-3xl font-bold text-navy leading-tight tracking-tight">
-                        {cap.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
-                    {cap.p1}
-                  </p>
-
-                  {/* Embedded Stock Imagery Treatment */}
-                  <div class="card-embedded-image-container relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-hair/90 shadow-md bg-navy/5 group/img transition-all duration-500">
-                    <Image
-                      src={cardImg}
-                      alt={cap.title}
-                      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
-                      widths={[360, 640]}
-                      sizes="(min-width: 1024px) 35vw, 100vw"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/10 to-transparent pointer-events-none"></div>
-                    <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
-                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-navy/75 backdrop-blur-md border border-white/20 text-[10px] font-semibold uppercase tracking-wider text-white">
-                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                        Applied In Field
-                      </span>
-                      <span class="text-[11px] font-medium text-white/90 drop-shadow-sm font-mono">
-                        APLYD // {sectorId.toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Column: Implementation Detail Container */}
-                <div class="lg:col-span-7 space-y-6">
-                  <div class="rounded-2xl border border-hair bg-paper/65 p-6 sm:p-8 lg:p-9 shadow-xs space-y-5">
-                    <div class="flex items-center justify-between border-b border-hair/60 pb-3">
-                      <span class="text-xs font-bold uppercase tracking-wider text-navy flex items-center gap-2">
-                        <span class="h-1.5 w-1.5 rounded-full bg-navy"></span>
-                        Implementation & Technical Execution
-                      </span>
-                      <span class="text-xs font-semibold text-deep-gold font-mono">
-                        PHASE // {cap.num}
-                      </span>
-                    </div>
-
-                    <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
-                      {cap.p2}
-                    </p>
-                  </div>
-
-                  {/* Quick Capability Delivery Highlights */}
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <div class="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-hair/80 shadow-2xs">
-                      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-pale-gold text-deep-gold font-bold text-xs">
-                        ✓
-                      </span>
-                      <span class="text-xs font-semibold text-navy leading-snug">
-                        Production & Institutional Rigour
-                      </span>
-                    </div>
-                    <div class="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-hair/80 shadow-2xs">
-                      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-pale-gold text-deep-gold font-bold text-xs">
-                        ✓
-                      </span>
-                      <span class="text-xs font-semibold text-navy leading-snug">
-                        Durable Knowledge Handover
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </article>
+          {/* Active Bottom Glow Line */}
+          <div class="panel-glow-bar absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 transition-opacity duration-500"></div>
         </div>
       );
     })}
@@ -226,208 +177,160 @@ const currentImages = capabilityImages[sectorId] || capabilityImages.government;
 </div>
 
 <style>
-  .stack-step-wrapper {
-    will-change: transform;
+  /* ==================== DESKTOP PANORAMIC HORIZON STYLES ==================== */
+  @media (min-width: 1024px) {
+    .horizon-panel.is-collapsed {
+      flex: 1 1 0%;
+      min-width: 80px;
+    }
+    .horizon-panel.is-collapsed .collapsed-content {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease 0.2s;
+    }
+    .horizon-panel.is-collapsed .expanded-content {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-dark {
+      opacity: 0.82;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-expanded {
+      opacity: 0;
+    }
+
+    .horizon-panel.is-expanded {
+      flex: 4.8 1 0%;
+    }
+    .horizon-panel.is-expanded .collapsed-content {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .horizon-panel.is-expanded .expanded-content {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
+    }
+    .horizon-panel.is-expanded .panel-scrim-dark {
+      opacity: 0;
+    }
+    .horizon-panel.is-expanded .panel-scrim-expanded {
+      opacity: 1;
+    }
+    .horizon-panel.is-expanded .panel-glow-bar {
+      opacity: 1;
+    }
   }
 
-  .file-stack-card {
-    will-change: transform, box-shadow, filter;
-    transform-origin: top center;
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.35s ease,
-                border-color 0.35s ease,
-                filter 0.35s ease;
-  }
+  /* ==================== MOBILE / TABLET ACCORDION STYLES ==================== */
+  @media (max-width: 1023px) {
+    .horizon-panel {
+      min-height: 80px;
+    }
+    .horizon-panel.is-collapsed {
+      height: 80px;
+    }
+    .horizon-panel.is-collapsed .collapsed-content {
+      display: flex;
+    }
+    .horizon-panel.is-collapsed .expanded-content {
+      display: none;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-dark {
+      opacity: 0.75;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-expanded {
+      opacity: 0;
+    }
 
-  /* Hover Lift state for interactive tactile feel */
-  .file-stack-card:hover {
-    transform: translateY(-12px) scale(1.006) !important;
-    box-shadow: 0 24px 50px -12px rgba(18, 23, 59, 0.22), 0 0 0 1px rgba(209, 156, 51, 0.4) !important;
-  }
-
-  /* Light bulb idle state: shows unlit line bulb */
-  .capability-bulb-wrap {
-    background-color: rgba(26, 33, 80, 0.03);
-    border-color: rgba(26, 33, 80, 0.08);
-  }
-  .bulb-off {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  .bulb-on {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-
-  /* Powered state: glowing lit bulb */
-  :global(.file-stack-card.is-powered) .capability-bulb-wrap {
-    background-color: rgba(245, 233, 209, 0.95) !important;
-    border-color: rgba(209, 156, 51, 0.75) !important;
-    box-shadow: 0 0 16px rgba(209, 156, 51, 0.35) !important;
-    transform: scale(1.05);
-  }
-  :global(.file-stack-card.is-powered) .bulb-off {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  :global(.file-stack-card.is-powered) .bulb-on {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .stack-step-wrapper {
-      position: static !important;
-      top: auto !important;
-      transform: none !important;
-      margin-bottom: 2.5rem !important;
+    .horizon-panel.is-expanded {
+      min-height: 520px;
+    }
+    .horizon-panel.is-expanded .collapsed-content {
+      display: none;
+    }
+    .horizon-panel.is-expanded .expanded-content {
+      display: flex;
+    }
+    .horizon-panel.is-expanded .panel-scrim-dark {
+      opacity: 0;
+    }
+    .horizon-panel.is-expanded .panel-scrim-expanded {
+      opacity: 1;
     }
   }
 </style>
 
 <script>
-  function initCapabilityHybridDeck() {
-    const decks = document.querySelectorAll<HTMLElement>('[data-file-stack]');
-    if (!decks.length) return;
+  function initKineticHorizonStudio() {
+    const studios = document.querySelectorAll<HTMLElement>('[data-kinetic-studio]');
+    if (!studios.length) return;
 
-    decks.forEach((deck) => {
-      const stepWrappers = deck.querySelectorAll<HTMLElement>('[data-stack-step]');
-      const cards = deck.querySelectorAll<HTMLElement>('[data-file-card]');
-      const tabs = deck.querySelectorAll<HTMLElement>('[data-stack-tab-btn]');
-      const total = cards.length;
-      if (!total) return;
+    studios.forEach((studio) => {
+      const panels = Array.from(studio.querySelectorAll<HTMLElement>('[data-horizon-panel]'));
+      if (!panels.length) return;
 
-      let currentActiveIdx = 0;
-      let isProgrammaticScroll = false;
+      let currentExpandedIdx = 0;
 
-      // Function to highlight a card and tab
-      function setActiveCard(index: number) {
-        currentActiveIdx = index;
+      function expandPanel(index: number) {
+        if (index === currentExpandedIdx) return;
+        currentExpandedIdx = index;
 
-        // Update pills
-        tabs.forEach((tab, i) => {
-          const isAct = i === index;
-          tab.classList.toggle('is-active', isAct);
-          tab.classList.toggle('bg-navy', isAct);
-          tab.classList.toggle('text-white', isAct);
-          tab.classList.toggle('shadow-md', isAct);
-          tab.classList.toggle('border-navy', isAct);
-          tab.classList.toggle('bg-white/90', !isAct);
-          tab.classList.toggle('text-navy', !isAct);
-          tab.classList.toggle('border-hair', !isAct);
-          tab.setAttribute('aria-selected', isAct ? 'true' : 'false');
-        });
+        panels.forEach((panel, i) => {
+          const isTarget = i === index;
+          panel.classList.toggle('is-expanded', isTarget);
+          panel.classList.toggle('border-gold/70', isTarget);
+          panel.classList.toggle('shadow-2xl', isTarget);
+          panel.classList.toggle('ring-1', isTarget);
+          panel.classList.toggle('ring-gold/30', isTarget);
 
-        // Update card visual states
-        cards.forEach((card, i) => {
-          const isAct = i === index;
-          card.classList.toggle('is-active', isAct);
-          card.classList.toggle('is-powered', isAct);
-          if (isAct) {
-            card.style.borderColor = 'rgba(209, 156, 51, 0.5)';
-            card.style.boxShadow = '0 25px 60px -15px rgba(18, 23, 59, 0.2), 0 0 0 1px rgba(209, 156, 51, 0.35)';
-          } else {
-            card.style.borderColor = 'rgba(74, 83, 138, 0.2)';
-            card.style.boxShadow = '';
-          }
+          panel.classList.toggle('is-collapsed', !isTarget);
+          panel.classList.toggle('border-hair', !isTarget);
+          panel.classList.toggle('shadow-md', !isTarget);
+          panel.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
         });
       }
 
-      // Scroll-driven stacking and active detection
-      function onScroll() {
-        if (isProgrammaticScroll) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      panels.forEach((panel, idx) => {
+        // Expand on click / hover
+        panel.addEventListener('click', () => {
+          expandPanel(idx);
+        });
 
-        let activeByScroll = 0;
-        const viewportMiddle = window.innerHeight * 0.45;
-
-        stepWrappers.forEach((wrapper, idx) => {
-          const rect = wrapper.getBoundingClientRect();
-          const targetTop = 130 + idx * 36;
-
-          // If the card has scrolled near or above its sticky point
-          if (rect.top <= targetTop + 100) {
-            activeByScroll = idx;
-          }
-
-          // Progressive scale and shadow depth as subsequent cards cover it
-          if (idx < total - 1) {
-            const nextWrapper = stepWrappers[idx + 1];
-            if (nextWrapper) {
-              const nextRect = nextWrapper.getBoundingClientRect();
-              const nextTargetTop = 130 + (idx + 1) * 36;
-              const card = wrapper.querySelector<HTMLElement>('.file-stack-card');
-
-              if (nextRect.top <= nextTargetTop + 120 && card) {
-                const progress = Math.max(0, Math.min(1, (nextTargetTop + 120 - nextRect.top) / 120));
-                const scale = 1 - progress * 0.035;
-                const brightness = 1 - progress * 0.05;
-                card.style.transform = `scale(${scale})`;
-                card.style.filter = `brightness(${brightness})`;
-              } else if (card) {
-                card.style.transform = 'scale(1)';
-                card.style.filter = 'brightness(1)';
-              }
-            }
+        panel.addEventListener('mouseenter', () => {
+          if (window.innerWidth >= 1024) {
+            expandPanel(idx);
           }
         });
 
-        if (activeByScroll !== currentActiveIdx) {
-          setActiveCard(activeByScroll);
-        }
-      }
-
-      // Manual selection: scroll into view and activate card
-      function selectCard(index: number) {
-        setActiveCard(index);
-        const targetWrapper = stepWrappers[index];
-        if (!targetWrapper) return;
-
-        isProgrammaticScroll = true;
-        const targetTopOffset = 130 + index * 36;
-        const wrapperRect = targetWrapper.getBoundingClientRect();
-        const absoluteTop = window.scrollY + wrapperRect.top - targetTopOffset;
-
-        window.scrollTo({
-          top: absoluteTop,
-          behavior: 'smooth',
-        });
-
-        setTimeout(() => {
-          isProgrammaticScroll = false;
-        }, 600);
-      }
-
-      // Click on top tab pills
-      tabs.forEach((tab, idx) => {
-        tab.addEventListener('click', () => {
-          selectCard(idx);
-        });
-      });
-
-      // Click on cards themselves
-      cards.forEach((card, idx) => {
-        card.addEventListener('click', () => {
-          selectCard(idx);
-        });
-
-        card.addEventListener('keydown', (e) => {
+        // Keyboard Accessibility
+        panel.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            selectCard(idx);
+            expandPanel(idx);
+          } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = (idx + 1) % panels.length;
+            panels[next]?.focus();
+            expandPanel(next);
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = (idx - 1 + panels.length) % panels.length;
+            panels[prev]?.focus();
+            expandPanel(prev);
           }
         });
       });
-
-      // Listen for scroll
-      window.addEventListener('scroll', onScroll, { passive: true });
-      
-      // Initial state
-      setActiveCard(0);
-      onScroll();
     });
   }
 
-  initCapabilityHybridDeck();
-  document.addEventListener('astro:page-load', initCapabilityHybridDeck);
+  initKineticHorizonStudio();
+  document.addEventListener('astro:page-load', initKineticHorizonStudio);
 </script>

@@ -23,11 +23,11 @@ const categoriesList: CaseStudyCategory[] = [
 
 const categoryVideos = [
   { id: 'education', src: '/video/hero-children-village.webm', storyTag: 'Education · Youth Empowerment & Learning' },
-  { id: 'agriculture', src: '/video/hero/3.mp4', storyTag: 'Agriculture · Smallholder Climate Resilience' },
-  { id: 'msmes', src: '/video/hero-community-6981412.mp4', storyTag: 'MSMEs · Local Enterprise & Digital Commerce' },
-  { id: 'utilities', src: '/video/hero/5.mp4', storyTag: 'Utilities · Clean Water & Energy Grids' },
-  { id: 'public-services-government', src: '/video/hero/1.mp4', storyTag: 'Public Services · Civic Administration & Safety Nets' },
-  { id: 'monitoring-evaluation-responsible-ai', src: '/video/hero-fieldwork-3195394.mp4', storyTag: 'Responsible AI · Algorithmic Assurance & Ethics' },
+  { id: 'agriculture', src: '/video/agriculture.mp4', storyTag: 'Agriculture · Smallholder Climate Resilience' },
+  { id: 'msmes', src: '/video/MSME.mp4', storyTag: 'MSMEs · Local Enterprise & Digital Commerce' },
+  { id: 'utilities', src: '/video/utilities.mp4', storyTag: 'Utilities · Clean Water & Energy Grids' },
+  { id: 'public-services-government', src: '/video/service.mp4', storyTag: 'Public Services · Civic Administration & Safety Nets' },
+  { id: 'monitoring-evaluation-responsible-ai', src: '/video/monitoring.mp4', storyTag: 'Responsible AI · Algorithmic Assurance & Ethics' },
 ];
 
 const buttonItems = [
@@ -42,7 +42,7 @@ const buttonItems = [
 
 <div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="bg-navy text-white py-14 sm:py-20 lg:py-24 relative overflow-hidden">
+  <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
     {/* Dynamic Thematic Cinematic Stock Video Background */}
     <HeroVideo videos={categoryVideos} activeId={initialCategory} overlayOpacity={0.65} />
 
@@ -56,16 +56,16 @@ const buttonItems = [
             class={`ai-hero-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
             data-ai-hero={cat.id}
           >
-            <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-              <span class="h-2 w-2 rounded-full bg-gold"></span>
+            <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
               AI in Action · {cat.navLabel}
             </div>
 
-            <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+            <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
               {cat.title}
             </h1>
 
-            <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+            <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
               {cat.lead}
             </p>
           </div>
@@ -73,7 +73,7 @@ const buttonItems = [
       })}
 
       {/* In-Place Interactive Category Switcher */}
-      <div class="mt-10 max-w-4xl">
+      <div class="mt-8 max-w-4xl">
         <nav aria-label="AI in Action Categories" class="w-full">
           <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 p-1.5 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-md">
             {buttonItems.map((item) => {
