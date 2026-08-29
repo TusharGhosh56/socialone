@@ -1,0 +1,72 @@
+---
+import Base from '../../layouts/Base.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import Button from '../../components/Button.astro';
+---
+
+<Base
+  title="Our Partners | Global Institutional Collaborations | APLYD"
+  description="APLYD collaborates with multilateral institutions, sovereign governments, philanthropic foundations, and frontline organizations worldwide."
+  keywords="APLYD Partners, Institutional Collaborations, Athena Infonomics Alliances, Global Development Partners, GovTech Ecosystem"
+>
+  <div class="pt-20 sm:pt-24 lg:pt-28">
+    {/* ============================ HERO ============================ */}
+    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video Background */}
+      <HeroVideo
+        src="/video/hero/6.mp4"
+        overlayOpacity={0.65}
+      />
+
+      <div class="container-x relative z-10">
+        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+          About APLYD · Our Partners
+        </div>
+
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+          Collaborating with global institutions and governments
+        </h1>
+
+        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+          We partner with multilateral institutions, sovereign governments, philanthropic foundations, and frontline practitioners to embed durable AI capabilities within real operating systems.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      <section class="relative z-10 py-12 sm:py-16">
+        <div class="container-x space-y-12">
+          
+          {/* Clean Partner Ecosystem Placeholder Frame */}
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-10 sm:p-14 lg:p-16 relative overflow-hidden shadow-md text-center space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-navy border border-hair">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+              <span>Institutional Ecosystem</span>
+            </div>
+
+            <h2 class="text-3xl sm:text-4xl font-light text-navy tracking-tight max-w-2xl mx-auto">
+              Our partner network is currently being updated
+            </h2>
+
+            <p class="text-mid-navy text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+              We work alongside leading public institutions, funders, and research organizations across 15+ countries. Detailed profiles and case collaborations will be published here soon.
+            </p>
+
+            <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+              <Button href="/contact" variant="primary">
+                Explore Partnership Opportunities
+              </Button>
+              <Button href="/about/16-years-of-proof" variant="ghost">
+                View 16 Years of Proof
+              </Button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </AtmosphericCanvas>
+  </div>
+</Base>

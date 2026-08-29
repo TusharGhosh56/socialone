@@ -164,15 +164,6 @@ const stages: Stage[] = [
               />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/10 to-transparent pointer-events-none"></div>
               <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
-              <div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between pointer-events-none">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-pill bg-navy/80 backdrop-blur-md border border-white/20 text-[10px] font-semibold uppercase tracking-wider text-white">
-                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                  {stage.phase} In Practice
-                </span>
-                <span class="text-[11px] font-medium text-white/90 drop-shadow-sm font-mono">
-                  STAGE // 0{idx + 1}
-                </span>
-              </div>
             </div>
 
             {/* Strategic Focus Callout */}
@@ -204,9 +195,6 @@ const stages: Stage[] = [
                 <div class="text-xs font-bold uppercase tracking-widest text-gold">
                   Delivery Architecture
                 </div>
-                <div class="text-[11px] font-mono uppercase text-pale-navy/70">
-                  {stage.phase} Flow
-                </div>
               </div>
 
               {/* Connected Stage Nodes */}
@@ -226,11 +214,6 @@ const stages: Stage[] = [
                     <div class="min-w-0 flex-1">
                       <div class="text-sm font-bold text-white flex items-center justify-between">
                         <span>{node.label}</span>
-                        {node.type === 'gate' && (
-                          <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-gold/20 text-gold border border-gold/30">
-                            Decision Gate
-                          </span>
-                        )}
                       </div>
                       <div class="text-xs text-pale-navy/70 mt-0.5">
                         {node.sub}

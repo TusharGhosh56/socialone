@@ -173,7 +173,7 @@ function sectionTop(selector: string): number | null {
 // own content-edge-aligned dots, not a rail. Wherever the route needs to
 // move from one rail to another, that transition is an explicit hidden
 // waypoint pair here (not left to toOrthogonal's default corner placement),
-// so the turn happens exactly where intended rather than wherever the next
+// so the turn happens exactly where intended rather than wherever the next 
 // ============================================================================
 // BESPOKE SUBPAGE MILESTONE GENERATORS
 // ============================================================================
@@ -196,7 +196,7 @@ function pushCtaConnection(list: Milestone[], ctaOrGetter: HTMLElement | null | 
     },
   });
 
-  // 2) 90-degree jog entering straight through the card border into the interior
+  // 2) 90-degree jog entering straight through the card border into the interior x
   list.push({
     key: `${prefix}-cta-port`,
     dot: true,
@@ -816,18 +816,26 @@ function buildCapabilitiesOverviewMilestones(): Milestone[] {
   return list;
 }
 
-function getVisibleCapabilityCards(): HTMLElement[] {
-  const visibleBody = document.querySelector<HTMLElement>('.sector-body-block:not(.hidden)');
-  if (visibleBody) {
-    return Array.from(visibleBody.querySelectorAll<HTMLElement>('.capability-card'));
+function getVisibleSectorHeroH1(): HTMLElement | null {
+  const activeHero = document.querySelector<HTMLElement>('.sector-hero-block:not(.hidden) h1, .sector-hero-block:not([style*="display: none"]) h1');
+  if (activeHero && activeHero.getBoundingClientRect().height > 0) {
+    return activeHero;
   }
-  return Array.from(document.querySelectorAll<HTMLElement>('.capability-card')).filter(
-    (c) => c.offsetParent !== null && c.getBoundingClientRect().height > 0
-  );
+  const allH1s = Array.from(document.querySelectorAll<HTMLElement>('main h1'));
+  return allH1s.find((h) => h.getBoundingClientRect().height > 0) || allH1s[0] || null;
+}
+
+function getVisibleHorizonDeck(): HTMLElement | null {
+  const visibleBody = document.querySelector<HTMLElement>('.sector-body-block:not(.hidden), .sector-body-block:not([style*="display: none"])');
+  if (visibleBody) {
+    const deck = visibleBody.querySelector<HTMLElement>('.horizon-deck, .kinetic-horizon-studio');
+    if (deck) return deck;
+  }
+  return document.querySelector<HTMLElement>('.horizon-deck, .kinetic-horizon-studio');
 }
 
 function getVisibleSectorCta(): HTMLElement | null {
-  const visibleCta = document.querySelector<HTMLElement>('.sector-cta-block:not(.hidden) .final-cta-card');
+  const visibleCta = document.querySelector<HTMLElement>('.sector-cta-block:not(.hidden) .final-cta-card, .sector-cta-block:not([style*="display: none"]) .final-cta-card');
   if (visibleCta && visibleCta.getBoundingClientRect().height > 0) {
     return visibleCta;
   }
@@ -835,32 +843,56 @@ function getVisibleSectorCta(): HTMLElement | null {
   return allCards.find((c) => c.offsetParent !== null && c.getBoundingClientRect().height > 0) || document.querySelector<HTMLElement>('main .final-cta-card');
 }
 
-// 8. Sector Capabilities Dedicated Hubs (Government, Nonprofits, Philanthropy): Clean Left Rail Spine with Progressive Stacking Alignment
+// 8. Sector Capabilities Dedicated Hubs (Government, Nonprofits, Philanthropy): Clean Left Rail Spine with Horizon Alignment
 function buildSectorCapabilitiesMilestones(): Milestone[] {
-  const heroH1 = document.querySelector<HTMLElement>('main h1');
   const list: Milestone[] = [];
 
+  // 1. Hero start point on Left Rail (dynamic to active visible sector H1)
   list.push({
     key: 'sec-hero',
     getPoint: () => {
+      const heroH1 = getVisibleSectorHeroH1();
       if (!heroH1) return null;
-      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+      const r = heroH1.getBoundingClientRect();
+      if (r.height === 0) return null;
+      return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
     },
   });
 
-  const cards = getVisibleCapabilityCards();
-  cards.forEach((card, idx) => {
-    list.push({
-      key: `sec-cap-${idx}`,
-      getPoint: () => {
-        const liveCards = getVisibleCapabilityCards();
-        const liveCard = liveCards[idx] || card;
-        if (!liveCard) return null;
-        const cr = liveCard.getBoundingClientRect();
-        if (cr.height === 0) return null;
-        return { x: railLeftX(), y: cr.top + 52 + window.scrollY };
-      },
-    });
+  // 2. Sector Capabilities Lead text on Left Rail
+  list.push({
+    key: 'sec-lead-anchor',
+    getPoint: () => {
+      const visibleBody = document.querySelector<HTMLElement>('.sector-body-block:not(.hidden), .sector-body-block:not([style*="display: none"])');
+      const lead = visibleBody?.querySelector('p');
+      if (!lead) return null;
+      const lr = lead.getBoundingClientRect();
+      if (lr.height === 0) return null;
+      return { x: railLeftX(), y: lr.top + 16 + window.scrollY };
+    },
+  });
+
+  // 3. Kinetic Horizon Deck Anchor along Left Rail
+  list.push({
+    key: 'sec-horizon-entry',
+    getPoint: () => {
+      const deck = getVisibleHorizonDeck();
+      if (!deck) return null;
+      const dr = deck.getBoundingClientRect();
+      if (dr.height === 0) return null;
+      return { x: railLeftX(), y: dr.top + 80 + window.scrollY };
+    },
+  });
+
+  list.push({
+    key: 'sec-horizon-mid',
+    getPoint: () => {
+      const deck = getVisibleHorizonDeck();
+      if (!deck) return null;
+      const dr = deck.getBoundingClientRect();
+      if (dr.height === 0) return null;
+      return { x: railLeftX(), y: dr.top + dr.height / 2 + window.scrollY };
+    },
   });
 
   pushCtaConnection(list, getVisibleSectorCta, 'left', 'sec');
@@ -965,16 +997,27 @@ function buildAiInActionDirectoryMilestones(): Milestone[] {
   return list;
 }
 
+function getVisibleAiHeroH1(): HTMLElement | null {
+  const activeHero = document.querySelector<HTMLElement>('.ai-hero-block:not(.hidden) h1, .ai-hero-block:not([style*="display: none"]) h1');
+  if (activeHero && activeHero.getBoundingClientRect().height > 0) {
+    return activeHero;
+  }
+  const allH1s = Array.from(document.querySelectorAll<HTMLElement>('main h1'));
+  return allH1s.find((h) => h.getBoundingClientRect().height > 0) || allH1s[0] || null;
+}
+
 // 10. AI in Action Dedicated Category Case Studies (/ai-in-action/[category]) — Multi-Act Narrative S-Weave
 function buildAiInActionCategoryMilestones(): Milestone[] {
-  const heroH1 = document.querySelector<HTMLElement>('main h1');
   const list: Milestone[] = [];
 
   list.push({
     key: 'ai-cat-hero',
     getPoint: () => {
+      const heroH1 = getVisibleAiHeroH1();
       if (!heroH1) return null;
-      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+      const r = heroH1.getBoundingClientRect();
+      if (r.height === 0) return null;
+      return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
     },
   });
 
