@@ -5,6 +5,7 @@ import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import GoldWaveform from '../../components/GoldWaveform.astro';
 import GradientVideo from '../../components/GradientVideo.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 import missionImg from '../../assets/images/purpose-direction/Institution.png';
 import govImg from '../../assets/images/purpose-direction/government.png';
 import ngoImg from '../../assets/images/cases/02-education-evaluation-india.jpg';
@@ -48,14 +49,13 @@ const sectors = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
-
-      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+    <section class="bg-navy text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Emotional Thematic Stock Video: Real Citizens & Human Impact */}
+      <HeroVideo
+        src="/video/hero-impact-people-2795400.mp4"
+        storyTag="Frontline Humanity · Sovereign AI Vision"
+        overlayOpacity={0.6}
+      />
 
       <div class="container-x relative z-10">
         <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
@@ -130,8 +130,8 @@ const sectors = [
                       </span>
                     </div>
 
-                    {/* Sector Visual Frame */}
-                    <div class="relative w-full h-44 rounded-xl overflow-hidden border border-hair/80 shadow-xs">
+                    {/* Embedded Sector Visual Frame with Integrated Treatment */}
+                    <div class="relative w-full h-48 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/img">
                       <Image
                         src={sec.image}
                         alt={sec.title}
@@ -139,6 +139,14 @@ const sectors = [
                         widths={[360, 600]}
                         sizes="(min-width: 1024px) 33vw, 100vw"
                       />
+                      <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/10 to-transparent pointer-events-none"></div>
+                      <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
+                      <div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between pointer-events-none">
+                        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-navy/80 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wider text-white border border-white/20">
+                          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                          Sector Practice
+                        </span>
+                      </div>
                     </div>
 
                     <h3 class="text-2xl font-light text-navy transition-colors">

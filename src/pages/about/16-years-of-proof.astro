@@ -3,8 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import InteractiveFootprint from '../../components/InteractiveFootprint.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
-import GoldWaveform from '../../components/GoldWaveform.astro';
-import GradientVideo from '../../components/GradientVideo.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 
 const bedrockPillars = [
   {
@@ -41,14 +40,13 @@ const bedrockPillars = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
-
-      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+    <section class="bg-navy text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video Background: Last-Mile Evidence & Community */}
+      <HeroVideo
+        src="/video/hero-rural-community-855401.mp4"
+        storyTag="16 Years Fieldwork · 15+ Nations Worldwide"
+        overlayOpacity={0.62}
+      />
 
       <div class="container-x relative z-10">
         <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">

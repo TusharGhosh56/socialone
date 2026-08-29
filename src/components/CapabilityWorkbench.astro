@@ -4,68 +4,218 @@ import type { CapabilityItem } from '../data/capabilities';
 import bulbOffImg from '../assets/images/services/lightbulb.png';
 import bulbOnImg from '../assets/images/services/lightbulb (1).png';
 
+// Sector-specific curated stock image assets with embedded visual treatment
+import gov01 from '../assets/images/capabilities/work-governance.jpg';
+import gov02 from '../assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png';
+import gov03 from '../assets/images/capabilities/hero-fieldwork.jpg';
+import gov04 from '../assets/images/how-we-work-page/building.png';
+
+import non01 from '../assets/images/purpose-direction/institution.png';
+import non02 from '../assets/images/capabilities/case-agri-digital.jpg';
+import non03 from '../assets/images/how-we-work-page/evidence.png';
+import non04 from '../assets/images/how-we-work-page/transfer.png';
+
+import phil01 from '../assets/images/purpose-direction/philanthropy.png';
+import phil02 from '../assets/images/capabilities/insight-ai.jpg';
+import phil03 from '../assets/images/how-we-work-page/evaluation.png';
+import phil04 from '../assets/images/built-for-gov/public-trust.png';
+
 interface Props {
   capabilities: CapabilityItem[];
   sectorId?: string;
 }
 
-const { capabilities, sectorId = 'capabilities' } = Astro.props;
+const { capabilities, sectorId = 'government' } = Astro.props;
+
+const capabilityImages: Record<string, any[]> = {
+  government: [gov01, gov02, gov03, gov04],
+  nonprofits: [non01, non02, non03, non04],
+  philanthropy: [phil01, phil02, phil03, phil04],
+};
+
+const currentImages = capabilityImages[sectorId] || capabilityImages.government;
 ---
 
-<div class="capability-stack-container relative py-4 pb-28" data-capability-stack data-stack-id={sectorId}>
-  {/* Stacked Cards Track */}
-  <div class="cards-stack-track relative">
+<div class="capability-file-stack w-full py-4 pb-16 select-none" data-file-stack data-sector-id={sectorId}>
+  
+  {/* Sticky File Navigation Pills (Always accessible on scroll & click) */}
+  <div class="sticky-nav-wrap sticky top-20 sm:top-24 z-40 mb-10 py-3 backdrop-blur-xl bg-white/85 rounded-2xl border border-hair/90 shadow-sm px-4 sm:px-6">
+    <div class="flex items-center justify-between gap-3 flex-wrap">
+      <div class="flex items-center gap-2">
+        <span class="h-2 w-2 rounded-full bg-gold animate-pulse"></span>
+        <span class="text-xs font-bold uppercase tracking-widest text-navy">
+          Select Capability:
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" role="tablist" aria-label="Capability Selection">
+        {capabilities.map((cap, idx) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={idx === 0 ? 'true' : 'false'}
+            aria-controls={`capability-card-${sectorId}-${idx}`}
+            data-stack-tab-btn={idx}
+            class={`stack-tab-pill inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wide transition-all duration-300 shrink-0 border cursor-pointer ${
+              idx === 0
+                ? 'bg-navy text-white shadow-md border-navy is-active'
+                : 'bg-white/90 text-navy hover:bg-pale-navy border-hair'
+            }`}
+          >
+            <span class="tab-num font-mono text-[11px] opacity-75">{cap.num}</span>
+            <span class="tab-title truncate max-w-[120px] sm:max-w-[180px]">{cap.title}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  {/* Progressive Sticky Scroll Track & Clickable Physical Stack */}
+  <div class="stack-deck-track relative">
     {capabilities.map((cap, idx) => {
-      const stickyTop = 100 + idx * 32; // Progressive sticky tab offset
+      const cardImg = currentImages[idx] || gov01;
+      const initialIsActive = idx === 0;
+      const stickyTopOffset = 130 + idx * 36; // Progressive cascade offset
+
       return (
         <div
-          class="stack-card-wrapper sticky transition-all duration-200 mb-20 sm:mb-32 last:mb-0"
-          style={`top: ${stickyTop}px; z-index: ${idx + 10};`}
-          data-stack-card={idx}
+          class="stack-step-wrapper relative sticky transition-all duration-300 mb-32 sm:mb-48 last:mb-12"
+          style={`top: ${stickyTopOffset}px; z-index: ${idx + 10};`}
+          data-stack-step={idx}
         >
-          <article class={`capability-card capability-card-${idx} stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden card-hover-accent card-interactive-sheen`} data-capability-index={idx}>
-            {/* 2-Column Balanced Content Grid */}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-              {/* Left Column: Title with Light Bulb & Overview */}
-              <div class="lg:col-span-5 space-y-6">
-                <div class="flex items-start gap-3.5">
-                  {/* Dynamic Light Bulb Indicator */}
-                  <div class="capability-bulb-wrap relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pale-navy/50 border border-hair transition-all duration-400 mt-1 overflow-hidden">
-                    {/* Unlit Bulb (Idle) */}
-                    <Image
-                      src={bulbOffImg}
-                      alt="Capability indicator"
-                      width={24}
-                      height={24}
-                      class="capability-bulb-img bulb-off absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                    />
-                    {/* Lit Bulb (Powered by Trail) */}
-                    <Image
-                      src={bulbOnImg}
-                      alt="Active capability indicator"
-                      width={24}
-                      height={24}
-                      class="capability-bulb-img bulb-on absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                    />
-                  </div>
-
-                  <h3 id={`capability-heading-${sectorId}-${idx}`} class="capability-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-navy leading-tight tracking-tight flex-1">
-                    {cap.title}
-                  </h3>
-                </div>
-
-                <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
-                  {cap.p1}
-                </p>
+          <article
+            id={`capability-card-${sectorId}-${idx}`}
+            role="tabpanel"
+            data-file-card={idx}
+            data-card-index={idx}
+            tabindex="0"
+            class={`file-stack-card file-card-${idx} relative rounded-3xl border bg-white/98 backdrop-blur-2xl shadow-xl transition-all duration-500 cursor-pointer overflow-hidden group ${
+              initialIsActive
+                ? 'is-active is-powered border-gold/40 shadow-2xl'
+                : 'border-hair/90 hover:border-gold/40 hover:shadow-2xl'
+            }`}
+            aria-label={`${cap.num} - ${cap.title}`}
+          >
+            {/* File Folder Top Tab / Header Strip */}
+            <div class="card-tab-handle flex items-center justify-between px-6 sm:px-10 py-3.5 bg-pale-navy/40 border-b border-hair/60 transition-colors group-hover:bg-pale-navy/70">
+              <div class="flex items-center gap-3">
+                <span class="file-tag inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-white border border-hair text-[11px] font-mono font-bold text-navy shadow-2xs">
+                  <span>FILE {cap.num}</span>
+                </span>
+                <span class="file-tab-title text-xs sm:text-sm font-semibold text-navy tracking-tight truncate">
+                  {cap.title}
+                </span>
               </div>
 
-              {/* Right Column: Implementation Detail Container */}
-              <div class="lg:col-span-7">
-                <div class="rounded-2xl border border-hair bg-paper/60 p-6 sm:p-8 lg:p-10">
-                  <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
-                    {cap.p2}
+              <div class="flex items-center gap-2">
+                <span class="file-action-hint text-[11px] font-medium text-mid-navy/70 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                  Click to focus & read file
+                </span>
+                <span class="card-status-dot h-2 w-2 rounded-full bg-gold/60 transition-transform duration-300 group-hover:scale-125"></span>
+              </div>
+            </div>
+
+            {/* Main Card Content Body */}
+            <div class="p-6 sm:p-10 lg:p-12">
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                
+                {/* Left Column: Title, Overview Narrative & Embedded Imagery */}
+                <div class="lg:col-span-5 space-y-6">
+                  <div class="flex items-start gap-4">
+                    {/* Dynamic Light Bulb Power Indicator */}
+                    <div class="capability-bulb-wrap relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-pale-navy/40 border border-hair transition-all duration-400 mt-1 overflow-hidden shadow-xs">
+                      <Image
+                        src={bulbOffImg}
+                        alt="Capability indicator"
+                        width={24}
+                        height={24}
+                        class="capability-bulb-img bulb-off absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
+                      />
+                      <Image
+                        src={bulbOnImg}
+                        alt="Active capability indicator"
+                        width={24}
+                        height={24}
+                        class="capability-bulb-img bulb-on absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
+                      />
+                    </div>
+
+                    <div>
+                      <span class="text-[11px] font-bold uppercase tracking-widest text-gold block mb-1">
+                        Capability {cap.num}
+                      </span>
+                      <h3 class="capability-heading text-2xl sm:text-3xl font-bold text-navy leading-tight tracking-tight">
+                        {cap.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
+                    {cap.p1}
                   </p>
+
+                  {/* Embedded Stock Imagery Treatment */}
+                  <div class="card-embedded-image-container relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-hair/90 shadow-md bg-navy/5 group/img transition-all duration-500">
+                    <Image
+                      src={cardImg}
+                      alt={cap.title}
+                      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
+                      widths={[360, 640]}
+                      sizes="(min-width: 1024px) 35vw, 100vw"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/10 to-transparent pointer-events-none"></div>
+                    <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
+                    <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-navy/75 backdrop-blur-md border border-white/20 text-[10px] font-semibold uppercase tracking-wider text-white">
+                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                        Applied In Field
+                      </span>
+                      <span class="text-[11px] font-medium text-white/90 drop-shadow-sm font-mono">
+                        APLYD // {sectorId.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Right Column: Implementation Detail Container */}
+                <div class="lg:col-span-7 space-y-6">
+                  <div class="rounded-2xl border border-hair bg-paper/65 p-6 sm:p-8 lg:p-9 shadow-xs space-y-5">
+                    <div class="flex items-center justify-between border-b border-hair/60 pb-3">
+                      <span class="text-xs font-bold uppercase tracking-wider text-navy flex items-center gap-2">
+                        <span class="h-1.5 w-1.5 rounded-full bg-navy"></span>
+                        Implementation & Technical Execution
+                      </span>
+                      <span class="text-xs font-semibold text-deep-gold font-mono">
+                        PHASE // {cap.num}
+                      </span>
+                    </div>
+
+                    <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
+                      {cap.p2}
+                    </p>
+                  </div>
+
+                  {/* Quick Capability Delivery Highlights */}
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <div class="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-hair/80 shadow-2xs">
+                      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-pale-gold text-deep-gold font-bold text-xs">
+                        ✓
+                      </span>
+                      <span class="text-xs font-semibold text-navy leading-snug">
+                        Production & Institutional Rigour
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3.5 rounded-xl bg-white border border-hair/80 shadow-2xs">
+                      <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-pale-gold text-deep-gold font-bold text-xs">
+                        ✓
+                      </span>
+                      <span class="text-xs font-semibold text-navy leading-snug">
+                        Durable Knowledge Handover
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </article>
@@ -76,13 +226,23 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
 </div>
 
 <style>
-  .stack-card-wrapper {
+  .stack-step-wrapper {
     will-change: transform;
   }
 
-  .stack-card {
+  .file-stack-card {
+    will-change: transform, box-shadow, filter;
     transform-origin: top center;
-    box-shadow: 0 12px 32px -12px rgba(18, 23, 59, 0.12), 0 24px 48px -18px rgba(18, 23, 59, 0.08);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.35s ease,
+                border-color 0.35s ease,
+                filter 0.35s ease;
+  }
+
+  /* Hover Lift state for interactive tactile feel */
+  .file-stack-card:hover {
+    transform: translateY(-12px) scale(1.006) !important;
+    box-shadow: 0 24px 50px -12px rgba(18, 23, 59, 0.22), 0 0 0 1px rgba(209, 156, 51, 0.4) !important;
   }
 
   /* Light bulb idle state: shows unlit line bulb */
@@ -99,76 +259,175 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
     transform: scale(0.85);
   }
 
-  /* Powered state: cross-fades seamlessly into the glowing lit bulb image! */
-  :global(.capability-card.is-powered) .capability-bulb-wrap {
-    background-color: rgba(245, 233, 209, 0.85) !important;
+  /* Powered state: glowing lit bulb */
+  :global(.file-stack-card.is-powered) .capability-bulb-wrap {
+    background-color: rgba(245, 233, 209, 0.95) !important;
     border-color: rgba(209, 156, 51, 0.75) !important;
     box-shadow: 0 0 16px rgba(209, 156, 51, 0.35) !important;
     transform: scale(1.05);
   }
-  :global(.capability-card.is-powered) .bulb-off {
+  :global(.file-stack-card.is-powered) .bulb-off {
     opacity: 0;
     transform: scale(0.85);
   }
-  :global(.capability-card.is-powered) .bulb-on {
+  :global(.file-stack-card.is-powered) .bulb-on {
     opacity: 1;
     transform: scale(1);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .stack-card-wrapper {
+    .stack-step-wrapper {
       position: static !important;
       top: auto !important;
       transform: none !important;
+      margin-bottom: 2.5rem !important;
     }
   }
 </style>
 
 <script>
-  function initCapabilityStacking() {
-    const stacks = document.querySelectorAll<HTMLElement>('[data-capability-stack]');
-    if (!stacks.length) return;
+  function initCapabilityHybridDeck() {
+    const decks = document.querySelectorAll<HTMLElement>('[data-file-stack]');
+    if (!decks.length) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    decks.forEach((deck) => {
+      const stepWrappers = deck.querySelectorAll<HTMLElement>('[data-stack-step]');
+      const cards = deck.querySelectorAll<HTMLElement>('[data-file-card]');
+      const tabs = deck.querySelectorAll<HTMLElement>('[data-stack-tab-btn]');
+      const total = cards.length;
+      if (!total) return;
 
-    function updateStackTransforms() {
-      stacks.forEach((stack) => {
-        const wrappers = stack.querySelectorAll<HTMLElement>('[data-stack-card]');
-        const total = wrappers.length;
+      let currentActiveIdx = 0;
+      let isProgrammaticScroll = false;
 
-        wrappers.forEach((wrapper, idx) => {
-          if (idx === total - 1) return; // Topmost final card stays at scale 1
+      // Function to highlight a card and tab
+      function setActiveCard(index: number) {
+        currentActiveIdx = index;
 
-          const nextWrapper = wrappers[idx + 1];
-          if (!nextWrapper) return;
+        // Update pills
+        tabs.forEach((tab, i) => {
+          const isAct = i === index;
+          tab.classList.toggle('is-active', isAct);
+          tab.classList.toggle('bg-navy', isAct);
+          tab.classList.toggle('text-white', isAct);
+          tab.classList.toggle('shadow-md', isAct);
+          tab.classList.toggle('border-navy', isAct);
+          tab.classList.toggle('bg-white/90', !isAct);
+          tab.classList.toggle('text-navy', !isAct);
+          tab.classList.toggle('border-hair', !isAct);
+          tab.setAttribute('aria-selected', isAct ? 'true' : 'false');
+        });
 
-          const nextRect = nextWrapper.getBoundingClientRect();
-          const targetTop = 100 + (idx + 1) * 32;
-
-          if (nextRect.top <= targetTop + 80) {
-            const progress = Math.max(0, Math.min(1, (targetTop + 80 - nextRect.top) / 80));
-            const card = wrapper.querySelector<HTMLElement>('.stack-card');
-            if (card) {
-              const scale = 1 - progress * 0.035;
-              const brightness = 1 - progress * 0.05;
-              card.style.transform = `scale(${scale})`;
-              card.style.filter = `brightness(${brightness})`;
-            }
+        // Update card visual states
+        cards.forEach((card, i) => {
+          const isAct = i === index;
+          card.classList.toggle('is-active', isAct);
+          card.classList.toggle('is-powered', isAct);
+          if (isAct) {
+            card.style.borderColor = 'rgba(209, 156, 51, 0.5)';
+            card.style.boxShadow = '0 25px 60px -15px rgba(18, 23, 59, 0.2), 0 0 0 1px rgba(209, 156, 51, 0.35)';
           } else {
-            const card = wrapper.querySelector<HTMLElement>('.stack-card');
-            if (card) {
-              card.style.transform = 'scale(1)';
-              card.style.filter = 'brightness(1)';
+            card.style.borderColor = 'rgba(74, 83, 138, 0.2)';
+            card.style.boxShadow = '';
+          }
+        });
+      }
+
+      // Scroll-driven stacking and active detection
+      function onScroll() {
+        if (isProgrammaticScroll) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        let activeByScroll = 0;
+        const viewportMiddle = window.innerHeight * 0.45;
+
+        stepWrappers.forEach((wrapper, idx) => {
+          const rect = wrapper.getBoundingClientRect();
+          const targetTop = 130 + idx * 36;
+
+          // If the card has scrolled near or above its sticky point
+          if (rect.top <= targetTop + 100) {
+            activeByScroll = idx;
+          }
+
+          // Progressive scale and shadow depth as subsequent cards cover it
+          if (idx < total - 1) {
+            const nextWrapper = stepWrappers[idx + 1];
+            if (nextWrapper) {
+              const nextRect = nextWrapper.getBoundingClientRect();
+              const nextTargetTop = 130 + (idx + 1) * 36;
+              const card = wrapper.querySelector<HTMLElement>('.file-stack-card');
+
+              if (nextRect.top <= nextTargetTop + 120 && card) {
+                const progress = Math.max(0, Math.min(1, (nextTargetTop + 120 - nextRect.top) / 120));
+                const scale = 1 - progress * 0.035;
+                const brightness = 1 - progress * 0.05;
+                card.style.transform = `scale(${scale})`;
+                card.style.filter = `brightness(${brightness})`;
+              } else if (card) {
+                card.style.transform = 'scale(1)';
+                card.style.filter = 'brightness(1)';
+              }
             }
           }
         });
-      });
-    }
 
-    window.addEventListener('scroll', updateStackTransforms, { passive: true });
-    updateStackTransforms();
+        if (activeByScroll !== currentActiveIdx) {
+          setActiveCard(activeByScroll);
+        }
+      }
+
+      // Manual selection: scroll into view and activate card
+      function selectCard(index: number) {
+        setActiveCard(index);
+        const targetWrapper = stepWrappers[index];
+        if (!targetWrapper) return;
+
+        isProgrammaticScroll = true;
+        const targetTopOffset = 130 + index * 36;
+        const wrapperRect = targetWrapper.getBoundingClientRect();
+        const absoluteTop = window.scrollY + wrapperRect.top - targetTopOffset;
+
+        window.scrollTo({
+          top: absoluteTop,
+          behavior: 'smooth',
+        });
+
+        setTimeout(() => {
+          isProgrammaticScroll = false;
+        }, 600);
+      }
+
+      // Click on top tab pills
+      tabs.forEach((tab, idx) => {
+        tab.addEventListener('click', () => {
+          selectCard(idx);
+        });
+      });
+
+      // Click on cards themselves
+      cards.forEach((card, idx) => {
+        card.addEventListener('click', () => {
+          selectCard(idx);
+        });
+
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectCard(idx);
+          }
+        });
+      });
+
+      // Listen for scroll
+      window.addEventListener('scroll', onScroll, { passive: true });
+      
+      // Initial state
+      setActiveCard(0);
+      onScroll();
+    });
   }
 
-  initCapabilityStacking();
-  document.addEventListener('astro:page-load', initCapabilityStacking);
+  initCapabilityHybridDeck();
+  document.addEventListener('astro:page-load', initCapabilityHybridDeck);
 </script>

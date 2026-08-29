@@ -1,0 +1,133 @@
+---
+// HeroVideo.astro — Cinematic stock video background for internal page hero sections
+export interface VideoItem {
+  id: string;
+  src: string;
+  storyTag?: string;
+}
+
+interface Props {
+  src?: string;
+  storyTag?: string;
+  videos?: VideoItem[];
+  activeId?: string;
+  overlayOpacity?: number;
+  class?: string;
+  showBadge?: boolean;
+}
+
+const {
+  src,
+  storyTag = 'Applied Intelligence · Human Impact',
+  videos,
+  activeId,
+  overlayOpacity = 0.55,
+  class: className = '',
+  showBadge = true,
+} = Astro.props;
+
+// Determine video sources list
+const videoList: VideoItem[] = videos && videos.length > 0 
+  ? videos 
+  : (src ? [{ id: 'default', src, storyTag }] : [{ id: 'default', src: '/video/hero/1.mp4', storyTag }]);
+
+const currentActiveId = activeId || videoList[0].id;
+const currentActiveItem = videoList.find((v) => v.id === currentActiveId) || videoList[0];
+---
+
+<div class={`hero-video-stage pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
+  {videoList.map((item) => (
+    <video
+      class={`hero-video-el absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+        item.id === currentActiveId ? 'opacity-100 is-active' : 'opacity-0 pointer-events-none'
+      }`}
+      data-hero-bg-video={item.id}
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+    >
+      <source src={item.src} type={item.src.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
+    </video>
+  ))}
+
+  {/* Cinematic Navy Gradient Overlay (Preserves video clarity while ensuring AAA text contrast) */}
+  <div
+    class="hero-video-overlay absolute inset-0"
+    style={`background: linear-gradient(180deg, rgba(11, 14, 43, 0.42) 0%, rgba(11, 14, 43, ${overlayOpacity}) 45%, rgba(11, 14, 43, ${Math.min(overlayOpacity + 0.28, 0.92)}) 75%, #0b0e2b 100%);`}
+  ></div>
+
+  {/* Soft Radial Vignette for Deep Subject Focus */}
+  <div class="hero-video-vignette absolute inset-0 pointer-events-none"></div>
+
+  {/* Ambient Golden & Azure Atmospheric Glows */}
+  <div class="pointer-events-none absolute -right-24 top-10 h-[36rem] w-[36rem] rounded-full bg-gold/15 blur-[130px]"></div>
+  <div class="pointer-events-none absolute -left-28 bottom-0 h-80 w-80 rounded-full bg-navy/60 blur-[100px]"></div>
+
+  {/* Emotional Storyline Footnote Tag (Desktop only) */}
+  {showBadge && (
+    <div class="hero-story-badge hidden lg:flex items-center gap-2 absolute bottom-6 right-8 z-10 px-3.5 py-1.5 rounded-pill bg-white/10 backdrop-blur-md border border-white/15 text-[11px] font-medium tracking-wider text-pale-navy/90 uppercase">
+      <span class="h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
+      <span data-hero-story-tag>{currentActiveItem.storyTag || storyTag}</span>
+    </div>
+  )}
+</div>
+
+<style>
+  .hero-video-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .hero-video-el {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    will-change: opacity;
+  }
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .hero-video-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: radial-gradient(circle at 60% 35%, transparent 30%, rgba(11, 14, 43, 0.45) 85%);
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  function ensureHeroVideosPlay() {
+    const videos = document.querySelectorAll<HTMLVideoElement>('video[data-hero-bg-video]');
+    videos.forEach((video) => {
+      video.muted = true;
+      if (video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay was prevented or suppressed
+          });
+        }
+      }
+    });
+  }
+
+  // Ensure videos play immediately and on Astro view transitions
+  ensureHeroVideosPlay();
+  document.addEventListener('astro:page-load', ensureHeroVideosPlay);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      ensureHeroVideosPlay();
+    }
+  });
+</script>

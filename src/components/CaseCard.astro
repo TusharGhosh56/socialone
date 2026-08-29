@@ -19,22 +19,23 @@ const { title, body, tag, href, image } = Astro.props;
   class="case-card hover-glow-gold group flex h-full flex-col overflow-hidden rounded-lg border border-hair bg-white no-underline shadow-sm transition-[transform,box-shadow] duration-base ease-out hover:-translate-y-1 hover:shadow-md motion-reduce:transition-none"
   style="transform-style: preserve-3d; will-change: transform;"
 >
-  <div class="relative aspect-[16/10] overflow-hidden bg-navy">
+  <div class="relative aspect-[16/10] overflow-hidden bg-navy border-b border-hair/80">
     <Image
-      class="absolute inset-0 h-full w-full object-cover transition-transform duration-[400ms] ease-out group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+      class="absolute inset-0 h-full w-full object-cover transition-transform duration-[500ms] ease-out group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
       style="object-position: center 38%;"
       src={image}
       alt={`APLYD Case Study: ${title} — ${tag}`}
       widths={[400, 640, 960]}
       sizes="(max-width: 768px) 100vw, 33vw"
       format="webp"
-      quality={80}
+      quality={85}
     />
     <div
       aria-hidden="true"
-      class="absolute inset-0 bg-gradient-to-b from-navy/60 via-navy/0 to-navy/0"
+      class="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-navy/20 pointer-events-none transition-opacity duration-300 group-hover:opacity-80"
     >
     </div>
+    <div class="absolute inset-0 ring-1 ring-inset ring-white/15 pointer-events-none"></div>
   </div>
   <div class="flex flex-1 flex-col p-6">
     {/* Ash, was text-deep-gold. This is a repeating metadata label — one per
