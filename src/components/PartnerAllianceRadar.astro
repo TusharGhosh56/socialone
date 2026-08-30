@@ -1,0 +1,376 @@
+---
+// PartnerAllianceRadar.astro — State-of-the-art 2026 Sovereign Alliance Orbital Console
+const regionalAlliances = [
+  {
+    id: 'global',
+    name: 'Global Reach',
+    shortName: 'Global',
+    count: 4,
+    badge: 'Multilateral & Sovereign',
+    summary: 'Strategic policy design, multilateral reform, and sovereign digital governance across international development institutions.',
+    geographies: 'Global, Multilateral Hubs, 40+ Partner Nations',
+    angle: 0, // Top
+    partners: [
+      { name: 'Oxford Policy Management', role: 'Economic policy & sovereign governance' },
+      { name: 'Abt Global', role: 'Public sector transformation & health systems' },
+      { name: 'IMC (now DT Global)', role: 'International infrastructure & climate resilience' },
+      { name: 'Palladium', role: 'Positive impact delivery & economic growth' },
+    ],
+  },
+  {
+    id: 'multi-region',
+    name: 'Multi-Region Synthesis',
+    shortName: 'Multi-Region',
+    count: 7,
+    badge: 'Cross-Continental MEL',
+    summary: 'Pan-continental evidence systems, independent evaluation frameworks, econometric analytics, and municipal WASH infrastructure.',
+    geographies: 'Spanning Europe, Asia, Latin America & Africa (50+ Countries)',
+    angle: 60,
+    partners: [
+      { name: 'Knowledge for Development (K4D)', role: 'Knowledge architecture & evidence synthesis' },
+      { name: 'Agua Consult', role: 'WASH systems & municipal resilience' },
+      { name: 'Development Pathways', role: 'Social protection policy & cash systems' },
+      { name: 'Genesis Analytics', role: 'Economics, digital strategy & financial analytics' },
+      { name: 'ITAD', role: 'Independent monitoring, evaluation & learning' },
+      { name: 'Apex for Training & Consulting', role: 'Capacity building & crisis response' },
+      { name: 'Hakunamatata', role: 'Enterprise software & field digital apps' },
+    ],
+  },
+  {
+    id: 'south-asia',
+    name: 'South Asia Hub',
+    shortName: 'South Asia',
+    count: 5,
+    badge: 'Digital Public Infra',
+    summary: 'Population-scale digital public infrastructure, academic applied AI research labs, agricultural telemetry, and municipal systems.',
+    geographies: 'India, Bangladesh, Sri Lanka',
+    angle: 120,
+    partners: [
+      { name: 'IIT Madras Applied AI Lab', role: 'Applied AI research & model auditing' },
+      { name: 'Consiglieri Private Limited (CPL)', role: 'Public systems delivery & governance' },
+      { name: 'IWMI', role: 'Agricultural water governance & environmental data' },
+      { name: 'Matrix Business Development', role: 'Private sector development & trade' },
+      { name: 'Dias Works', role: 'Social infrastructure & municipal tech' },
+    ],
+  },
+  {
+    id: 'africa',
+    name: 'Sub-Saharan Africa',
+    shortName: 'Africa',
+    count: 2,
+    badge: 'Frontline & Community Compass',
+    summary: 'Last-mile household field verification, Community Compass deployments, and ground-truth evaluation in fragile operating contexts.',
+    geographies: 'Ethiopia, Kenya, Somalia, Tanzania, Nigeria, Malawi (11 Nations)',
+    angle: 180,
+    partners: [
+      { name: 'Jarco Consulting', role: 'Field evaluation, surveys & community intelligence' },
+      { name: 'Consilient', role: 'Fragile states research & ground-truth verification' },
+    ],
+  },
+  {
+    id: 'mena',
+    name: 'Middle East & North Africa',
+    shortName: 'MENA',
+    count: 2,
+    badge: 'Institutional Reform',
+    summary: 'Public sector modernization, post-conflict civic administration, and institutional capacity assessment across the MENA region.',
+    geographies: 'Jordan, Iraq, Lebanon, Egypt, Tunisia, Morocco (12 Nations)',
+    angle: 240,
+    partners: [
+      { name: 'Edmaaj', role: 'Public sector institutional reform across MENA' },
+      { name: 'Optimum Analysis', role: 'Post-conflict governance & institutional assessment' },
+    ],
+  },
+  {
+    id: 'north-america',
+    name: 'North America',
+    shortName: 'Americas',
+    count: 3,
+    badge: 'Federal & Assurance',
+    summary: 'Federal technical advisory, algorithmic assurance, development finance, and data modernization architectures.',
+    geographies: 'United States, Canada',
+    angle: 300,
+    partners: [
+      { name: 'Cadmus Group LLC', role: 'Federal technical advisory & climate intelligence' },
+      { name: 'Quantum Leaps', role: 'Digital modernization & data architecture' },
+      { name: 'EMERG', role: 'Evaluative research & multilateral consulting' },
+    ],
+  },
+];
+---
+
+<div class="sovereign-radar-console w-full" data-sovereign-radar>
+  
+  {/* Main Panoramic Console Card */}
+  <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-xl shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[580px] lg:min-h-[640px]">
+    
+    {/* ===================== LEFT: ORBITAL RADAR CONSOLE (5 cols) ===================== */}
+    <div class="lg:col-span-5 bg-gradient-to-br from-navy via-[#141b44] to-[#0c112e] text-white p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden select-none border-b lg:border-b-0 lg:border-r border-white/10">
+      
+      {/* Background Cartographic Coordinates & Grid */}
+      <div class="absolute inset-0 bg-institutional-grid opacity-15 pointer-events-none"></div>
+      <div class="absolute -right-24 -top-24 w-72 h-72 rounded-full bg-gold/10 blur-3xl pointer-events-none"></div>
+
+      {/* Top Console Bar */}
+      <div class="relative z-10 flex items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div class="flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-gold animate-pulse"></span>
+          <span class="text-[11px] font-bold uppercase tracking-widest text-gold">Alliance Radar</span>
+        </div>
+        <span class="text-[10px] uppercase font-mono tracking-widest text-pale-navy/70">
+          6 REGIONAL NODES
+        </span>
+      </div>
+
+      {/* Center: Radial Orbital Hologram */}
+      <div class="relative z-10 my-8 sm:my-10 flex items-center justify-center min-h-[300px] sm:min-h-[340px]">
+        
+        {/* Concentric Datum Rings */}
+        <div class="absolute w-64 h-64 sm:w-72 sm:h-72 rounded-full border border-white/10 flex items-center justify-center animate-spin-slow pointer-events-none">
+          <div class="absolute top-0 w-1.5 h-1.5 rounded-full bg-gold/50"></div>
+          <div class="absolute bottom-0 w-1.5 h-1.5 rounded-full bg-gold/50"></div>
+        </div>
+
+        <div class="absolute w-44 h-44 sm:w-48 sm:h-48 rounded-full border border-white/15 border-dashed flex items-center justify-center pointer-events-none"></div>
+        
+        {/* Crosshair Axis Lines */}
+        <div class="absolute w-full h-[1px] bg-white/5 pointer-events-none"></div>
+        <div class="absolute h-full w-[1px] bg-white/5 pointer-events-none"></div>
+
+        {/* Central Core Pulse */}
+        <div class="relative z-20 flex flex-col items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-navy/90 border border-gold/40 shadow-2xl backdrop-blur-md text-center p-2">
+          <div class="text-xs font-bold text-white tracking-wider uppercase font-display">APLYD</div>
+          <div class="text-[9px] text-gold uppercase font-mono tracking-widest mt-0.5">ECOSYSTEM</div>
+          <div class="absolute -inset-1 rounded-full border border-gold/20 animate-ping pointer-events-none"></div>
+        </div>
+
+        {/* 6 Orbital Satellite Buttons */}
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="radar-satellites">
+          {regionalAlliances.map((node, idx) => {
+            const isInit = idx === 0;
+            // Radius ~ 118px on desktop
+            const rad = 118;
+            const radMobile = 96;
+            const angleRad = (node.angle - 90) * (Math.PI / 180);
+            const x = Math.round(Math.cos(angleRad) * rad);
+            const y = Math.round(Math.sin(angleRad) * rad);
+
+            return (
+              <button
+                type="button"
+                data-radar-node={node.id}
+                data-node-idx={idx}
+                class={`radar-station-btn pointer-events-auto absolute flex items-center justify-center rounded-2xl transition-all duration-500 cursor-pointer ${
+                  isInit
+                    ? 'is-active bg-gold text-navy shadow-lg ring-4 ring-gold/30 scale-110 z-30'
+                    : 'bg-navy/80 hover:bg-white/20 text-white border border-white/20 hover:border-gold/60 scale-100 z-20'
+                }`}
+                style={`transform: translate(${x}px, ${y}px);`}
+                title={node.name}
+                aria-label={`Select ${node.name}`}
+              >
+                <div class="flex items-center gap-1.5 px-2.5 py-1.5 text-center">
+                  <span class="station-dot h-1.5 w-1.5 rounded-full bg-navy transition-colors"></span>
+                  <span class="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap">
+                    {node.shortName}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Bottom Node Quick-Tabs */}
+      <div class="relative z-10 pt-4 border-t border-white/10 flex flex-wrap items-center justify-center gap-1.5">
+        {regionalAlliances.map((node, idx) => (
+          <button
+            type="button"
+            data-radar-tab={node.id}
+            class={`radar-tab-pill px-2.5 py-1 rounded-pill text-[10px] font-bold uppercase tracking-wider transition-all duration-300 border cursor-pointer ${
+              idx === 0
+                ? 'bg-gold text-navy border-gold font-extrabold shadow-xs is-active'
+                : 'bg-white/5 hover:bg-white/15 text-pale-navy/90 border-white/10'
+            }`}
+          >
+            {node.shortName} ({node.count})
+          </button>
+        ))}
+      </div>
+
+    </div>
+
+    {/* ===================== RIGHT: LIVE STRATEGIC DOSSIER HUD (7 cols) ===================== */}
+    <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between bg-white space-y-8 overflow-y-auto">
+      
+      {/* Dynamic Header Block */}
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-hair pb-4">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-gold"></span>
+            <span id="dossier-badge" class="text-xs font-bold uppercase tracking-widest text-gold">
+              {regionalAlliances[0].badge}
+            </span>
+          </div>
+          <span id="dossier-count" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-pill bg-pale-navy text-navy text-xs font-bold border border-hair">
+            <span class="h-1.5 w-1.5 rounded-full bg-navy"></span>
+            <span>{regionalAlliances[0].count} Verified Partners</span>
+          </span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 id="dossier-title" class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy tracking-tight leading-tight">
+            {regionalAlliances[0].name}
+          </h3>
+          <p id="dossier-summary" class="text-sm sm:text-base text-mid-navy font-normal leading-relaxed">
+            {regionalAlliances[0].summary}
+          </p>
+        </div>
+
+        {/* Geographic Scope Pill */}
+        <div class="p-3 rounded-2xl bg-paper/60 border border-hair flex items-center gap-2 text-xs text-mid-navy">
+          <span class="font-bold text-navy text-[11px] uppercase tracking-wider shrink-0">Geographic Footprint:</span>
+          <span id="dossier-geographies" class="font-medium text-navy">
+            {regionalAlliances[0].geographies}
+          </span>
+        </div>
+      </div>
+
+      {/* Dynamic Organization Cards Grid */}
+      <div class="space-y-3">
+        <div class="text-xs font-bold uppercase tracking-wider text-mid-navy">
+          Active Partner Organisations
+        </div>
+
+        <div id="dossier-orgs-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          {regionalAlliances[0].partners.map((org) => (
+            <div class="p-4 rounded-2xl border border-hair bg-paper/40 hover:bg-white hover:border-gold/50 transition-all duration-300 shadow-2xs space-y-1.5">
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-navy text-xs sm:text-small">{org.name}</span>
+                <span class="text-gold text-xs font-bold">✓</span>
+              </div>
+              <p class="text-[11px] text-mid-navy leading-relaxed">{org.role}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Standard Quality Assurance Footer */}
+      <div class="pt-4 border-t border-hair flex flex-wrap items-center justify-between gap-3 text-xs text-mid-navy">
+        <span class="flex items-center gap-1.5 font-medium text-navy">
+          <span class="text-gold font-bold">●</span> Evidence-Led, Independently Assured
+        </span>
+        <span class="text-[11px] text-mid-navy/80">Built for Institutional Ownership</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script is:inline define:vars={{ regionalAlliances }}>
+(function() {
+  function setupRadarConsole() {
+    const root = document.querySelector('[data-sovereign-radar]');
+    if (!root) return;
+
+    let activeId = regionalAlliances[0].id;
+
+    function renderDossier(alliance) {
+      const badge = root.querySelector('#dossier-badge');
+      const count = root.querySelector('#dossier-count span:last-child');
+      const title = root.querySelector('#dossier-title');
+      const summary = root.querySelector('#dossier-summary');
+      const geog = root.querySelector('#dossier-geographies');
+      const grid = root.querySelector('#dossier-orgs-grid');
+
+      if (badge) badge.textContent = alliance.badge;
+      if (count) count.textContent = `${alliance.count} Verified Partners`;
+      if (title) title.textContent = alliance.name;
+      if (summary) summary.textContent = alliance.summary;
+      if (geog) geog.textContent = alliance.geographies;
+
+      if (grid) {
+        grid.innerHTML = alliance.partners.map(org => `
+          <div class="p-4 rounded-2xl border border-hair bg-paper/40 hover:bg-white hover:border-gold/50 transition-all duration-300 shadow-2xs space-y-1.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-bold text-navy text-xs sm:text-small">${org.name}</span>
+              <span class="text-gold text-xs font-bold">✓</span>
+            </div>
+            <p class="text-[11px] text-mid-navy leading-relaxed">${org.role}</p>
+          </div>
+        `).join('');
+      }
+
+      // Update radar node buttons
+      root.querySelectorAll('.radar-station-btn').forEach(btn => {
+        const id = btn.getAttribute('data-radar-node');
+        if (id === alliance.id) {
+          btn.classList.add('is-active', 'bg-gold', 'text-navy', 'shadow-lg', 'ring-4', 'ring-gold/30', 'scale-110', 'z-30');
+          btn.classList.remove('bg-navy/80', 'text-white', 'scale-100', 'z-20');
+        } else {
+          btn.classList.remove('is-active', 'bg-gold', 'text-navy', 'shadow-lg', 'ring-4', 'ring-gold/30', 'scale-110', 'z-30');
+          btn.classList.add('bg-navy/80', 'text-white', 'scale-100', 'z-20');
+        }
+      });
+
+      // Update tab pills
+      root.querySelectorAll('.radar-tab-pill').forEach(tab => {
+        const id = tab.getAttribute('data-radar-tab');
+        if (id === alliance.id) {
+          tab.classList.add('bg-gold', 'text-navy', 'border-gold', 'font-extrabold', 'shadow-xs', 'is-active');
+          tab.classList.remove('bg-white/5', 'text-pale-navy/90', 'border-white/10');
+        } else {
+          tab.classList.remove('bg-gold', 'text-navy', 'border-gold', 'font-extrabold', 'shadow-xs', 'is-active');
+          tab.classList.add('bg-white/5', 'text-pale-navy/90', 'border-white/10');
+        }
+      });
+    }
+
+    // Attach click listeners to satellite buttons & quick-tabs
+    root.querySelectorAll('.radar-station-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-radar-node');
+        const match = regionalAlliances.find(a => a.id === id);
+        if (match) {
+          activeId = match.id;
+          renderDossier(match);
+        }
+      });
+    });
+
+    root.querySelectorAll('.radar-tab-pill').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const id = tab.getAttribute('data-radar-tab');
+        const match = regionalAlliances.find(a => a.id === id);
+        if (match) {
+          activeId = match.id;
+          renderDossier(match);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupRadarConsole);
+  } else {
+    setupRadarConsole();
+  }
+})();
+</script>
+
+<style>
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-spin-slow {
+    animation: spinSlow 36s linear infinite;
+  }
+  .radar-station-btn.is-active .station-dot {
+    background-color: #1a2150;
+  }
+  .radar-station-btn:not(.is-active) .station-dot {
+    background-color: #C59B27;
+  }
+</style>

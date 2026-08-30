@@ -753,6 +753,163 @@ function buildPeopleMilestones(): Milestone[] {
   return list;
 }
 
+// 6b. Our Partners: Hero -> Metrics -> Map -> Central Spine Interconnected Bus (Through Partner Grid Gutter) -> Final CTA
+function buildPartnersMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const metricsSection = document.getElementById('partners-metrics-section');
+  const mapSection = document.getElementById('partner-map-section');
+  const networkSection = document.getElementById('regional-network');
+  const networkHeading = networkSection?.querySelector('h2');
+  const grid = networkSection?.querySelector('.grid');
+  const card0 = document.getElementById('partner-card-0');
+  const card2 = document.getElementById('partner-card-2');
+  const card4 = document.getElementById('partner-card-4');
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
+  const list: Milestone[] = [];
+
+  // 1. Hero on Left Rail
+  list.push({
+    key: 'partners-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      const r = heroH1.getBoundingClientRect();
+      if (r.height === 0) return null;
+      return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
+    },
+  });
+
+  // 2. Metrics Section on Left Rail
+  if (metricsSection) {
+    list.push({
+      key: 'partners-metrics',
+      getPoint: () => {
+        const r = metricsSection.getBoundingClientRect();
+        if (r.height === 0) return null;
+        return { x: railLeftX(), y: r.top + 40 + window.scrollY };
+      },
+    });
+  }
+
+  // 3. Map Section on Left Rail
+  if (mapSection) {
+    list.push({
+      key: 'partners-map',
+      getPoint: () => {
+        const r = mapSection.getBoundingClientRect();
+        if (r.height === 0) return null;
+        return { x: railLeftX(), y: r.top + 32 + window.scrollY };
+      },
+    });
+  }
+
+  // 4. Regional Network Heading on Left Rail
+  if (networkHeading) {
+    list.push({
+      key: 'partners-network-heading',
+      getPoint: () => {
+        const r = networkHeading.getBoundingClientRect();
+        if (r.height === 0) return null;
+        return { x: railLeftX(), y: r.top + 16 + window.scrollY };
+      },
+    });
+  }
+
+  // 5. Central Spine Interconnected Bus (Through Partner Grid Gutter)
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
+
+  if (isDesktop && grid && card0 && card2 && card4) {
+    const getGridTopY = () => {
+      const gr = grid.getBoundingClientRect();
+      return gr.top - 28 + window.scrollY;
+    };
+
+    const getGridCenterX = () => {
+      const gr = grid.getBoundingClientRect();
+      return gr.left + gr.width / 2 + window.scrollX;
+    };
+
+    // Jog from Left Rail to Grid Centerline
+    list.push({
+      key: 'partners-jog-to-center-start',
+      dot: false,
+      getPoint: () => ({ x: railLeftX(), y: getGridTopY() }),
+    });
+
+    list.push({
+      key: 'partners-center-entry-dot',
+      dot: true,
+      getPoint: () => ({ x: getGridCenterX(), y: getGridTopY() }),
+    });
+
+    // Row 1 Center Node (Between Global Reach & Multi-Region)
+    list.push({
+      key: 'partners-center-row-0',
+      dot: true,
+      getPoint: () => {
+        const r0 = card0.getBoundingClientRect();
+        return { x: getGridCenterX(), y: r0.top + r0.height / 2 + window.scrollY };
+      },
+    });
+
+    // Row 2 Center Node (Between South Asia & Africa)
+    list.push({
+      key: 'partners-center-row-1',
+      dot: true,
+      getPoint: () => {
+        const r2 = card2.getBoundingClientRect();
+        return { x: getGridCenterX(), y: r2.top + r2.height / 2 + window.scrollY };
+      },
+    });
+
+    // Row 3 Center Node (Between Americas & MENA)
+    list.push({
+      key: 'partners-center-row-2',
+      dot: true,
+      getPoint: () => {
+        const r4 = card4.getBoundingClientRect();
+        return { x: getGridCenterX(), y: r4.top + r4.height / 2 + window.scrollY };
+      },
+    });
+
+    const getGridBottomY = () => {
+      const gr = grid.getBoundingClientRect();
+      return gr.bottom + 28 + window.scrollY;
+    };
+
+    list.push({
+      key: 'partners-center-exit-dot',
+      dot: true,
+      getPoint: () => ({ x: getGridCenterX(), y: getGridBottomY() }),
+    });
+
+    // Jog back to Left Rail
+    list.push({
+      key: 'partners-jog-back-to-rail',
+      dot: false,
+      getPoint: () => ({ x: railLeftX(), y: getGridBottomY() }),
+    });
+  } else {
+    // Mobile: Clean Left Rail alignment
+    [card0, card2, card4].forEach((card, idx) => {
+      if (card) {
+        list.push({
+          key: `partners-mobile-row-${idx}`,
+          dot: true,
+          getPoint: () => {
+            const r = card.getBoundingClientRect();
+            return { x: railLeftX(), y: r.top + 40 + window.scrollY };
+          },
+        });
+      }
+    });
+  }
+
+  // 6. Final CTA plugged into card interior from Left Rail
+  pushCtaConnection(list, cta, 'left', 'partners');
+
+  return list;
+}
+
 // 7. Our Capabilities (Overview): Hero (Left) -> Top Splitter Manifold (Center) -> 3 Sector Triad -> Bottom Combiner Manifold (Center) -> Jog to Left Rail -> Final CTA (Left Rail Plug)
 function buildCapabilitiesOverviewMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
@@ -1304,6 +1461,9 @@ function buildMilestones(): Milestone[] {
   }
   if (pathname.includes('/about/people')) {
     return buildPeopleMilestones();
+  }
+  if (pathname.includes('/about/our-partners')) {
+    return buildPartnersMilestones();
   }
   if (pathname.includes('/services/our-approach')) {
     return buildOurApproachMilestones();

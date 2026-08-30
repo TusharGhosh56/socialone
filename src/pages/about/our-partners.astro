@@ -2,71 +2,220 @@
 import Base from '../../layouts/Base.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import PartnerPresenceMap from '../../components/PartnerPresenceMap.astro';
 import Button from '../../components/Button.astro';
+
+const metrics = [
+  {
+    value: '23',
+    label: 'PARTNER ORGANISATIONS',
+    badge: 'Verified Alliances',
+    desc: 'Regional delivery, research and independent evaluation institutions.',
+  },
+  {
+    value: '98',
+    label: 'COUNTRIES SPANNED',
+    badge: 'Global Footprint',
+    desc: 'Active ground intelligence, sovereign reform and operational reach.',
+  },
+  {
+    value: '8',
+    label: 'OPERATING REGIONS',
+    badge: 'Decentralized Depth',
+    desc: 'South Asia, Africa, MENA, Americas, Europe & Central Asia, and Pacific.',
+  },
+];
+
+const partnerNetwork = [
+  {
+    id: 'partner-card-0',
+    title: 'Global Reach',
+    count: '4',
+    partners: 'Abt Global, IMC (now DT Global), Oxford Policy Management, Palladium',
+    highlight: 'border-t-2 border-t-gold',
+  },
+  {
+    id: 'partner-card-1',
+    title: 'Multi-Region',
+    count: '7',
+    partners: 'Knowledge for Development (K4D), Agua Consult, Development Pathways, Genesis Analytics, ITAD, Apex TC, Hakunamatata',
+    highlight: 'border-t-2 border-t-gold',
+  },
+  {
+    id: 'partner-card-2',
+    title: 'South Asia',
+    count: '5',
+    partners: 'Consiglieri (CPL), IIT Madras, IWMI, Matrix Business Development, Dias Works',
+    highlight: 'border-t-2 border-t-gold/70',
+  },
+  {
+    id: 'partner-card-3',
+    title: 'Sub-Saharan Africa',
+    count: '2',
+    partners: 'Jarco Consulting, Consilient',
+    highlight: 'border-t-2 border-t-gold/70',
+  },
+  {
+    id: 'partner-card-4',
+    title: 'North America',
+    count: '3',
+    partners: 'Cadmus Group, Quantum Leaps, EMERG',
+    highlight: 'border-t-2 border-t-gold/50',
+  },
+  {
+    id: 'partner-card-5',
+    title: 'Middle East & North Africa',
+    count: '2',
+    partners: 'Optimum Analysis, Edmaaj',
+    highlight: 'border-t-2 border-t-gold/50',
+  },
+];
 ---
 
 <Base
-  title="Our Partners | Global Institutional Collaborations | APLYD"
-  description="APLYD collaborates with multilateral institutions, sovereign governments, philanthropic foundations, and frontline organizations worldwide."
-  keywords="APLYD Partners, Institutional Collaborations, Athena Infonomics Alliances, Global Development Partners, GovTech Ecosystem"
+  title="Our Partners | Global Delivery & Evaluation Network | APLYD"
+  description="APLYD works through a network of 23 regional partners spanning 98 countries, extending institutional reach into the geographies we serve."
+  keywords="APLYD Partners, Global Delivery Network, Evaluation Partners, Regional Implementation, GovTech Alliances, Multilateral Partners, Institutional Delivery"
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background */}
+      {/* Thematic Stock Video Background: Strategic Institutional Handshake */}
       <HeroVideo
-        src="/video/hero/6.mp4"
-        overlayOpacity={0.65}
+        src="/video/handshake.mp4"
+        overlayOpacity={0.62}
       />
 
-      <div class="container-x relative z-10">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+      <div class="container-x relative z-10 space-y-5">
+        <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           About APLYD · Our Partners
         </div>
 
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-          Collaborating with global institutions and governments
+          A network built for local reach, not just global scale
         </h1>
 
-        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
-          We partner with multilateral institutions, sovereign governments, philanthropic foundations, and frontline practitioners to embed durable AI capabilities within real operating systems.
+        <p class="max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+          APLYD works alongside a network of regional delivery, research and evaluation partners who bring local presence, sector expertise and last-mile access to the geographies our clients serve. Every partner follows the same standard we hold ourselves to: evidence-led, independently assured and built for institutional ownership.
         </p>
       </div>
     </section>
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      <section class="relative z-10 py-12 sm:py-16">
-        <div class="container-x space-y-12">
-          
-          {/* Clean Partner Ecosystem Placeholder Frame */}
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-10 sm:p-14 lg:p-16 relative overflow-hidden shadow-md text-center space-y-6">
-            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-navy border border-hair">
-              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-              <span>Institutional Ecosystem</span>
-            </div>
+      <div class="py-12 sm:py-16 space-y-16 sm:space-y-24">
 
-            <h2 class="text-3xl sm:text-4xl font-light text-navy tracking-tight max-w-2xl mx-auto">
-              Our partner network is currently being updated
+        {/* SECTION 1: 3-METRIC STAT MATRIX */}
+        <section class="container-x" id="partners-metrics-section">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {metrics.map((m) => (
+              <div class="group relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm transition-all duration-300 hover:shadow-md flex flex-col justify-between card-flip-hover">
+                <div class="flex items-center justify-between gap-4 mb-4 relative z-10">
+                  <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy border border-hair flip-badge transition-colors">
+                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                    {m.badge}
+                  </span>
+                </div>
+
+                <div class="my-4 relative z-10">
+                  <div class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-300 group-hover:scale-105 origin-left flip-text transition-colors">
+                    {m.value}
+                  </div>
+                  <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2 flip-text transition-colors">
+                    {m.label}
+                  </div>
+                </div>
+
+                <p class="text-mid-navy text-xs sm:text-small font-normal leading-relaxed relative z-10 border-t border-hair pt-4 flip-text transition-colors">
+                  {m.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 2: THE INTERACTIVE PRESENCE MAP */}
+        <section class="container-x space-y-6" id="partner-map-section">
+          <div class="space-y-2 border-b border-hair pb-4">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold">
+              Global Presence
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-light text-navy tracking-tight">
+              Interactive Presence Map
             </h2>
-
-            <p class="text-mid-navy text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-              We work alongside leading public institutions, funders, and research organizations across 15+ countries. Detailed profiles and case collaborations will be published here soon.
-            </p>
-
-            <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
-              <Button href="/contact" variant="primary">
-                Explore Partnership Opportunities
-              </Button>
-              <Button href="/about/16-years-of-proof" variant="ghost">
-                View 16 Years of Proof
-              </Button>
-            </div>
           </div>
 
-        </div>
-      </section>
+          <PartnerPresenceMap />
+        </section>
+
+        {/* SECTION 3: OUR PARTNER NETWORK (2-COLUMN ARCHITECTURAL MATRIX) */}
+        <section class="container-x space-y-8" id="regional-network">
+          <div class="space-y-2 border-b border-hair pb-4">
+            <div class="text-xs font-bold uppercase tracking-widest text-gold">
+              Our Partner Network
+            </div>
+            <h2 class="text-3xl sm:text-4xl font-light text-navy tracking-tight">
+              Regional Delivery & Evaluation Alliances
+            </h2>
+          </div>
+
+          {/* 2-Column Grid */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+            {partnerNetwork.map((region) => (
+              <div
+                id={region.id}
+                class={`group relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gold/60 flex flex-col justify-between space-y-5 card-interactive-sheen ${region.highlight}`}
+              >
+                <div class="space-y-3 relative z-10">
+                  <div class="flex items-start justify-between gap-4">
+                    <h3 class="text-2xl sm:text-3xl font-light text-navy tracking-tight font-display">
+                      {region.title}
+                    </h3>
+                    <div class="flex items-baseline gap-1.5 shrink-0 bg-pale-navy px-3 py-1 rounded-pill border border-hair">
+                      <span class="text-lg sm:text-xl font-bold text-gold font-display">
+                        {region.count}
+                      </span>
+                      <span class="text-[10px] uppercase tracking-wider font-bold text-navy">
+                        PARTNERS
+                      </span>
+                    </div>
+                  </div>
+
+                  <p class="text-sm sm:text-base text-mid-navy leading-relaxed font-normal pt-3 border-t border-hair/60">
+                    {region.partners}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 4: STANDARDIZED FINAL CTA CARD */}
+        <section class="relative z-10">
+          <div class="container-x">
+            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+              <div class="max-w-2xl relative z-10">
+                <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">
+                  Collaborate With Us
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                  Partner with APLYD on applied AI delivery and evaluation
+                </h3>
+                <p class="text-base text-mid-navy leading-relaxed font-normal">
+                  Whether you are a multilateral funder, research institution, or regional delivery specialist, connect with our global practice to extend institutional reach.
+                </p>
+              </div>
+              <div class="relative z-10 shrink-0">
+                <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
+                  Partner With APLYD &rarr;
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
     </AtmosphericCanvas>
   </div>
 </Base>
