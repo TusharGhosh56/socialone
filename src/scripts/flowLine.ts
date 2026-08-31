@@ -802,25 +802,13 @@ function buildPartnersMilestones(): Milestone[] {
     });
   }
 
-  // 4. Regional Network Heading on Left Rail
-  if (networkHeading) {
-    list.push({
-      key: 'partners-network-heading',
-      getPoint: () => {
-        const r = networkHeading.getBoundingClientRect();
-        if (r.height === 0) return null;
-        return { x: railLeftX(), y: r.top + 16 + window.scrollY };
-      },
-    });
-  }
-
-  // 5. Central Spine Interconnected Bus (Through Partner Grid Gutter)
+  // 4. Central Spine Interconnected Bus (Through Partner Grid Gutter)
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 768;
 
-  if (isDesktop && grid && card0 && card2 && card4) {
-    const getGridTopY = () => {
-      const gr = grid.getBoundingClientRect();
-      return gr.top - 28 + window.scrollY;
+  if (isDesktop && networkSection && grid && card0 && card2 && card4) {
+    const getNetworkTopY = () => {
+      const nr = networkSection.getBoundingClientRect();
+      return nr.top - 24 + window.scrollY;
     };
 
     const getGridCenterX = () => {
@@ -828,17 +816,17 @@ function buildPartnersMilestones(): Milestone[] {
       return gr.left + gr.width / 2 + window.scrollX;
     };
 
-    // Jog from Left Rail to Grid Centerline
+    // Jog from Left Rail to Centerline ABOVE the title (no vertical line next to title)
     list.push({
       key: 'partners-jog-to-center-start',
       dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getGridTopY() }),
+      getPoint: () => ({ x: railLeftX(), y: getNetworkTopY() }),
     });
 
     list.push({
       key: 'partners-center-entry-dot',
       dot: true,
-      getPoint: () => ({ x: getGridCenterX(), y: getGridTopY() }),
+      getPoint: () => ({ x: getGridCenterX(), y: getNetworkTopY() }),
     });
 
     // Row 1 Center Node (Between Global Reach & Multi-Region)
