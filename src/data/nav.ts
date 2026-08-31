@@ -40,6 +40,11 @@ export const navLinks: NavLink[] = [
         href: '/about/people',
         description: 'Specialists across AI, delivery and evaluation.',
       },
+      {
+        label: 'Our Partners',
+        href: '/about/our-partners',
+        description: 'Institutional partnerships and multilateral delivery allies.',
+      },
     ],
   },
   {
@@ -97,6 +102,10 @@ export const navLinks: NavLink[] = [
         description: 'Independent algorithmic auditing, fairness, and safety.',
       },
     ],
+  },
+  {
+    label: 'Careers',
+    href: '/careers',
   },
 ];
 

@@ -1,0 +1,524 @@
+---
+// PartnerPresenceMap.astro — Dual-Pane Interactive Regional Intelligence Studio
+---
+
+<div class="partner-map-wrapper w-full space-y-4" data-partner-presence-map id="partner-presence-map">
+  
+  {/* Region Filter Chips Bar */}
+  <div class="flex flex-wrap items-center gap-2 pb-2" id="partner-chips">
+    <!-- Dynamic chips rendered by client script -->
+  </div>
+
+  {/* Dual-Pane Studio: Left Regional Country Dossier + Right Interactive Map */}
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+    
+    {/* ================= LEFT REGIONAL DOSSIER PANEL ================= */}
+    <div class="lg:col-span-4 rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between min-h-[420px] max-h-[640px] overflow-hidden">
+
+      {/* Dossier Header */}
+      <div class="space-y-3 pb-4 border-b border-hair">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-gold">
+            Regional Dossier
+          </span>
+          <span id="panel-stats-pill" class="text-[10px] uppercase font-bold tracking-wider bg-pale-navy px-2.5 py-1 rounded-full text-navy border border-hair">
+            98 Countries · 23 Orgs
+          </span>
+        </div>
+
+        <div>
+          <h3 id="panel-region-title" class="text-xl sm:text-2xl font-light text-navy tracking-tight font-display">
+            All Geographies
+          </h3>
+          <p id="panel-region-desc" class="text-xs text-mid-navy/80 mt-1 leading-relaxed">
+            Select any region chip or click a country to inspect active delivery and evaluation partners.
+          </p>
+        </div>
+
+        {/* Quick Instant Country Filter */}
+        <div class="relative">
+          <input
+            type="text"
+            id="panel-search-input"
+            placeholder="Search country or partner..."
+            class="w-full text-xs bg-paper/50 border border-hair rounded-xl px-3 py-2 text-navy placeholder:text-mid-navy/60 focus:outline-none focus:border-gold transition-colors"
+          />
+        </div>
+      </div>
+
+      {/* Scrollable Countries & Partners Feed */}
+      <div id="panel-country-list" class="flex-1 overflow-y-auto space-y-2 py-3 pr-1 custom-scrollbar">
+        <!-- Dynamic Country Feed items rendered by script -->
+      </div>
+
+      {/* Dossier Footer / Interaction Tip */}
+      <div class="pt-3 border-t border-hair flex items-center justify-between text-[11px] text-mid-navy/70">
+        <span class="flex items-center gap-1.5">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
+          Live Country Intelligence
+        </span>
+        <span class="text-[10px] text-navy font-bold">Hover to spotlight</span>
+      </div>
+
+    </div>
+
+    {/* ================= RIGHT INTERACTIVE MAP VISUAL ================= */}
+    <div class="lg:col-span-8 partner-map-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md shadow-sm overflow-hidden min-h-[480px] lg:min-h-[640px] flex flex-col justify-center">
+      
+      {/* Dynamic Country Hover Tooltip */}
+      <div id="partner-tooltip" class="partner-tooltip pointer-events-none opacity-0 transition-opacity duration-150 absolute z-30 bg-navy text-white px-4 py-3 rounded-2xl shadow-xl border border-white/20 max-w-xs text-xs">
+        <div class="tooltip-title font-bold text-sm text-gold mb-1 flex items-center justify-between gap-2"></div>
+        <div class="tooltip-presence text-pale-navy leading-relaxed"></div>
+      </div>
+
+      {/* Map Zoom Controls */}
+      <div class="absolute top-4 right-4 z-20 flex flex-col gap-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-hair p-1 shadow-sm">
+        <button
+          type="button"
+          id="map-zoom-in"
+          aria-label="Zoom in"
+          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
+          title="Zoom In"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          id="map-zoom-out"
+          aria-label="Zoom out"
+          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
+          title="Zoom Out"
+        >
+          −
+        </button>
+        <button
+          type="button"
+          id="map-zoom-reset"
+          aria-label="Reset zoom"
+          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors text-xs font-semibold cursor-pointer"
+          title="Reset Map View"
+        >
+          ↺
+        </button>
+      </div>
+
+      {/* SVG Map Canvas */}
+      <div class="w-full h-[480px] lg:h-[640px] relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-paper/30 via-white to-pale-navy/20">
+        <svg id="partner-presence-svg" class="w-full h-full block cursor-grab active:cursor-grabbing"></svg>
+      </div>
+
+      {/* Map Legend (Bottom Left) */}
+      <div class="absolute bottom-4 left-4 z-20 bg-white/90 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-hair shadow-sm flex items-center gap-2.5 text-xs text-mid-navy">
+        <span class="font-bold text-navy text-[11px] uppercase tracking-wider">Concentration:</span>
+        <div class="flex items-center gap-0.5">
+          <span class="w-4 h-2.5 rounded-xs bg-[#BFD9F2] inline-block border border-black/5" title="1 Partner"></span>
+          <span class="w-4 h-2.5 rounded-xs bg-[#78A9E0] inline-block border border-black/5" title="2-3 Partners"></span>
+          <span class="w-4 h-2.5 rounded-xs bg-[#2F80D1] inline-block border border-black/5" title="4-6 Partners"></span>
+          <span class="w-4 h-2.5 rounded-xs bg-[#0057B8] inline-block border border-black/5" title="7+ Partners"></span>
+        </div>
+        <span class="text-[10px] text-mid-navy/70">Higher</span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<script is:inline>
+(function() {
+  const PARTNERS = [
+    { name: "Jarco Consulting", countriesOperation: ["Ethiopia", "Cameroon", "Djibouti", "Gambia", "Kenya", "Lesotho", "Malawi", "Senegal", "Somalia", "Tanzania", "Zambia"], opsRegions: ["Sub-Saharan Africa"] },
+    { name: "Consiglieri Private Limited (CPL)", countriesOperation: ["Bangladesh"], opsRegions: ["South Asia"] },
+    { name: "ITAD", countriesOperation: ["Ethiopia", "India", "Nigeria", "Tanzania"], opsRegions: ["South Asia", "Sub-Saharan Africa"] },
+    { name: "Knowledge for Development (K4D)", countriesOperation: ["India", "Benin", "Myanmar", "Ghana", "Cameroon", "Cuba", "Mozambique", "Tanzania", "Madagascar", "Laos", "Burkina Faso", "Switzerland", "Peru", "Bolivia", "Bangladesh", "Kyrgyzstan", "Kazakhstan", "Nigeria", "Kenya", "Senegal", "Togo", "Mali", "Zambia", "Nepal", "Sri Lanka", "Malawi", "Brazil", "Ivory Coast", "Philippines", "Rwanda", "Vietnam", "Indonesia", "Egypt", "Burundi", "Mongolia", "Lesotho", "Colombia", "Ethiopia", "Palestine", "Cambodia"], opsRegions: ["Europe & Central Asia", "Latin America & Caribbean", "Middle East & North Africa", "South Asia", "Southeast & East Asia", "Sub-Saharan Africa"] },
+    { name: "Agua Consult", countriesOperation: ["Bangladesh", "Benin", "Bolivia", "Burkina Faso", "Costa Rica", "Dominican Republic", "Democratic Republic of the Congo", "El Salvador", "Eswatini", "Ethiopia", "Ghana", "Haiti", "India", "Madagascar", "Malawi", "Mali", "Mozambique", "Myanmar", "Nepal", "Nicaragua", "Niger", "Pakistan", "Rwanda", "Sierra Leone", "South Africa", "South Sudan", "Tanzania", "Timor-Leste", "Uganda", "Vietnam", "Zambia", "Zimbabwe", "Brazil", "Burundi", "Cambodia", "China", "Colombia", "Indonesia", "Jamaica", "Kenya", "Kyrgyzstan", "Liberia", "Mongolia", "Morocco", "Panama", "Papua New Guinea", "Peru", "Philippines", "Tajikistan", "Tunisia", "Venezuela"], opsRegions: ["Europe & Central Asia", "Latin America & Caribbean", "Middle East & North Africa", "Pacific", "South Asia", "Southeast & East Asia", "Sub-Saharan Africa"] },
+    { name: "Genesis Analytics", countriesOperation: ["Ethiopia", "Kenya", "Nigeria", "United Kingdom", "Canada", "India", "Portugal", "Spain"], opsRegions: ["Europe & Central Asia", "North America", "South Asia", "Sub-Saharan Africa"] },
+    { name: "Consilient", countriesOperation: ["Somalia", "Kenya", "Sudan", "Malawi", "Ethiopia"], opsRegions: ["Sub-Saharan Africa"] },
+    { name: "Abt Global", countriesOperation: ["Global"], opsRegions: ["Global"] },
+    { name: "IMC (now DT Global)", countriesOperation: ["Global"], opsRegions: ["Global"] },
+    { name: "Optimum Analysis", countriesOperation: ["Iraq"], opsRegions: ["Middle East & North Africa"] },
+    { name: "Cadmus Group LLC (Previously Nathan Associates)", countriesOperation: ["United States"], opsRegions: ["North America"] },
+    { name: "Apex for Training and Consulting (Apex TC)", countriesOperation: ["United States", "Jordan", "Syria", "Iraq", "Afghanistan", "Ethiopia", "Egypt"], opsRegions: ["Middle East & North Africa", "North America", "South Asia", "Sub-Saharan Africa"] },
+    { name: "Edmaaj", countriesOperation: ["Jordan", "Lebanon", "Palestine", "Iraq", "Libya", "Tunisia", "Egypt", "Yemen", "Syria", "Kuwait", "Morocco", "Algeria"], opsRegions: ["Middle East & North Africa"] },
+    { name: "Development Pathways", countriesOperation: ["Sierra Leone", "Angola", "Botswana", "Lesotho", "Madagascar", "Malawi", "Rwanda", "Seychelles", "South Africa", "Somalia", "South Sudan", "Tanzania", "Uganda", "Pakistan", "Iraq", "Jordan", "Bangladesh", "India", "Cambodia", "Philippines", "Thailand", "Vietnam", "Fiji", "Myanmar", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Vanuatu", "Armenia", "Azerbaijan", "Kyrgyzstan", "Tajikistan", "Uzbekistan", "Kosovo", "Slovakia", "Turkey"], opsRegions: ["Europe & Central Asia", "Middle East & North Africa", "Pacific", "South Asia", "Southeast & East Asia", "Sub-Saharan Africa"] },
+    { name: "Indian Institute of Technology Madras (IIT Madras / IITM)", countriesOperation: ["India"], opsRegions: ["South Asia"] },
+    { name: "Oxford Policy Management", countriesOperation: ["Global"], opsRegions: ["Global"] },
+    { name: "Quantum Leaps", countriesOperation: ["United States"], opsRegions: ["North America"] },
+    { name: "EMERG", countriesOperation: ["Canada"], opsRegions: ["North America"] },
+    { name: "International Water Management Institute (IWMI)", countriesOperation: ["Sri Lanka"], opsRegions: ["South Asia"] },
+    { name: "Matrix Business Development Ltd.", countriesOperation: ["Bangladesh"], opsRegions: ["South Asia"] },
+    { name: "Palladium", countriesOperation: ["Global"], opsRegions: ["Global"] },
+    { name: "Hakunamatata", countriesOperation: ["India", "United States", "Australia"], opsRegions: ["North America", "Pacific", "South Asia"] },
+    { name: "Dias Works", countriesOperation: ["India"], opsRegions: ["South Asia"] }
+  ];
+
+  const REGION_COUNTRIES = {
+    "Pacific": ["Australia", "Fiji", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Vanuatu"],
+    "South Asia": ["India", "Bangladesh", "Pakistan", "Sri Lanka", "Nepal", "Afghanistan"],
+    "Sub-Saharan Africa": ["Ethiopia", "Kenya", "Nigeria", "Tanzania", "Ghana", "Senegal", "South Africa", "Rwanda", "Uganda", "Somalia", "Sudan", "South Sudan", "Zambia", "Zimbabwe", "Mozambique", "Cameroon", "Mali", "Malawi", "Madagascar", "Benin", "Burkina Faso", "Togo", "Ivory Coast", "Niger", "Sierra Leone", "Angola", "Botswana", "Lesotho", "Eswatini", "Djibouti", "Gambia", "Democratic Republic of the Congo", "Liberia", "Burundi", "Seychelles"],
+    "Middle East & North Africa": ["Egypt", "Jordan", "Iraq", "Lebanon", "Palestine", "Syria", "Libya", "Tunisia", "Morocco", "Algeria", "Yemen", "Kuwait"],
+    "North America": ["United States", "Canada"],
+    "Latin America & Caribbean": ["Brazil", "Colombia", "Peru", "Bolivia", "Venezuela", "Cuba", "Haiti", "Dominican Republic", "Costa Rica", "El Salvador", "Nicaragua", "Panama", "Jamaica"],
+    "Southeast & East Asia": ["Vietnam", "Cambodia", "Laos", "Myanmar", "Thailand", "Indonesia", "Philippines", "China", "Mongolia", "Timor-Leste"],
+    "Europe & Central Asia": ["United Kingdom", "Portugal", "Spain", "Switzerland", "Kazakhstan", "Kyrgyzstan", "Tajikistan", "Uzbekistan", "Armenia", "Azerbaijan", "Kosovo", "Slovakia", "Turkey"]
+  };
+
+  const ORDER = [
+    "South Asia",
+    "Sub-Saharan Africa",
+    "Southeast & East Asia",
+    "Pacific",
+    "Europe & Central Asia",
+    "North America",
+    "Middle East & North Africa",
+    "Latin America & Caribbean"
+  ];
+
+  const FIX = {
+    "United States of America": "United States",
+    "Dem. Rep. Congo": "Democratic Republic of the Congo",
+    "Congo": "Republic of the Congo",
+    "Côte d'Ivoire": "Ivory Coast",
+    "Czechia": "Czech Republic",
+    "Republic of Korea": "South Korea",
+    "Lao PDR": "Laos",
+    "Macedonia": "North Macedonia",
+    "Bosnia and Herz.": "Bosnia and Herzegovina",
+    "Central African Rep.": "Central African Republic",
+    "Eq. Guinea": "Equatorial Guinea",
+    "S. Sudan": "South Sudan",
+    "W. Sahara": "Western Sahara",
+    "Dominican Rep.": "Dominican Republic",
+    "Solomon Is.": "Solomon Islands",
+    "eSwatini": "Eswatini",
+    "United Republic of Tanzania": "Tanzania",
+    "Somaliland": "Somalia",
+    "Viet Nam": "Vietnam",
+    "Falkland Is.": "Falkland Islands",
+    "UK": "United Kingdom"
+  };
+
+  let selectedRegion = null;
+  let searchQuery = "";
+  let mapGroup, mapZoom, currentSvg, geoFeatures = [];
+
+  function visiblePartners() {
+    return selectedRegion
+      ? PARTNERS.filter(p => p.opsRegions.includes(selectedRegion))
+      : PARTNERS;
+  }
+
+  function countryCounts() {
+    const counts = {};
+    const allowed = selectedRegion ? new Set(REGION_COUNTRIES[selectedRegion] || []) : null;
+
+    PARTNERS.forEach(p => {
+      if (selectedRegion && !p.opsRegions.includes(selectedRegion)) return;
+
+      new Set(p.countriesOperation).forEach(country => {
+        if (country !== "NA" && country !== "Global") {
+          if (!allowed || allowed.has(country)) {
+            counts[country] = (counts[country] || 0) + 1;
+          }
+        }
+      });
+    });
+    return counts;
+  }
+
+  function colorForCount(n) {
+    if (!n) return "#F0F4F8";
+    if (n === 1) return "#BFD9F2";
+    if (n <= 3) return "#78A9E0";
+    if (n <= 6) return "#2F80D1";
+    return "#0057B8";
+  }
+
+  function renderPanel() {
+    const titleEl = document.getElementById("panel-region-title");
+    const descEl = document.getElementById("panel-region-desc");
+    const statsEl = document.getElementById("panel-stats-pill");
+    const listEl = document.getElementById("panel-country-list");
+    if (!listEl) return;
+
+    const counts = countryCounts();
+    const countryNames = Object.keys(counts).sort((a, b) => {
+      if (counts[b] !== counts[a]) return counts[b] - counts[a];
+      return a.localeCompare(b);
+    });
+
+    const filtered = searchQuery
+      ? countryNames.filter(c => {
+          const matchCountry = c.toLowerCase().includes(searchQuery.toLowerCase());
+          const partners = PARTNERS.filter(p => (!selectedRegion || p.opsRegions.includes(selectedRegion)) && p.countriesOperation.includes(c));
+          const matchPartner = partners.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+          return matchCountry || matchPartner;
+        })
+      : countryNames;
+
+    const totalCountries = countryNames.length;
+    const activeOrgs = visiblePartners().length;
+
+    if (titleEl) titleEl.textContent = selectedRegion || "All Geographies";
+    if (statsEl) statsEl.textContent = `${totalCountries} Countries · ${activeOrgs} Orgs`;
+    if (descEl) {
+      descEl.textContent = selectedRegion
+        ? `Viewing active operational and evaluation partnerships across ${selectedRegion}.`
+        : "Viewing the global institutional delivery and evaluation footprint across all regions.";
+    }
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = `<div class="p-6 text-center text-xs text-mid-navy/60 bg-paper/40 rounded-2xl">No matching countries or partners found.</div>`;
+      return;
+    }
+
+    let html = "";
+    filtered.forEach(c => {
+      const orgCount = counts[c] || 0;
+      const partners = PARTNERS
+        .filter(p => (!selectedRegion || p.opsRegions.includes(selectedRegion)) && p.countriesOperation.includes(c))
+        .map(p => p.name);
+
+      html += `
+        <div class="panel-country-item group p-3.5 rounded-2xl border border-hair bg-white hover:bg-pale-navy/50 hover:border-gold/60 transition-all duration-200 cursor-pointer shadow-xs" data-country="${c}">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <span class="font-bold text-navy text-xs group-hover:text-gold transition-colors">${c}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${orgCount > 1 ? 'bg-gold/15 text-gold' : 'bg-pale-navy text-navy'}">${orgCount} ${orgCount === 1 ? 'Org' : 'Orgs'}</span>
+          </div>
+          <p class="text-[11px] text-mid-navy leading-relaxed">
+            ${partners.join(" • ")}
+          </p>
+        </div>
+      `;
+    });
+
+    listEl.innerHTML = html;
+
+    // Attach two-way hover and click interactions
+    listEl.querySelectorAll(".panel-country-item").forEach(item => {
+      const country = item.getAttribute("data-country");
+      item.onmouseenter = () => spotlightCountry(country, true);
+      item.onmouseleave = () => spotlightCountry(country, false);
+      item.onclick = () => spotlightCountry(country, true);
+    });
+  }
+
+  function spotlightCountry(countryName, isHighlight) {
+    if (typeof d3 === "undefined") return;
+    d3.select("#partner-presence-svg").selectAll(".country-path")
+      .filter(d => {
+        const name = FIX[d.properties.name] || d.properties.name;
+        return name === countryName;
+      })
+      .attr("stroke", isHighlight ? "#B3820A" : "#78A9E0")
+      .attr("stroke-width", isHighlight ? 2.5 : 0.45)
+      .attr("fill", d => {
+        if (isHighlight) return "#F3BA2F";
+        const counts = countryCounts();
+        const name = FIX[d.properties.name] || d.properties.name;
+        return colorForCount(counts[name] || 0);
+      });
+  }
+
+  function renderChips() {
+    const el = document.getElementById("partner-chips");
+    if (!el) return;
+
+    let html = `<button type="button" class="partner-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-xs font-bold transition-all duration-200 border cursor-pointer ${
+      !selectedRegion
+        ? "bg-navy text-white border-navy shadow-sm is-active"
+        : "bg-white text-navy hover:bg-pale-navy border-hair"
+    }" data-region="">All Regions (${PARTNERS.length})</button>`;
+
+    ORDER.forEach(region => {
+      const n = PARTNERS.filter(p => p.opsRegions.includes(region)).length;
+      if (n > 0) {
+        const isActive = selectedRegion === region;
+        html += `<button type="button" class="partner-chip inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-xs font-bold transition-all duration-200 border cursor-pointer ${
+          isActive
+            ? "bg-navy text-white border-navy shadow-sm is-active"
+            : "bg-white text-navy hover:bg-pale-navy border-hair"
+        }" data-region="${region}">${region} (${n})</button>`;
+      }
+    });
+
+    el.innerHTML = html;
+    el.querySelectorAll(".partner-chip").forEach(btn => {
+      btn.onclick = () => {
+        selectedRegion = btn.getAttribute("data-region") || null;
+        renderChips();
+        renderPanel();
+        paintMap();
+        
+        const summary = document.getElementById("partner-summary-text");
+        if (summary) {
+          if (selectedRegion) {
+            const partnerCount = PARTNERS.filter(p => p.opsRegions.includes(selectedRegion)).length;
+            const countryCount = Object.keys(countryCounts()).length;
+            summary.textContent = `${selectedRegion} · ${countryCount} Countries Spanned · ${partnerCount} Organisations`;
+          } else {
+            summary.textContent = "98 Countries Spanned · 23 Organisations";
+          }
+        }
+      };
+    });
+
+    const searchInput = document.getElementById("panel-search-input");
+    if (searchInput) {
+      searchInput.oninput = (e) => {
+        searchQuery = e.target.value;
+        renderPanel();
+      };
+    }
+  }
+
+  function paintMap() {
+    if (typeof d3 === "undefined") return;
+    const counts = countryCounts();
+    d3.select("#partner-presence-svg").selectAll(".country-path")
+      .transition()
+      .duration(250)
+      .attr("fill", d => {
+        const name = FIX[d.properties.name] || d.properties.name;
+        return colorForCount(counts[name] || 0);
+      });
+  }
+
+  async function initPartnerMap() {
+    if (typeof d3 === "undefined" || typeof topojson === "undefined") {
+      setTimeout(initPartnerMap, 100);
+      return;
+    }
+
+    renderChips();
+    renderPanel();
+
+    const svg = d3.select("#partner-presence-svg");
+    const container = document.querySelector(".partner-map-card");
+    if (!container || svg.empty()) return;
+
+    const width = container.clientWidth || 700;
+    const height = Math.min(640, Math.max(480, window.innerHeight * 0.65));
+    svg.attr("viewBox", `0 0 ${width} ${height}`);
+
+    mapGroup = svg.append("g");
+    const projection = d3.geoNaturalEarth1();
+    const path = d3.geoPath(projection);
+
+    try {
+      const topo = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(r => r.json());
+      geoFeatures = topojson.feature(topo, topo.objects.countries).features
+        .filter(d => d.properties.name !== "Antarctica");
+
+      projection.fitSize([width, height - 20], { type: "FeatureCollection", features: geoFeatures });
+
+      const tooltip = document.getElementById("partner-tooltip");
+      const titleEl = tooltip ? tooltip.querySelector(".tooltip-title") : null;
+      const presenceEl = tooltip ? tooltip.querySelector(".tooltip-presence") : null;
+
+      mapGroup.selectAll("path")
+        .data(geoFeatures)
+        .join("path")
+        .attr("class", "country-path transition-colors")
+        .attr("d", path)
+        .attr("stroke", "#78A9E0")
+        .attr("stroke-width", 0.45)
+        .style("cursor", d => {
+          const name = FIX[d.properties.name] || d.properties.name;
+          const count = countryCounts()[name] || 0;
+          return count > 0 ? "pointer" : "default";
+        })
+        .on("mousemove", (event, d) => {
+          const name = FIX[d.properties.name] || d.properties.name;
+          const count = countryCounts()[name] || 0;
+          
+          if (count === 0) {
+            if (tooltip) tooltip.style.opacity = "0";
+            return;
+          }
+
+          const partners = visiblePartners()
+            .filter(p => p.countriesOperation.includes(name))
+            .map(p => p.name);
+
+          if (tooltip && titleEl && presenceEl) {
+            tooltip.style.opacity = "1";
+            
+            const containerRect = container.getBoundingClientRect();
+            const posX = Math.min(event.clientX - containerRect.left + 16, containerRect.width - 280);
+            const posY = Math.max(12, event.clientY - containerRect.top - 60);
+
+            tooltip.style.left = `${posX}px`;
+            tooltip.style.top = `${posY}px`;
+
+            titleEl.innerHTML = `<span>${name}</span> <span class="bg-gold/20 text-gold px-2 py-0.5 rounded-full text-[10px] font-bold">${count} ${count === 1 ? 'Org' : 'Orgs'}</span>`;
+            presenceEl.textContent = partners.join(" • ");
+          }
+        })
+        .on("mouseleave", () => {
+          if (tooltip) tooltip.style.opacity = "0";
+        });
+
+      paintMap();
+
+      mapZoom = d3.zoom()
+        .scaleExtent([1, 6])
+        .on("zoom", event => {
+          mapGroup.attr("transform", event.transform);
+        });
+
+      svg.call(mapZoom);
+
+      // Wire zoom buttons
+      const btnIn = document.getElementById("map-zoom-in");
+      const btnOut = document.getElementById("map-zoom-out");
+      const btnReset = document.getElementById("map-zoom-reset");
+
+      if (btnIn) btnIn.onclick = () => svg.transition().duration(350).call(mapZoom.scaleBy, 1.35);
+      if (btnOut) btnOut.onclick = () => svg.transition().duration(350).call(mapZoom.scaleBy, 0.74);
+      if (btnReset) btnReset.onclick = () => {
+        selectedRegion = null;
+        searchQuery = "";
+        const searchInput = document.getElementById("panel-search-input");
+        if (searchInput) searchInput.value = "";
+        renderChips();
+        renderPanel();
+        paintMap();
+        svg.transition().duration(350).call(mapZoom.transform, d3.zoomIdentity);
+      };
+
+    } catch (err) {
+      console.warn("Failed to load map data", err);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initPartnerMap);
+  } else {
+    initPartnerMap();
+  }
+})();
+</script>
+
+<style>
+  .country-path:hover {
+    stroke: #0057B8 !important;
+    stroke-width: 1.6 !important;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(0, 87, 184, 0.2);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 87, 184, 0.4);
+  }
+</style>

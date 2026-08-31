@@ -186,7 +186,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
           growing taller on hover never shifts the row (or the section
           below it) — see the .challenge-cards rule near the bottom of this
           file for the matching width-on-hover behaviour at lg+. */}
-      <div class="challenge-cards mt-14 grid grid-cols-1 auto-rows-[280px] items-end gap-6 sm:grid-cols-2 sm:auto-rows-[300px] lg:grid-cols-4 lg:auto-rows-[420px]">
+      <div class="challenge-cards mt-14 grid grid-cols-1 auto-rows-auto items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[420px] lg:items-end">
         {principles.map((p, i) => <Reveal delay={160 + i * 100}><PrincipleItem {...p} /></Reveal>)}
       </div>
     </div>
