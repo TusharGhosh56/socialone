@@ -61,7 +61,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
                 </svg>
               </button>
 
-              <div class="nav-dropdown-menu invisible opacity-0 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:pointer-events-auto absolute left-0 top-full pt-3 w-80 transition-all duration-base ease-out">
+              <div class="nav-dropdown-menu invisible opacity-0 pointer-events-none group-hover:visible group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-focus-within:pointer-events-auto absolute left-0 top-full pt-3 min-w-[240px] transition-all duration-base ease-out">
                 <div class="rounded-xl border border-hair bg-white/95 p-2 shadow-xl backdrop-blur-md">
                   <div class="px-3 py-2 border-b border-hair/60 mb-1">
                     <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">{l.label}</p>
@@ -69,16 +69,11 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
                   {l.children.map((sub) => (
                     <a
                       href={sub.href}
-                      class="group/sub flex flex-col rounded-lg p-2.5 text-left transition-colors duration-micro hover:bg-pale-navy/60 focus:bg-pale-navy/60 no-underline"
+                      class="group/sub flex items-center rounded-lg px-3 py-2 text-left transition-colors duration-micro hover:bg-pale-navy/60 focus:bg-pale-navy/60 no-underline"
                     >
                       <span class="text-small font-bold text-navy group-hover/sub:text-deep-gold transition-colors">
                         {sub.label}
                       </span>
-                      {sub.description && (
-                        <span class="text-[0.78rem] text-ash font-normal leading-snug mt-0.5">
-                          {sub.description}
-                        </span>
-                      )}
                     </a>
                   ))}
                 </div>
@@ -121,7 +116,7 @@ const linkHref = (href: string) => (isHome || !href.startsWith('#') ? href : `/$
   href="/"
   id="floating-mark"
   aria-label="APLYD — home"
-  class="fixed left-[clamp(3rem,9vw,7rem)] top-3 z-50 grid h-10 w-10 place-items-center rounded-md bg-white/80 p-1.5 shadow-sm backdrop-blur transition-[opacity,transform] duration-base ease-out [&>svg]:h-full [&>svg]:w-full"
+  class="hidden lg:grid fixed left-[clamp(3rem,9vw,7rem)] top-3 z-50 h-10 w-10 place-items-center rounded-md bg-white/80 p-1.5 shadow-sm backdrop-blur transition-[opacity,transform] duration-base ease-out [&>svg]:h-full [&>svg]:w-full"
   data-floating-mark
   set:html={markNavy}
 ></a>

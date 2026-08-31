@@ -89,10 +89,19 @@ const WORKFLOW_OUTER_DURATION = ((2 * Math.PI) / 0.35).toFixed(2); // ~17.95s
 const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
 ---
 
-<div class="principle-card relative flex flex-col overflow-hidden rounded-lg border border-hair bg-off-white p-6" data-spotlight tabindex="0">
+<div class="principle-card relative flex flex-col overflow-hidden rounded-3xl border border-hair bg-white lg:bg-off-white p-6 sm:p-7 shadow-xs lg:shadow-none" data-spotlight tabindex="0">
   <span class="principle-card__spotlight" aria-hidden="true"></span>
 
-  <div class={`principle-card__motif motif-${motif}`} aria-hidden="true">
+  {/* Mobile Header: Visible on < 1024px */}
+  <div class="principle-card__mobile-header lg:hidden mb-4 flex items-center justify-between">
+    <span class="principle-card__mobile-hub flex items-center justify-center w-10 h-10 rounded-full bg-pale-navy border border-hair text-navy">
+      <PrincipleIcon icon={icon} />
+    </span>
+    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+  </div>
+
+  {/* Desktop Animated Motif: Visible on lg+ */}
+  <div class={`principle-card__motif motif-${motif} hidden lg:block`} aria-hidden="true">
     {motif === 'data' &&
       DATA_DOTS.map((d, i) => (
         <span
@@ -137,108 +146,82 @@ const OWNERSHIP_DURATION = ((2 * Math.PI) / 0.22).toFixed(2); // ~28.56s
     </span>
   </div>
 
-  {/* Sits directly above the title, in normal flow — 0-height/invisible at
-      rest, grows to its content height on hover (revealing ABOVE the
-      title, which stays pinned at the bottom the whole time). */}
-  <div class="principle-card__body-wrap relative z-10 grid grid-rows-[0fr] transition-[grid-template-rows] duration-base ease-out">
-    <p class="principle-card__body min-h-0 overflow-hidden text-navy/85">{body}</p>
+  {/* Sits directly above the title, in normal flow on mobile; grid-revealed on hover on desktop */}
+  <div class="principle-card__body-wrap relative z-10 block lg:grid lg:grid-rows-[0fr] lg:transition-[grid-template-rows] duration-base ease-out">
+    <p class="principle-card__body min-h-0 text-mid-navy lg:text-navy/85 text-sm sm:text-base leading-relaxed">{body}</p>
   </div>
-  <div class="principle-card__title-wrap relative z-10 mt-auto flex items-end">
-    <h3 class="principle-card__title text-h3 font-bold text-navy">{lead}</h3>
+  <div class="principle-card__title-wrap relative z-10 mt-3 lg:mt-auto flex items-end">
+    <h3 class="principle-card__title text-lg sm:text-xl lg:text-h3 font-bold text-navy">{lead}</h3>
   </div>
 </div>
 
 <style>
+  /* Mobile Default (Touch Devices & < 1024px) */
   .principle-card {
-    height: 280px;
-    /* Measured, not guessed — the longest actual heading's real wrapped
-       height at each breakpoint's real (lg: narrow, 4-per-row) card width,
-       via a throwaway min-height:0 probe on .principle-card__title-wrap
-       (same "measure, don't reconstruct" convention as CaseCarousel's card
-       width, elsewhere in this project). An earlier "roughly 2 lines"
-       guess badly undershot at lg specifically: at that breakpoint's ~250px
-       card width (~202px after padding), 3 of the 4 real headings actually
-       wrap to 3 lines, not 2 — reserving only 2 lines' worth of space there
-       left those three taller than the shortest ("No one owns it after
-       launch", still 1 line), defeating the whole point of a shared
-       reserved height. */
-    --title-space: 50px;
+    height: auto;
     transition:
       background-color var(--dur-base) var(--ease-out),
       box-shadow var(--dur-base) var(--ease-out),
       border-color var(--dur-base) var(--ease-out);
   }
-  .principle-card:hover,
-  .principle-card:focus-visible {
-    background-color: var(--navy);
-    border-color: transparent;
-    box-shadow:
-      0 20px 45px -14px rgba(26, 33, 80, 0.32),
-      0 0 22px 1px rgba(209, 156, 51, 0.24);
+  .principle-card__body-wrap {
+    display: block;
   }
-  @media (min-width: 640px) {
-    .principle-card {
-      height: 300px;
-      --title-space: 50px;
-    }
+  .principle-card__body {
+    margin-top: 0.25rem;
+    color: var(--mid-navy);
   }
+
+  /* Desktop Viewports (lg+: 1024px+) */
   @media (min-width: 1024px) {
     .principle-card {
       height: 420px;
       --title-space: 96px;
+      background-color: var(--off-white);
+      border-radius: 1rem;
+      padding: 1.5rem;
     }
-  }
-  /* Cursor-tracked gold spotlight (src/scripts/cardSpotlight.ts writes
-     --spot-x/--spot-y from the pointer's position). Sits above the card's
-     own background but below the icon/text (z-10) so it reads as a warm
-     glow under the content, not on top of it. Position defaults to centre
-     so keyboard focus (no pointer position) still shows a sensible glow. */
-  .principle-card__spotlight {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    opacity: 0;
-    transition: opacity var(--dur-base) var(--ease-out);
-    background: radial-gradient(
-      110px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      rgba(209, 156, 51, 0.7),
-      transparent 60%
-    );
-    pointer-events: none;
-  }
-  .principle-card:hover .principle-card__spotlight,
-  .principle-card:focus-visible .principle-card__spotlight {
-    opacity: 1;
-  }
-  .principle-card__title-wrap {
-    min-height: var(--title-space);
-  }
-  .principle-card__title,
-  .principle-card__body {
-    transition: color var(--dur-base) var(--ease-out);
-  }
-  .principle-card:hover .principle-card__title,
-  .principle-card:focus-visible .principle-card__title {
-    color: #fff;
-  }
-  /* Body starts at margin-top:0 (invisible, 0-height wrapper) — on reveal
-     the wrapper's own grid-rows growth is what makes room, this margin
-     just gives the body text breathing room from whatever's above it once
-     visible. */
-  .principle-card__body {
-    margin-top: 0;
-    transition:
-      color var(--dur-base) var(--ease-out),
-      margin-top var(--dur-base) var(--ease-out);
-  }
-  .principle-card:hover .principle-card__body,
-  .principle-card:focus-visible .principle-card__body {
-    color: rgba(232, 234, 241, 0.85);
-    margin-top: 0.75rem;
-  }
-  .principle-card:hover .principle-card__body-wrap,
-  .principle-card:focus-visible .principle-card__body-wrap {
-    grid-template-rows: 1fr;
+    .principle-card:hover,
+    .principle-card:focus-visible {
+      background-color: var(--navy);
+      border-color: transparent;
+      box-shadow:
+        0 20px 45px -14px rgba(26, 33, 80, 0.32),
+        0 0 22px 1px rgba(209, 156, 51, 0.24);
+    }
+    .principle-card__title-wrap {
+      min-height: var(--title-space);
+      margin-top: auto;
+    }
+    .principle-card__title,
+    .principle-card__body {
+      transition: color var(--dur-base) var(--ease-out);
+    }
+    .principle-card:hover .principle-card__title,
+    .principle-card:focus-visible .principle-card__title {
+      color: #fff;
+    }
+    .principle-card__body-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows var(--dur-base) var(--ease-out);
+    }
+    .principle-card__body {
+      margin-top: 0;
+      overflow: hidden;
+      transition:
+        color var(--dur-base) var(--ease-out),
+        margin-top var(--dur-base) var(--ease-out);
+    }
+    .principle-card:hover .principle-card__body,
+    .principle-card:focus-visible .principle-card__body {
+      color: rgba(232, 234, 241, 0.85);
+      margin-top: 0.75rem;
+    }
+    .principle-card:hover .principle-card__body-wrap,
+    .principle-card:focus-visible .principle-card__body-wrap {
+      grid-template-rows: 1fr;
+    }
   }
 
   /* ---- centred ambient motif (see the frontmatter comment above) ---- */
