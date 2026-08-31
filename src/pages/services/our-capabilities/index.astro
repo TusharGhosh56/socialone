@@ -19,7 +19,7 @@ const sectors = [
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
       {/* Thematic Cinematic Stock Video: Vibrant Community & Multi-Sector Impact */}
       <HeroVideo
         src="/video/capability.mp4"
@@ -27,16 +27,16 @@ const sectors = [
       />
 
       <div class="container-x relative z-10">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           Services · Our Capabilities
         </div>
 
-        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Applied AI capabilities across sectors
         </h1>
 
-        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
           We work across the full AI implementation journey, from assessing readiness and identifying use cases to building systems and establishing internal institutional capability.
         </p>
       </div>
@@ -46,38 +46,38 @@ const sectors = [
     <AtmosphericCanvas>
       {/* ============================ SECTORS ============================ */}
       <section class="relative z-10" id="sector-overview-section">
-        <div class="container-x space-y-12">
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" id="sector-overview-grid">
+        <div class="container-x space-y-8 sm:space-y-12">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8" id="sector-overview-grid">
             {sectors.map((sector, idx) => (
-              <div class={`sector-overview-card sector-overview-card-${idx} rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between space-y-8 hover:border-gold/40 hover:shadow-md transition-all duration-300 card-interactive-sheen`} data-sector-index={idx}>
-                <div class="space-y-4 relative z-10">
-                  <div class="sector-overview-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair transition-all duration-300">
+              <div class={`sector-overview-card sector-overview-card-${idx} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-10 shadow-sm flex flex-col justify-between space-y-5 sm:space-y-8 hover:border-gold/40 hover:shadow-md transition-all duration-300 card-interactive-sheen`} data-sector-index={idx}>
+                <div class="space-y-3 sm:space-y-4 relative z-10">
+                  <div class="sector-overview-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3 py-0.5 sm:px-3.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair transition-all duration-300">
                     <span class="sector-overview-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-300"></span>
                     {sector.label}
                   </div>
-                  <h2 class="text-2xl sm:text-3xl font-light text-navy leading-snug">
+                  <h2 class="text-xl sm:text-3xl font-light text-navy leading-snug">
                     {sector.heroH1}
                   </h2>
-                  <p class="text-base text-mid-navy leading-relaxed font-normal">
+                  <p class="text-sm sm:text-base text-mid-navy leading-relaxed font-normal">
                     {sector.heroLead}
                   </p>
                 </div>
 
-                <div class="pt-6 border-t border-hair space-y-4 relative z-10">
-                  <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">
+                <div class="pt-4 sm:pt-6 border-t border-hair space-y-3 sm:space-y-4 relative z-10">
+                  <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-mid-navy/70">
                     Core Capabilities
                   </div>
-                  <ul class="space-y-2.5">
+                  <ul class="space-y-1.5 sm:space-y-2.5">
                     {sector.capabilities.map((cap) => (
-                      <li class="flex items-start gap-2 text-small font-medium text-navy">
+                      <li class="flex items-start gap-2 text-xs sm:text-small font-medium text-navy">
                         <span class="text-gold font-bold mt-0.5">✓</span>
                         <span>{cap.title}</span>
                       </li>
                     ))}
                   </ul>
                   
-                  <div class="pt-4">
-                    <Button href={`/services/our-capabilities/${sector.id}`} variant="primary" class="w-full justify-center text-center">
+                  <div class="pt-2 sm:pt-4">
+                    <Button href={`/services/our-capabilities/${sector.id}`} variant="primary" class="w-full justify-center text-center text-xs sm:text-small">
                       View {sector.label} Capabilities &rarr;
                     </Button>
                   </div>
