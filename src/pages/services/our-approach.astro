@@ -15,7 +15,7 @@ import HeroVideo from '../../components/HeroVideo.astro';
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
       {/* Thematic Cinematic Stock Video Background: Decision Systems & Architecture */}
       <HeroVideo
         src="/video/approach.mp4"
@@ -23,16 +23,16 @@ import HeroVideo from '../../components/HeroVideo.astro';
       />
 
       <div class="container-x relative z-10">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           Services · Our Approach
         </div>
 
-        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           From the decision worth improving to a system that lasts
         </h1>
 
-        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
           Applied AI is easier to pilot than to sustain. We organise our work across four stages, from strategy and direction through design, delivery and assurance. Institutions can engage at any stage based on their needs, or work with us across the full journey.
         </p>
       </div>
@@ -42,16 +42,16 @@ import HeroVideo from '../../components/HeroVideo.astro';
     <AtmosphericCanvas>
       {/* ============================ INTERACTIVE STAGE EXPLORER WORKBENCH ============================ */}
       <section class="relative z-10">
-        <div class="container-x space-y-12">
-          <div class="max-w-3xl space-y-3">
+        <div class="container-x space-y-8 sm:space-y-12">
+          <div class="max-w-3xl space-y-2.5 sm:space-y-3">
             <div class="text-xs font-bold uppercase tracking-widest text-gold">
               End-to-End Methodology
             </div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
               The four stages of institutional AI delivery
             </h2>
-            <p class="text-lg text-mid-navy leading-relaxed font-normal">
-              Each stage addresses a specific point of failure in standard AI initiatives, ensuring solutions fit operational realities. Click on any phase below to examine our methodology and deliverables.
+            <p class="text-sm sm:text-lg text-mid-navy leading-relaxed font-normal">
+              Each stage addresses a specific point of failure in standard AI initiatives, ensuring solutions fit operational realities. Explore our methodology and deliverables below.
             </p>
           </div>
 
@@ -62,21 +62,21 @@ import HeroVideo from '../../components/HeroVideo.astro';
       {/* ============================ STRUCTURAL INDEPENDENCE CALLOUT (FLOATING MONUMENT) ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl gradient-navy-mesh gradient-sheen p-8 sm:p-14 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+          <div class="rounded-2xl sm:rounded-3xl gradient-navy-mesh gradient-sheen p-6 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl">
             {/* Animated Fluid Gradient Video in Monument */}
             <GradientVideo variant="gold" overlayOpacity={0.6} />
             {/* Ambient Wave in Structural Monument */}
             <GoldWaveform alpha="1.2" />
 
-            <div class="relative z-10 max-w-4xl space-y-6">
-              <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+            <div class="relative z-10 max-w-4xl space-y-4 sm:space-y-6">
+              <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 sm:px-4 sm:py-1.5 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
                 <span class="h-2 w-2 rounded-full bg-gold"></span>
                 Independent by Design
               </div>
-              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-white leading-tight">
+              <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-white leading-tight">
                 Evaluation is structurally separate from delivery
               </h2>
-              <p class="text-lg sm:text-2xl font-light text-pale-navy/90 leading-relaxed">
+              <p class="text-sm sm:text-xl lg:text-2xl font-light text-pale-navy/90 leading-relaxed">
                 We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with complete independence—ensuring evaluation findings are never influenced by an interest in a delivery outcome.
               </p>
             </div>

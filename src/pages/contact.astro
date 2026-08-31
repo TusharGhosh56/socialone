@@ -25,7 +25,7 @@ import { FIELD_LIMITS } from '../data/contactLimits';
 >
   <div class="pt-16 sm:pt-[4.5rem]">
     {/* ============================ 1. HERO + CONTACT FORM ============================ */}
-    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-white/10 bg-navy text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+    <section id="get-in-touch-hero" aria-labelledby="contact-h1" class="border-b border-white/10 bg-navy text-white py-10 sm:py-16 lg:py-20 relative overflow-hidden">
       {/* Thematic Cinematic Stock Video: Collaborative Dialogue & Strategic Partnership */}
       <HeroVideo
         src="/video/hero/6.mp4"
@@ -33,44 +33,44 @@ import { FIELD_LIMITS } from '../data/contactLimits';
         overlayOpacity={0.68}
       />
 
-      <div class="container-x grid items-start gap-12 lg:grid-cols-12 lg:gap-14 relative z-10">
+      <div class="container-x grid items-start gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-14 relative z-10">
         {/* Left Column: Heading, Value Prop, Direct Contact Details (5 cols) */}
-        <div class="space-y-8 lg:col-span-5">
+        <div class="space-y-6 sm:space-y-8 lg:col-span-5">
           <div>
             <Reveal>
-              <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
                 <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                 Get In Touch
               </div>
             </Reveal>
-            <Reveal as="h1" delay={40} class="text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl">
+            <Reveal as="h1" delay={40} class="text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl">
               <span id="contact-h1">Let's talk about what applied AI can do for your institution.</span>
             </Reveal>
-            <Reveal as="p" delay={80} class="mt-5 text-lede font-normal text-pale-navy/90 leading-relaxed">
+            <Reveal as="p" delay={80} class="mt-4 sm:mt-5 text-sm sm:text-base lg:text-lede font-normal text-pale-navy/90 leading-relaxed">
               Whether you're exploring a partnership, evaluating a program, or just have a question — tell us a bit
               about what you're working on and we'll route it to the right person on the team.
             </Reveal>
           </div>
 
           {/* Direct Email Card */}
-          <Reveal delay={120} class="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-sm backdrop-blur-sm">
-            <h2 id="contact-form-h2" class="text-small font-bold uppercase tracking-[0.1em] text-pale-navy/80">Direct Channels</h2>
-            <ul class="mt-4 space-y-3">
+          <Reveal delay={120} class="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 shadow-sm backdrop-blur-sm">
+            <h2 id="contact-form-h2" class="text-xs sm:text-small font-bold uppercase tracking-[0.1em] text-pale-navy/80">Direct Channels</h2>
+            <ul class="mt-3 sm:mt-4 space-y-2.5 sm:space-y-3">
               {
                 contactEmails.map((c) => (
                   <li>
                     <a
                       href={`mailto:${c.email}`}
-                      class="group flex items-center gap-3.5 rounded-xl border border-white/10 bg-white/5 p-3.5 text-body font-bold text-white no-underline transition-all duration-base hover:border-gold hover:bg-white/10 hover:text-gold"
+                      class="group flex items-center gap-3 sm:gap-3.5 rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-3.5 text-body font-bold text-white no-underline transition-all duration-base hover:border-gold hover:bg-white/10 hover:text-gold"
                     >
-                      <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/10 text-gold transition-colors duration-base group-hover:bg-gold group-hover:text-navy" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <span class="grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-full bg-white/10 text-gold transition-colors duration-base group-hover:bg-gold group-hover:text-navy" aria-hidden="true">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z" />
                         </svg>
                       </span>
                       <div class="min-w-0 flex-1">
-                        <span class="block text-xs font-normal text-pale-navy/70">{c.label}</span>
-                        <span class="block truncate text-small font-bold">{c.email}</span>
+                        <span class="block text-[11px] sm:text-xs font-normal text-pale-navy/70">{c.label}</span>
+                        <span class="block truncate text-xs sm:text-small font-bold">{c.email}</span>
                       </div>
                     </a>
                   </li>
@@ -78,8 +78,8 @@ import { FIELD_LIMITS } from '../data/contactLimits';
               }
             </ul>
 
-            <div class="mt-5 flex items-center gap-3 border-t border-hair/60 pt-4 text-small text-mid-navy">
-              <span class="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-deep-gold font-bold text-[10px]" aria-hidden="true">
+            <div class="mt-4 sm:mt-5 flex items-center gap-2.5 sm:gap-3 border-t border-white/10 pt-3 sm:pt-4 text-xs sm:text-small text-pale-navy/80">
+              <span class="grid h-4.5 w-4.5 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-deep-gold font-bold text-[9px] sm:text-[10px]" aria-hidden="true">
                 ✓
               </span>
               <span>Direct response from senior practice leadership.</span>
@@ -89,10 +89,10 @@ import { FIELD_LIMITS } from '../data/contactLimits';
 
         {/* Right Column: Executive Contact Form (7 cols) */}
         <div class="lg:col-span-7">
-          <Reveal delay={100} class="min-w-0 rounded-2xl border border-hair bg-white p-6 shadow-md sm:p-10">
-            <div class="mb-7 border-b border-hair/60 pb-6">
-              <h2 class="text-h3 font-bold text-navy">Send an enquiry</h2>
-              <p class="mt-1 text-small text-mid-navy">
+          <Reveal delay={100} class="min-w-0 rounded-2xl border border-hair bg-white p-4.5 sm:p-10 shadow-md">
+            <div class="mb-5 sm:mb-7 border-b border-hair/60 pb-4 sm:pb-6">
+              <h2 class="text-xl sm:text-h3 font-bold text-navy">Send an enquiry</h2>
+              <p class="mt-1 text-xs sm:text-small text-mid-navy">
                 Tell us about your organization's goals or challenges. All submissions are held in strict institutional confidence.
               </p>
             </div>
@@ -115,9 +115,9 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                 />
               </div>
 
-              <div class="grid gap-5 sm:grid-cols-2 sm:gap-6">
+              <div class="grid gap-3.5 sm:grid-cols-2 sm:gap-6">
                 <div class="sm:col-span-1">
-                  <label for="cf-name" class="mb-1.5 block text-small font-bold text-navy">
+                  <label for="cf-name" class="mb-1 block text-xs sm:text-small font-bold text-navy">
                     Your Name <span class="text-deep-gold">*</span>
                   </label>
                   <input
@@ -132,7 +132,7 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                   />
                 </div>
                 <div class="sm:col-span-1">
-                  <label for="cf-email" class="mb-1.5 block text-small font-bold text-navy">
+                  <label for="cf-email" class="mb-1 block text-xs sm:text-small font-bold text-navy">
                     Work Email <span class="text-deep-gold">*</span>
                   </label>
                   <input
@@ -147,7 +147,7 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="cf-org" class="mb-1.5 block text-small font-bold text-navy">
+                  <label for="cf-org" class="mb-1 block text-xs sm:text-small font-bold text-navy">
                     Organisation / Ministry <span class="font-normal text-ash">(optional)</span>
                   </label>
                   <input
@@ -161,7 +161,7 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                   />
                 </div>
                 <div class="sm:col-span-2">
-                  <label for="cf-looking-for" class="mb-1.5 block text-small font-bold text-navy">
+                  <label for="cf-looking-for" class="mb-1 block text-xs sm:text-small font-bold text-navy">
                     What are you looking for? <span class="text-deep-gold">*</span>
                   </label>
                   <div class="relative">
@@ -182,8 +182,8 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                   </div>
                 </div>
                 <div class="sm:col-span-2">
-                  <div class="mb-1.5">
-                    <label for="cf-message" class="text-small font-bold text-navy">
+                  <div class="mb-1">
+                    <label for="cf-message" class="text-xs sm:text-small font-bold text-navy">
                       Message <span class="text-deep-gold">*</span>
                     </label>
                   </div>
@@ -196,17 +196,17 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                     maxlength={FIELD_LIMITS.message}
                     class="field-input resize-y"
                   />
-                  <div class="mt-1.5 flex items-center justify-between gap-2">
-                    <span class="text-spec text-ash">Detailed description helps us prepare</span>
-                    <p class="text-small text-ash" data-message-counter></p>
+                  <div class="mt-1 flex items-center justify-between gap-2">
+                    <span class="text-[11px] sm:text-spec text-ash">Detailed description helps us prepare</span>
+                    <p class="text-xs sm:text-small text-ash" data-message-counter></p>
                   </div>
                 </div>
               </div>
 
-              <div class="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-hair/60 pt-6">
+              <div class="mt-6 sm:mt-8 flex flex-wrap items-center justify-between gap-3.5 sm:gap-4 border-t border-hair/60 pt-4 sm:pt-6">
                 <button
                   type="submit"
-                  class="group inline-flex cursor-pointer items-center gap-0 rounded-pill bg-navy px-8 py-3.5 font-bold text-body text-white no-underline transition-[transform,box-shadow,background-color,color] duration-base ease-out will-change-transform hover:-translate-y-px hover:bg-deep-navy hover:shadow-lg"
+                  class="group inline-flex w-full sm:w-auto cursor-pointer items-center justify-center gap-0 rounded-pill bg-navy px-6 sm:px-8 py-3 sm:py-3.5 font-bold text-xs sm:text-body text-white no-underline transition-[transform,box-shadow,background-color,color] duration-base ease-out will-change-transform hover:-translate-y-px hover:bg-deep-navy hover:shadow-lg"
                 >
                   <span
                     aria-hidden="true"
@@ -218,7 +218,7 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                   id="contact-form-status"
                   role="status"
                   aria-live="polite"
-                  class="text-small text-mid-navy"
+                  class="text-xs sm:text-small text-mid-navy"
                   data-contact-form-status
                 />
               </div>

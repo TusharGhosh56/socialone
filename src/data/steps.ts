@@ -9,11 +9,11 @@
 // one on every build.
 import type { ImageMetadata } from 'astro';
 import type { IconName } from '../components/PrincipleIcon.astro';
-import img01 from '../assets/images/how-we-work/01-assessment-strategy.jpg';
-import img02 from '../assets/images/how-we-work/02-field-delivery.jpg';
-import img03 from '../assets/images/how-we-work/03-design-build.jpg';
-import img04 from '../assets/images/how-we-work/04-evaluation-assurance.jpg';
-import img05 from '../assets/images/how-we-work/05-scale-guide.jpg';
+import img01 from '../assets/images/how-we-work/card_01-web.jpg';
+import img02 from '../assets/images/how-we-work/card_02-web.jpg';
+import img03 from '../assets/images/how-we-work/card_03-web.jpg';
+import img04 from '../assets/images/how-we-work/card_04-web.jpg';
+import img05 from '../assets/images/how-we-work/card_04-web.jpg';
 
 // n/icon are both optional and mutually exclusive in practice — StepCarousel's
 // badge (top-left, see that file) renders whichever one a given entry sets:

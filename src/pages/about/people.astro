@@ -35,7 +35,7 @@ function getInitials(fullName: string): string {
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
       {/* Thematic Cinematic Stock Video Background: Multidisciplinary Leadership */}
       <HeroVideo
         src="/video/helping2.mp4"
@@ -43,12 +43,12 @@ function getInitials(fullName: string): string {
       />
 
       <div class="container-x relative z-10">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           About APLYD · The People Behind APLYD
         </div>
 
-        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Specialists across AI, delivery and evaluation
         </h1>
       </div>
@@ -58,31 +58,31 @@ function getInitials(fullName: string): string {
     <AtmosphericCanvas>
       {/* ============================ TEAM GROUPS ============================ */}
       <section class="relative z-10">
-        <div class="container-x space-y-20">
+        <div class="container-x space-y-10 sm:space-y-16 lg:space-y-20">
           {groups.map((group, idx) => {
             const members = team.filter((m) => m.tag === group.tag);
             return (
-              <div id={`people-group-${idx}`} class={`space-y-8 people-group-${idx}`}>
-                <div class="border-b border-hair pb-4 people-group-badge">
-                  <h2 id={`people-group-heading-${idx}`} class="text-2xl sm:text-3xl font-bold text-navy leading-tight">
+              <div id={`people-group-${idx}`} class={`space-y-4 sm:space-y-8 people-group-${idx}`}>
+                <div class="border-b border-hair pb-2.5 sm:pb-4 people-group-badge">
+                  <h2 id={`people-group-heading-${idx}`} class="text-xl sm:text-3xl font-bold text-navy leading-tight">
                     {group.title}
                   </h2>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                   {members.map((member) => (
-                    <article class="people-card group rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 shadow-sm flex flex-col justify-between card-interactive-sheen transition-all duration-300">
+                    <article class="people-card group rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-3 sm:p-6 shadow-sm flex flex-col justify-between card-interactive-sheen transition-all duration-300">
                       <div class="relative z-10">
-                        <div class="relative mb-5 aspect-[4/5] w-full overflow-hidden rounded-2xl bg-paper">
+                        <div class="relative mb-3 sm:mb-5 aspect-[4/5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-paper">
                           {member.linkedin && (
                             <a
                               href={member.linkedin}
                               target="_blank"
                               rel="noopener noreferrer"
                               aria-label={`${member.name} on LinkedIn`}
-                              class="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-hair bg-white/90 text-navy opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 hover:border-gold hover:text-gold"
+                              class="absolute right-2 top-2 sm:right-3 sm:top-3 z-10 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-hair bg-white/90 text-navy opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-200 group-hover:opacity-100 hover:border-gold hover:text-gold"
                             >
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M6.94 8.5H4.06V19.5H6.94V8.5ZM5.5 7.25A1.75 1.75 0 1 0 5.5 3.75A1.75 1.75 0 0 0 5.5 7.25ZM19.94 19.5H17.06V13.75C17.06 12.35 16.5 11.5 15.28 11.5C14.36 11.5 13.81 12.12 13.56 12.72C13.47 12.94 13.44 13.24 13.44 13.55V19.5H10.56S10.6 9.34 10.56 8.5H13.44V9.79C13.83 9.16 14.55 8.26 16.48 8.26C18.88 8.26 19.94 9.86 19.94 12.68V19.5Z" />
                               </svg>
                             </a>
@@ -95,25 +95,25 @@ function getInitials(fullName: string): string {
                               height={400}
                               format="webp"
                               quality={85}
-                              class="h-full w-full object-cover grayscale contrast-105 transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                              class="people-photo h-full w-full object-cover grayscale contrast-105 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
                             />
                           ) : (
-                            <div class="flex h-full w-full items-center justify-center bg-pale-navy/50 font-serif text-3xl font-light text-navy">
+                            <div class="people-initials flex h-full w-full items-center justify-center bg-pale-navy/50 font-serif text-2xl sm:text-3xl font-light text-navy transition-all duration-500">
                               {getInitials(member.name)}
                             </div>
                           )}
                         </div>
 
-                        <h3 class="text-lg font-bold text-navy leading-snug">
+                        <h3 class="text-sm sm:text-lg font-bold text-navy leading-snug">
                           {member.name}
                         </h3>
 
-                        <div class="mt-1 text-xs font-bold uppercase tracking-wider text-deep-gold">
+                        <div class="mt-0.5 sm:mt-1 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-deep-gold">
                           {member.title}
                         </div>
 
                         {member.subtitle && (
-                          <div class="mt-0.5 text-xs text-mid-navy/80">
+                          <div class="mt-0.5 text-[0.6875rem] sm:text-xs text-mid-navy/80 line-clamp-2">
                             {member.subtitle}
                           </div>
                         )}
@@ -151,3 +151,60 @@ function getInitials(fullName: string): string {
     </AtmosphericCanvas>
   </div>
 </Base>
+
+<style>
+  /* On touch/mobile devices and smaller viewports, light up smoothly on scroll */
+  @media (max-width: 1023px) {
+    .people-card.is-in-view .people-photo {
+      filter: grayscale(0%) contrast(100%);
+      transform: scale(1.03);
+    }
+    .people-card.is-in-view {
+      border-color: rgba(200, 160, 75, 0.45);
+      box-shadow: 0 8px 24px -4px rgba(10, 25, 47, 0.08);
+    }
+  }
+
+  /* When hover is supported (desktop), keep the delightful hover interaction */
+  @media (hover: hover) and (min-width: 1024px) {
+    .people-card:hover .people-photo {
+      filter: grayscale(0%) contrast(100%);
+      transform: scale(1.05);
+    }
+  }
+</style>
+
+<script>
+  function setupPeopleScrollObserver() {
+    const cards = document.querySelectorAll('.people-card');
+    if (!cards.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in-view');
+          } else {
+            const rect = entry.boundingClientRect;
+            // When scrolled out of viewport, reset so it re-illuminates smoothly on scroll
+            if (rect.top > window.innerHeight || rect.bottom < 0) {
+              entry.target.classList.remove('is-in-view');
+            }
+          }
+        });
+      },
+      {
+        threshold: [0.15, 0.4],
+        rootMargin: '0px 0px -10% 0px',
+      }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+  }
+
+  // Initial run
+  setupPeopleScrollObserver();
+
+  // Support navigation / Astro lifecycle
+  document.addEventListener('astro:page-load', setupPeopleScrollObserver);
+</script>

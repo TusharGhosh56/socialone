@@ -18,7 +18,7 @@ const categories = Object.values(caseStudyCategories);
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* Hero Section */}
-    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
       {/* Thematic Cinematic Stock Video: Real-World Communities & Evidence */}
       <HeroVideo
         src="/video/all.mp4"
@@ -26,20 +26,20 @@ const categories = Object.values(caseStudyCategories);
       />
 
       <div class="container-x relative z-10">
-        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
           <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           AI in Action · Case Studies Directory
         </div>
 
-        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Applied AI across institutions and public systems
         </h1>
 
-        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
           Explore our applied work across education, agriculture, small business adoption, municipal services, utilities, and independent AI assurance.
         </p>
 
-        <div class="mt-8 max-w-4xl">
+        <div class="mt-6 sm:mt-8 max-w-4xl">
           <CaseStudyCategoryNav activeCategory="all" />
         </div>
       </div>
@@ -50,40 +50,40 @@ const categories = Object.values(caseStudyCategories);
       {/* All Categories Grid */}
       <section class="relative z-10" id="ai-directory-section">
         <div class="container-x">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="ai-directory-grid">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8" id="ai-directory-grid">
             {categories.map((cat, idx) => (
               <div
-                class={`ai-directory-card ai-directory-card-${idx} ai-directory-card-${cat.slug} rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-10 shadow-sm flex flex-col justify-between group card-flip-hover`}
+                class={`ai-directory-card ai-directory-card-${idx} ai-directory-card-${cat.slug} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-10 shadow-sm flex flex-col justify-between group card-flip-hover`}
                 data-card-spotlight
                 data-category-index={idx}
               >
                 <div class="relative z-10">
-                  <div class="flex items-center justify-between gap-4 mb-6">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
+                  <div class="flex items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-6">
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-2.5 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
                       <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                       {cat.caseStudies.length} Case {cat.caseStudies.length === 1 ? 'Study' : 'Studies'}
                     </span>
-                    <span class="text-xs font-bold uppercase tracking-widest text-gold">{cat.navLabel}</span>
+                    <span class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-widest text-gold">{cat.navLabel}</span>
                   </div>
 
                   {/* Bain-Style Brand Editorial Vector Graphic Frame */}
-                  <div class="mb-6 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5">
-                    <CaseStudyVectorGraphic id={cat.caseStudies[0]?.id || 'default'} category={cat.slug} class="w-full h-44" />
+                  <div class="mb-3.5 sm:mb-6 rounded-xl sm:rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5">
+                    <CaseStudyVectorGraphic id={cat.caseStudies[0]?.id || 'default'} category={cat.slug} class="w-full h-32 sm:h-44" />
                   </div>
 
-                  <h2 class="text-2xl sm:text-3xl font-bold text-navy mb-3 transition-colors">
+                  <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-navy mb-2 sm:mb-3 transition-colors">
                     {cat.title}
                   </h2>
 
-                  <p class="text-sm sm:text-base text-mid-navy leading-relaxed mb-8 flip-text transition-colors">
+                  <p class="text-xs sm:text-base text-mid-navy leading-relaxed mb-4 sm:mb-8 flip-text transition-colors">
                     {cat.lead}
                   </p>
 
-                  <div class="pt-6 border-t border-hair/80 mb-8">
-                    <div class="text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-3 flip-text transition-colors">
+                  <div class="pt-3 sm:pt-6 border-t border-hair/80 mb-4 sm:mb-8">
+                    <div class="text-[0.6875rem] sm:text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-2 sm:mb-3 flip-text transition-colors">
                       Featured Implementations:
                     </div>
-                    <ul class="space-y-2 text-xs sm:text-sm font-bold text-navy">
+                    <ul class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm font-bold text-navy">
                       {cat.caseStudies.map((cs) => (
                         <li class="flex items-center gap-2 flip-text transition-colors">
                           <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
@@ -94,8 +94,8 @@ const categories = Object.values(caseStudyCategories);
                   </div>
                 </div>
 
-                <div class="relative z-10 pt-2">
-                  <Button href={`/ai-in-action/${cat.slug}`} variant="outline" class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-gold group-hover:!text-navy group-hover:!border-gold transition-all duration-300 font-bold">
+                <div class="relative z-10 pt-1 sm:pt-2">
+                  <Button href={`/ai-in-action/${cat.slug}`} variant="outline" class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-gold group-hover:!text-navy group-hover:!border-gold transition-all duration-300 text-xs sm:text-small font-bold">
                     <span>Explore {cat.navLabel}</span>
                     <span class="inline-block transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
                   </Button>

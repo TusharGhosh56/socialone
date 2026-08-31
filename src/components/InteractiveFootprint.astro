@@ -73,34 +73,34 @@ const hubs = [
 ];
 ---
 
-<div class="space-y-16" data-interactive-footprint>
+<div class="space-y-8 sm:space-y-12 lg:space-y-16" data-interactive-footprint>
   {/* ==================== 1. LIVE METRIC TILES ==================== */}
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="footprint-metrics-grid">
+  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8" id="footprint-metrics-grid">
     {metrics.map((m) => (
       <div
-        class="group relative rounded-3xl border border-hair bg-white p-8 sm:p-10 shadow-sm transition-all duration-base flex flex-col justify-between card-flip-hover"
+        class="group relative rounded-2xl sm:rounded-3xl border border-hair bg-white p-4 sm:p-7 lg:p-10 shadow-sm transition-all duration-base flex flex-col justify-between card-flip-hover"
         data-card-spotlight
       >
-        <div class="flex items-center justify-between gap-4 mb-4 relative z-10">
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
+        <div class="flex items-center justify-between gap-2 mb-2 sm:mb-4 relative z-10">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[0.625rem] sm:text-[0.6875rem] font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
             <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
             {m.badge}
           </span>
         </div>
 
-        <div class="my-4 relative z-10">
+        <div class="my-2 sm:my-4 relative z-10">
           <div
-            class="text-4xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left flip-text transition-colors"
+            class="text-3xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-base group-hover:scale-105 origin-left flip-text transition-colors"
             data-metric-target={m.value}
           >
             {m.value}
           </div>
-          <div class="text-xs uppercase tracking-widest font-bold text-navy mt-2 flip-text transition-colors">
+          <div class="text-[0.6875rem] sm:text-xs uppercase tracking-wider font-bold text-navy mt-1 sm:mt-2 flip-text transition-colors">
             {m.label}
           </div>
         </div>
 
-        <p class="text-sm text-mid-navy/80 pt-4 border-t border-hair leading-relaxed relative z-10 flip-text transition-colors">
+        <p class="text-xs sm:text-sm text-mid-navy/80 pt-2.5 sm:pt-4 border-t border-hair leading-relaxed relative z-10 flip-text transition-colors hidden sm:block">
           {m.detail}
         </p>
       </div>
@@ -108,7 +108,7 @@ const hubs = [
   </div>
 
   {/* ==================== 2. INTERACTIVE GLOBAL MAP CONSOLE ==================== */}
-  <div class="rounded-3xl border border-hair bg-gradient-to-b from-[#101432] to-[#0A0D24] text-white p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden" id="global-map-console">
+  <div class="rounded-2xl sm:rounded-3xl border border-hair bg-gradient-to-b from-[#101432] to-[#0A0D24] text-white p-4 sm:p-8 lg:p-12 shadow-2xl relative overflow-hidden" id="global-map-console">
     <div class="relative z-10">
       {/* Console Top Bar */}
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-8 border-b border-white/10">
