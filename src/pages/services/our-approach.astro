@@ -5,6 +5,7 @@ import ApproachStageExplorer from '../../components/ApproachStageExplorer.astro'
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import GoldWaveform from '../../components/GoldWaveform.astro';
 import GradientVideo from '../../components/GradientVideo.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 ---
 
 <Base
@@ -14,33 +15,26 @@ import GradientVideo from '../../components/GradientVideo.astro';
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
-
-      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video Background: Decision Systems & Architecture */}
+      <HeroVideo
+        src="/video/approach.mp4"
+        overlayOpacity={0.65}
+      />
 
       <div class="container-x relative z-10">
-        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-2 w-2 rounded-full bg-gold"></span>
+        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           Services · Our Approach
         </div>
 
-        <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
           From the decision worth improving to a system that lasts
         </h1>
 
-        <div class="mt-8 max-w-4xl space-y-6 text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
-          <p>
-            Applied AI is easier to pilot than to sustain. Whether it creates lasting value depends on the decisions made before implementation: the problem being addressed, the evidence behind it, the conditions for deployment, and the institutional capacity to own and operate what is built.
-          </p>
-          <p class="text-lg sm:text-xl text-pale-navy/80">
-            We organise our work across four stages, from strategy and direction through design, delivery and assurance. Institutions can engage at any stage based on their needs, or work with us across the full journey.
-          </p>
-        </div>
+        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+          Applied AI is easier to pilot than to sustain. We organise our work across four stages, from strategy and direction through design, delivery and assurance. Institutions can engage at any stage based on their needs, or work with us across the full journey.
+        </p>
       </div>
     </section>
 
@@ -93,7 +87,7 @@ import GradientVideo from '../../components/GradientVideo.astro';
       {/* ============================ CTA ============================ */}
       <section class="relative z-10">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Engage With APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
@@ -103,8 +97,8 @@ import GradientVideo from '../../components/GradientVideo.astro';
                 Talk to our practice leads about your institution's specific delivery objectives and AI readiness.
               </p>
             </div>
-            <div class="relative z-10">
-              <Button href="/contact" variant="primary" class="whitespace-nowrap shadow-sm">
+            <div class="relative z-10 w-full sm:w-auto">
+              <Button href="/contact" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
                 Partner With APLYD &rarr;
               </Button>
             </div>

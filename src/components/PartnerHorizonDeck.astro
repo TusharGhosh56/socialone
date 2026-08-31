@@ -1,0 +1,239 @@
+---
+// PartnerHorizonDeck.astro — Panoramic Strategic Partner Ecosystem Horizon Deck
+import { Image } from 'astro:assets';
+import govImg from '../assets/images/purpose-direction/government.png';
+import evalImg from '../assets/images/how-we-work-page/evidence.png';
+import fieldImg from '../assets/images/capabilities/hero-fieldwork.jpg';
+
+const pillars = [
+  {
+    id: 'governance',
+    title: 'Multilateral Governance & Sovereign Policy',
+    category: 'Global & Federal Advisory',
+    badge: '7 Partner Institutions',
+    img: govImg,
+    summary: 'Strategic policy architecture, multilateral development finance, and sovereign digital governance across federal ministries.',
+    organizations: [
+      { name: 'Oxford Policy Management', region: 'Global', desc: 'Economic policy & sovereign governance' },
+      { name: 'Abt Global', region: 'Global', desc: 'Public sector transformation & health systems' },
+      { name: 'IMC (now DT Global)', region: 'Global', desc: 'Infrastructure & climate resilience' },
+      { name: 'Palladium', region: 'Global', desc: 'Positive impact delivery & economic growth' },
+      { name: 'Cadmus Group LLC', region: 'North America', desc: 'Federal technical advisory & climate intelligence' },
+      { name: 'Quantum Leaps', region: 'North America', desc: 'Digital modernization & data architecture' },
+      { name: 'EMERG', region: 'North America', desc: 'Evaluative research & multilateral consulting' },
+    ],
+  },
+  {
+    id: 'evaluation',
+    title: 'Independent Evaluation & Algorithmic Assurance',
+    category: 'MEL, Audit & Applied AI',
+    badge: '7 Partner Institutions',
+    img: evalImg,
+    summary: 'Algorithmic auditing, econometric modeling, WASH resilience systems, and independent institutional verification.',
+    organizations: [
+      { name: 'ITAD', region: 'South Asia & Africa', desc: 'Independent monitoring, evaluation & learning' },
+      { name: 'Knowledge for Development (K4D)', region: 'Multi-Region (40 Nations)', desc: 'Knowledge architecture & evidence synthesis' },
+      { name: 'Genesis Analytics', region: 'Europe & Africa', desc: 'Economics, digital strategy & financial analytics' },
+      { name: 'Agua Consult', region: 'Multi-Region (50+ Nations)', desc: 'WASH systems & municipal resilience' },
+      { name: 'IIT Madras', region: 'South Asia', desc: 'Applied AI labs & algorithmic research' },
+      { name: 'IWMI', region: 'South Asia', desc: 'Agricultural water governance & environmental data' },
+      { name: 'Apex for Training & Consulting', region: 'MENA & North America', desc: 'Capacity building & crisis response analytics' },
+    ],
+  },
+  {
+    id: 'fieldwork',
+    title: 'Last-Mile Delivery & Ground-Truth Verification',
+    category: 'Frontline Systems & Population Scale',
+    badge: '9 Partner Institutions',
+    img: fieldImg,
+    summary: 'Frontline data collection, population-scale social protection, and localized digital delivery across 15+ countries.',
+    organizations: [
+      { name: 'Development Pathways', region: 'Multi-Region (35+ Nations)', desc: 'Social protection policy & cash delivery systems' },
+      { name: 'Jarco Consulting', region: 'Sub-Saharan Africa (11 Nations)', desc: 'Field evaluation, surveys & community intelligence' },
+      { name: 'Consilient', region: 'Sub-Saharan Africa', desc: 'Fragile states research & ground-truth verification' },
+      { name: 'Consiglieri Private Limited (CPL)', region: 'South Asia', desc: 'Public systems delivery & institutional governance' },
+      { name: 'Matrix Business Development', region: 'South Asia', desc: 'Private sector development & trade facilitation' },
+      { name: 'Dias Works', region: 'South Asia', desc: 'Social infrastructure & municipal implementation' },
+      { name: 'Edmaaj', region: 'Middle East & North Africa', desc: 'Public sector institutional reform across MENA' },
+      { name: 'Optimum Analysis', region: 'Middle East', desc: 'Post-conflict governance & institutional assessment' },
+      { name: 'Hakunamatata', region: 'Global & South Asia', desc: 'Enterprise software & field digital applications' },
+    ],
+  },
+];
+---
+
+<div class="partner-horizon-deck w-full py-4 select-none" data-partner-horizon-deck>
+  {/* Panoramic Horizon Shutter Panels */}
+  <div class="flex flex-col lg:flex-row gap-4 h-auto lg:h-[620px] w-full" role="tablist" aria-label="Strategic Partner Alliances">
+    {pillars.map((pillar, idx) => {
+      const isInit = idx === 0;
+
+      return (
+        <div
+          id={`partner-panel-${pillar.id}`}
+          role="tabpanel"
+          data-partner-panel={idx}
+          tabindex="0"
+          class={`partner-panel relative rounded-3xl overflow-hidden border transition-all duration-700 ease-[cubic-bezier(0.25,1,0.3,1)] cursor-pointer group flex flex-col justify-between ${
+            isInit
+              ? 'is-expanded border-gold/70 shadow-2xl ring-1 ring-gold/30'
+              : 'is-collapsed border-hair hover:border-gold/40 shadow-md'
+          }`}
+        >
+          {/* Background Full-Bleed Photograph */}
+          <div class="panel-bg-image-wrap absolute inset-0 overflow-hidden pointer-events-none">
+            <Image
+              src={pillar.img}
+              alt={pillar.title}
+              class="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              widths={[640, 1024, 1440]}
+              sizes="(min-width: 1024px) 60vw, 100vw"
+            />
+            {/* Dynamic Multi-Layer Cinematic Scrim */}
+            <div class="panel-scrim-dark absolute inset-0 bg-navy/85 transition-opacity duration-500"></div>
+            <div class="panel-scrim-expanded absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/75 via-50% to-transparent transition-opacity duration-500"></div>
+          </div>
+
+          {/* ==================== COLLAPSED VIEW (Vertical Ribbon Spine on Desktop) ==================== */}
+          <div class="collapsed-content relative z-10 p-5 sm:p-6 flex flex-row lg:flex-col justify-between items-center h-full w-full pointer-events-none">
+            {/* Top Indicator */}
+            <div class="flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full bg-gold"></span>
+            </div>
+
+            {/* Rotated Vertical Title on Desktop */}
+            <div class="hidden lg:flex flex-1 items-center justify-center my-8">
+              <span class="vertical-title text-sm font-bold text-white/90 tracking-wider uppercase whitespace-nowrap transform -rotate-90 origin-center transition-colors group-hover:text-gold">
+                {pillar.title}
+              </span>
+            </div>
+
+            {/* Mobile Fallback Title */}
+            <div class="lg:hidden flex-1 px-4">
+              <span class="text-base font-bold text-white leading-tight block">
+                {pillar.title}
+              </span>
+            </div>
+
+            {/* Badge Indicator */}
+            <div class="flex items-center justify-center">
+              <span class="text-[10px] font-bold text-gold uppercase tracking-wider bg-white/10 px-2 py-0.5 rounded-full border border-white/20">
+                {pillar.badge}
+              </span>
+            </div>
+          </div>
+
+          {/* ==================== EXPANDED VIEW (Rich Architectural Blueprint) ==================== */}
+          <div class="expanded-content relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col justify-between gap-6 h-full w-full pointer-events-none overflow-y-auto scrollbar-none">
+            
+            {/* Header: Eyebrow + Title + Subhead */}
+            <div class="space-y-3">
+              <div class="flex items-center gap-2">
+                <span class="h-2 w-2 rounded-full bg-gold"></span>
+                <span class="text-xs font-bold uppercase tracking-wider text-gold">
+                  {pillar.category}
+                </span>
+                <span class="text-white/40">•</span>
+                <span class="text-xs text-pale-navy font-semibold">
+                  {pillar.badge}
+                </span>
+              </div>
+
+              <h3 class="text-2xl sm:text-3xl lg:text-4xl font-light text-white tracking-tight leading-tight max-w-2xl">
+                {pillar.title}
+              </h3>
+
+              <p class="text-sm sm:text-base text-pale-navy/90 font-normal leading-relaxed max-w-3xl">
+                {pillar.summary}
+              </p>
+            </div>
+
+            {/* Active Partner Organizations Token Strip */}
+            <div class="space-y-3 pt-4 border-t border-white/15">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-pale-navy/80">
+                Active Institutional Alliances
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                {pillar.organizations.map((org) => (
+                  <div class="rounded-xl border border-white/15 bg-white/10 backdrop-blur-md p-3 space-y-1 hover:border-gold/50 transition-colors">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="font-bold text-white text-xs leading-snug">
+                        {org.name}
+                      </span>
+                      <span class="text-[9px] font-bold text-gold bg-gold/20 px-1.5 py-0.5 rounded shrink-0">
+                        {org.region}
+                      </span>
+                    </div>
+                    <p class="text-[10px] text-pale-navy/75 leading-tight">
+                      {org.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
+<script>
+  function setupPartnerHorizonDeck() {
+    const deck = document.querySelector('[data-partner-horizon-deck]');
+    if (!deck) return;
+
+    const panels = Array.from(deck.querySelectorAll<HTMLElement>('.partner-panel'));
+
+    panels.forEach((panel) => {
+      panel.addEventListener('click', () => {
+        panels.forEach((p) => {
+          p.classList.remove('is-expanded', 'border-gold/70', 'shadow-2xl', 'ring-1', 'ring-gold/30');
+          p.classList.add('is-collapsed', 'border-hair', 'shadow-md');
+        });
+        panel.classList.remove('is-collapsed', 'border-hair', 'shadow-md');
+        panel.classList.add('is-expanded', 'border-gold/70', 'shadow-2xl', 'ring-1', 'ring-gold/30');
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupPartnerHorizonDeck);
+  } else {
+    setupPartnerHorizonDeck();
+  }
+</script>
+
+<style>
+  @media (min-width: 1024px) {
+    .partner-panel.is-collapsed {
+      flex: 0 0 88px;
+    }
+    .partner-panel.is-expanded {
+      flex: 1 1 0%;
+    }
+    .partner-panel.is-collapsed .expanded-content {
+      display: none;
+    }
+    .partner-panel.is-expanded .collapsed-content {
+      display: none;
+    }
+    .partner-panel.is-collapsed .panel-scrim-dark {
+      opacity: 0.92;
+    }
+    .partner-panel.is-expanded .panel-scrim-dark {
+      opacity: 0.65;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .partner-panel.is-collapsed .expanded-content {
+      display: none;
+    }
+    .partner-panel.is-expanded .collapsed-content {
+      display: none;
+    }
+  }
+</style>

@@ -5,8 +5,8 @@ import CaseStudyCategoryNav from '../../components/CaseStudyCategoryNav.astro';
 import CaseStudyConversationCTA from '../../components/CaseStudyConversationCTA.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
-import GoldWaveform from '../../components/GoldWaveform.astro';
-import GradientVideo from '../../components/GradientVideo.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
+import CaseStudyVectorGraphic from '../../components/CaseStudyVectorGraphic.astro';
 
 const categories = Object.values(caseStudyCategories);
 ---
@@ -18,30 +18,28 @@ const categories = Object.values(caseStudyCategories);
 >
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* Hero Section */}
-    <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-      {/* Animated Fluid Gradient Video Background */}
-      <GradientVideo variant="blue" overlayOpacity={0.62} />
-      {/* Ambient Molestone Gold Particle Waveform */}
-      <GoldWaveform alpha="1.4" />
-
-      <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+      {/* Thematic Cinematic Stock Video: Real-World Communities & Evidence */}
+      <HeroVideo
+        src="/video/all.mp4"
+        overlayOpacity={0.62}
+      />
 
       <div class="container-x relative z-10">
-        <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-2 w-2 rounded-full bg-gold"></span>
+        <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
           AI in Action · Case Studies Directory
         </div>
 
-        <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
           Applied AI across institutions and public systems
         </h1>
 
-        <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
           Explore our applied work across education, agriculture, small business adoption, municipal services, utilities, and independent AI assurance.
         </p>
 
-        <div class="mt-12 max-w-4xl">
+        <div class="mt-8 max-w-4xl">
           <CaseStudyCategoryNav activeCategory="all" />
         </div>
       </div>
@@ -66,6 +64,11 @@ const categories = Object.values(caseStudyCategories);
                       {cat.caseStudies.length} Case {cat.caseStudies.length === 1 ? 'Study' : 'Studies'}
                     </span>
                     <span class="text-xs font-bold uppercase tracking-widest text-gold">{cat.navLabel}</span>
+                  </div>
+
+                  {/* Bain-Style Brand Editorial Vector Graphic Frame */}
+                  <div class="mb-6 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5">
+                    <CaseStudyVectorGraphic id={cat.caseStudies[0]?.id || 'default'} category={cat.slug} class="w-full h-44" />
                   </div>
 
                   <h2 class="text-2xl sm:text-3xl font-bold text-navy mb-3 transition-colors">

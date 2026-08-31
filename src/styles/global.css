@@ -201,14 +201,13 @@
     pointer-events: none;
   }
 
-  /* Institutional Infrastructure Grid — subtle precision datum lines in pure navy/slate
-     embodying data foundation and cartographic intelligence (§06 & §07). */
+  /* Institutional Infrastructure Grid — clean navy blue data datum lines */
   .bg-institutional-grid {
     position: relative;
-    background-color: #0b0e2b;
+    background-color: #1a2150;
     background-image:
-      linear-gradient(rgba(74, 83, 138, 0.14) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(74, 83, 138, 0.14) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
     background-size: 52px 52px;
     background-position: center center;
   }
@@ -219,7 +218,7 @@
     z-index: 0;
     background:
       radial-gradient(circle at 75% 30%, rgba(209, 156, 51, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 50% 40%, rgba(35, 43, 101, 0.55) 0%, #0b0e2b 85%);
+      radial-gradient(circle at 50% 40%, rgba(74, 83, 138, 0.25) 0%, rgba(26, 33, 80, 0.95) 85%);
     pointer-events: none;
   }
 
@@ -269,7 +268,7 @@
     opacity: 1;
   }
 
-  /* Deep Flip on Hover — transforms white card into a navy gradient powerhouse on hover */
+  /* Deep Flip on Hover — transforms white card into a clean, rich solid blue navy on hover */
   .card-flip-hover {
     position: relative;
     overflow: hidden;
@@ -284,14 +283,12 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 400ms var(--ease-out);
-    background:
-      linear-gradient(135deg, rgba(209, 156, 51, 0.18) 0%, transparent 60%),
-      linear-gradient(180deg, #111538 0%, #1a2150 50%, #0d1030 100%);
+    background: #1a2150;
   }
   .card-flip-hover:hover {
     transform: translateY(-4px);
     border-color: rgba(209, 156, 51, 0.6);
-    box-shadow: 0 24px 48px -12px rgba(13, 16, 48, 0.35);
+    box-shadow: 0 24px 48px -12px rgba(26, 33, 80, 0.35);
   }
   .card-flip-hover:hover::before {
     opacity: 1;
@@ -302,7 +299,7 @@
   }
   .card-flip-hover:hover p,
   .card-flip-hover:hover .flip-text {
-    color: rgba(232, 234, 241, 0.9) !important;
+    color: rgba(232, 234, 241, 0.95) !important;
   }
   .card-flip-hover:hover .flip-badge {
     background-color: rgba(255, 255, 255, 0.15) !important;
@@ -446,7 +443,7 @@
   fill: var(--gold);
   stroke: #ffffff;
   stroke-width: 2;
-  transition: r 350ms var(--ease-out), fill 350ms var(--ease-out), filter 350ms var(--ease-out);
+  transition: fill 250ms var(--ease-out), filter 250ms var(--ease-out);
 }
 .flow-line-dot.is-ignited {
   fill: #ffd466;
@@ -505,16 +502,13 @@
   stroke: #ffffff;
   stroke-width: 2;
   opacity: 0;
-  transform: scale(0);
-  transform-origin: center;
-  transition: r 350ms var(--ease-out), fill 350ms var(--ease-out), opacity 350ms var(--ease-out), transform 350ms var(--ease-out), filter 350ms var(--ease-out);
+  r: 4.5;
+  transition: opacity 250ms var(--ease-out), fill 250ms var(--ease-out), filter 250ms var(--ease-out);
 }
 .flow-line-terminal-dot.is-ignited,
 .flow-line-branch-dot.is-ignited {
   opacity: 1;
-  transform: scale(1);
   fill: #ffd466;
-  r: 5;
   filter: drop-shadow(0 0 8px rgba(209, 156, 51, 1)) drop-shadow(0 0 16px rgba(209, 156, 51, 0.6));
 }
 .flow-line-dot[data-flow-dot="bfg-power-splitter"],

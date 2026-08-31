@@ -4,71 +4,172 @@ import type { CapabilityItem } from '../data/capabilities';
 import bulbOffImg from '../assets/images/services/lightbulb.png';
 import bulbOnImg from '../assets/images/services/lightbulb (1).png';
 
+// Sector-specific curated stock image assets
+import gov01 from '../assets/images/capabilities/work-governance.jpg';
+import gov02 from '../assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png';
+import gov03 from '../assets/images/capabilities/hero-fieldwork.jpg';
+import gov04 from '../assets/images/how-we-work-page/building.png';
+
+import non01 from '../assets/images/purpose-direction/institution.png';
+import non02 from '../assets/images/capabilities/case-agri-digital.jpg';
+import non03 from '../assets/images/how-we-work-page/evidence.png';
+import non04 from '../assets/images/how-we-work-page/transfer.png';
+
+import phil01 from '../assets/images/purpose-direction/philanthropy.png';
+import phil02 from '../assets/images/capabilities/insight-ai.jpg';
+import phil03 from '../assets/images/how-we-work-page/evaluation.png';
+import phil04 from '../assets/images/built-for-gov/public-trust.png';
+
 interface Props {
   capabilities: CapabilityItem[];
   sectorId?: string;
 }
 
-const { capabilities, sectorId = 'capabilities' } = Astro.props;
+const { capabilities, sectorId = 'government' } = Astro.props;
+
+const capabilityImages: Record<string, any[]> = {
+  government: [gov01, gov02, gov03, gov04],
+  nonprofits: [non01, non02, non03, non04],
+  philanthropy: [phil01, phil02, phil03, phil04],
+};
+
+const currentImages = capabilityImages[sectorId] || capabilityImages.government;
 ---
 
-<div class="capability-stack-container relative py-4 pb-28" data-capability-stack data-stack-id={sectorId}>
-  {/* Stacked Cards Track */}
-  <div class="cards-stack-track relative">
+<div class="kinetic-horizon-studio w-full py-4 pb-12 select-none" data-kinetic-studio data-sector-id={sectorId}>
+  {/* Panoramic Horizon Shutter Deck */}
+  <div class="horizon-deck flex flex-col lg:flex-row gap-3.5 h-auto lg:h-[620px] w-full" role="tablist" aria-label="Capabilities Horizon">
     {capabilities.map((cap, idx) => {
-      const stickyTop = 100 + idx * 32; // Progressive sticky tab offset
+      const cardImg = currentImages[idx] || gov01;
+      const isInit = idx === 0;
+
       return (
         <div
-          class="stack-card-wrapper sticky transition-all duration-200 mb-20 sm:mb-32 last:mb-0"
-          style={`top: ${stickyTop}px; z-index: ${idx + 10};`}
-          data-stack-card={idx}
+          id={`horizon-panel-${sectorId}-${idx}`}
+          role="tabpanel"
+          data-horizon-panel={idx}
+          tabindex="0"
+          class={`horizon-panel relative rounded-3xl overflow-hidden border transition-all duration-700 ease-[cubic-bezier(0.25,1,0.3,1)] cursor-pointer group flex flex-col justify-between ${
+            isInit
+              ? 'is-expanded border-gold/70 shadow-2xl ring-1 ring-gold/30'
+              : 'is-collapsed border-hair hover:border-gold/40 shadow-md'
+          }`}
         >
-          <article class={`capability-card capability-card-${idx} stack-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-xl p-8 sm:p-12 lg:p-14 shadow-2xl transition-all duration-300 overflow-hidden card-hover-accent card-interactive-sheen`} data-capability-index={idx}>
-            {/* 2-Column Balanced Content Grid */}
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start">
-              {/* Left Column: Title with Light Bulb & Overview */}
-              <div class="lg:col-span-5 space-y-6">
-                <div class="flex items-start gap-3.5">
-                  {/* Dynamic Light Bulb Indicator */}
-                  <div class="capability-bulb-wrap relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pale-navy/50 border border-hair transition-all duration-400 mt-1 overflow-hidden">
-                    {/* Unlit Bulb (Idle) */}
-                    <Image
-                      src={bulbOffImg}
-                      alt="Capability indicator"
-                      width={24}
-                      height={24}
-                      class="capability-bulb-img bulb-off absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                    />
-                    {/* Lit Bulb (Powered by Trail) */}
-                    <Image
-                      src={bulbOnImg}
-                      alt="Active capability indicator"
-                      width={24}
-                      height={24}
-                      class="capability-bulb-img bulb-on absolute inset-0 m-auto h-5.5 w-5.5 object-contain transition-all duration-400"
-                    />
-                  </div>
+          {/* Background Full-Bleed Photograph */}
+          <div class="panel-bg-image-wrap absolute inset-0 overflow-hidden pointer-events-none">
+            <Image
+              src={cardImg}
+              alt={cap.title}
+              class="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              widths={[640, 1024, 1440]}
+              sizes="(min-width: 1024px) 60vw, 100vw"
+            />
+            {/* Dynamic Multi-Layer Cinematic Scrim */}
+            <div class="panel-scrim-dark absolute inset-0 bg-navy/80 transition-opacity duration-500"></div>
+            <div class="panel-scrim-expanded absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/70 via-55% to-transparent transition-opacity duration-500"></div>
+          </div>
 
-                  <h3 id={`capability-heading-${sectorId}-${idx}`} class="capability-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-navy leading-tight tracking-tight flex-1">
-                    {cap.title}
-                  </h3>
+          {/* ==================== COLLAPSED VIEW (Vertical Ribbon Spine on Desktop) ==================== */}
+          <div class="collapsed-content relative z-10 p-5 sm:p-6 flex flex-row lg:flex-col justify-between items-center h-full w-full pointer-events-none">
+            {/* Top Indicator */}
+            <div class="flex flex-row lg:flex-col items-center gap-3">
+              <div class="collapsed-bulb-wrap flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-gold transition-transform duration-300 group-hover:scale-110">
+                <Image
+                  src={bulbOffImg}
+                  alt=""
+                  width={18}
+                  height={18}
+                  class="h-4.5 w-4.5 object-contain opacity-75"
+                />
+              </div>
+            </div>
+
+            {/* Rotated Vertical Title on Desktop */}
+            <div class="hidden lg:flex flex-1 items-center justify-center my-8">
+              <span class="vertical-title text-sm font-bold text-white/90 tracking-wider uppercase whitespace-nowrap transform -rotate-90 origin-center transition-colors group-hover:text-gold">
+                {cap.title}
+              </span>
+            </div>
+
+            {/* Mobile Fallback Title */}
+            <div class="lg:hidden flex-1 px-4">
+              <span class="text-sm font-bold text-white leading-tight block">
+                {cap.title}
+              </span>
+            </div>
+
+            {/* Bottom Status Dot */}
+            <div class="flex items-center justify-center">
+              <span class="h-2 w-2 rounded-full bg-gold/60 transition-transform duration-300 group-hover:scale-150"></span>
+            </div>
+          </div>
+
+          {/* ==================== EXPANDED VIEW (Rich Architectural Blueprint - Bottom Grouped) ==================== */}
+          <div class="expanded-content relative z-10 p-6 sm:p-8 lg:p-10 flex flex-col justify-end gap-5 sm:gap-6 h-full w-full pointer-events-none overflow-y-auto scrollbar-none">
+            
+            {/* Header: Power Bulb + Display Title inline */}
+            <div class="space-y-3">
+              <div class="flex items-center gap-3.5 sm:gap-4">
+                <div class="expanded-bulb-wrap relative flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-pale-gold border border-gold/60 shadow-lg overflow-hidden">
+                  <Image
+                    src={bulbOnImg}
+                    alt=""
+                    width={24}
+                    height={24}
+                    class="h-6 w-6 sm:h-6.5 sm:w-6.5 object-contain"
+                  />
                 </div>
 
-                <p class="text-base sm:text-lg text-mid-navy font-normal leading-relaxed">
-                  {cap.p1}
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight max-w-2xl">
+                  {cap.title}
+                </h3>
+              </div>
+
+              <p class="text-sm sm:text-base lg:text-lg text-pale-navy/95 font-normal leading-relaxed max-w-3xl">
+                {cap.p1}
+              </p>
+            </div>
+
+            {/* Bottom Blueprint: Execution Card & Verification Badges */}
+            <div class="space-y-3.5 pt-4 border-t border-white/15">
+              {/* Technical Execution Container */}
+              <div class="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-xl p-4 sm:p-5 space-y-2 shadow-lg">
+                <div class="flex items-center gap-2">
+                  <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+                  <span class="text-xs font-bold uppercase tracking-wider text-gold">
+                    Implementation & Technical Execution
+                  </span>
+                </div>
+                <p class="text-xs sm:text-sm text-white/90 font-normal leading-relaxed">
+                  {cap.p2}
                 </p>
               </div>
 
-              {/* Right Column: Implementation Detail Container */}
-              <div class="lg:col-span-7">
-                <div class="rounded-2xl border border-hair bg-paper/60 p-6 sm:p-8 lg:p-10">
-                  <p class="text-base sm:text-lg text-navy font-normal leading-relaxed">
-                    {cap.p2}
-                  </p>
+              {/* Proof Verification Highlights */}
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div class="flex items-center gap-2.5 p-2.5 px-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xs">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gold text-navy font-bold text-[11px]">
+                    ✓
+                  </span>
+                  <span class="text-xs font-semibold text-white/90 leading-snug">
+                    Production & Institutional Rigour
+                  </span>
+                </div>
+                <div class="flex items-center gap-2.5 p-2.5 px-3.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 shadow-xs">
+                  <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gold text-navy font-bold text-[11px]">
+                    ✓
+                  </span>
+                  <span class="text-xs font-semibold text-white/90 leading-snug">
+                    Durable Knowledge Handover
+                  </span>
                 </div>
               </div>
             </div>
-          </article>
+
+          </div>
+
+          {/* Active Bottom Glow Line */}
+          <div class="panel-glow-bar absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 transition-opacity duration-500"></div>
         </div>
       );
     })}
@@ -76,99 +177,160 @@ const { capabilities, sectorId = 'capabilities' } = Astro.props;
 </div>
 
 <style>
-  .stack-card-wrapper {
-    will-change: transform;
+  /* ==================== DESKTOP PANORAMIC HORIZON STYLES ==================== */
+  @media (min-width: 1024px) {
+    .horizon-panel.is-collapsed {
+      flex: 1 1 0%;
+      min-width: 80px;
+    }
+    .horizon-panel.is-collapsed .collapsed-content {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease 0.2s;
+    }
+    .horizon-panel.is-collapsed .expanded-content {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-dark {
+      opacity: 0.82;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-expanded {
+      opacity: 0;
+    }
+
+    .horizon-panel.is-expanded {
+      flex: 4.8 1 0%;
+    }
+    .horizon-panel.is-expanded .collapsed-content {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+    .horizon-panel.is-expanded .expanded-content {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.5s ease 0.25s, transform 0.5s ease 0.25s;
+    }
+    .horizon-panel.is-expanded .panel-scrim-dark {
+      opacity: 0;
+    }
+    .horizon-panel.is-expanded .panel-scrim-expanded {
+      opacity: 1;
+    }
+    .horizon-panel.is-expanded .panel-glow-bar {
+      opacity: 1;
+    }
   }
 
-  .stack-card {
-    transform-origin: top center;
-    box-shadow: 0 12px 32px -12px rgba(18, 23, 59, 0.12), 0 24px 48px -18px rgba(18, 23, 59, 0.08);
-  }
+  /* ==================== MOBILE / TABLET ACCORDION STYLES ==================== */
+  @media (max-width: 1023px) {
+    .horizon-panel {
+      min-height: 80px;
+    }
+    .horizon-panel.is-collapsed {
+      height: 80px;
+    }
+    .horizon-panel.is-collapsed .collapsed-content {
+      display: flex;
+    }
+    .horizon-panel.is-collapsed .expanded-content {
+      display: none;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-dark {
+      opacity: 0.75;
+    }
+    .horizon-panel.is-collapsed .panel-scrim-expanded {
+      opacity: 0;
+    }
 
-  /* Light bulb idle state: shows unlit line bulb */
-  .capability-bulb-wrap {
-    background-color: rgba(26, 33, 80, 0.03);
-    border-color: rgba(26, 33, 80, 0.08);
-  }
-  .bulb-off {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  .bulb-on {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-
-  /* Powered state: cross-fades seamlessly into the glowing lit bulb image! */
-  :global(.capability-card.is-powered) .capability-bulb-wrap {
-    background-color: rgba(245, 233, 209, 0.85) !important;
-    border-color: rgba(209, 156, 51, 0.75) !important;
-    box-shadow: 0 0 16px rgba(209, 156, 51, 0.35) !important;
-    transform: scale(1.05);
-  }
-  :global(.capability-card.is-powered) .bulb-off {
-    opacity: 0;
-    transform: scale(0.85);
-  }
-  :global(.capability-card.is-powered) .bulb-on {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .stack-card-wrapper {
-      position: static !important;
-      top: auto !important;
-      transform: none !important;
+    .horizon-panel.is-expanded {
+      min-height: 520px;
+    }
+    .horizon-panel.is-expanded .collapsed-content {
+      display: none;
+    }
+    .horizon-panel.is-expanded .expanded-content {
+      display: flex;
+    }
+    .horizon-panel.is-expanded .panel-scrim-dark {
+      opacity: 0;
+    }
+    .horizon-panel.is-expanded .panel-scrim-expanded {
+      opacity: 1;
     }
   }
 </style>
 
 <script>
-  function initCapabilityStacking() {
-    const stacks = document.querySelectorAll<HTMLElement>('[data-capability-stack]');
-    if (!stacks.length) return;
+  function initKineticHorizonStudio() {
+    const studios = document.querySelectorAll<HTMLElement>('[data-kinetic-studio]');
+    if (!studios.length) return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    studios.forEach((studio) => {
+      const panels = Array.from(studio.querySelectorAll<HTMLElement>('[data-horizon-panel]'));
+      if (!panels.length) return;
 
-    function updateStackTransforms() {
-      stacks.forEach((stack) => {
-        const wrappers = stack.querySelectorAll<HTMLElement>('[data-stack-card]');
-        const total = wrappers.length;
+      let currentExpandedIdx = 0;
 
-        wrappers.forEach((wrapper, idx) => {
-          if (idx === total - 1) return; // Topmost final card stays at scale 1
+      function expandPanel(index: number) {
+        if (index === currentExpandedIdx) return;
+        currentExpandedIdx = index;
 
-          const nextWrapper = wrappers[idx + 1];
-          if (!nextWrapper) return;
+        panels.forEach((panel, i) => {
+          const isTarget = i === index;
+          panel.classList.toggle('is-expanded', isTarget);
+          panel.classList.toggle('border-gold/70', isTarget);
+          panel.classList.toggle('shadow-2xl', isTarget);
+          panel.classList.toggle('ring-1', isTarget);
+          panel.classList.toggle('ring-gold/30', isTarget);
 
-          const nextRect = nextWrapper.getBoundingClientRect();
-          const targetTop = 100 + (idx + 1) * 32;
+          panel.classList.toggle('is-collapsed', !isTarget);
+          panel.classList.toggle('border-hair', !isTarget);
+          panel.classList.toggle('shadow-md', !isTarget);
+          panel.setAttribute('aria-expanded', isTarget ? 'true' : 'false');
+        });
+      }
 
-          if (nextRect.top <= targetTop + 80) {
-            const progress = Math.max(0, Math.min(1, (targetTop + 80 - nextRect.top) / 80));
-            const card = wrapper.querySelector<HTMLElement>('.stack-card');
-            if (card) {
-              const scale = 1 - progress * 0.035;
-              const brightness = 1 - progress * 0.05;
-              card.style.transform = `scale(${scale})`;
-              card.style.filter = `brightness(${brightness})`;
-            }
-          } else {
-            const card = wrapper.querySelector<HTMLElement>('.stack-card');
-            if (card) {
-              card.style.transform = 'scale(1)';
-              card.style.filter = 'brightness(1)';
-            }
+      panels.forEach((panel, idx) => {
+        // Expand on click / hover
+        panel.addEventListener('click', () => {
+          expandPanel(idx);
+        });
+
+        panel.addEventListener('mouseenter', () => {
+          if (window.innerWidth >= 1024) {
+            expandPanel(idx);
+          }
+        });
+
+        // Keyboard Accessibility
+        panel.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            expandPanel(idx);
+          } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            const next = (idx + 1) % panels.length;
+            panels[next]?.focus();
+            expandPanel(next);
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            const prev = (idx - 1 + panels.length) % panels.length;
+            panels[prev]?.focus();
+            expandPanel(prev);
           }
         });
       });
-    }
-
-    window.addEventListener('scroll', updateStackTransforms, { passive: true });
-    updateStackTransforms();
+    });
   }
 
-  initCapabilityStacking();
-  document.addEventListener('astro:page-load', initCapabilityStacking);
+  initKineticHorizonStudio();
+  document.addEventListener('astro:page-load', initKineticHorizonStudio);
 </script>

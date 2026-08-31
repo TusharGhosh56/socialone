@@ -1,7 +1,8 @@
 ---
-// CaseStudyDossier.astro — Full-Bleed Editorial Case Study Briefing (Zero generic box-in-a-box)
+// CaseStudyDossier.astro — Full-Bleed Editorial Case Study Briefing with Bain-Style Vector Artwork
 import type { CaseStudyItem } from '../data/caseStudies';
 import GoldWaveform from './GoldWaveform.astro';
+import CaseStudyVectorGraphic from './CaseStudyVectorGraphic.astro';
 
 interface Props {
   caseStudy: CaseStudyItem;
@@ -12,9 +13,9 @@ interface Props {
 const { caseStudy, index, total } = Astro.props;
 ---
 
-<article class={`case-study-editorial case-study-editorial-${index} relative py-10 sm:py-14 first:pt-2 last:pb-4 border-b border-hair/90 last:border-b-0 space-y-12 transition-colors duration-500`} data-dossier-index={index} id={`dossier-${caseStudy.id}`}>
-  {/* Header Meta & Title Block */}
-  <div class="dossier-header-block space-y-6" id={`dossier-header-${caseStudy.id}`}>
+<article class={`case-study-editorial case-study-editorial-${index} relative py-12 sm:py-16 first:pt-4 last:pb-6 border-b border-hair/90 last:border-b-0 space-y-12 transition-colors duration-500`} data-dossier-index={index} id={`dossier-${caseStudy.id}`}>
+  {/* Header Meta & Title Block with Bain-Style Vector Artwork */}
+  <div class="dossier-header-block space-y-8" id={`dossier-header-${caseStudy.id}`}>
     <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-hair">
       <div class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-gold">
         <span class="dossier-pill-badge flex items-center gap-1.5 px-3 py-1 rounded-full bg-pale-navy border border-hair text-navy font-bold">
@@ -34,15 +35,25 @@ const { caseStudy, index, total } = Astro.props;
       </div>
     </div>
 
-    {/* H2 Title */}
-    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-[1.12] tracking-tight max-w-5xl">
-      {caseStudy.title}
-    </h2>
+    {/* Editorial Split: Title & Summary (Left) + Bain-Style Brand Vector (Right) */}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div class="lg:col-span-7 space-y-6">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-[1.12] tracking-tight">
+          {caseStudy.title}
+        </h2>
 
-    {/* Standalone Executive Summary */}
-    <p class="text-xl sm:text-2xl text-mid-navy font-normal leading-relaxed max-w-4xl pt-2">
-      {caseStudy.summary}
-    </p>
+        <p class="text-xl sm:text-2xl text-mid-navy font-normal leading-relaxed">
+          {caseStudy.summary}
+        </p>
+      </div>
+
+      {/* Bespoke Bain-Style Vector Graphic Artwork Frame */}
+      <div class="lg:col-span-5">
+        <div class="rounded-3xl border border-hair/90 bg-white/80 p-2 sm:p-2.5 shadow-xl group hover:border-gold/50 transition-all duration-500">
+          <CaseStudyVectorGraphic id={caseStudy.id} class="w-full h-auto" />
+        </div>
+      </div>
+    </div>
   </div>
 
   {/* Structured Metadata Ribbon (Clean Horizontal Table) */}

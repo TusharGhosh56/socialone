@@ -1,0 +1,44 @@
+# APLYD (Applied AI for Institutional Scale)
+
+> APLYD is a specialized AI transformation and institutional advisory practice born out of Athena Infonomics. It designs, delivers, and independently evaluates applied AI, decision intelligence, and digital infrastructure for governments, multilateral institutions, philanthropy, and social sector leaders across 98 countries.
+>
+> Full-text markdown archive available at: [https://aplyd.ai/llms-full.txt](https://aplyd.ai/llms-full.txt)
+
+APLYD bridges the critical gap between frontier AI technology and sovereign public-sector execution. With 16+ years of institutional evaluation heritage through Athena Infonomics, APLYD ensures that AI deployments are evidence-led, economically validated, sovereign-compliant, and built for institutional ownership rather than vendor dependency.
+
+## Core Pages
+
+- [Homepage](https://aplyd.ai/): Applied AI for government, multilateral donors, and social impact institutions.
+- [Purpose & Direction](https://aplyd.ai/about/purpose-and-direction): Mission, sovereign AI principles, and strategic thesis for public-interest artificial intelligence.
+- [16 Years of Proof](https://aplyd.ai/about/16-years-of-proof): Institutional track record, global footprint, and empirical evaluation foundation through Athena Infonomics.
+- [How We Work](https://aplyd.ai/about/how-we-work): Delivery philosophy, governance guardrails, rapid prototyping, and sovereign operational transfer.
+- [Built for Government](https://aplyd.ai/about/built-for-government): Why public institutions partner with APLYD for high-stakes AI governance and execution.
+- [Our Partners](https://aplyd.ai/about/our-partners): Global delivery, research, and evaluation network spanning 23 regional partners across 98 countries.
+- [People & Leadership](https://aplyd.ai/about/people): Multidisciplinary team of AI engineers, economists, policy specialists, and evaluation experts.
+- [Contact & Engagement](https://aplyd.ai/contact): Engagement advisory, scoping sessions, and partnership inquiries.
+- [Careers](https://aplyd.ai/careers): Open roles in applied AI engineering, public sector strategy, and algorithmic evaluation.
+
+## Advisory & Capabilities
+
+- [Our Approach](https://aplyd.ai/services/our-approach): Five-stage delivery framework from institutional discovery and algorithmic prototyping to sovereign transfer.
+- [Capabilities Overview](https://aplyd.ai/services/our-capabilities): Comprehensive practice matrix across government, nonprofits, and philanthropy.
+- [Government & Public Sector](https://aplyd.ai/services/our-capabilities/government): Sovereign AI infrastructure, automated public service delivery, decision intelligence, and regulatory compliance.
+- [Nonprofits & Multilaterals](https://aplyd.ai/services/our-capabilities/nonprofits): Programmatic AI tooling, frontline data synthesis, and donor-aligned evaluation systems.
+- [Philanthropy & Impact Investors](https://aplyd.ai/services/our-capabilities/philanthropy): Capital deployment intelligence, portfolio evaluation, and algorithmic impact assurance.
+
+## Applied AI in Action (Sector Deployments)
+
+- [AI in Action Overview](https://aplyd.ai/ai-in-action): Live case studies and sector-specific AI implementations.
+- [Agriculture & Climate](https://aplyd.ai/ai-in-action/agriculture): Satellite telemetry, crop yield forecasting, predictive pest models, and smallholder advisory systems.
+- [Education & Skilling](https://aplyd.ai/ai-in-action/education): Adaptive multilingual curricula, automated assessment validation, and teacher support copilots.
+- [MSMEs & Economic Growth](https://aplyd.ai/ai-in-action/msmes): Algorithmic credit scoring, digital supply-chain optimization, and market-linkage platforms.
+- [Public Services & Governance](https://aplyd.ai/ai-in-action/public-services-government): Administrative automation, citizen welfare matching, and sovereign policy simulation.
+- [Utilities & Urban Systems](https://aplyd.ai/ai-in-action/utilities): Non-revenue water reduction, grid optimization, and predictive municipal asset maintenance.
+- [Monitoring, Evaluation & Responsible AI](https://aplyd.ai/ai-in-action/monitoring-evaluation-responsible-ai): Independent algorithmic auditing, bias mitigation, impact verification, and institutional governance frameworks.
+
+## Key Facts & Institutional Metrics
+
+- **Origin**: Athena Infonomics (founded 2010), extending 16 years of econometric evaluation into applied artificial intelligence.
+- **Global Footprint**: Projects executed across 98 countries spanning South Asia, Sub-Saharan Africa, MENA, Southeast Asia, Europe, and the Americas.
+- **Partner Network**: 23 regional delivery, research, and evaluation institutions providing local context and last-mile operational access.
+- **Core Practice Pillars**: Applied AI Engineering, Algorithmic Monitoring & Evaluation (M&E), Sovereign Data Governance, and Institutional Capacity Building.

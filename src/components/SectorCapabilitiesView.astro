@@ -4,8 +4,7 @@ import { sectorDataList, type SectorData } from '../data/capabilities';
 import Button from './Button.astro';
 import CapabilityWorkbench from './CapabilityWorkbench.astro';
 import AtmosphericCanvas from './AtmosphericCanvas.astro';
-import GoldWaveform from './GoldWaveform.astro';
-import GradientVideo from './GradientVideo.astro';
+import HeroVideo from './HeroVideo.astro';
 
 interface Props {
   initialSector: 'government' | 'nonprofits' | 'philanthropy';
@@ -18,18 +17,19 @@ const sectors: SectorData[] = [
   sectorDataList.nonprofits,
   sectorDataList.philanthropy,
 ];
+
+const sectorVideos = [
+  { id: 'government', src: '/video/hero/1.mp4', storyTag: 'Government · Sovereign Public Delivery' },
+  { id: 'nonprofits', src: '/video/hero-fieldwork-3195394.mp4', storyTag: 'Nonprofits · Frontline Programme Operations' },
+  { id: 'philanthropy', src: '/video/hero/6.mp4', storyTag: 'Philanthropy · Catalytic Portfolio Intelligence' },
+];
 ---
 
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="bg-institutional-grid text-white py-16 sm:py-24 lg:py-28 relative overflow-hidden">
-    {/* Animated Fluid Gradient Video Background */}
-    <GradientVideo variant="blue" overlayOpacity={0.62} />
-    {/* Ambient Molestone Gold Particle Waveform */}
-    <GoldWaveform alpha="1.4" />
-
-    <div class="pointer-events-none absolute -left-40 top-1/4 h-96 w-96 rounded-full bg-navy/60 blur-[120px]" aria-hidden="true"></div>
-    <div class="pointer-events-none absolute -right-32 top-10 h-[32rem] w-[32rem] rounded-full bg-gold/10 blur-[140px]" aria-hidden="true"></div>
+  <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    {/* Dynamic Thematic Cinematic Stock Video Background */}
+    <HeroVideo videos={sectorVideos} activeId={initialSector} overlayOpacity={0.65} />
 
     <div class="container-x relative z-10">
       {/* Sector Dynamic Hero Headers */}
@@ -41,16 +41,16 @@ const sectors: SectorData[] = [
             class={`sector-hero-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
             data-sector-hero={sec.id}
           >
-            <div class="mb-6 inline-flex items-center gap-2 rounded-pill bg-white/10 px-4 py-1.5 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-              <span class="h-2 w-2 rounded-full bg-gold"></span>
+            <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+              <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
               {sec.pillBadge}
             </div>
 
-            <h1 class="max-w-5xl text-display font-light text-white leading-[1.05] text-4xl sm:text-6xl lg:text-7xl">
+            <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
               {sec.heroH1}
             </h1>
 
-            <p class="mt-8 max-w-4xl text-xl sm:text-2xl font-normal text-pale-navy/90 leading-relaxed">
+            <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
               {sec.heroLead}
             </p>
           </div>
@@ -58,7 +58,7 @@ const sectors: SectorData[] = [
       })}
 
       {/* Interactive Segmented Audience Switcher */}
-      <div class="mt-12 max-w-3xl">
+      <div class="mt-8 max-w-3xl">
         <div class="w-full">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-sm">
             <div class="text-xs font-bold uppercase tracking-wider text-pale-navy/80 px-3 hidden md:block">
@@ -133,7 +133,7 @@ const sectors: SectorData[] = [
               class={`sector-cta-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
               data-sector-cta={sec.id}
             >
-              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-8 card-interactive-sheen final-cta-card">
+              <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
                 <div class="max-w-2xl relative z-10">
                   <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next Sector Domain</div>
                   <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
@@ -143,8 +143,8 @@ const sectors: SectorData[] = [
                     {sec.ctaDesc}
                   </p>
                 </div>
-                <div class="relative z-10">
-                  <Button href={sec.ctaHref} variant="primary" class="whitespace-nowrap shadow-sm">
+                <div class="relative z-10 w-full sm:w-auto">
+                  <Button href={sec.ctaHref} variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
                     {sec.ctaText} &rarr;
                   </Button>
                 </div>
@@ -166,8 +166,29 @@ const sectors: SectorData[] = [
     const heroBlocks = root.querySelectorAll<HTMLElement>('[data-sector-hero]');
     const bodyBlocks = root.querySelectorAll<HTMLElement>('[data-sector-body]');
     const ctaBlocks = root.querySelectorAll<HTMLElement>('[data-sector-cta]');
+    const bgVideos = root.querySelectorAll<HTMLVideoElement>('[data-hero-bg-video]');
+
+    const sectorTagMap: Record<string, string> = {
+      government: 'Government · Sovereign Public Delivery',
+      nonprofits: 'Nonprofits · Frontline Programme Operations',
+      philanthropy: 'Philanthropy · Catalytic Portfolio Intelligence',
+    };
 
     function switchSector(targetId: string, updateHistory = true) {
+      // 0. Update background video & story tag
+      bgVideos.forEach((vid) => {
+        const matches = vid.getAttribute('data-hero-bg-video') === targetId;
+        vid.classList.toggle('opacity-100', matches);
+        vid.classList.toggle('is-active', matches);
+        vid.classList.toggle('opacity-0', !matches);
+        vid.classList.toggle('pointer-events-none', !matches);
+      });
+
+      const storyTagEl = root.querySelector('[data-hero-story-tag]');
+      if (storyTagEl && sectorTagMap[targetId]) {
+        storyTagEl.textContent = sectorTagMap[targetId];
+      }
+
       // 1. Update buttons
       buttons.forEach((btn) => {
         const isActive = btn.getAttribute('data-sector-btn') === targetId;
@@ -241,8 +262,9 @@ const sectors: SectorData[] = [
         }
       });
 
-      // Notify flow line to measure active sector cards
+      // 5. Recalculate and synchronize capability card stack positions
       setTimeout(() => {
+        window.dispatchEvent(new Event('scroll'));
         window.dispatchEvent(new Event('resize'));
       }, 50);
     }

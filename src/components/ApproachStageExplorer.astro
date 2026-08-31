@@ -1,4 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import imgExplore from '../assets/images/capabilities/work-governance.jpg';
+import imgDesign from '../assets/images/capabilities/hero-fieldwork.jpg';
+import imgDeliver from '../assets/images/capabilities/insight-ai.jpg';
+import imgAssure from '../assets/images/how-we-work-page/evaluation.png';
+
 // ApproachStageExplorer.astro — Interactive 4-Stage Delivery System & Architecture Studio
 interface Stage {
   id: string;
@@ -6,6 +12,7 @@ interface Stage {
   title: string;
   body: string;
   focus: string;
+  image: any;
   deliverables: string[];
   nodes: { label: string; sub: string; type: 'active' | 'gate' | 'flow' }[];
 }
@@ -17,6 +24,7 @@ const stages: Stage[] = [
     title: 'Strategy and direction',
     body: 'We help institutions identify where AI can deliver measurable public value. This starts with the problem: understanding operational bottlenecks, the decisions being made, and the evidence needed to support them. We assess institutional readiness, evaluate available data, and define use cases with clear outcomes and delivery paths.',
     focus: 'Starts with the problem: understanding operational bottlenecks and the decisions being made.',
+    image: imgExplore,
     deliverables: [
       'Understanding operational bottlenecks',
       'Assessing institutional readiness',
@@ -36,6 +44,7 @@ const stages: Stage[] = [
     title: 'Field and delivery',
     body: 'Before building, we examine the environment in which the system will operate. This means understanding frontline workflows, user needs, connectivity and operational constraints. We design systems that integrate with existing processes, address data quality and representation, and account for the realities of field implementation.',
     focus: 'Examines the environment in which the system will operate before building.',
+    image: imgDesign,
     deliverables: [
       'Understanding frontline workflows & user needs',
       'Accounting for connectivity & operational constraints',
@@ -55,6 +64,7 @@ const stages: Stage[] = [
     title: 'Design, build and scale',
     body: 'We build production-ready systems designed for institutional use. We work alongside existing teams throughout implementation, ensuring solutions fit operational realities. Every engagement includes capability transfer: leaving institutions with the technical infrastructure, documentation and trained staff to own and manage the system.',
     focus: 'Every engagement includes capability transfer to own and manage the system.',
+    image: imgDeliver,
     deliverables: [
       'Production-ready systems for institutional use',
       'Working alongside existing teams throughout implementation',
@@ -74,6 +84,7 @@ const stages: Stage[] = [
     title: 'Evaluation and assurance',
     body: 'We evaluate whether systems work as intended in practice. We conduct rigorous, independent assessments of performance, accuracy, fairness and user adoption. Crucially, evaluation is kept separate from delivery: we only evaluate systems we did not build, giving institutions objective evidence to inform decisions about continuation, refinement or scale.',
     focus: 'Crucially, evaluation is kept separate from delivery to provide objective evidence.',
+    image: imgAssure,
     deliverables: [
       'Rigorous, independent assessments of performance',
       'Evaluating accuracy, fairness and user adoption',
@@ -142,6 +153,19 @@ const stages: Stage[] = [
               {stage.body}
             </p>
 
+            {/* Embedded Stage Context Visual Frame with Integrated Treatment */}
+            <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/stage-img">
+              <Image
+                src={stage.image}
+                alt={stage.title}
+                class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover/stage-img:scale-105"
+                widths={[360, 600]}
+                sizes="(min-width: 1024px) 50vw, 100vw"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/10 to-transparent pointer-events-none"></div>
+              <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
+            </div>
+
             {/* Strategic Focus Callout */}
             <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-5 space-y-1.5">
               <div class="text-xs font-bold uppercase tracking-wider text-deep-gold">Core Focus</div>
@@ -171,9 +195,6 @@ const stages: Stage[] = [
                 <div class="text-xs font-bold uppercase tracking-widest text-gold">
                   Delivery Architecture
                 </div>
-                <div class="text-[11px] font-mono uppercase text-pale-navy/70">
-                  {stage.phase} Flow
-                </div>
               </div>
 
               {/* Connected Stage Nodes */}
@@ -193,11 +214,6 @@ const stages: Stage[] = [
                     <div class="min-w-0 flex-1">
                       <div class="text-sm font-bold text-white flex items-center justify-between">
                         <span>{node.label}</span>
-                        {node.type === 'gate' && (
-                          <span class="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-gold/20 text-gold border border-gold/30">
-                            Decision Gate
-                          </span>
-                        )}
                       </div>
                       <div class="text-xs text-pale-navy/70 mt-0.5">
                         {node.sub}
