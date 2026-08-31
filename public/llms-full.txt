@@ -1,0 +1,115 @@
+# APLYD — Full Knowledge Base & Institutional Overview (llms-full.txt)
+
+> **APLYD** (aplyd.ai) is a specialized AI transformation and institutional advisory practice born out of **Athena Infonomics**. We design, deliver, and independently evaluate applied AI, decision intelligence, and digital infrastructure for governments, multilateral institutions, philanthropy, and social sector leaders across 98 countries.
+
+---
+
+## 1. Executive Summary & Strategic Positioning
+
+Frontier AI technology is evolving rapidly, but institutional adoption in government and the social sector lags due to critical structural barriers: lack of sovereign data governance, vendor lock-in, unvalidated algorithmic bias, and inadequate operational capacity.
+
+APLYD bridges this gap. Backed by 16+ years of econometric evaluation heritage from Athena Infonomics (founded in 2010), APLYD provides an end-to-end institutional practice:
+- **Applied AI Engineering**: Designing robust, sovereign-compliant machine learning systems, copilots, predictive pipelines, and automated administrative workflows.
+- **Independent Algorithmic Assurance & M&E**: Rigorous evaluation of model accuracy, fairness, drift, and bias across diverse demographic and regional contexts before deployment.
+- **Sovereign Data Governance & Capacity Transfer**: Ensuring public institutions retain full ownership of their data assets, algorithmic weights, and intellectual property.
+
+---
+
+## 2. Institutional Heritage & Key Metrics
+
+- **Founded**: Athena Infonomics in 2010; APLYD practice launched to operationalize AI for institutional scale.
+- **Global Footprint**: 98 countries spanned across South Asia, Sub-Saharan Africa, Middle East & North Africa, Southeast & East Asia, Europe, Central Asia, and the Americas.
+- **Partner Network**: 23 regional delivery, research, and independent evaluation institutions providing ground truth and last-mile operational reach.
+- **Track Record**: 16+ years of evidence-led program evaluation, data architecture design, and public policy advisory.
+
+---
+
+## 3. Core Pages & Institutional Architecture
+
+### Homepage (`https://aplyd.ai/`)
+Applied AI for government, multilateral donors, and social impact institutions. Features the Sovereign AI Readiness framework, sector workbench, and live footprint telemetry.
+
+### Purpose & Direction (`https://aplyd.ai/about/purpose-and-direction`)
+- **Mission**: Accelerate public-interest AI while ensuring institutional ownership and algorithmic accountability.
+- **Thematic Thesis**: AI in the public sector must be evidence-led, economically validated, and democratically governed.
+
+### 16 Years of Proof (`https://aplyd.ai/about/16-years-of-proof`)
+Empirical foundation establishing Athena Infonomics' 16-year journey from econometric research and policy evaluation to cutting-edge decision intelligence and applied AI systems.
+
+### How We Work (`https://aplyd.ai/about/how-we-work`)
+- **Stage 1: Institutional Discovery & Governance Scoping**: Assessing technical readiness, legal constraints, and data provenance.
+- **Stage 2: Algorithmic Prototyping & Stress-Testing**: Building sandboxed proofs-of-concept tested against edge cases.
+- **Stage 3: Independent Evaluation & Bias Auditing**: Rigorous third-party validation of fairness, accuracy, and sub-population parity.
+- **Stage 4: Sovereign Deployment & Integration**: Production rollout into existing enterprise/government stacks.
+- **Stage 5: Institutional Transfer & Capacity Building**: Comprehensive training to enable sovereign civil service teams to operate and maintain systems independently.
+
+### Built for Government (`https://aplyd.ai/about/built-for-government`)
+Why public sector institutions choose APLYD over generic tech consultancies: sovereign compliance, algorithmic transparency, audit-ready data pipelines, and zero vendor lock-in.
+
+### Our Partners (`https://aplyd.ai/about/our-partners`)
+A network of 23 regional partners across 8 operating regions:
+- **Global Reach**: Abt Global, IMC (now DT Global), Oxford Policy Management, Palladium.
+- **Multi-Region**: Knowledge for Development (K4D), Agua Consult, Development Pathways, Genesis Analytics, ITAD, Apex TC, Hakunamatata.
+- **South Asia**: Consiglieri Private Limited (CPL), IIT Madras Applied AI Lab, IWMI, Matrix Business Development Ltd., Dias Works.
+- **Sub-Saharan Africa**: Jarco Consulting, Consilient.
+- **North America**: Cadmus Group LLC, Quantum Leaps, EMERG.
+- **Middle East & North Africa**: Optimum Analysis, Edmaaj.
+
+### People & Leadership (`https://aplyd.ai/about/people`)
+- Multidisciplinary team across AI engineering, public finance, econometrics, and policy evaluation.
+- Founders: Deepa Karthykeyan and Vijay Natesan.
+- Practice Leaders: Nakul Aggarwal (AI & Digital Transformation), Sudhanshu Joshi (Evaluation & Consulting), and senior technical advisors.
+
+---
+
+## 4. Advisory & Practice Capabilities
+
+### Our Capabilities Overview (`https://aplyd.ai/services/our-capabilities`)
+Comprehensive practice matrix across three primary client segments:
+
+#### 1. Government & Public Sector (`https://aplyd.ai/services/our-capabilities/government`)
+- Automated Citizen Welfare Targeting & Entitlement Routing.
+- Sovereign Large Language Models & Administrative Copilots.
+- Non-Revenue Water & Municipal Grid Optimization.
+- Regulatory Compliance & Algorithmic Impact Assessments (AIA).
+
+#### 2. Nonprofits & Multilaterals (`https://aplyd.ai/services/our-capabilities/nonprofits`)
+- Programmatic AI Tooling for Field Enumerators & Frontline Workers.
+- Frontline Qualitative Data Synthesis & Automated Reporting.
+- Donor-Aligned Evidence & Impact Validation.
+
+#### 3. Philanthropy & Impact Investors (`https://aplyd.ai/services/our-capabilities/philanthropy`)
+- Capital Allocation Intelligence & Opportunity Mapping.
+- Portfolio-Wide Impact Verification & Algorithmic Auditing.
+- AI Readiness Assessments for Grantee Organizations.
+
+---
+
+## 5. Applied AI in Action (Sector Case Studies)
+
+### Agriculture & Climate (`https://aplyd.ai/ai-in-action/agriculture`)
+- **Farmer-Centric Data Governance & Advisory**: Designing multilingual conversational agents for smallholder farmers, integrating satellite telemetry, hyper-local weather models, and pest prediction algorithms with sovereign data sovereignty.
+
+### Education & Skilling (`https://aplyd.ai/ai-in-action/education`)
+- **Oral Reading Fluency Evaluation (Client: Wadhwani AI | India)**: Independent validation of a speech-based literacy assessment model across ~8,000 Hindi and Gujarati recordings, auditing accuracy and dialectical fairness across gender and grade cohorts before national scale deployment.
+
+### MSMEs & Economic Growth (`https://aplyd.ai/ai-in-action/msmes`)
+- **Alternative Credit Scoring & Supply Chain Optimization**: Algorithmic assessment of micro-enterprise cash flows, enabling unbanked merchants to access institutional credit while preventing algorithmic bias.
+
+### Public Services & Governance (`https://aplyd.ai/ai-in-action/public-services-government`)
+- **Welfare Eligibility Matching & Administrative Automation**: Streamlining citizen documentation verification and benefit distribution pipelines for regional state governments.
+
+### Utilities & Urban Infrastructure (`https://aplyd.ai/ai-in-action/utilities`)
+- **Predictive Water Loss & Municipal Asset Maintenance**: Utilizing IoT sensor networks and anomaly detection models to reduce non-revenue water loss across urban utility authorities.
+
+### Monitoring, Evaluation & Responsible AI (`https://aplyd.ai/ai-in-action/monitoring-evaluation-responsible-ai`)
+- **Independent Algorithmic Auditing & Parity Assurance**: End-to-end bias testing, drift monitoring, and explainability frameworks for high-stakes decision support models.
+
+---
+
+## 6. Engagement & Contact
+
+- **Website**: [https://aplyd.ai](https://aplyd.ai)
+- **General Inquiries**: [contact@aplyd.com](mailto:contact@aplyd.com)
+- **Careers & Talent**: [careers@aplyd.com](mailto:careers@aplyd.com)
+- **Offices**: Washington DC, London, New Delhi, Chennai.

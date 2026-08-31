@@ -17,22 +17,32 @@ interface Props {
   title?: string;
   description?: string;
   keywords?: string;
+  ogType?: 'website' | 'article';
+  showFaq?: boolean;
 }
 
 const {
   title = 'APLYD | Applied AI for Governments & Impact-Focused Institutions',
   description = 'APLYD moves artificial intelligence from pilot to public service—engineering sovereign, field-tested AI solutions and institutional capability for governments, multilaterals, and global impact organizations.',
   keywords = 'Applied AI, Government AI, GovTech AI Solutions, Public Sector Digital Transformation, Decision Intelligence, Institutional AI Capability, Sovereign AI Infrastructure, Athena Infonomics, Independent AI Evaluation, Responsible AI in Government, Civic AI, Public Systems AI',
+  ogType = 'website',
+  showFaq = Astro.url.pathname === '/' || Astro.url.pathname === '',
 } = Astro.props;
 
 // Canonical from configured `site` (astro.config.mjs → aplyd.ai). Falls back safely.
 const site = Astro.site ?? new URL('https://aplyd.ai');
-const isHome = Astro.url.pathname === '/';
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '';
 const canonical = new URL(Astro.url.pathname, site).href;
 const ogImage = new URL('/og-image.png', site).href;
 
+const pathname = Astro.url.pathname;
+const isAbout = pathname.startsWith('/about');
+const isContact = pathname.startsWith('/contact');
+const isServices = pathname.startsWith('/services');
+const isAiInAction = pathname.startsWith('/ai-in-action');
+
 // Dynamic Path-aware Breadcrumb Schema
-const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const pathSegments = pathname.split('/').filter(Boolean);
 const breadcrumbs = [
   { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
   ...pathSegments.map((segment, index) => {
@@ -50,110 +60,126 @@ const breadcrumbs = [
   }),
 ];
 
+// Determine specific WebPage type
+let pageType: string[] = ['WebPage'];
+if (isAbout) pageType.push('AboutPage');
+if (isContact) pageType.push('ContactPage');
+if (isServices || isAiInAction) pageType.push('CollectionPage');
+
 // --- Unified Schema.org Graph Structured Data (§12) ---
+const graphItems: any[] = [
+  {
+    '@type': 'Organization',
+    '@id': `${site.href}#organization`,
+    name: 'APLYD',
+    legalName: 'APLYD by Athena Infonomics',
+    url: site.href,
+    logo: {
+      '@type': 'ImageObject',
+      '@id': `${site.href}#logo`,
+      url: new URL('/assets/logos/aplyd-wordmark-navy.svg', site).href,
+      contentUrl: new URL('/assets/logos/aplyd-wordmark-navy.svg', site).href,
+      caption: 'APLYD Logo',
+    },
+    image: ogImage,
+    description:
+      'APLYD helps governments and impact-focused institutions apply artificial intelligence to strengthen public systems, improve decisions, and build lasting institutional capability.',
+    parentOrganization: {
+      '@type': 'Organization',
+      name: 'Athena Infonomics',
+      url: 'https://www.athenainfonomics.com',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'Partnerships & Advisory',
+      url: new URL('/contact', site).href,
+      availableLanguage: ['en'],
+    },
+    knowsAbout: [
+      'Applied Artificial Intelligence',
+      'GovTech AI Solutions',
+      'Public Sector Digital Transformation',
+      'Public Sector AI Implementation',
+      'Decision Intelligence',
+      'Institutional AI Capability Building',
+      'Sovereign AI Infrastructure',
+      'Sovereign Codebase Handover',
+      'Independent AI Evaluation & Assurance',
+      'Algorithmic Bias Audit for Public Services',
+      'Responsible AI in Government',
+      'AI for Global Development',
+      'Frontline Systems Engineering',
+    ],
+    areaServed: 'Worldwide',
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${site.href}#website`,
+    url: site.href,
+    name: 'APLYD',
+    description: 'Applied AI for governments and impact-focused institutions.',
+    publisher: { '@id': `${site.href}#organization` },
+    inLanguage: 'en-US',
+  },
+  {
+    '@type': pageType.length === 1 ? pageType[0] : pageType,
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    isPartOf: { '@id': `${site.href}#website` },
+    about: { '@id': `${site.href}#organization` },
+    description: description,
+    primaryImageOfPage: {
+      '@type': 'ImageObject',
+      url: ogImage,
+    },
+    inLanguage: 'en-US',
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: breadcrumbs,
+  },
+];
+
+// Include Services ItemList only on relevant service pages or homepage
+if (isHome || isServices) {
+  graphItems.push({
+    '@type': 'ItemList',
+    '@id': `${site.href}#services`,
+    name: 'APLYD Applied AI Capabilities',
+    description: 'Core service pillars moving institutions from AI ambition to real-world impact.',
+    itemListElement: services.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Service',
+        name: s.title,
+        description: s.body,
+        provider: {
+          '@id': `${site.href}#organization`,
+        },
+      },
+    })),
+  });
+}
+
+// Include FAQPage ONLY when explicitly present
+if (showFaq) {
+  graphItems.push({
+    '@type': 'FAQPage',
+    '@id': `${canonical}#faq`,
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  });
+}
+
 const schemaGraph = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${site.href}#organization`,
-      name: 'APLYD',
-      legalName: 'APLYD by Athena Infonomics',
-      url: site.href,
-      logo: {
-        '@type': 'ImageObject',
-        '@id': `${site.href}#logo`,
-        url: new URL('/assets/logos/aplyd-wordmark-navy.svg', site).href,
-        contentUrl: new URL('/assets/logos/aplyd-wordmark-navy.svg', site).href,
-        caption: 'APLYD Logo',
-      },
-      image: ogImage,
-      description:
-        'APLYD helps governments and impact-focused institutions apply artificial intelligence to strengthen public systems, improve decisions, and build lasting institutional capability.',
-      parentOrganization: {
-        '@type': 'Organization',
-        name: 'Athena Infonomics',
-        url: 'https://www.athenainfonomics.com',
-      },
-      contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'Partnerships & Advisory',
-        url: new URL('/contact', site).href,
-        availableLanguage: ['en'],
-      },
-      knowsAbout: [
-        'Applied Artificial Intelligence',
-        'GovTech AI Solutions',
-        'Public Sector Digital Transformation',
-        'Public Sector AI Implementation',
-        'Decision Intelligence',
-        'Institutional AI Capability Building',
-        'Sovereign AI Infrastructure',
-        'Sovereign Codebase Handover',
-        'Independent AI Evaluation & Assurance',
-        'Algorithmic Bias Audit for Public Services',
-        'Responsible AI in Government',
-        'AI for Global Development',
-        'Frontline Systems Engineering',
-      ],
-      areaServed: 'Worldwide',
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${site.href}#website`,
-      url: site.href,
-      name: 'APLYD',
-      description: 'Applied AI for governments and impact-focused institutions.',
-      publisher: { '@id': `${site.href}#organization` },
-      inLanguage: 'en-US',
-    },
-    {
-      '@type': 'WebPage',
-      '@id': `${canonical}#webpage`,
-      url: canonical,
-      name: title,
-      isPartOf: { '@id': `${site.href}#website` },
-      about: { '@id': `${site.href}#organization` },
-      description: description,
-      primaryImageOfPage: {
-        '@type': 'ImageObject',
-        url: ogImage,
-      },
-      inLanguage: 'en-US',
-    },
-    {
-      '@type': 'ItemList',
-      '@id': `${site.href}#services`,
-      name: 'APLYD Applied AI Capabilities',
-      description: 'Core service pillars moving institutions from AI ambition to real-world impact.',
-      itemListElement: services.map((s, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        item: {
-          '@type': 'Service',
-          name: s.title,
-          description: s.body,
-          provider: {
-            '@id': `${site.href}#organization`,
-          },
-        },
-      })),
-    },
-    {
-      '@type': 'FAQPage',
-      '@id': `${canonical}#faq`,
-      mainEntity: faqs.map((f) => ({
-        '@type': 'Question',
-        name: f.question,
-        acceptedAnswer: { '@type': 'Answer', text: f.answer },
-      })),
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonical}#breadcrumb`,
-      itemListElement: breadcrumbs,
-    },
-  ],
+  '@graph': graphItems,
 };
 ---
 
