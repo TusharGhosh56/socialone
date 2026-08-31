@@ -101,13 +101,13 @@ const stages: Stage[] = [
 ];
 ---
 
-<div class="stage-explorer w-full space-y-10" data-stage-explorer>
-  {/* ===================== 1. Interactive Stage Selector Bar ===================== */}
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-2 sm:p-2.5 rounded-2xl bg-white border border-hair shadow-sm">
+<div class="stage-explorer w-full space-y-6 sm:space-y-10" data-stage-explorer>
+  {/* ===================== 1. Interactive Stage Selector Bar (Desktop Only) ===================== */}
+  <div class="stage-tab-nav hidden lg:grid grid-cols-4 gap-3 p-2 rounded-2xl bg-white border border-hair shadow-sm">
     {stages.map((stage, idx) => (
       <button
         type="button"
-        class={`stage-tab group relative flex flex-col p-4 sm:p-5 rounded-xl text-left transition-all duration-300 cursor-pointer ${
+        class={`stage-tab group relative flex flex-col p-4 lg:p-5 rounded-xl text-left transition-all duration-300 cursor-pointer ${
           idx === 0 ? 'is-active' : ''
         }`}
         data-stage-trigger={stage.id}
@@ -120,41 +120,41 @@ const stages: Stage[] = [
             {stage.phase}
           </span>
         </div>
-        <div class="stage-tab-title text-base sm:text-lg font-bold leading-tight transition-colors text-navy">
+        <div class="stage-tab-title text-base lg:text-lg font-bold leading-tight transition-colors text-navy">
           {stage.title}
         </div>
       </button>
     ))}
   </div>
 
-  {/* ===================== 2. Dynamic Stage Canvas ===================== */}
-  <div class="relative min-h-[520px]">
+  {/* ===================== 2. Stage Canvas (Continuous Feed on Mobile, Interactive on Desktop) ===================== */}
+  <div class="stage-panels-container relative lg:min-h-[520px]">
     {stages.map((stage, idx) => (
       <div
-        class={`stage-panel rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-sm transition-all duration-500 card-hover-accent ${
-          idx === 0 ? 'block opacity-100' : 'hidden opacity-0'
+        class={`stage-panel rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-12 shadow-sm transition-all duration-500 card-hover-accent ${
+          idx === 0 ? 'block opacity-100' : 'lg:hidden lg:opacity-0'
         }`}
         data-stage-panel={stage.id}
       >
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-start">
           
           {/* Left Column: Stage Narrative & Official Client Copy (7 cols) */}
-          <div class="lg:col-span-7 space-y-6">
-            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy">
+          <div class="lg:col-span-7 space-y-4 sm:space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3 py-0.5 sm:px-3.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair">
               <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
               {stage.phase} Phase · Methodology
             </div>
 
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
               {stage.title}
             </h2>
 
-            <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+            <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
               {stage.body}
             </p>
 
             {/* Embedded Stage Context Visual Frame with Integrated Treatment */}
-            <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/stage-img">
+            <div class="relative w-full h-44 sm:h-52 rounded-xl sm:rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/stage-img">
               <Image
                 src={stage.image}
                 alt={stage.title}
@@ -163,23 +163,23 @@ const stages: Stage[] = [
                 sizes="(min-width: 1024px) 50vw, 100vw"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-navy/55 via-navy/10 to-transparent pointer-events-none"></div>
-              <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
+              <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-xl sm:rounded-2xl pointer-events-none"></div>
             </div>
 
             {/* Strategic Focus Callout */}
-            <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-5 space-y-1.5">
-              <div class="text-xs font-bold uppercase tracking-wider text-deep-gold">Core Focus</div>
-              <p class="text-small font-medium text-navy leading-relaxed">
+            <div class="rounded-xl sm:rounded-2xl border border-gold/30 bg-pale-gold/30 p-3.5 sm:p-5 space-y-1 sm:space-y-1.5">
+              <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-deep-gold">Core Focus</div>
+              <p class="text-xs sm:text-small font-medium text-navy leading-relaxed">
                 {stage.focus}
               </p>
             </div>
 
             {/* Deliverables Checklist */}
-            <div class="pt-4 space-y-3">
-              <div class="text-xs font-bold uppercase tracking-wider text-mid-navy/70">Key Outcomes</div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="pt-2 sm:pt-4 space-y-2 sm:space-y-3">
+              <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-mid-navy/70">Key Outcomes</div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                 {stage.deliverables.map((item) => (
-                  <div class="flex items-start gap-2.5 text-small font-medium text-navy bg-paper/60 p-3 rounded-xl border border-hair hover:border-gold/30 transition-colors">
+                  <div class="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-small font-medium text-navy bg-paper/60 p-2.5 sm:p-3 rounded-xl border border-hair hover:border-gold/30 transition-colors">
                     <span class="text-gold font-bold mt-0.5">✓</span>
                     <span>{item}</span>
                   </div>
@@ -189,22 +189,25 @@ const stages: Stage[] = [
           </div>
 
           {/* Right Column: Architectural Pipeline Studio (5 cols) */}
-          <div class="lg:col-span-5 flex flex-col justify-between rounded-2xl bg-institutional-grid text-white p-6 sm:p-8 shadow-xl border border-white/10 relative overflow-hidden">
-            <div class="relative z-10 space-y-6">
-              <div class="flex items-center justify-between border-b border-white/10 pb-4">
+          <div class="lg:col-span-5 flex flex-col justify-between rounded-xl sm:rounded-2xl bg-institutional-grid text-white p-4.5 sm:p-7 shadow-xl border border-white/10 relative overflow-hidden">
+            <div class="relative z-10 space-y-4 sm:space-y-6">
+              <div class="flex items-center justify-between border-b border-white/10 pb-3 sm:pb-4">
                 <div class="text-xs font-bold uppercase tracking-widest text-gold">
                   Delivery Architecture
+                </div>
+                <div class="text-[10px] uppercase font-bold tracking-wider bg-white/10 px-2.5 py-0.5 rounded-full text-pale-navy border border-white/10">
+                  {stage.phase} Workflow
                 </div>
               </div>
 
               {/* Connected Stage Nodes */}
-              <div class="space-y-3 relative">
+              <div class="space-y-2.5 sm:space-y-3 relative">
                 {/* Vertical connecting line */}
                 <div class="absolute left-4 top-4 bottom-4 w-0.5 bg-white/20 -z-0"></div>
 
                 {stage.nodes.map((node) => (
-                  <div class="relative z-10 flex items-start gap-3.5 bg-white/5 border border-white/10 p-3.5 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/40">
-                    <div class={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-bold ${
+                  <div class="relative z-10 flex items-start gap-2.5 sm:gap-3.5 bg-white/5 border border-white/10 p-2.5 sm:p-3.5 rounded-xl backdrop-blur-sm transition-all hover:bg-white/10 hover:border-gold/40">
+                    <div class={`grid h-7 w-7 sm:h-8 sm:w-8 shrink-0 place-items-center rounded-full text-xs font-bold ${
                       node.type === 'gate'
                         ? 'bg-gold text-navy shadow-md'
                         : 'bg-white/15 text-white'
@@ -212,16 +215,21 @@ const stages: Stage[] = [
                       ✓
                     </div>
                     <div class="min-w-0 flex-1">
-                      <div class="text-sm font-bold text-white flex items-center justify-between">
+                      <div class="text-xs sm:text-sm font-bold text-white flex items-center justify-between">
                         <span>{node.label}</span>
                       </div>
-                      <div class="text-xs text-pale-navy/70 mt-0.5">
+                      <div class="text-[11px] sm:text-xs text-pale-navy/70 mt-0.5">
                         {node.sub}
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+
+            <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-pale-navy/60">
+              <span>Sovereign Delivery Standard</span>
+              <span class="text-gold font-bold">APLYD Framework</span>
             </div>
           </div>
 
@@ -263,6 +271,24 @@ const stages: Stage[] = [
   .stage-tab[aria-selected="true"] .stage-tab-title {
     color: #ffffff !important;
   }
+
+  /* Mobile Continuous Linear Sequence (No tab clicking / scrolling back and forth) */
+  @media (max-width: 1023px) {
+    .stage-tab-nav {
+      display: none !important;
+    }
+    .stage-panels-container {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2rem !important;
+      min-height: auto !important;
+    }
+    .stage-panel {
+      display: block !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+  }
 </style>
 
 <script>
@@ -275,6 +301,7 @@ const stages: Stage[] = [
 
     triggers.forEach((btn) => {
       btn.addEventListener('click', () => {
+        if (window.innerWidth < 1024) return;
         const stageId = btn.getAttribute('data-stage-trigger');
 
         triggers.forEach((b) => {

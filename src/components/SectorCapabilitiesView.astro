@@ -27,7 +27,7 @@ const sectorVideos = [
 
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 min-h-[460px] sm:min-h-[500px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+  <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
     {/* Dynamic Thematic Cinematic Stock Video Background */}
     <HeroVideo videos={sectorVideos} activeId={initialSector} overlayOpacity={0.65} />
 
@@ -41,16 +41,16 @@ const sectorVideos = [
             class={`sector-hero-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
             data-sector-hero={sec.id}
           >
-            <div class="mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
+            <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
               <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
               {sec.pillBadge}
             </div>
 
-            <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+            <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
               {sec.heroH1}
             </h1>
 
-            <p class="mt-5 max-w-3xl text-base sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+            <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
               {sec.heroLead}
             </p>
           </div>
@@ -58,20 +58,20 @@ const sectorVideos = [
       })}
 
       {/* Interactive Segmented Audience Switcher */}
-      <div class="mt-8 max-w-3xl">
+      <div class="mt-6 sm:mt-8 max-w-3xl">
         <div class="w-full">
-          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-2 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-sm">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 p-1.5 sm:p-2 bg-white/10 rounded-2xl border border-white/15 backdrop-blur-sm">
             <div class="text-xs font-bold uppercase tracking-wider text-pale-navy/80 px-3 hidden md:block">
               Select Institutional Domain:
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full md:w-auto">
+            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 w-full md:w-auto">
               {sectors.map((s) => {
                 const isActive = initialSector === s.id;
                 return (
                   <button
                     type="button"
-                    class={`sector-switch-btn flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-small font-bold transition-all duration-base cursor-pointer border ${
+                    class={`sector-switch-btn flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2.5 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-[0.6875rem] sm:text-small font-bold transition-all duration-base cursor-pointer border ${
                       isActive
                         ? 'bg-white text-navy shadow-md border-white is-active'
                         : 'bg-white/5 text-white hover:bg-white/15 border-white/10'
@@ -80,8 +80,8 @@ const sectorVideos = [
                     data-sector-href={s.href}
                     aria-pressed={isActive ? 'true' : 'false'}
                   >
-                    <span class={`sector-switch-dot h-2 w-2 rounded-full ${isActive ? 'bg-gold' : 'bg-white/40'}`}></span>
-                    <span>{s.label}</span>
+                    <span class={`sector-switch-dot h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full shrink-0 ${isActive ? 'bg-gold' : 'bg-white/40'}`}></span>
+                    <span class="truncate">{s.label}</span>
                   </button>
                 );
               })}
@@ -105,9 +105,9 @@ const sectorVideos = [
               class={`sector-body-block transition-opacity duration-300 ${isInit ? 'block opacity-100' : 'hidden opacity-0'}`}
               data-sector-body={sec.id}
             >
-              <div class="max-w-4xl mb-12 space-y-4">
+              <div class="max-w-4xl mb-6 sm:mb-12 space-y-2 sm:space-y-4">
                 <div class="text-xs font-bold uppercase tracking-widest text-gold">Capabilities</div>
-                <p class="text-lg sm:text-xl text-mid-navy leading-relaxed font-normal">
+                <p class="text-base sm:text-xl text-mid-navy leading-relaxed font-normal">
                   {sec.sectionLead}
                 </p>
               </div>
