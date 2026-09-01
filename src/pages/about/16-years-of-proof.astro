@@ -7,28 +7,20 @@ import HeroVideo from '../../components/HeroVideo.astro';
 
 const bedrockPillars = [
   {
-    phase: 'Governance & Strategy',
     title: 'Policy research and advisory',
     desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
-    artifacts: ['Sector Readiness Baselines', 'Governance Frameworks', 'Regulatory Guidance'],
   },
   {
-    phase: 'Evidence & Learning',
     title: 'Measurement and evaluation',
     desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
-    artifacts: ['Independent MEL Frameworks', 'Baseline Assessments', 'Impact Evaluations'],
   },
   {
-    phase: 'Engineering & Integration',
     title: 'Digital tools and systems',
     desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
-    artifacts: ['Enterprise MIS Platforms', 'Data Pipeline Hookups', 'Workforce Tooling'],
   },
   {
-    phase: 'Field Intelligence',
     title: 'Last-mile data networks',
     desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
-    artifacts: ['Community Compass', 'Ground Truth Networks', 'Frontline Telemetry'],
   },
 ];
 ---
@@ -41,23 +33,18 @@ const bedrockPillars = [
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background: Last-Mile Evidence & Community */}
+      {/* Thematic Cinematic Stock Video Background */}
       <HeroVideo
         src="/video/trust.mp4"
         overlayOpacity={0.62}
       />
 
-      <div class="container-x relative z-10">
-        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          About APLYD · 16 Years of Proof
-        </div>
-
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Sixteen years of delivery behind a new kind of AI practice
         </h1>
 
-        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="max-w-3xl text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed">
           APLYD builds on sixteen years of Athena Infonomics’ work across governments, funders and public institutions, with a focus on evidence, measurement and implementation. That experience provides the institutional and sector context needed to apply AI within real public systems, where data, workflows, governance and delivery conditions matter as much as the technology.
         </p>
       </div>
@@ -65,93 +52,83 @@ const bedrockPillars = [
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: GLOBAL FOOTPRINT MAP & STATS ============================ */}
-      <section class="relative z-10" id="global-reach-section">
-        <div class="container-x space-y-8 sm:space-y-10 lg:space-y-12">
-          <div class="max-w-3xl space-y-3 sm:space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="global-eyebrow">Global Reach</div>
-            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="global-heading">
-              Sixteen years of global delivery
-            </h2>
-            <p class="text-base sm:text-xl text-mid-navy leading-relaxed font-normal">
-              Proven public sector impact across 5 continents, serving leading multilateral institutions, national governments, and global philanthropies.
-            </p>
-          </div>
-
-          {/* Global Interactive Footprint Matrix (Metrics + Live World Operations Map) */}
-          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-3 sm:p-8 shadow-sm" id="footprint-matrix-wrap">
-            <InteractiveFootprint />
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ SECTION 2: THE BEDROCK ============================ */}
-      <section class="relative z-10" id="bedrock-section">
-        <div class="container-x space-y-8 sm:space-y-10 lg:space-y-12">
+      {/* ============================ SECTION 1: THE BEDROCK ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="bedrock-section">
+        <div class="container-x space-y-8 sm:space-y-12">
           <div class="max-w-4xl space-y-3 sm:space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="bedrock-eyebrow">Institutional Foundation</div>
-            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="bedrock-heading">
-              The bedrock: Four complementary capabilities
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight" id="bedrock-heading">
+              The bedrock
             </h2>
-            <p class="text-base sm:text-xl text-mid-navy leading-relaxed font-normal pt-1 sm:pt-2">
+            <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal">
               Athena Infonomics has built its work around four complementary capabilities. Together, they provide the sector knowledge, evidence infrastructure and delivery experience that underpin APLYD’s approach to applied AI.
             </p>
           </div>
 
-          {/* 4 Bedrock Pillars Connected Display */}
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-8" id="bedrock-grid">
+          {/* 4 Bedrock Pillars Display */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="bedrock-grid">
             {bedrockPillars.map((item, idx) => (
-              <div class={`bedrock-card bedrock-card-${idx} group rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-10 space-y-4 sm:space-y-6 card-flip-hover flex flex-col justify-between`} data-bedrock-index={idx}>
-                <div class="space-y-3 sm:space-y-4 relative z-10">
-                  <div class="flex items-center justify-between border-b border-hair/60 pb-2.5 sm:pb-3">
-                    <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gold">
-                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                      {item.phase}
-                    </span>
-                  </div>
-
-                  <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
-                    {item.desc}
-                  </p>
-                </div>
-
-                {/* Artifacts checklist */}
-                <div class="pt-3 sm:pt-4 border-t border-hair/60 space-y-2 relative z-10">
-                  <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-mid-navy/70 flip-text transition-colors">Institutional Deliverables</div>
-                  <div class="flex flex-wrap gap-1.5 sm:gap-2">
-                    {item.artifacts.map((art) => (
-                      <span class="text-[0.6875rem] sm:text-xs font-medium px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-pill bg-paper border border-hair text-navy flip-tag transition-colors">
-                        {art}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+              <div class={`bedrock-card bedrock-card-${idx} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-8 lg:p-10 space-y-3 sm:space-y-4 shadow-sm flex flex-col justify-between`} data-bedrock-index={idx}>
+                <h3 class="text-xl sm:text-2xl font-light text-navy leading-snug">
+                  {item.title}
+                </h3>
+                <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============================ CTA ============================ */}
-      <section class="relative z-10">
+      {/* ============================ SECTION 2: WHAT APLYD ADDS ============================ */}
+      <section class="relative z-10 py-8 sm:py-12" id="aplyd-adds-section">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-sm space-y-4 sm:space-y-6 max-w-4xl">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
+              What APLYD adds
+            </h2>
+            <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal">
+              APLYD brings AI-native capabilities across technology strategy, domain engineering and deployment. This builds on Athena Infonomics’ sector knowledge, institutional relationships, evidence and last-mile infrastructure to develop and implement AI systems for institutions operating at population scale.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ SECTION 3: FOOTPRINT ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="global-reach-section">
+        <div class="container-x space-y-8 sm:space-y-12">
+          <div class="max-w-3xl space-y-3 sm:space-y-4">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight" id="global-heading">
+              Footprint
+            </h2>
+            <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+              Founded in India in 2010. Offices in the US, UK, Kenya and Bangladesh, with delivery hubs across Africa and South Asia. Named to the Financial Times list of high-growth companies in Asia-Pacific in 2021, 2022 and 2025.
+            </p>
+          </div>
+
+          {/* Global Interactive Footprint Matrix */}
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-3 sm:p-8 shadow-sm" id="footprint-matrix-wrap">
+            <InteractiveFootprint />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ CTA ============================ */}
+      <section class="relative z-10 py-8 sm:py-14">
+        <div class="container-x">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
-              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Capabilities</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                Explore our mission and vision
+                See what we build
               </h3>
               <p class="text-base text-mid-navy leading-relaxed font-normal">
-                Understand why APLYD exists and the future of applied intelligence in public systems.
+                Explore our capabilities across government, nonprofits, and philanthropy.
               </p>
             </div>
             <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/about/purpose-and-direction" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
-                Purpose & Direction &rarr;
+              <Button href="/services/our-capabilities/government" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                See what we build &rarr;
               </Button>
             </div>
           </div>

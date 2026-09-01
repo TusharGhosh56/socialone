@@ -1,30 +1,23 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
-import { Image } from 'astro:assets';
-
-import img01 from '../../assets/images/how-we-work-page/building.png';
-import img02 from '../../assets/images/how-we-work-page/transfer.png';
-import img03 from '../../assets/images/how-we-work-page/evidence.png';
-import img04 from '../../assets/images/how-we-work-page/evaluation.png';
+import img01 from '../../assets/images/how-we-work/card_01-web.jpg';
+import img02 from '../../assets/images/how-we-work/card_02-web.jpg';
+import img03 from '../../assets/images/how-we-work/card_03-web.jpg';
+import img04 from '../../assets/images/how-we-work/card_04-web.jpg';
 
 const principles = [
   {
-    phase: 'Embedded Practice',
+    phase: 'Inside the Institution',
     title: 'We work inside the institution',
     image: img01,
-    alt: 'Embedded delivery team inside government institution',
-    tag: 'Institutional Grounding',
+    alt: 'Working alongside institutional implementation teams',
     paragraphs: [
       'We work alongside the teams responsible for implementation, aligning with delivery objectives and staying engaged through deployment and beyond. This helps ensure that the system reflects existing workflows, operational requirements and the realities of the institution in which it will be used.',
       'Effective implementation depends on this context. Solutions designed without an understanding of how work is actually carried out can struggle with adoption. Working within the institution allows those constraints to inform design from the outset.',
-    ],
-    takeaways: [
-      'Aligned with actual frontline workflows',
-      'Continuous co-design with operating staff',
-      'Zero disconnect between lab models and field realities',
     ],
   },
   {
@@ -32,51 +25,33 @@ const principles = [
     title: 'We hand the system over',
     image: img02,
     alt: 'Capability transfer and workforce training',
-    tag: 'Durable Ownership',
     paragraphs: [
       'Capability transfer is built into every engagement. We leave trained teams, documentation and operating routines that enable the institution to manage the system after implementation.',
       'From the outset, we consider who will operate the system, how it will be supported and maintained, and what capabilities are required to manage it effectively. The objective is durable institutional ownership, not continued dependence on an external provider.',
     ],
-    takeaways: [
-      'Complete transfer of codebase and documentation',
-      'Dedicated operating routines and staff training',
-      'Freedom from external vendor lock-in',
-    ],
   },
   {
-    phase: 'Empirical Verification',
+    phase: 'Evidence-Driven',
     title: 'We decide from evidence',
     image: img03,
-    alt: 'Evidence-driven decision making and field telemetry',
-    tag: 'Continuous Measurement',
+    alt: 'Evidence-driven decision making and measurement',
     paragraphs: [
       'Evidence informs decisions throughout the engagement, from selecting and prioritising use cases to assessing readiness for scale. We combine field data, user experience and measurement to understand how a system performs in practice and what it changes for the people and services it is intended to support.',
       'This includes looking beyond aggregate performance to identify gaps in coverage, adoption and outcomes. Decisions to improve, continue or scale are based on evidence from implementation rather than demonstration alone.',
     ],
-    takeaways: [
-      'Real-world telemetry over lab benchmarks',
-      'Granular equity and coverage verification',
-      'Empirical go / no-go scaling gates',
-    ],
   },
   {
-    phase: 'Structural Assurance',
+    phase: 'Independent Assurance',
     title: 'We evaluate independently',
     image: img04,
     alt: 'Independent algorithmic evaluation and auditing',
-    tag: 'Independent by Design',
     paragraphs: [
       'We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Evaluation is kept structurally separate from delivery.',
     ],
-    subheading: 'Independent by Design',
+    h3Title: 'Independent by Design',
     subParagraphs: [
       'Evaluation is most useful when its findings are not shaped by an interest in a particular outcome. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with greater independence.',
       'This approach also enables us to evaluate systems developed by other providers without creating a conflict between evaluation and implementation. The principle applies equally to our own work: systems we build are not evaluated by us.',
-    ],
-    takeaways: [
-      'Zero conflict of interest between build and audit',
-      'Third-party objectivity for leadership decisions',
-      'Unbiased assessment of safety, fairness, and scale',
     ],
   },
 ];
@@ -90,23 +65,18 @@ const principles = [
   <div class="pt-20 sm:pt-24 lg:pt-28">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background: Frontline Fieldwork & Co-Design */}
+      {/* Thematic Cinematic Stock Video: Applied Systems Engineering & Field Collaboration */}
       <HeroVideo
-        src="/video/hero-fieldwork-3195394.mp4"
-        overlayOpacity={0.62}
+        src="/video/how-we-work.mp4"
+        overlayOpacity={0.65}
       />
 
-      <div class="container-x relative z-10">
-        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          About APLYD · How We Work
-        </div>
-
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Four principles behind every engagement
         </h1>
 
-        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
+        <p class="max-w-3xl text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed">
           Technology alone does not create lasting public value. Whether an AI system delivers and endures depends on how it is designed, implemented and measured within the realities of an institution. Four principles guide our work, each addressing a common challenge in taking AI from a pilot to sustained institutional use.
         </p>
       </div>
@@ -114,62 +84,51 @@ const principles = [
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ 4 PRINCIPLES EDITORIAL SHOWCASE ============================ */}
-      <section class="relative z-10">
-        <div class="container-x space-y-10 sm:space-y-16 lg:space-y-28">
+      {/* ============================ 4 PRINCIPLES CHAPTERS ============================ */}
+      <section class="relative z-10 py-10 sm:py-16">
+        <div class="container-x space-y-12 sm:space-y-16 lg:space-y-24">
           {principles.map((p, idx) => (
-            <article id={`principle-row-${idx}`} class={`principle-row principle-row-${idx} grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-14 items-center`}>
-              
-              {/* Left Column: Principle Narrative */}
-              <div class={`space-y-3.5 sm:space-y-6 lg:col-span-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
-                <div class="principle-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy/90 px-3 py-0.5 sm:px-3.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-navy border border-hair transition-all duration-300">
-                  <span class="principle-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-300"></span>
-                  {p.phase}
+            <article
+              id={`principle-row-${idx}`}
+              class={`principle-row grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center`}
+            >
+              {/* Text Column: 100% Verbatim Client Copy */}
+              <div class={`lg:col-span-6 space-y-4 sm:space-y-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div class="space-y-2.5 sm:space-y-3.5">
+                  <div class="inline-flex items-center gap-2 rounded-full border border-hair bg-pale-navy/90 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy principle-badge transition-all duration-500">
+                    <span class="principle-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
+                    <span>Principle · {p.phase}</span>
+                  </div>
+
+                  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight tracking-tight text-navy">
+                    {p.title}
+                  </h2>
                 </div>
 
-                <h2 id={`principle-heading-${idx}`} class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight">
-                  {p.title}
-                </h2>
-
-                <div class="space-y-2.5 sm:space-y-4 text-sm sm:text-lg text-mid-navy leading-relaxed font-normal">
+                <div class="space-y-3.5 sm:space-y-4 text-sm sm:text-base lg:text-lg leading-relaxed font-normal text-mid-navy">
                   {p.paragraphs.map((para) => (
                     <p>{para}</p>
                   ))}
                 </div>
 
-                {p.subheading && (
-                  <div class="rounded-2xl border border-gold/30 bg-pale-gold/30 p-4 sm:p-6 space-y-2 sm:space-y-3 shadow-xs">
-                    <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-widest text-deep-gold">
-                      {p.subheading}
+                {p.h3Title && (
+                  <div class="pt-4 sm:pt-6 border-t border-hair/80 space-y-3">
+                    <h3 class="text-xl sm:text-2xl font-light text-navy leading-snug">
+                      {p.h3Title}
+                    </h3>
+                    <div class="space-y-3 text-sm sm:text-base lg:text-lg leading-relaxed font-normal text-mid-navy">
+                      {p.subParagraphs?.map((sp) => (
+                        <p>{sp}</p>
+                      ))}
                     </div>
-                    {p.subParagraphs?.map((subPara) => (
-                      <p class="text-xs sm:text-small font-medium text-navy leading-relaxed">{subPara}</p>
-                    ))}
                   </div>
                 )}
-
-                {/* Principle Key Commitments */}
-                <div class="pt-1 sm:pt-2 space-y-1.5 sm:space-y-2">
-                  <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-mid-navy/70">
-                    Institutional Commitments
-                  </div>
-                  <div class="grid grid-cols-1 gap-1.5 sm:gap-2">
-                    {p.takeaways.map((item) => (
-                      <div class="flex items-center gap-2 sm:gap-2.5 text-xs sm:text-small font-medium text-navy p-2 sm:p-2.5 rounded-xl transition-all duration-300 hover:bg-white hover:shadow-sm hover:translate-x-1 border border-transparent hover:border-gold/30">
-                        <span class="grid h-4.5 w-4.5 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-[9px] sm:text-[10px] font-bold text-deep-gold">
-                          ✓
-                        </span>
-                        <span>{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
 
-              {/* Right Column: Visual Frame */}
+              {/* Image Column */}
               <div class={`lg:col-span-6 flex flex-col justify-center ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <div class="principle-card group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-2 sm:p-2.5 shadow-lg transition-all duration-500 hover:border-gold/50 hover:shadow-2xl h-full flex flex-col justify-center">
-                  <div class="relative aspect-[16/10] sm:aspect-[16/11] lg:aspect-[4/3] w-full min-h-[200px] sm:min-h-[320px] lg:min-h-[400px] overflow-hidden rounded-xl sm:rounded-2xl bg-paper">
+                <div class="principle-card group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-hair shadow-md transition-all duration-500 hover:border-gold/50 hover:shadow-xl h-full flex flex-col justify-center">
+                  <div class="relative aspect-[16/10] sm:aspect-[16/11] lg:aspect-[4/3] w-full min-h-[220px] sm:min-h-[320px] lg:min-h-[400px] overflow-hidden rounded-2xl sm:rounded-3xl">
                     <Image
                       src={p.image}
                       alt={p.alt}
@@ -190,21 +149,21 @@ const principles = [
       </section>
 
       {/* ============================ CTA ============================ */}
-      <section class="relative z-10">
+      <section class="relative z-10 py-8 sm:py-14">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
-              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Explore Capabilities</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                Meet the people behind APLYD
+                Explore our capabilities
               </h3>
               <p class="text-base text-mid-navy leading-relaxed font-normal">
-                Explore the leadership, AI engineers, and evaluation specialists who bring these principles into practice.
+                Discover our applied AI capabilities across government, nonprofits, and global philanthropy.
               </p>
             </div>
             <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/about/people" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
-                Meet our team &rarr;
+              <Button href="/services/our-capabilities/government" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                Explore our capabilities &rarr;
               </Button>
             </div>
           </div>
