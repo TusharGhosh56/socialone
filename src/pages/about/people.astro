@@ -63,11 +63,10 @@ function getInitials(fullName: string): string {
             const members = team.filter((m) => m.tag === group.tag);
             return (
               <div id={`people-group-${idx}`} class={`space-y-6 sm:space-y-8 people-group-${idx}`}>
-                <div class="border-b border-hair pb-3 sm:pb-4 flex items-center justify-between">
+                <div class="border-b border-hair pb-3 sm:pb-4">
                   <h2 id={`people-group-heading-${idx}`} class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
                     {group.title}
                   </h2>
-                  <span class="text-xs font-mono font-bold text-mid-navy/60">{members.length} Members</span>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
