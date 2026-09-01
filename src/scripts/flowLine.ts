@@ -62,21 +62,63 @@ interface Flourish {
 // dots at the same on-screen height as the fixed-position mark; this keeps
 // the rail "in line with the logomark" (same design intent) without
 // literally touching its rendered edge.
-const MARK_CLEARANCE = 16;
-// Exported so other on-page elements that need to sit exactly ON the rail
-// (not just have the master line pass near them) can read the same real
-// measurement instead of duplicating the mark-relative formula — see
-// timelineTraveler.ts's alignment of the mobile timeline's own dots/rail
-// line to this same x.
+export function getContentLeft(): number {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return 64;
+  }
+
+  // Measure all container-x elements on the page to find the minimum content text left edge
+  const containers = document.querySelectorAll<HTMLElement>('.container-x');
+  let minLeft = Infinity;
+
+  for (const c of containers) {
+    const rect = c.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      const style = window.getComputedStyle(c);
+      const pl = parseFloat(style.paddingLeft) || 0;
+      const textLeft = rect.left + pl;
+      if (textLeft > 0 && textLeft < minLeft) {
+        minLeft = textLeft;
+      }
+    }
+  }
+
+  // Fallback: check main headings or content blocks
+  if (minLeft === Infinity) {
+    const headings = document.querySelectorAll<HTMLElement>('main h1, main h2, main p');
+    for (const h of headings) {
+      const r = h.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && r.left > 0 && r.left < minLeft) {
+        minLeft = r.left;
+      }
+    }
+  }
+
+  const clientW = document.documentElement.clientWidth;
+  return minLeft !== Infinity ? minLeft : Math.max(32, clientW * 0.05);
+}
+
 export function railPad(): number {
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-    return 10;
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return 24;
   }
-  const mark = document.querySelector<HTMLElement>('#floating-mark');
-  if (mark && mark.getBoundingClientRect().width > 0) {
-    return mark.getBoundingClientRect().left - MARK_CLEARANCE;
+
+  const contentLeft = getContentLeft();
+  const clientW = document.documentElement.clientWidth;
+
+  // 1. Narrow/mobile viewports (< 768px) or extremely tight margin (contentLeft <= 36px):
+  // Keep the rail tightly parked against the extreme left edge (8px-10px),
+  // leaving comfortable clearance before text starts at 16px - 36px.
+  if (clientW < 768 || contentLeft <= 36) {
+    return Math.max(8, Math.min(10, Math.floor(contentLeft * 0.35)));
   }
-  return Math.min(64, Math.max(24, document.documentElement.clientWidth * 0.05));
+
+  // 2. Medium and desktop viewports (>= 768px):
+  // The rail line and its halo (radius 14px) must have at least 26px of clean margin from contentLeft.
+  // When contentLeft is moderate (e.g. 58px on a 1036px screen), place it at ~24px, leaving 34px of clear space!
+  // When contentLeft is large (e.g. 160px on wide screen), cap it at 48px.
+  const idealGutterPad = Math.floor(contentLeft - 30);
+  return Math.max(14, Math.min(48, idealGutterPad));
 }
 function railLeftX(): number {
   return railPad() + window.scrollX;
@@ -530,15 +572,15 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   return list;
 }
 
-// 4. Our Approach: Hero (Left) -> 4-Stage Explorer (Center Channel on Desktop) -> Jog to Left Rail -> Assurance Monument (Left Rail) -> Final CTA (Left Rail Plug)
+// 4. Our Approach: Hero (Left) -> Alternating S-Curve Methodology Circuit (Stage 0 Left -> Stage 1 Right -> Stage 2 Left -> Stage 3 Right) -> Final CTA
 function buildOurApproachMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const explorer = document.querySelector<HTMLElement>('[data-stage-explorer]');
-  const monument = document.querySelector<HTMLElement>('main .gradient-navy-mesh');
+  const stageCards = Array.from(document.querySelectorAll<HTMLElement>('.stage-chapter-card'));
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const list: Milestone[] = [];
-  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
+  // Hero on Left Rail
   list.push({
     key: 'oa-hero',
     getPoint: () => {
@@ -547,54 +589,102 @@ function buildOurApproachMilestones(): Milestone[] {
     },
   });
 
-  if (isDesktop && explorer && monument) {
-    // Jog into Stage Explorer Tab bar in the gap above
-    list.push({
-      key: 'oa-explorer-jog-start',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: explorer.getBoundingClientRect().top - 28 + window.scrollY }),
+  if (!isMultiCol || stageCards.length < 4) {
+    // Single column (mobile): Clean left rail
+    stageCards.forEach((card, idx) => {
+      list.push({
+        key: `oa-stage-${idx}`,
+        dot: true,
+        getPoint: () => {
+          const cr = card.getBoundingClientRect();
+          if (cr.height === 0) return null;
+          return { x: railLeftX(), y: cr.top + 48 + window.scrollY };
+        },
+      });
     });
-    list.push({
-      key: 'oa-explorer-jog-center',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: explorer.getBoundingClientRect().top - 28 + window.scrollY }),
-    });
-    list.push({
-      key: 'oa-explorer-dot',
-      getPoint: () => {
-        const er = explorer.getBoundingClientRect();
-        return { x: screenCenterX(), y: er.top + 30 + window.scrollY };
-      },
-    });
-
-    // In the gap below Stage Explorer: Jog back to Left Rail
-    const getOaGapY = () => {
-      return (explorer.getBoundingClientRect().bottom + monument.getBoundingClientRect().top) / 2 + window.scrollY;
-    };
-    list.push({
-      key: 'oa-monument-jog-start',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: getOaGapY() }),
-    });
-    list.push({
-      key: 'oa-monument-jog-left',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getOaGapY() }),
-    });
+    pushCtaConnection(list, cta, 'left', 'oa');
+    return list;
   }
 
-  // Independent Assurance Monument on Left Rail
+  // Desktop (lg+): Dynamic Alternating S-Curve Weave matching card text alignment
+  // Stage 0 (Explore) - Left Rail (Text Left)
   list.push({
-    key: 'oa-monument-heading',
+    key: 'oa-stage-0',
+    dot: true,
     getPoint: () => {
-      const heading = monument?.querySelector('h2');
-      if (!heading) return null;
-      return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
+      const cr = stageCards[0].getBoundingClientRect();
+      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
     },
   });
 
-  // Final CTA plugged into card interior
-  pushCtaConnection(list, cta, 'left', 'oa');
+  // Crossover 0 -> 1 (Left to Right in gap between stage 0 and 1)
+  list.push({
+    key: 'oa-cross-0-1',
+    dot: false,
+    getPoint: () => {
+      const r0 = stageCards[0].getBoundingClientRect();
+      const r1 = stageCards[1].getBoundingClientRect();
+      const midY = (r0.bottom + r1.top) / 2 + window.scrollY;
+      return { x: railRightX(), y: midY };
+    },
+  });
+
+  // Stage 1 (Design) - Right Rail (Text Right)
+  list.push({
+    key: 'oa-stage-1',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[1].getBoundingClientRect();
+      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Crossover 1 -> 2 (Right to Left in gap between stage 1 and 2)
+  list.push({
+    key: 'oa-cross-1-2',
+    dot: false,
+    getPoint: () => {
+      const r1 = stageCards[1].getBoundingClientRect();
+      const r2 = stageCards[2].getBoundingClientRect();
+      const midY = (r1.bottom + r2.top) / 2 + window.scrollY;
+      return { x: railLeftX(), y: midY };
+    },
+  });
+
+  // Stage 2 (Deliver) - Left Rail (Text Left)
+  list.push({
+    key: 'oa-stage-2',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[2].getBoundingClientRect();
+      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Crossover 2 -> 3 (Left to Right in gap between stage 2 and 3)
+  list.push({
+    key: 'oa-cross-2-3',
+    dot: false,
+    getPoint: () => {
+      const r2 = stageCards[2].getBoundingClientRect();
+      const r3 = stageCards[3].getBoundingClientRect();
+      const midY = (r2.bottom + r3.top) / 2 + window.scrollY;
+      return { x: railRightX(), y: midY };
+    },
+  });
+
+  // Stage 3 (Assure) - Right Rail (Text Right)
+  list.push({
+    key: 'oa-stage-3',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[3].getBoundingClientRect();
+      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Final CTA plugged into card interior from Right Rail
+  pushCtaConnection(list, cta, 'right', 'oa');
 
   return list;
 }
@@ -1905,6 +1995,17 @@ export function initFlowLine(): void {
         dossier.querySelector('.dossier-impact-box')?.classList.toggle('is-powered', currentLength >= at - 8);
       }
     });
+
+    // 9. Our Approach 4 Stages sequential card power activation
+    for (let idx = 0; idx < 4; idx++) {
+      const sIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `oa-stage-${idx}`);
+      if (sIdx >= 0) {
+        const at = milestoneCumulative[sIdx] ?? 0;
+        const isReached = currentLength >= at - 8;
+        const cards = document.querySelectorAll<HTMLElement>('.stage-chapter-card');
+        cards[idx]?.classList.toggle('is-powered', isReached);
+      }
+    }
   }
 
   function renderDots(milestones: Milestone[], points: Point[]) {
