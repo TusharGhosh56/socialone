@@ -478,13 +478,11 @@ function buildHowWeWorkMilestones(): Milestone[] {
 // 3. Purpose & Direction: Hero (Left) -> Mission Monument (Left) -> Sector Heading (Left) -> Top Splitter Manifold (Center on Desktop) -> 3 Sector Stream -> Bottom Combiner Manifold (Center) -> Jog to Left Rail -> Vision Heading (Left Rail) -> Final CTA (Left Rail Plug)
 function buildPurposeAndDirectionMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const missionMonument = document.querySelector<HTMLElement>('main .card-interactive-sheen');
-  const sectorHeading = document.getElementById('sector-horizons-heading') || document.querySelector<HTMLElement>('#sector-horizons-section h2');
-  const sectorGrid = document.getElementById('sector-horizons-grid') || document.querySelector<HTMLElement>('main .grid-cols-1.lg\\:grid-cols-3');
-  const visionMonument = document.querySelector<HTMLElement>('main .gradient-navy-mesh');
+  const missionSec = document.getElementById('mission-section') || document.querySelector<HTMLElement>('main section:nth-of-type(1)');
+  const sectorGrid = document.getElementById('sector-horizons-section') || document.querySelector<HTMLElement>('[data-sector-prism]');
+  const visionMonument = document.getElementById('vision-section') || document.querySelector<HTMLElement>('.gradient-navy-mesh');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
   const list: Milestone[] = [];
-  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
   // Hero on Left Rail
   list.push({
@@ -499,22 +497,17 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   list.push({
     key: 'pad-mission',
     getPoint: () => {
-      if (!missionMonument) return null;
-      const mr = missionMonument.getBoundingClientRect();
+      const heading = missionSec?.querySelector('h2');
+      if (heading) {
+        return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
+      }
+      if (!missionSec) return null;
+      const mr = missionSec.getBoundingClientRect();
       return { x: railLeftX(), y: mr.top + 60 + window.scrollY };
     },
   });
 
-  // Sector Horizons Heading on Left Rail
-  list.push({
-    key: 'pad-sectors-heading',
-    getPoint: () => {
-      if (!sectorHeading) return null;
-      return { x: railLeftX(), y: sectorHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // Sector Horizons Grid level on Left Rail
+  // Sector Horizons Deck on Left Rail
   if (sectorGrid) {
     list.push({
       key: 'pad-sectors-level',
@@ -526,7 +519,7 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
     });
   }
 
-  // Vision Monument Heading on Left Rail (framing the vision on the left)
+  // Vision Monument Heading on Left Rail
   list.push({
     key: 'pad-vision-heading',
     getPoint: () => {

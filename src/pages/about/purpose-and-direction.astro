@@ -6,34 +6,8 @@ import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import GoldWaveform from '../../components/GoldWaveform.astro';
 import GradientVideo from '../../components/GradientVideo.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
+import SectorPrismDeck from '../../components/SectorPrismDeck.astro';
 import missionImg from '../../assets/images/purpose-direction/institution.png';
-import govImg from '../../assets/images/purpose-direction/government.png';
-import ngoImg from '../../assets/images/cases/02-education-evaluation-india.jpg';
-import philImg from '../../assets/images/purpose-direction/donate.png';
-
-const sectors = [
-  {
-    id: 'gov',
-    title: 'Government',
-    tag: 'Public Systems',
-    image: govImg,
-    desc: 'Building AI into public systems, frontline decision-making and workforce capability, within real policy, data and operational constraints.',
-  },
-  {
-    id: 'ngo',
-    title: 'Nonprofits',
-    tag: 'Programme Delivery',
-    image: ngoImg,
-    desc: 'Connecting programme evidence, partner knowledge and workflows to strengthen strategy, programme operations and delivery.',
-  },
-  {
-    id: 'phil',
-    title: 'Philanthropy',
-    tag: 'Portfolio Evidence',
-    image: philImg,
-    desc: 'Using portfolio evidence and shared infrastructure to strengthen investment decisions, grantee capability and responsible adoption.',
-  },
-];
 ---
 
 <Base
@@ -64,88 +38,68 @@ const sectors = [
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
       {/* ============================ SECTION 1: OUR MISSION ============================ */}
-      <section class="relative z-10 py-10 sm:py-16">
-        <div class="container-x space-y-10 sm:space-y-14">
+      <section class="relative z-10 py-12 sm:py-20" id="mission-section">
+        <div class="container-x space-y-12 sm:space-y-16 lg:space-y-20">
           
           {/* Mission Split-Screen Monument */}
-          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-md grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch group transition-all duration-500 hover:shadow-xl">
-            <div class="p-6 sm:p-10 lg:p-14 lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6">
-              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-md grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch group transition-all duration-500 hover:shadow-2xl">
+            <div class="p-8 sm:p-12 lg:p-16 lg:col-span-7 flex flex-col justify-center space-y-6 sm:space-y-8">
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight tracking-tight">
                 Our mission
               </h2>
 
-              <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug">
+              <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug border-l-4 border-gold pl-5 sm:pl-7">
                 To help institutions build the systems, capabilities, and intelligence to make better decisions at scale.
               </blockquote>
 
-              <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal pt-1 sm:pt-2">
+              <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal pt-2">
                 The challenge in public-sector AI is not only developing the technology. It is creating the conditions for institutions to adopt, operate and improve it. We work across that journey, from identifying the decisions and services where AI can add value, to understanding delivery realities, building systems that fit institutional workflows, and measuring what changes in practice.
               </p>
             </div>
 
-            {/* Right Media Frame */}
-            <div class="lg:col-span-5 relative min-h-[260px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-navy/5">
+            {/* Right Media Frame with Cinematic Depth */}
+            <div class="lg:col-span-5 relative min-h-[300px] sm:min-h-[380px] lg:min-h-full overflow-hidden bg-navy/5">
               <Image
                 src={missionImg}
                 alt="Institutional intelligence and decision making"
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                widths={[400, 700, 900]}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                widths={[500, 800, 1100]}
                 sizes="(min-width: 1024px) 42vw, 100vw"
               />
-              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-navy/30 via-transparent to-transparent pointer-events-none"></div>
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-navy/40 via-transparent to-transparent pointer-events-none"></div>
             </div>
           </div>
 
-          {/* 3 Sector Focus Showcase (H3 Cards) */}
-          <div class="pt-4 sm:pt-8 space-y-6 sm:space-y-8" id="sector-horizons-section">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8" id="sector-horizons-grid">
-              {sectors.map((sec, idx) => (
-                <div class={`sector-card sector-card-${sec.id} sector-card-${idx} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-8 space-y-5 shadow-sm flex flex-col justify-between group transition-all duration-500 hover:shadow-xl hover:border-gold/40`} data-sector={sec.id}>
-                  <div class="space-y-4 relative z-10">
-                    <div class="relative w-full h-44 sm:h-52 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/img">
-                      <Image
-                        src={sec.image}
-                        alt={sec.title}
-                        class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        widths={[360, 600]}
-                        sizes="(min-width: 1024px) 33vw, 100vw"
-                      />
-                      <div class="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent pointer-events-none"></div>
-                    </div>
-
-                    <h3 class="text-xl sm:text-2xl font-light text-navy">
-                      {sec.title}
-                    </h3>
-
-                    <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
-                      {sec.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* 3 Sector Dynamic Horizon Deck */}
+          <div class="space-y-6 sm:space-y-8" id="sector-horizons-section">
+            <SectorPrismDeck />
           </div>
 
         </div>
       </section>
 
       {/* ============================ SECTION 2: OUR VISION (DEEP MONUMENT) ============================ */}
-      <section class="relative z-10 py-10 sm:py-16">
+      <section class="relative z-10 py-10 sm:py-16" id="vision-section">
         <div class="container-x">
-          <div class="gradient-navy-mesh gradient-sheen rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl">
+          <div class="gradient-navy-mesh gradient-sheen rounded-3xl p-8 sm:p-14 lg:p-20 text-white relative overflow-hidden shadow-2xl">
             <GradientVideo variant="gold" overlayOpacity={0.58} />
             <GoldWaveform alpha="1.2" />
 
-            <div class="relative z-10 max-w-4xl space-y-6 sm:space-y-8">
-              <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white leading-tight">
-                Our vision
-              </h2>
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+              
+              {/* Left Column: Heading & Monumental Quote */}
+              <div class="lg:col-span-6 space-y-6 sm:space-y-8">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white leading-tight">
+                  Our vision
+                </h2>
 
-              <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-white leading-snug">
-                Intelligence embedded across public institutions, enabling faster, fairer, and more informed decisions.
-              </blockquote>
+                <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-white leading-snug border-l-4 border-gold pl-5 sm:pl-6">
+                  Intelligence embedded across public institutions, enabling faster, fairer, and more informed decisions.
+                </blockquote>
+              </div>
 
-              <div class="space-y-4 text-base sm:text-lg lg:text-xl font-light text-pale-navy/95 leading-relaxed">
+              {/* Right Column: Narrative Paragraphs */}
+              <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-base sm:text-lg lg:text-xl font-light text-pale-navy/95 leading-relaxed">
                 <p>
                   The measure of progress is not the number of pilots launched, but whether systems can be adopted, sustained and improved within the institutions they are designed to serve. That means building for continuity across changes in staff, resources and operating conditions, with the governance and evidence required to support long-term use.
                 </p>
@@ -153,6 +107,7 @@ const sectors = [
                   A system that depends indefinitely on an external vendor does not create durable institutional capability. We build toward institutions that can operate, govern and improve their own AI systems, with ownership and capability developed from the outset.
                 </p>
               </div>
+
             </div>
           </div>
         </div>
@@ -161,18 +116,18 @@ const sectors = [
       {/* ============================ CTA ============================ */}
       <section class="relative z-10 py-8 sm:py-14">
         <div class="container-x">
-          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
               <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Approach</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
                 See our approach
               </h3>
-              <p class="text-base text-mid-navy leading-relaxed font-normal">
+              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
                 How APLYD moves an institution from the decision worth improving, through build, to independent assurance.
               </p>
             </div>
             <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/services/our-approach" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+              <Button href="/services/our-approach" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-md">
                 See our approach &rarr;
               </Button>
             </div>

@@ -1,0 +1,248 @@
+---
+import { Image } from 'astro:assets';
+import govImg from '../assets/images/purpose-direction/government.png';
+import ngoImg from '../assets/images/cases/02-education-evaluation-india.jpg';
+import philImg from '../assets/images/purpose-direction/donate.png';
+
+const sectors = [
+  {
+    id: 'gov',
+    title: 'Government',
+    image: govImg,
+    desc: 'Building AI into public systems, frontline decision-making and workforce capability, within real policy, data and operational constraints.',
+  },
+  {
+    id: 'ngo',
+    title: 'Nonprofits',
+    image: ngoImg,
+    desc: 'Connecting programme evidence, partner knowledge and workflows to strengthen strategy, programme operations and delivery.',
+  },
+  {
+    id: 'phil',
+    title: 'Philanthropy',
+    image: philImg,
+    desc: 'Using portfolio evidence and shared infrastructure to strengthen investment decisions, grantee capability and responsible adoption.',
+  },
+];
+---
+
+<div class="spatial-horizon-studio w-full py-4 sm:py-8 select-none overflow-x-clip" data-spatial-carousel>
+  {/* Top Interactive Horizon Selector Tabs */}
+  <div class="flex justify-center mb-8 sm:mb-12">
+    <div class="inline-flex items-center gap-1 sm:gap-2 p-1.5 rounded-full bg-white/90 border border-hair backdrop-blur-md shadow-sm" role="tablist">
+      {sectors.map((sec, idx) => (
+        <button
+          type="button"
+          role="tab"
+          data-spatial-nav={idx}
+          class={`spatial-nav-btn px-6 sm:px-10 py-3 rounded-full text-sm sm:text-base font-semibold transition-all duration-300 cursor-pointer ${
+            idx === 0
+              ? 'bg-[#0A192F] text-white shadow-md'
+              : 'text-mid-navy hover:text-navy hover:bg-paper'
+          }`}
+        >
+          <span>{sec.title}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  {/* Outer Wrapper with Dedicated Flanking Margins */}
+  <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-16 lg:px-24">
+    {/* 3D Spatial Viewport Stage (Grand Cinematic Scale) */}
+    <div class="relative w-full h-[580px] sm:h-[680px] lg:h-[740px] xl:h-[780px] flex items-center justify-center spatial-stage">
+      {sectors.map((sec, idx) => (
+        <div
+          id={`spatial-card-${sec.id}`}
+          data-spatial-card={idx}
+          tabindex="0"
+          class="spatial-card absolute w-[92%] sm:w-[620px] md:w-[740px] lg:w-[840px] xl:w-[920px] rounded-3xl border border-hair bg-white/95 backdrop-blur-xl shadow-2xl p-6 sm:p-10 lg:p-12 xl:p-14 flex flex-col justify-between cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.2,1,0.3,1)] hover:border-gold/50"
+        >
+          {/* Media Frame with Expanded High-Resolution Photography */}
+          <div class="relative w-full h-56 sm:h-76 lg:h-92 xl:h-[420px] rounded-2xl overflow-hidden border border-hair bg-navy/5 mb-6 sm:mb-8 group/img">
+            <Image
+              src={sec.image}
+              alt={sec.title}
+              class="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover/img:scale-105"
+              widths={[600, 1000, 1600]}
+              sizes="(min-width: 1280px) 920px, (min-width: 1024px) 840px, (min-width: 640px) 740px, 92vw"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A192F]/40 via-transparent to-transparent pointer-events-none"></div>
+          </div>
+
+          {/* Narrative Block with Generous Typography */}
+          <div class="space-y-3 sm:space-y-4">
+            <h3 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy tracking-tight leading-tight">
+              {sec.title}
+            </h3>
+            <p class="text-base sm:text-xl lg:text-2xl text-mid-navy font-normal leading-relaxed text-pretty">
+              {sec.desc}
+            </p>
+          </div>
+
+          {/* Bottom Ambient Accent */}
+          <div class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-60"></div>
+        </div>
+      ))}
+    </div>
+
+    {/* Navigation Prev / Next Floating Controls (Completely Outside the Cards) */}
+    <button
+      type="button"
+      data-spatial-prev
+      aria-label="Previous Sector"
+      class="spatial-prev-btn absolute -left-2 sm:left-0 lg:-left-2 xl:-left-4 top-1/2 -translate-y-1/2 z-30 h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-white/95 backdrop-blur-md border border-hair shadow-2xl flex items-center justify-center text-navy hover:bg-[#0A192F] hover:text-white hover:border-[#0A192F] transition-all cursor-pointer"
+    >
+      <svg class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <button
+      type="button"
+      data-spatial-next
+      aria-label="Next Sector"
+      class="spatial-next-btn absolute -right-2 sm:right-0 lg:-right-2 xl:-right-4 top-1/2 -translate-y-1/2 z-30 h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-white/95 backdrop-blur-md border border-hair shadow-2xl flex items-center justify-center text-navy hover:bg-[#0A192F] hover:text-white hover:border-[#0A192F] transition-all cursor-pointer"
+    >
+      <svg class="h-6 w-6 sm:h-7 sm:w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  .spatial-stage {
+    perspective: 1500px;
+    overflow: visible;
+  }
+
+  .spatial-card {
+    transform-style: preserve-3d;
+    will-change: transform, opacity;
+  }
+</style>
+
+<script>
+  function initSpatialHorizonCarousel() {
+    const root = document.querySelector<HTMLElement>('[data-spatial-carousel]');
+    if (!root) return;
+
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-spatial-card]'));
+    const navBtns = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-spatial-nav]'));
+    const prevBtn = root.querySelector<HTMLButtonElement>('[data-spatial-prev]');
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-spatial-next]');
+    if (!cards.length) return;
+
+    let activeIdx = 0;
+    const total = cards.length;
+
+    function render3D() {
+      const isMobile = window.innerWidth < 640;
+      const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
+      const isLarge = window.innerWidth >= 1280;
+
+      cards.forEach((card, idx) => {
+        // Calculate relative offset (-1, 0, 1)
+        let diff = (idx - activeIdx) % total;
+        if (diff < -1) diff += total;
+        if (diff > 1) diff -= total;
+
+        if (diff === 0) {
+          // ACTIVE (Center)
+          card.style.transform = 'translateX(0px) translateZ(0px) rotateY(0deg) scale(1)';
+          card.style.opacity = '1';
+          card.style.zIndex = '20';
+          card.style.filter = 'none';
+          card.style.pointerEvents = 'auto';
+        } else if (diff === 1 || (activeIdx === total - 1 && idx === 0)) {
+          // NEXT (Right)
+          const translateX = isMobile ? '50%' : isTablet ? '220px' : isLarge ? '340px' : '280px';
+          card.style.transform = `translateX(${translateX}) translateZ(-160px) rotateY(-18deg) scale(0.84)`;
+          card.style.opacity = '0.45';
+          card.style.zIndex = '10';
+          card.style.filter = 'blur(1px)';
+          card.style.pointerEvents = 'auto';
+        } else {
+          // PREV (Left)
+          const translateX = isMobile ? '-50%' : isTablet ? '-220px' : isLarge ? '-340px' : '-280px';
+          card.style.transform = `translateX(${translateX}) translateZ(-160px) rotateY(18deg) scale(0.84)`;
+          card.style.opacity = '0.45';
+          card.style.zIndex = '10';
+          card.style.filter = 'blur(1px)';
+          card.style.pointerEvents = 'auto';
+        }
+      });
+
+      // Update Top Nav Buttons
+      navBtns.forEach((btn, idx) => {
+        const isTarget = idx === activeIdx;
+        btn.classList.toggle('bg-[#0A192F]', isTarget);
+        btn.classList.toggle('text-white', isTarget);
+        btn.classList.toggle('shadow-md', isTarget);
+
+        btn.classList.toggle('text-mid-navy', !isTarget);
+        btn.classList.toggle('hover:text-navy', !isTarget);
+        btn.classList.toggle('hover:bg-paper', !isTarget);
+      });
+    }
+
+    function setActive(idx: number) {
+      activeIdx = (idx + total) % total;
+      render3D();
+    }
+
+    // Nav Click handlers
+    navBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => setActive(idx));
+    });
+
+    // Prev / Next button handlers
+    prevBtn?.addEventListener('click', () => setActive(activeIdx - 1));
+    nextBtn?.addEventListener('click', () => setActive(activeIdx + 1));
+
+    // Card click handler (click side card to bring it to center)
+    cards.forEach((card, idx) => {
+      card.addEventListener('click', () => {
+        if (idx !== activeIdx) {
+          setActive(idx);
+        }
+      });
+    });
+
+    // Touch Swipe Gestures
+    let startX = 0;
+    let endX = 0;
+
+    root.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    root.addEventListener('touchend', (e) => {
+      endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      if (Math.abs(diff) > 40) {
+        if (diff > 0) {
+          setActive(activeIdx + 1); // swipe left -> next
+        } else {
+          setActive(activeIdx - 1); // swipe right -> prev
+        }
+      }
+    }, { passive: true });
+
+    // Keyboard support
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        setActive(activeIdx + 1);
+      } else if (e.key === 'ArrowLeft') {
+        setActive(activeIdx - 1);
+      }
+    });
+
+    window.addEventListener('resize', render3D);
+    render3D();
+  }
+
+  initSpatialHorizonCarousel();
+  document.addEventListener('astro:page-load', initSpatialHorizonCarousel);
+</script>
