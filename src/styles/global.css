@@ -61,6 +61,37 @@
   --dur-reveal: 600ms;
 }
 
+/* ========================================================================== */
+/* Hero Internal Section Full 100vh Screen-Filling Presence                    */
+/* ========================================================================== */
+.hero-internal-section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(6rem, 12vh, 9rem);
+  padding-bottom: clamp(4rem, 8vh, 6rem);
+}
+
+@media (min-width: 640px) {
+  .hero-internal-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: clamp(7rem, 14vh, 10rem);
+    padding-bottom: clamp(5rem, 10vh, 7rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-internal-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-top: clamp(8rem, 15vh, 11rem);
+    padding-bottom: clamp(6rem, 11vh, 8rem);
+  }
+}
+
 /* ------------------------------------------------------------------ */
 /* Base type & document (§4.2)                                         */
 /* ------------------------------------------------------------------ */
