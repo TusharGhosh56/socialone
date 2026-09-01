@@ -22,8 +22,8 @@ const categoriesList: CaseStudyCategory[] = [
 ];
 
 const categoryVideos = [
-  { id: 'education', src: '/video/hero-children-village.webm', storyTag: 'Education · Youth Empowerment & Learning' },
-  { id: 'agriculture', src: '/video/agriculture.mp4', storyTag: 'Agriculture · Smallholder Climate Resilience' },
+  { id: 'education', src: '/video/subpage-hero/Education.mp4', storyTag: 'Education · Youth Empowerment & Learning' },
+  { id: 'agriculture', src: '/video/subpage-hero/Agriculture.mp4', storyTag: 'Agriculture · Smallholder Climate Resilience' },
   { id: 'msmes', src: '/video/MSME.mp4', storyTag: 'MSMEs · Local Enterprise & Digital Commerce' },
   { id: 'utilities', src: '/video/utilities.mp4', storyTag: 'Utilities · Clean Water & Energy Grids' },
   { id: 'public-services-government', src: '/video/service.mp4', storyTag: 'Public Services · Civic Administration & Safety Nets' },
@@ -42,7 +42,7 @@ const buttonItems = [
 
 <div class="ai-in-action-view w-full" data-ai-category-view data-initial-category={initialCategory}>
   {/* ============================ HERO SECTION ============================ */}
-  <section class="hero-internal-section bg-navy text-white py-10 sm:py-14 lg:py-16 min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] flex flex-col justify-center relative overflow-hidden">
+  <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
     {/* Dynamic Thematic Cinematic Stock Video Background */}
     <HeroVideo videos={categoryVideos} activeId={initialCategory} overlayOpacity={0.65} />
 
