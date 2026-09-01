@@ -563,13 +563,13 @@
 }
 
 /* Pillar, Sector, Principle, People, Sector Overview, Capability Card & Case Study Circuit Power Activation */
-.pillar-card, .sector-card, .principle-card, .people-card, .sector-overview-card, .capability-card, .ai-directory-card, .case-study-editorial {
+.pillar-card, .sector-card, .principle-card, .people-card, .sector-overview-card, .capability-card, .ai-directory-card, .case-study-editorial, .stage-chapter-card {
   position: relative;
   transition: border-color 500ms var(--ease-out), box-shadow 500ms var(--ease-out), transform 500ms var(--ease-out);
 }
-.pillar-card.is-powered, .sector-card.is-powered, .principle-card.is-powered, .people-card.is-powered, .sector-overview-card.is-powered, .capability-card.is-powered, .ai-directory-card.is-powered {
-  border-color: rgba(209, 156, 51, 0.6) !important;
-  box-shadow: 0 16px 40px -10px rgba(209, 156, 51, 0.22), 0 4px 16px rgba(26, 33, 80, 0.08) !important;
+.pillar-card.is-powered, .sector-card.is-powered, .principle-card.is-powered, .people-card.is-powered, .sector-overview-card.is-powered, .capability-card.is-powered, .ai-directory-card.is-powered, .stage-chapter-card.is-powered {
+  border-color: rgba(209, 156, 51, 0.75) !important;
+  box-shadow: 0 20px 50px -10px rgba(209, 156, 51, 0.25), 0 0 35px rgba(209, 156, 51, 0.12) !important;
 }
 .case-study-editorial.is-powered {
   border-color: rgba(209, 156, 51, 0.65) !important;
@@ -598,10 +598,10 @@
   border-color: rgba(209, 156, 51, 0.8) !important;
   box-shadow: 0 0 20px rgba(209, 156, 51, 0.3) !important;
 }
-.pillar-card .pillar-dot, .sector-card .sector-dot, .principle-dot, .people-group-dot {
+.pillar-card .pillar-dot, .sector-card .sector-dot, .principle-dot, .people-group-dot, .stage-badge-dot {
   transition: all 450ms var(--ease-out);
 }
-.pillar-card.is-powered .pillar-dot, .sector-card.is-powered .sector-dot, .principle-row.is-powered .principle-dot, .people-group.is-powered .people-group-dot {
+.pillar-card.is-powered .pillar-dot, .sector-card.is-powered .sector-dot, .principle-row.is-powered .principle-dot, .people-group.is-powered .people-group-dot, .stage-chapter-card.is-powered .stage-badge-dot {
   background-color: #ffd466 !important;
   box-shadow: 0 0 8px rgba(209, 156, 51, 1), 0 0 14px rgba(209, 156, 51, 0.6) !important;
   transform: scale(1.3);
