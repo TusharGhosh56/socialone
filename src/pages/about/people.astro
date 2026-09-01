@@ -2,7 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
-import HeroVideo from '../../components/HeroVideo.astro';
 import { Image } from 'astro:assets';
 import { team, type TeamTag } from '../../data/team';
 
@@ -36,44 +35,37 @@ function getInitials(fullName: string): string {
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background: Multidisciplinary Leadership */}
-      <HeroVideo
-        src="/video/subpage-hero/The People Behind APLYD.mp4"
-        overlayOpacity={0.65}
-      />
-
-      <div class="container-x relative z-10">
-        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          About APLYD · The People Behind APLYD
-        </div>
-
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Specialists across AI, delivery and evaluation
         </h1>
+
+        <p class="max-w-6xl xl:max-w-none text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed">
+          The leadership and specialists behind APLYD and Athena Infonomics, across AI, delivery and evaluation.
+        </p>
       </div>
     </section>
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
       {/* ============================ TEAM GROUPS ============================ */}
-      <section class="relative z-10">
-        <div class="container-x space-y-10 sm:space-y-16 lg:space-y-20">
+      <section class="relative z-10 py-10 sm:py-16">
+        <div class="container-x space-y-12 sm:space-y-16 lg:space-y-20">
           {groups.map((group, idx) => {
             const members = team.filter((m) => m.tag === group.tag);
             return (
-              <div id={`people-group-${idx}`} class={`space-y-4 sm:space-y-8 people-group-${idx}`}>
-                <div class="border-b border-hair pb-2.5 sm:pb-4 people-group-badge">
-                  <h2 id={`people-group-heading-${idx}`} class="text-xl sm:text-3xl font-bold text-navy leading-tight">
+              <div id={`people-group-${idx}`} class={`space-y-6 sm:space-y-8 people-group-${idx}`}>
+                <div class="border-b border-hair pb-3 sm:pb-4">
+                  <h2 id={`people-group-heading-${idx}`} class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight">
                     {group.title}
                   </h2>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                   {members.map((member) => (
-                    <article class="people-card group rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-3 sm:p-6 shadow-sm flex flex-col justify-between card-interactive-sheen transition-all duration-300">
+                    <article class="people-card group rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-6 shadow-sm flex flex-col justify-between card-interactive-sheen transition-all duration-500 hover:shadow-xl hover:border-gold/40">
                       <div class="relative z-10">
-                        <div class="relative mb-3 sm:mb-5 aspect-[4/5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-paper">
+                        <div class="relative mb-4 sm:mb-5 aspect-[4/5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-paper border border-hair/80">
                           {member.linkedin && (
                             <a
                               href={member.linkedin}
@@ -104,16 +96,16 @@ function getInitials(fullName: string): string {
                           )}
                         </div>
 
-                        <h3 class="text-sm sm:text-lg font-bold text-navy leading-snug">
+                        <h3 class="text-base sm:text-lg font-light text-navy leading-snug">
                           {member.name}
                         </h3>
 
-                        <div class="mt-0.5 sm:mt-1 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-deep-gold">
+                        <div class="mt-1 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-deep-gold">
                           {member.title}
                         </div>
 
                         {member.subtitle && (
-                          <div class="mt-0.5 text-[0.6875rem] sm:text-xs text-mid-navy/80 line-clamp-2">
+                          <div class="mt-1 text-[0.6875rem] sm:text-xs text-mid-navy/80 line-clamp-2 font-normal">
                             {member.subtitle}
                           </div>
                         )}
@@ -128,21 +120,21 @@ function getInitials(fullName: string): string {
       </section>
 
       {/* ============================ CTA ============================ */}
-      <section class="relative z-10">
+      <section class="relative z-10 py-8 sm:py-14">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
-              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Connect With APLYD</div>
+              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Partner With APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                Work with our specialists
+                Partner With APLYD
               </h3>
               <p class="text-base text-mid-navy leading-relaxed font-normal">
                 Reach out to discuss your institutional AI challenges and explore how our team can support your delivery.
               </p>
             </div>
             <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/contact" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
-                Get in touch &rarr;
+              <Button href="/get-in-touch" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                Partner With APLYD &rarr;
               </Button>
             </div>
           </div>
@@ -153,7 +145,6 @@ function getInitials(fullName: string): string {
 </Base>
 
 <style>
-  /* On touch/mobile devices and smaller viewports, light up smoothly on scroll */
   @media (max-width: 1023px) {
     .people-card.is-in-view .people-photo {
       filter: grayscale(0%) contrast(100%);
@@ -165,7 +156,6 @@ function getInitials(fullName: string): string {
     }
   }
 
-  /* When hover is supported (desktop), keep the delightful hover interaction */
   @media (hover: hover) and (min-width: 1024px) {
     .people-card:hover .people-photo {
       filter: grayscale(0%) contrast(100%);
@@ -186,7 +176,6 @@ function getInitials(fullName: string): string {
             entry.target.classList.add('is-in-view');
           } else {
             const rect = entry.boundingClientRect;
-            // When scrolled out of viewport, reset so it re-illuminates smoothly on scroll
             if (rect.top > window.innerHeight || rect.bottom < 0) {
               entry.target.classList.remove('is-in-view');
             }
@@ -202,9 +191,6 @@ function getInitials(fullName: string): string {
     cards.forEach((card) => observer.observe(card));
   }
 
-  // Initial run
   setupPeopleScrollObserver();
-
-  // Support navigation / Astro lifecycle
   document.addEventListener('astro:page-load', setupPeopleScrollObserver);
 </script>

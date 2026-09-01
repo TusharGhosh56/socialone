@@ -6,299 +6,139 @@ import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import GoldWaveform from '../../components/GoldWaveform.astro';
 import GradientVideo from '../../components/GradientVideo.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
-import pillar1Img from '../../assets/images/how-we-work/card_01-web.jpg';
-import pillar2Img from '../../assets/images/how-we-work/card_02-web.jpg';
 
-const frictionPoints = [
-  {
-    id: 'data',
-    category: 'Data Representation',
-    teaser: 'Algorithmic blindspots & unequal access across diverse populations',
-    title: 'Data often fails to represent diverse users',
-    desc: 'Data may not adequately reflect the people a service is intended to reach, creating algorithmic blindspots in frontline delivery and risking unequal access.',
-    impact: 'Frontline staff face model bias or inaccurate predictions when serving vulnerable or rural populations.',
-    solution: 'Last-mile ground verification & representative data pipeline engineering.',
-  },
-  {
-    id: 'workflow',
-    category: 'Workflow Integration',
-    teaser: 'Operating routine mismatch & high drop-off among frontline staff',
-    title: 'Systems do not fit frontline workflows',
-    desc: 'Systems may not fit established operating routines, creating adoption friction, unnecessary complexity, and high drop-off among operating staff and citizens.',
-    impact: 'Staff revert to manual workarounds while expensive software licenses go unused.',
-    solution: 'Embedded co-design directly with operating teams to fit existing daily routines.',
-  },
-  {
-    id: 'sovereignty',
-    category: 'Knowledge Sovereignty',
-    teaser: 'Permanent vendor lock-in & external dependency without in-house growth',
-    title: 'Vendor lock-in prevents institutional capacity',
-    desc: 'Vendor dependency can leave institutions without the internal capacity or infrastructure needed to sustain, govern and adapt systems over time.',
-    impact: 'Every system change requires costly advisory contracts, slowing policy adaptation.',
-    solution: 'Open, auditable system architectures with structured in-house talent training.',
-  },
-  {
-    id: 'evidence',
-    category: 'Evidence & Impact',
-    teaser: 'Unverified vendor claims & lack of empirical public value measurement',
-    title: 'Value is claimed rather than verified',
-    desc: 'AI claims often outpace evidence, making it difficult for leaders to assess whether systems actually improve public service delivery.',
-    impact: 'Decision-makers cannot verify whether algorithm outputs translate to real citizen value.',
-    solution: 'Independent baseline vs endline empirical evaluation across all deployments.',
-  },
-];
+import imgGov from '../../assets/images/capabilities/work-governance.jpg';
+import imgTech from '../../assets/images/capabilities/insight-ai.jpg';
+import imgStalls from '../../assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png';
 ---
 
 <Base
-  title="Built for Government | Sovereign AI Capabilities | APLYD"
-  description="How APLYD builds applied AI systems for public institutions: designed for scale, sovereign ownership, and real-world frontline workflows."
+  title="Built for Government | Applied AI for Public Systems | APLYD"
+  description="APLYD applies AI within real policy, data and operating constraints, moving government work from pilot to public service that institutions can run and own."
   keywords="Built for Government, Sovereign AI, Public Sector AI, Institutional AI, Government Digital Transformation, Civic Tech, AI Sovereignty, Workflow Integration, Public Trust AI"
 >
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background: Sovereign Civic Scale */}
       <HeroVideo
         src="/video/subpage-hero/Built for Government.mp4"
         overlayOpacity={0.65}
       />
 
-      <div class="container-x relative z-10">
-        <div class="mb-3 sm:mb-4 inline-flex items-center gap-2 rounded-pill bg-white/10 px-3 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          About APLYD · Built for Government
-        </div>
-
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
-          Systems designed for institutional reality
+          Built for government, and the institutions that serve at scale
         </h1>
 
-        <p class="mt-4 sm:mt-5 max-w-3xl text-sm sm:text-lg lg:text-xl font-normal text-pale-navy/90 leading-relaxed">
-          Public institutions operate under distinct conditions. They serve entire populations, navigate complex regulatory environments, and need systems that last. Here is how we build for that reality.
+        <p class="max-w-4xl lg:max-w-5xl text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed text-pretty">
+          APLYD is the applied AI venture of Athena Infonomics. We work with institutions that operate at scale, including governments, funders, multilaterals and impact-focused organisations. Our work focuses on the point where AI moves from a pilot or prototype into a system that can be implemented, operated and improved within an institution.
         </p>
       </div>
     </section>
 
-    {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
+    {/* ============================ ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: THE OPERATIONAL REALITY ============================ */}
-      <section class="relative z-10" id="operational-reality">
-        <div class="container-x space-y-8 sm:space-y-10 lg:space-y-12">
-          
-          <div class="max-w-3xl space-y-3 sm:space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">
-              The Operational Reality
+      {/* ============================ SECTION 1: WHY AI STALLS INSIDE INSTITUTIONS ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="operational-reality">
+        <div class="container-x">
+          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch transition-all duration-500 hover:shadow-lg">
+            
+            {/* Left: Text */}
+            <div class="p-8 sm:p-12 lg:p-16 lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6">
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-navy leading-tight" id="stalls-heading">
+                Why AI stalls inside institutions
+              </h2>
+
+              <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal">
+                AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
+              </p>
             </div>
-            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight">
-              Why AI stalls inside institutions
-            </h2>
-            <p class="text-base sm:text-xl text-mid-navy leading-relaxed font-normal">
-              AI initiatives often encounter challenges beyond the model itself. Explore the four operational barriers that cause pilot projects to stall, and how institutional grounding overcomes them.
-            </p>
+
+            {/* Right: Clean Photography Window */}
+            <div class="lg:col-span-5 relative min-h-[260px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-navy/5">
+              <Image
+                src={imgStalls}
+                alt="Institutional challenges in public systems"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+                widths={[400, 700, 900]}
+                sizes="(min-width: 1024px) 42vw, 100vw"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-navy/20 via-transparent to-transparent pointer-events-none"></div>
+            </div>
+
           </div>
-
-          {/* Editorial Diagnostic Ledger (Streamlined on Mobile, Elegant 12-Col on Desktop) */}
-          <div class="space-y-0 divide-y divide-hair/80 pt-2 sm:pt-4">
-            {frictionPoints.map((pt) => (
-              <div class="py-6 sm:py-10 lg:py-14 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-12 items-start group">
-                {/* Column 1: Barrier Domain & Description */}
-                <div class="lg:col-span-5 space-y-2.5 sm:space-y-4">
-                  <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gold">
-                    <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
-                    <span>{pt.category}</span>
-                  </div>
-
-                  <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug tracking-tight">
-                    {pt.title}
-                  </h3>
-
-                  <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
-                    {pt.desc}
-                  </p>
-                </div>
-
-                {/* Column 2: 2-Part Diagnosis vs. Sovereign Grounding */}
-                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-6 items-stretch pt-1 lg:pt-0">
-                  {/* Frontline Consequence */}
-                  <div class="p-4 sm:p-6 lg:p-7 rounded-2xl bg-paper/70 border border-hair space-y-1.5 sm:space-y-2 flex flex-col justify-between">
-                    <div class="space-y-1.5 sm:space-y-2">
-                      <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-mid-navy/70 flex items-center gap-1.5">
-                        <span class="h-1.5 w-1.5 rounded-full bg-ash/60"></span>
-                        <span>Frontline Consequence</span>
-                      </div>
-                      <p class="text-xs sm:text-sm lg:text-base text-navy font-normal leading-relaxed">
-                        {pt.impact}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* The APLYD Sovereign Solution */}
-                  <div class="p-4 sm:p-6 lg:p-7 rounded-2xl bg-pale-gold/25 border border-gold/40 space-y-1.5 sm:space-y-2 flex flex-col justify-between">
-                    <div class="space-y-1.5 sm:space-y-2">
-                      <div class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-deep-gold flex items-center gap-1.5">
-                        <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                        <span>The APLYD Sovereign Solution</span>
-                      </div>
-                      <p class="text-xs sm:text-sm lg:text-base text-navy font-medium leading-relaxed">
-                        {pt.solution}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
         </div>
       </section>
 
-      {/* ============================ SECTION 2: ARCHITECTURAL REQUIREMENTS ============================ */}
-      <section class="relative z-10" id="architectural-requirements">
-        <div class="container-x space-y-8 sm:space-y-10 lg:space-y-12">
+      {/* ============================ SECTION 2: WHAT "BUILT FOR GOVERNMENT" MEANS ============================ */}
+      <section class="relative z-10 py-8 sm:py-12" id="architectural-requirements">
+        <div class="container-x space-y-8 sm:space-y-12">
           
-          <div class="max-w-3xl space-y-3 sm:space-y-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold" id="arch-eyebrow">
-              Architectural Requirements
-            </div>
+          <div class="max-w-4xl">
             <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight" id="arch-h2">
-              What “built for government” means
+              What "built for government" means
             </h2>
-            <p class="text-base sm:text-xl text-mid-navy leading-relaxed font-normal" id="arch-desc">
-              Public institutions operate under distinct conditions. APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery.
-            </p>
           </div>
 
-          {/* Dual Pillar Architecture Display with Central Power Conduits */}
-          <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 pillar-grid" id="dual-pillars">
+          {/* 2-Column Clean Architectural Split */}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="pillar-cards-grid">
             
             {/* Pillar 1 */}
-            <div class="pillar-card pillar-card-1 relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-8 lg:p-10 space-y-5 sm:space-y-6 shadow-md flex flex-col justify-between card-flip-hover group transition-all duration-500 hover:shadow-xl" data-pillar="1">
-              
-              {/* Power Input Terminal Node on Right Edge (facing center channel) */}
-              <div class="pillar-power-terminal pillar-power-terminal-right hidden lg:flex" aria-hidden="true">
-                <span class="pillar-terminal-core"></span>
+            <div class="pillar-card-1 rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-500 hover:shadow-lg hover:border-gold/40 group">
+              <div class="relative aspect-[16/10] w-full overflow-hidden bg-navy/5 border-b border-hair">
+                <Image
+                  src={imgGov}
+                  alt="System design and policy alignment"
+                  class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  widths={[400, 700]}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </div>
 
-              <div class="space-y-4 sm:space-y-5 relative z-10">
-                <div class="flex items-center justify-between border-b border-hair/60 pb-2.5 sm:pb-3">
-                  <div class="pillar-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3 py-0.5 sm:px-3.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge transition-all duration-500 border border-hair">
-                    <span class="pillar-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
-                    <span>Population Scale & Trust</span>
-                  </div>
-                </div>
-
-                {/* Embedded Pillar Visual Frame with Integrated Treatment */}
-                <div class="relative w-full h-36 sm:h-44 lg:h-48 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/img">
-                  <Image
-                    src={pillar1Img}
-                    alt="Population scale and public trust"
-                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    widths={[360, 600, 720]}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/10 to-transparent pointer-events-none"></div>
-                  <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
-                </div>
-
-                <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug transition-colors">
-                  Population scale & public trust
-                </h3>
-                <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
-                  Public institutions operate under distinct conditions. They serve entire populations, navigate complex regulatory and accountability environments, and need systems that last beyond the involvement of an external partner. Systems must work for diverse users, integrate with legacy infrastructure, protect public trust and deliver measurable value.
+              <div class="p-6 sm:p-8 lg:p-10 flex-1 flex flex-col justify-center">
+                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
                 </p>
-              </div>
-
-              <div class="pt-4 sm:pt-6 border-t border-hair space-y-2 text-xs sm:text-small font-medium text-navy relative z-10">
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Equitable across diverse populations</span>
-                </div>
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Full regulatory & data privacy compliance</span>
-                </div>
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Zero dependency on single-vendor APIs</span>
-                </div>
               </div>
             </div>
 
             {/* Pillar 2 */}
-            <div class="pillar-card pillar-card-2 relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-8 lg:p-10 space-y-5 sm:space-y-6 shadow-md flex flex-col justify-between card-flip-hover group transition-all duration-500 hover:shadow-xl" data-pillar="2">
-              
-              {/* Power Input Terminal Node on Left Edge (facing center channel) */}
-              <div class="pillar-power-terminal pillar-power-terminal-left hidden lg:flex" aria-hidden="true">
-                <span class="pillar-terminal-core"></span>
+            <div class="pillar-card-2 rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-500 hover:shadow-lg hover:border-gold/40 group">
+              <div class="relative aspect-[16/10] w-full overflow-hidden bg-navy/5 border-b border-hair">
+                <Image
+                  src={imgTech}
+                  alt="Institutional capability and sovereign handover"
+                  class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  widths={[400, 700]}
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </div>
 
-              <div class="space-y-4 sm:space-y-5 relative z-10">
-                <div class="flex items-center justify-between border-b border-hair/60 pb-2.5 sm:pb-3">
-                  <div class="pillar-badge inline-flex items-center gap-2 rounded-pill bg-pale-navy px-3 py-0.5 sm:px-3.5 sm:py-1 text-xs font-bold uppercase tracking-widest text-navy flip-badge transition-all duration-500 border border-hair">
-                    <span class="pillar-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
-                    <span>Institutional Sovereignty</span>
-                  </div>
-                </div>
-
-                {/* Embedded Pillar Visual Frame with Integrated Treatment */}
-                <div class="relative w-full h-36 sm:h-44 lg:h-48 rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 group/img">
-                  <Image
-                    src={pillar2Img}
-                    alt="Institutional ownership and capability transfer"
-                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                    widths={[360, 600, 720]}
-                    sizes="(min-width: 1024px) 50vw, 100vw"
-                  />
-                  <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-navy/10 to-transparent pointer-events-none"></div>
-                  <div class="absolute inset-0 ring-1 ring-inset ring-white/20 rounded-2xl pointer-events-none"></div>
-                </div>
-
-                <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug transition-colors">
-                  Institutional ownership & sovereignty
-                </h3>
-                <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal flip-text transition-colors">
-                  APLYD approaches applied AI with these requirements in mind, focusing on institutional ownership, workflow integration and evidence-driven delivery. Every project embeds capability transfer from the very start.
+              <div class="p-6 sm:p-8 lg:p-10 flex-1 flex flex-col justify-center">
+                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
                 </p>
               </div>
-
-              <div class="pt-4 sm:pt-6 border-t border-hair space-y-2 text-xs sm:text-small font-medium text-navy relative z-10">
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Trained internal workforce & operating routines</span>
-                </div>
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Open, auditable system documentation</span>
-                </div>
-                <div class="flex items-center gap-2 flip-text transition-colors">
-                  <span class="text-gold font-bold">✓</span>
-                  <span>Long-term operational sustainability</span>
-                </div>
-              </div>
             </div>
+
           </div>
+
         </div>
       </section>
 
-      {/* ============================ SECTION 3: BEYOND GOVERNMENT (FLOATING MONUMENT) ============================ */}
-      <section class="relative z-10">
+      {/* ============================ SECTION 3: BEYOND GOVERNMENT ============================ */}
+      <section class="relative z-10 py-8 sm:py-12" id="beyond-gov-monument">
         <div class="container-x">
-          <div class="rounded-3xl gradient-navy-mesh gradient-sheen p-6 sm:p-10 lg:p-16 text-white relative overflow-hidden shadow-2xl">
-            {/* Animated Fluid Gradient Video in Monument */}
+          <div class="rounded-3xl gradient-navy-mesh gradient-sheen p-8 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-xl">
             <GradientVideo variant="gold" overlayOpacity={0.6} />
-            {/* Ambient Molestone Wave in Monument */}
             <GoldWaveform alpha="1.2" />
 
             <div class="relative z-10 max-w-4xl space-y-4 sm:space-y-6">
-              <div class="inline-flex items-center gap-2 rounded-pill bg-white/10 px-3.5 py-1 sm:px-4 sm:py-1.5 text-[0.6875rem] sm:text-eyebrow font-bold uppercase tracking-[0.14em] text-gold backdrop-blur-sm border border-white/15">
-                <span class="h-2 w-2 rounded-full bg-gold"></span>
-                Wider Impact
-              </div>
-              <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white leading-tight">
+              <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white leading-tight" id="beyond-h2">
                 Beyond government
               </h2>
-              <p class="text-base sm:text-xl lg:text-2xl font-light text-pale-navy/90 leading-relaxed">
-                While our approach is shaped by working with government, the same principles apply across the social and development sectors. Funders, philanthropies, nonprofits and multilateral organisations face similar challenges when moving AI from experimentation to implementation: ensuring equity, managing risk, building internal capacity and demonstrating impact.
+              <p class="text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed">
+                The same approach applies to other institutions working at scale, including nonprofits and funders. Across these contexts, our work is guided by a common standard: AI that is responsible, measurable and institutionally owned.
               </p>
             </div>
           </div>
@@ -306,21 +146,20 @@ const frictionPoints = [
       </section>
 
       {/* ============================ CTA ============================ */}
-      <section class="relative z-10">
+      <section class="relative z-10 py-8 sm:py-12">
         <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
             <div class="max-w-2xl relative z-10">
-              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Next in About APLYD</div>
               <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                Sixteen years of delivery proof
+                See how we work
               </h3>
               <p class="text-base text-mid-navy leading-relaxed font-normal">
-                Explore how our heritage across 65+ countries and 440+ engagements powers our AI practice.
+                Explore the four principles guiding every APLYD engagement.
               </p>
             </div>
             <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/about/16-years-of-proof" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
-                Explore 16 years of proof &rarr;
+              <Button href="/about/how-we-work" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                See how we work &rarr;
               </Button>
             </div>
           </div>
@@ -329,5 +168,3 @@ const frictionPoints = [
     </AtmosphericCanvas>
   </div>
 </Base>
-
-
