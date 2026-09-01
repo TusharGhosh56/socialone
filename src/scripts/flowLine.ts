@@ -689,20 +689,21 @@ function buildOurApproachMilestones(): Milestone[] {
   return list;
 }
 
-// 5. 16 Years of Proof: Hero (Left) -> Bedrock Header (Left) -> Weaves 4 Foundation Cornerstones (Top-Left -> Top-Right -> Bottom-Right -> Bottom-Left) -> Global Reach Heading (Left) -> Global Footprint Map (Left Rail) -> Final CTA (Left Rail Plug)
+// 5. 16 Years of Proof: Hero (Left) -> Bedrock Header (Left) -> Weaves 4 Foundation Cornerstones -> What APLYD Adds -> Global Reach Heading -> Global Footprint Map -> Final CTA (Left Rail Plug)
 function build16YearsMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
-  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('footprint-map-wrap') || document.querySelector<HTMLElement>('#global-reach-section .rounded-3xl');
   const bedrockHeading = document.getElementById('bedrock-heading') || document.querySelector<HTMLElement>('#bedrock-section h2');
   const card0 = document.querySelector<HTMLElement>('.bedrock-card-0');
   const card1 = document.querySelector<HTMLElement>('.bedrock-card-1');
   const card2 = document.querySelector<HTMLElement>('.bedrock-card-2');
   const card3 = document.querySelector<HTMLElement>('.bedrock-card-3');
+  const addsSection = document.getElementById('aplyd-adds-section');
+  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
+  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('global-map-console') || document.querySelector<HTMLElement>('#global-reach-section');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
   const list: Milestone[] = [];
 
-  // Hero on Left Rail
+  // 1. Hero on Left Rail
   list.push({
     key: 'proof-hero',
     getPoint: () => {
@@ -712,25 +713,7 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 1. Global Reach Heading on Left Rail
-  list.push({
-    key: 'proof-global-heading',
-    getPoint: () => {
-      if (!globalHeading) return null;
-      return { x: railLeftX(), y: globalHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // 2. Global Footprint Matrix on Left Rail
-  list.push({
-    key: 'proof-matrix-left',
-    getPoint: () => {
-      if (!matrixWrap) return null;
-      return { x: railLeftX(), y: matrixWrap.getBoundingClientRect().top + 60 + window.scrollY };
-    },
-  });
-
-  // 3. Bedrock Heading on Left Rail
+  // 2. Bedrock Heading on Left Rail
   list.push({
     key: 'proof-bedrock-heading',
     getPoint: () => {
@@ -739,11 +722,11 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 4. Check if 2-column layout is active (desktop lg+)
+  // 3. Bedrock 4 Cards Circuit
   const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
   if (isMultiCol && card0 && card1 && card2 && card3) {
-    // 4a. Enter Cornerstone 1 (Top-Left: Policy Research & Governance)
+    // 3a. Top-Left: Policy Research
     list.push({
       key: 'proof-pillar-0',
       getPoint: () => {
@@ -752,7 +735,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 4b. Horizontal crossover across aisle to Cornerstone 2 (Top-Right: Evidence & Learning)
+    // 3b. Crossover to Top-Right: Measurement & Evaluation
     list.push({
       key: 'proof-jog-0-to-1',
       dot: false,
@@ -769,7 +752,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 4c. Drop vertically down along Right Rail to Cornerstone 4 (Bottom-Right: Field Intelligence)
+    // 3c. Drop to Bottom-Right: Last-mile Data
     list.push({
       key: 'proof-pillar-3',
       getPoint: () => {
@@ -778,7 +761,7 @@ function build16YearsMilestones(): Milestone[] {
       },
     });
 
-    // 4d. Horizontal crossover back across aisle to Cornerstone 3 (Bottom-Left: Engineering & Systems)
+    // 3d. Crossover back to Bottom-Left: Digital Tools & Systems
     list.push({
       key: 'proof-jog-3-to-2',
       dot: false,
@@ -794,9 +777,50 @@ function build16YearsMilestones(): Milestone[] {
         return { x: railLeftX(), y: r2.top + 48 + window.scrollY };
       },
     });
+  } else {
+    [card0, card1, card2, card3].forEach((c, idx) => {
+      if (c) {
+        list.push({
+          key: `proof-mobile-pillar-${idx}`,
+          getPoint: () => {
+            const r = c.getBoundingClientRect();
+            return { x: railLeftX(), y: r.top + 36 + window.scrollY };
+          },
+        });
+      }
+    });
   }
 
-  // Final CTA plugged into card interior
+  // 4. What APLYD Adds on Left Rail
+  if (addsSection) {
+    list.push({
+      key: 'proof-adds',
+      getPoint: () => {
+        const h = addsSection.querySelector('h2') ?? addsSection;
+        return { x: railLeftX(), y: h.getBoundingClientRect().top + 16 + window.scrollY };
+      },
+    });
+  }
+
+  // 5. Global Reach Heading on Left Rail
+  list.push({
+    key: 'proof-global-heading',
+    getPoint: () => {
+      if (!globalHeading) return null;
+      return { x: railLeftX(), y: globalHeading.getBoundingClientRect().top + 16 + window.scrollY };
+    },
+  });
+
+  // 6. Global Footprint Matrix on Left Rail
+  list.push({
+    key: 'proof-matrix-left',
+    getPoint: () => {
+      if (!matrixWrap) return null;
+      return { x: railLeftX(), y: matrixWrap.getBoundingClientRect().top + 60 + window.scrollY };
+    },
+  });
+
+  // 7. Final CTA plugged into card interior
   pushCtaConnection(list, cta, 'left', 'proof');
 
   return list;
