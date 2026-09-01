@@ -37,6 +37,8 @@ interface Milestone {
   // false for points that only shape the path (station stops, turns) rather
   // than mark a section's start — those don't get a rendered milestone dot.
   dot?: boolean;
+  curved?: boolean;
+  gap?: boolean;
 }
 
 interface Flourish {
@@ -689,14 +691,11 @@ function buildOurApproachMilestones(): Milestone[] {
   return list;
 }
 
-// 5. 16 Years of Proof: Hero (Left) -> Bedrock Header (Left) -> Weaves 4 Foundation Cornerstones -> What APLYD Adds -> Global Reach Heading -> Global Footprint Map -> Final CTA (Left Rail Plug)
+// 5. 16 Years of Proof: Hero (Left Rail) -> Bedrock Heading (Left Rail) -> The Vertical Trail Dynamically Morphs Into the Semi-Circle Arc -> What APLYD Adds (Left Rail) -> Global Reach Heading -> Global Footprint Map -> Final CTA (Left Rail Plug)
 function build16YearsMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
   const bedrockHeading = document.getElementById('bedrock-heading') || document.querySelector<HTMLElement>('#bedrock-section h2');
-  const card0 = document.querySelector<HTMLElement>('.bedrock-card-0');
-  const card1 = document.querySelector<HTMLElement>('.bedrock-card-1');
-  const card2 = document.querySelector<HTMLElement>('.bedrock-card-2');
-  const card3 = document.querySelector<HTMLElement>('.bedrock-card-3');
+  const bedrockContainer = document.getElementById('bedrock-interactive-container') || document.getElementById('bedrock-section');
   const addsSection = document.getElementById('aplyd-adds-section');
   const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
   const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('global-map-console') || document.querySelector<HTMLElement>('#global-reach-section');
@@ -713,85 +712,30 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 2. Bedrock Heading on Left Rail
+  // 2. Top of Bedrock Section (where the semi-circle starts flush with the rail)
   list.push({
-    key: 'proof-bedrock-heading',
+    key: 'proof-bedrock-top',
+    dot: false,
     getPoint: () => {
-      if (!bedrockHeading) return null;
-      return { x: railLeftX(), y: bedrockHeading.getBoundingClientRect().top + 16 + window.scrollY };
+      if (!bedrockContainer) return null;
+      const rect = bedrockContainer.getBoundingClientRect();
+      return { x: railLeftX(), y: rect.top + window.scrollY };
     },
   });
 
-  // 3. Bedrock 4 Cards Circuit
-  const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
+  // 4. Bottom of Bedrock Section (Gap across the showcase section — NO vertical line drawn here!)
+  list.push({
+    key: 'proof-bedrock-bottom',
+    dot: false,
+    gap: true,
+    getPoint: () => {
+      if (!bedrockContainer) return null;
+      const rect = bedrockContainer.getBoundingClientRect();
+      return { x: railLeftX(), y: rect.bottom + window.scrollY };
+    },
+  });
 
-  if (isMultiCol && card0 && card1 && card2 && card3) {
-    // 3a. Top-Left: Policy Research
-    list.push({
-      key: 'proof-pillar-0',
-      getPoint: () => {
-        const r = card0.getBoundingClientRect();
-        return { x: railLeftX(), y: r.top + 48 + window.scrollY };
-      },
-    });
-
-    // 3b. Crossover to Top-Right: Measurement & Evaluation
-    list.push({
-      key: 'proof-jog-0-to-1',
-      dot: false,
-      getPoint: () => {
-        const r0 = card0.getBoundingClientRect();
-        return { x: railRightX(), y: r0.top + 48 + window.scrollY };
-      },
-    });
-    list.push({
-      key: 'proof-pillar-1',
-      getPoint: () => {
-        const r1 = card1.getBoundingClientRect();
-        return { x: railRightX(), y: r1.top + 48 + window.scrollY };
-      },
-    });
-
-    // 3c. Drop to Bottom-Right: Last-mile Data
-    list.push({
-      key: 'proof-pillar-3',
-      getPoint: () => {
-        const r3 = card3.getBoundingClientRect();
-        return { x: railRightX(), y: r3.top + 48 + window.scrollY };
-      },
-    });
-
-    // 3d. Crossover back to Bottom-Left: Digital Tools & Systems
-    list.push({
-      key: 'proof-jog-3-to-2',
-      dot: false,
-      getPoint: () => {
-        const r3 = card3.getBoundingClientRect();
-        return { x: railLeftX(), y: r3.top + 48 + window.scrollY };
-      },
-    });
-    list.push({
-      key: 'proof-pillar-2',
-      getPoint: () => {
-        const r2 = card2.getBoundingClientRect();
-        return { x: railLeftX(), y: r2.top + 48 + window.scrollY };
-      },
-    });
-  } else {
-    [card0, card1, card2, card3].forEach((c, idx) => {
-      if (c) {
-        list.push({
-          key: `proof-mobile-pillar-${idx}`,
-          getPoint: () => {
-            const r = c.getBoundingClientRect();
-            return { x: railLeftX(), y: r.top + 36 + window.scrollY };
-          },
-        });
-      }
-    });
-  }
-
-  // 4. What APLYD Adds on Left Rail
+  // 5. What APLYD Adds on Left Rail (picks up seamlessly from the ending of the semi-circle)
   if (addsSection) {
     list.push({
       key: 'proof-adds',
@@ -1837,8 +1781,17 @@ export function initFlowLine(): void {
     }
 
     currentMilestonesWithPoints = withPoints;
-    const { points: expandedPoints, indexMap } = toOrthogonal(points);
-    built = buildRoundedPath(expandedPoints, CORNER_RADIUS);
+    const curvedFlags = withPoints.map((m) => !!m.curved);
+    const { points: expandedPoints, indexMap } = toOrthogonal(points, curvedFlags);
+    const gapFlags = indexMap.map((expandedIdx, origIdx) => !!withPoints[origIdx]?.gap);
+    // Expand gapFlags for all points
+    const fullGapFlags = new Array(expandedPoints.length).fill(false);
+    indexMap.forEach((expIdx, origIdx) => {
+      if (withPoints[origIdx]?.gap) {
+        fullGapFlags[expIdx] = true;
+      }
+    });
+    built = buildRoundedPath(expandedPoints, CORNER_RADIUS, fullGapFlags);
     milestoneCumulative = indexMap.map((expandedIdx) => built.cumulativeLengths[expandedIdx]);
 
     activationScrollY = withPoints.map((_, i) => points[i].y - window.innerHeight * ACTIVATION_FRACTION);

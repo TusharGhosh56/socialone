@@ -21,6 +21,13 @@ interface LineSegment {
   length: number;
 }
 
+interface GapSegment {
+  type: 'gap';
+  from: Point;
+  to: Point;
+  length: number;
+}
+
 interface ArcSegment {
   type: 'arc';
   center: Point;
@@ -31,7 +38,7 @@ interface ArcSegment {
   length: number;
 }
 
-type Segment = LineSegment | ArcSegment;
+type Segment = LineSegment | ArcSegment | GapSegment;
 
 export interface BuiltPath {
   segments: Segment[];
@@ -108,14 +115,15 @@ function fillet(prev: Point, corner: Point, next: Point, radius: number) {
  * only way callers can still refer to "milestone i" once synthetic corners
  * have shifted every later index.
  */
-export function toOrthogonal(points: Point[]): { points: Point[]; indexMap: number[] } {
+export function toOrthogonal(points: Point[], curvedFlags?: boolean[]): { points: Point[]; indexMap: number[] } {
   if (points.length === 0) return { points: [], indexMap: [] };
   const out: Point[] = [points[0]];
   const indexMap: number[] = [0];
   for (let i = 1; i < points.length; i++) {
     const prev = points[i - 1];
     const curr = points[i];
-    if (Math.abs(prev.x - curr.x) > 0.5 && Math.abs(prev.y - curr.y) > 0.5) {
+    const isCurved = curvedFlags && (curvedFlags[i - 1] || curvedFlags[i]);
+    if (!isCurved && Math.abs(prev.x - curr.x) > 0.5 && Math.abs(prev.y - curr.y) > 0.5) {
       out.push({ x: prev.x, y: curr.y });
     }
     out.push(curr);
@@ -135,7 +143,7 @@ function normalizeSweptAngle(start: number, end: number, sweep: 0 | 1): number {
   return Math.abs(delta);
 }
 
-export function buildRoundedPath(points: Point[], radius: number): BuiltPath {
+export function buildRoundedPath(points: Point[], radius: number, gapFlags?: boolean[]): BuiltPath {
   const segments: Segment[] = [];
   const cumulativeLengths: number[] = new Array(points.length).fill(0);
 
@@ -151,6 +159,15 @@ export function buildRoundedPath(points: Point[], radius: number): BuiltPath {
     const isLast = i === points.length - 1;
     const corner = points[i];
     const next = isLast ? null : points[i + 1];
+
+    if (gapFlags && gapFlags[i]) {
+      const lineLen = dist(cursor, corner);
+      segments.push({ type: 'gap', from: cursor, to: corner, length: lineLen });
+      running += lineLen;
+      cursor = corner;
+      cumulativeLengths[i] = running;
+      continue;
+    }
 
     const f = next ? fillet(cursor, corner, next, radius) : null;
 
@@ -190,7 +207,7 @@ export function buildRoundedPath(points: Point[], radius: number): BuiltPath {
 }
 
 function pointOnSegment(seg: Segment, localLen: number): Point {
-  if (seg.type === 'line') {
+  if (seg.type === 'line' || seg.type === 'gap') {
     const t = seg.length < 1e-6 ? 0 : localLen / seg.length;
     return { x: seg.from.x + (seg.to.x - seg.from.x) * t, y: seg.from.y + (seg.to.y - seg.from.y) * t };
   }
@@ -202,6 +219,9 @@ function pointOnSegment(seg: Segment, localLen: number): Point {
 
 function segmentD(seg: Segment, upToLen: number): string {
   const end = pointOnSegment(seg, Math.min(upToLen, seg.length));
+  if (seg.type === 'gap') {
+    return `M ${end.x} ${end.y}`;
+  }
   if (seg.type === 'line') {
     return `L ${end.x} ${end.y}`;
   }
@@ -235,12 +255,14 @@ export function pointAtLength(built: BuiltPath, targetLength: number): Point | n
   let consumed = 0;
   for (const seg of built.segments) {
     if (consumed + seg.length >= clamped) {
+      if (seg.type === 'gap') return null;
       const remaining = clamped - consumed;
       return pointOnSegment(seg, remaining);
     }
     consumed += seg.length;
   }
   const last = built.segments[built.segments.length - 1];
+  if (last.type === 'gap') return null;
   return last.type === 'line' ? last.to : pointOnSegment(last, last.length);
 }
 
