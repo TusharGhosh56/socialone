@@ -1,8 +1,18 @@
 ---
-// CaseStudyDossier.astro — Full-Bleed Editorial Case Study Briefing with Bain-Style Vector Artwork
+// CaseStudyDossier.astro — Full-Bleed Editorial Case Study Briefing with Real Case Study Photography
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { CaseStudyItem } from '../data/caseStudies';
 import GoldWaveform from './GoldWaveform.astro';
-import CaseStudyVectorGraphic from './CaseStudyVectorGraphic.astro';
+
+import img01 from '../assets/images/cases/01-agriculture-india.jpg';
+import img02 from '../assets/images/cases/02-education-evaluation-india.jpg';
+import img03 from '../assets/images/cases/03-education-mexico.jpg';
+import img04 from '../assets/images/cases/04-msme.jpg';
+import img05 from '../assets/images/cases/05-farmer.jpg';
+import img06 from '../assets/images/cases/06-learning.jpg';
+import img07 from '../assets/images/cases/07-skilling.jpg';
+import img08 from '../assets/images/cases/08-agriculture-systems.jpg';
 
 interface Props {
   caseStudy: CaseStudyItem;
@@ -11,46 +21,47 @@ interface Props {
 }
 
 const { caseStudy, index, total } = Astro.props;
+
+const caseImages: Record<string, ImageMetadata> = {
+  'oral-reading-fluency': img02,
+  'andhra-pradesh-rythu-seva': img01,
+  'farmer-centric-data-governance': img05,
+  'india-msme-adoption': img04,
+  'water-utilities-sandbox': img07,
+  'kampala-citizen-assistant': img03,
+  'mel-evidence-portal': img06,
+  'agrifood-systems-evaluation': img08,
+};
+
+const caseImage = caseImages[caseStudy.id] || img01;
 ---
 
 <article class={`case-study-editorial case-study-editorial-${index} relative py-8 sm:py-14 lg:py-16 first:pt-2 sm:first:pt-4 last:pb-6 border-b border-hair/90 last:border-b-0 space-y-6 sm:space-y-12 transition-colors duration-500`} data-dossier-index={index} id={`dossier-${caseStudy.id}`}>
-  {/* Header Meta & Title Block with Bain-Style Vector Artwork */}
+  {/* Header Title Block with High-Resolution Editorial Photography */}
   <div class="dossier-header-block space-y-4 sm:space-y-8" id={`dossier-header-${caseStudy.id}`}>
-    <div class="flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 pb-2.5 sm:pb-4 border-b border-hair">
-      <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-[0.14em] text-gold">
-        <span class="dossier-pill-badge flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-pale-navy border border-hair text-navy font-bold">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-          FIELD DOSSIER
-        </span>
-        {total > 1 && <span class="text-ash font-normal">/ {caseStudy.sector}</span>}
-        <span class="text-hair">•</span>
-        <span class="text-navy">{caseStudy.client}</span>
-      </div>
-
-      <div class="flex items-center gap-1.5 sm:gap-2 text-[0.6875rem] sm:text-xs font-bold text-mid-navy uppercase tracking-wider bg-pale-navy/60 px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full border border-hair/60">
-        <svg class="h-3 w-3 sm:h-3.5 sm:w-3.5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span>{caseStudy.geography}</span>
-      </div>
-    </div>
-
-    {/* Editorial Split: Title & Summary (Left) + Bain-Style Brand Vector (Right) */}
+    {/* Editorial Split: Title & Summary (Left) + Full-Bleed Photograph (Right) */}
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center">
       <div class="lg:col-span-7 space-y-3 sm:space-y-6">
         <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-[1.12] tracking-tight">
           {caseStudy.title}
         </h2>
 
-        <p class="text-base sm:text-2xl text-mid-navy font-normal leading-relaxed">
+        <p class="text-base sm:text-2xl text-mid-navy font-normal leading-relaxed text-pretty">
           {caseStudy.summary}
         </p>
       </div>
 
-      {/* Bespoke Bain-Style Vector Graphic Artwork Frame */}
+      {/* Real High-Resolution Photographic Frame */}
       <div class="lg:col-span-5">
-        <div class="rounded-2xl sm:rounded-3xl border border-hair/90 bg-white/80 p-2 sm:p-2.5 shadow-xl group hover:border-gold/50 transition-all duration-500">
-          <CaseStudyVectorGraphic id={caseStudy.id} class="w-full h-auto" />
+        <div class="relative w-full aspect-[16/10] sm:aspect-[16/10] rounded-2xl sm:rounded-3xl border border-hair/90 overflow-hidden shadow-xl group hover:border-gold/50 transition-all duration-500 bg-navy/5">
+          <Image
+            src={caseImage}
+            alt={caseStudy.title}
+            class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            widths={[500, 800, 1100]}
+            sizes="(min-width: 1024px) 42vw, 100vw"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent pointer-events-none"></div>
         </div>
       </div>
     </div>
@@ -90,7 +101,7 @@ const { caseStudy, index, total } = Astro.props;
             <span class="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gold"></span>
             <h3 class="text-sm sm:text-lg font-bold uppercase tracking-wider text-navy">Operational Context</h3>
           </div>
-          <p class="text-xs sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
+          <p class="text-xs sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal text-pretty">
             {caseStudy.context}
           </p>
         </div>
@@ -103,7 +114,7 @@ const { caseStudy, index, total } = Astro.props;
             <span class="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-gold"></span>
             <h3 class="text-sm sm:text-lg font-bold uppercase tracking-wider text-navy">Institutional Delivery</h3>
           </div>
-          <p class="text-xs sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
+          <p class="text-xs sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal text-pretty">
             {caseStudy.whatWeDid}
           </p>
         </div>
@@ -121,7 +132,7 @@ const { caseStudy, index, total } = Astro.props;
             Public Value & Lasting Impact
           </h3>
         </div>
-        <p class="text-xs sm:text-xl text-pale-navy font-normal leading-relaxed max-w-4xl pt-0.5 sm:pt-1">
+        <p class="text-xs sm:text-xl text-pale-navy font-normal leading-relaxed max-w-4xl pt-0.5 sm:pt-1 text-pretty">
           {caseStudy.whyItMatters}
         </p>
       </div>

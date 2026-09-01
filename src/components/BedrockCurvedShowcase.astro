@@ -1,0 +1,336 @@
+---
+// BedrockCurvedShowcase.astro — Pure SVG Geometric Semi-Circle Trail
+// 1. True SVG Semi-Circle Arc (M startX startY A R R 0 0 1 startX endY) with zero staircases.
+// 2. The glowing lead head dot and line draw along the mathematical arc in real-time on scroll.
+// 3. Image conveyor belt and text cards move along the exact circular trajectory.
+
+export interface BedrockPillar {
+  title: string;
+  desc: string;
+  image: string;
+  alt: string;
+}
+
+const pillars: BedrockPillar[] = [
+  {
+    title: 'Policy research and advisory',
+    desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
+    image: '/images/16/img1.jpg',
+    alt: 'Policy research and institutional advisory in practice',
+  },
+  {
+    title: 'Measurement and evaluation',
+    desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
+    image: '/images/16/img2.jpg',
+    alt: 'Measurement and empirical evaluation frameworks',
+  },
+  {
+    title: 'Digital tools and systems',
+    desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
+    image: '/images/16/img3.jpg',
+    alt: 'Digital tools and institutional data systems',
+  },
+  {
+    title: 'Last-mile data networks',
+    desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
+    image: '/images/16/img4.jpg',
+    alt: 'Last-mile frontline data networks and field intelligence',
+  },
+];
+---
+
+<div class="bedrock-scroll-wrapper relative z-10 w-full" id="bedrock-interactive-container" data-bedrock-scroll-wrapper>
+  {/* Sticky Viewport Stage — Pins for the entire 350vh scroll duration */}
+  <div class="bedrock-sticky-stage sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden z-10">
+
+    {/* True Mathematical SVG Semi-Circle Arc Layer */}
+    <svg class="bedrock-arc-svg absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible" fill="none" id="bedrock-arc-svg-el">
+      <defs>
+        <filter id="bedrockGlowFilter" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="6" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Guide Arc Track (Subtle ambient dashed guide) */}
+      <path
+        id="bedrock-guide-arc-path"
+        d="M 48 0 A 370 370 0 0 1 48 800"
+        stroke="rgba(209, 156, 51, 0.25)"
+        stroke-width="2.25"
+        stroke-dasharray="2 10"
+        stroke-linecap="round"
+      />
+
+      {/* Active Animated Semi-Circle Arc (Drawn in real-time as scroll progresses) */}
+      <path
+        id="bedrock-live-arc-path"
+        d="M 48 0 A 370 370 0 0 1 48 800"
+        stroke="rgba(209, 156, 51, 0.85)"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-dasharray="2 10"
+      />
+
+      {/* Glowing Pulsing Lead Head Dot (Hidden initially, visible only when actively scrolling the arc) */}
+      <g id="bedrock-lead-head-group" transform="translate(48, 0)" style="opacity: 0; transition: opacity 0.15s ease-out;">
+        <circle class="bedrock-head-halo animate-pulse" r="14" fill="none" stroke="rgba(209, 156, 51, 0.6)" stroke-width="1.5" />
+        <circle class="bedrock-head-dot" r="5" fill="#ffd466" stroke="#ffffff" stroke-width="2" filter="url(#bedrockGlowFilter)" />
+      </g>
+    </svg>
+
+    {/* Center Stage Container */}
+    <div class="container-x relative z-10 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+        
+        {/* LEFT COLUMN: Image Conveyor Stream Travelling Along the Connected Trail Arc */}
+        <div class="lg:col-span-6 relative flex items-center justify-center">
+          <div class="bedrock-conveyor-viewport relative w-full max-w-[460px] lg:max-w-[500px] h-[340px] sm:h-[380px] lg:h-[420px] flex items-center justify-center">
+            
+            {pillars.map((pillar, idx) => (
+              <div
+                class="bedrock-conveyor-card absolute w-full aspect-[4/3] sm:aspect-[16/11] rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden border border-gold/40 shadow-2xl bg-navy will-change-transform"
+                data-conveyor-card={idx}
+                style="transform: translate3d(-140px, 420px, 0) scale(0.85) rotate(-12deg); opacity: 0;"
+              >
+                <img
+                  src={pillar.image}
+                  alt={pillar.alt}
+                  class="w-full h-full object-cover object-center"
+                  loading="lazy"
+                />
+                
+                {/* Subtle Vignette */}
+                <div class="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent to-navy/15 pointer-events-none" />
+              </div>
+            ))}
+
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN: Synchronized Typography */}
+        <div class="lg:col-span-6 relative flex flex-col justify-center">
+          <div class="bedrock-text-stage relative min-h-[200px] sm:min-h-[220px] flex items-center">
+            {pillars.map((pillar, idx) => (
+              <div
+                class="bedrock-text-card absolute inset-x-0 transition-opacity duration-300 space-y-4 will-change-transform"
+                data-pillar-text={idx}
+                style={idx === 0 ? 'opacity: 1; transform: translate3d(0, 0, 0); pointer-events: auto;' : 'opacity: 0; transform: translate3d(0, 30px, 0); pointer-events: none;'}
+              >
+                <h3 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-tight tracking-tight">
+                  {pillar.title}
+                </h3>
+
+                <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal">
+                  {pillar.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Capability Stage Progression Indicators (Passive scroll progression) */}
+          <div class="mt-8 pt-6 border-t border-hair flex items-center gap-2 pointer-events-none select-none" aria-hidden="true">
+            {pillars.map((_, idx) => (
+              <span
+                class={`bedrock-tab-indicator h-2.5 rounded-full transition-all duration-300 ${
+                  idx === 0 ? 'w-8 bg-gold' : 'w-2.5 bg-navy/20'
+                }`}
+                data-pillar-indicator={idx}
+              />
+            ))}
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .bedrock-scroll-wrapper {
+    height: 350vh;
+    position: relative;
+  }
+
+  @media (max-width: 1023px) {
+    .bedrock-scroll-wrapper {
+      height: 300vh;
+    }
+  }
+
+  .bedrock-sticky-stage {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    will-change: transform;
+  }
+
+  .bedrock-conveyor-card {
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease-out;
+  }
+
+  .bedrock-text-card {
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease-out;
+  }
+</style>
+
+<script>
+  import { railPad } from '../scripts/flowLine';
+
+  function initBedrockCurvedShowcase() {
+    const wrapper = document.getElementById('bedrock-interactive-container');
+    if (!wrapper) return;
+
+    const conveyorCards = wrapper.querySelectorAll<HTMLElement>('[data-conveyor-card]');
+    const textCards = wrapper.querySelectorAll<HTMLElement>('[data-pillar-text]');
+    const indicators = wrapper.querySelectorAll<HTMLElement>('[data-pillar-indicator]');
+    const totalCount = conveyorCards.length;
+
+    const liveArcPath = document.getElementById('bedrock-live-arc-path') as SVGPathElement | null;
+    const guideArcPath = document.getElementById('bedrock-guide-arc-path') as SVGPathElement | null;
+    const headGroup = document.getElementById('bedrock-lead-head-group') as SVGGElement | null;
+
+    let isTicking = false;
+    let lastActiveIdx = -1;
+
+    // Dynamically align the SVG semi-circle arc with the left rail on resize (flush top to bottom)
+    function updateArcGeometry() {
+      if (!liveArcPath || !guideArcPath) return;
+      const startX = railPad ? railPad() : 48;
+      const stageH = window.innerHeight;
+      const startY = 0;
+      const endY = stageH;
+      const radiusY = stageH / 2;
+      const radiusX = Math.min(radiusY, window.innerWidth >= 1024 ? 360 : 180);
+
+      const d = `M ${startX} ${startY} A ${radiusX} ${radiusY} 0 0 1 ${startX} ${endY}`;
+      liveArcPath.setAttribute('d', d);
+      guideArcPath.setAttribute('d', d);
+    }
+
+    function renderStage(virtualIndex: number, fraction: number) {
+      // 1. Move lead head dot and draw path along the true SVG semi-circle arc
+      if (liveArcPath && headGroup) {
+        const totalLen = liveArcPath.getTotalLength();
+        const clampedFraction = Math.max(0, Math.min(1, fraction));
+        
+        // Hide pulse dot before the section starts or after it finishes
+        if (clampedFraction <= 0.005 || clampedFraction >= 0.995) {
+          headGroup.style.opacity = '0';
+        } else {
+          headGroup.style.opacity = '1';
+        }
+
+        const pt = liveArcPath.getPointAtLength(clampedFraction * totalLen);
+        headGroup.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
+      }
+
+      // 2. Animate image conveyor cards along the semi-circle arc
+      conveyorCards.forEach((card, idx) => {
+        const diff = idx - virtualIndex;
+        const absDiff = Math.abs(diff);
+
+        // Vertical progression: enters from +420px (bottom), reaches 0 (center), exits to -420px (top)
+        const translateY = diff * 420;
+
+        // Circular arc trajectory:
+        // Starts on the left (-140px) at the bottom of the semi-circle, curves in to 0px at center, and curves back out to -140px at top
+        const translateX = -Math.min(260, (diff * diff) * 140);
+
+        // Tangent tilt rotation
+        const rotateZ = -diff * 10;
+
+        // Scale along trajectory
+        const scale = Math.max(0.78, 1 - (diff * diff) * 0.16);
+
+        // Opacity easing
+        let opacity = 0;
+        if (absDiff < 1.15) {
+          opacity = Math.max(0, Math.min(1, (1.15 - absDiff) / 0.6));
+        }
+
+        card.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale}) rotate(${rotateZ}deg)`;
+        card.style.opacity = opacity.toString();
+        card.style.zIndex = Math.round(100 - absDiff * 10).toString();
+        card.style.pointerEvents = absDiff < 0.35 ? 'auto' : 'none';
+      });
+
+      // 3. Synchronize text card & passive progress indicators
+      const activeIdx = Math.max(0, Math.min(totalCount - 1, Math.round(virtualIndex)));
+      
+      if (activeIdx !== lastActiveIdx) {
+        lastActiveIdx = activeIdx;
+
+        indicators.forEach((indicator, i) => {
+          if (i === activeIdx) {
+            indicator.classList.add('w-8', 'bg-gold');
+            indicator.classList.remove('w-2.5', 'bg-navy/20');
+          } else {
+            indicator.classList.remove('w-8', 'bg-gold');
+            indicator.classList.add('w-2.5', 'bg-navy/20');
+          }
+        });
+      }
+
+      textCards.forEach((textCard, idx) => {
+        const textDiff = idx - virtualIndex;
+        const absTextDiff = Math.abs(textDiff);
+        
+        if (absTextDiff < 0.65) {
+          const textOpacity = Math.max(0, Math.min(1, (0.65 - absTextDiff) / 0.35));
+          const textTranslateY = textDiff * 35;
+          textCard.style.opacity = textOpacity.toString();
+          textCard.style.transform = `translate3d(0, ${textTranslateY}px, 0)`;
+          textCard.style.pointerEvents = absTextDiff < 0.3 ? 'auto' : 'none';
+        } else {
+          textCard.style.opacity = '0';
+          textCard.style.transform = textDiff > 0 ? 'translate3d(0, 30px, 0)' : 'translate3d(0, -30px, 0)';
+          textCard.style.pointerEvents = 'none';
+        }
+      });
+    }
+
+    function onScroll() {
+      if (!wrapper) return;
+      const rect = wrapper.getBoundingClientRect();
+      const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+
+      if (totalScrollable <= 0) {
+        renderStage(0, 0);
+        return;
+      }
+
+      const scrolled = -rect.top;
+      const fraction = Math.max(0, Math.min(1, scrolled / totalScrollable));
+      const virtualIndex = fraction * (totalCount - 1);
+
+      renderStage(virtualIndex, fraction);
+    }
+
+    function handleScrollRAF() {
+      if (!isTicking) {
+        requestAnimationFrame(() => {
+          onScroll();
+          isTicking = false;
+        });
+        isTicking = true;
+      }
+    }
+
+    window.addEventListener('scroll', handleScrollRAF, { passive: true });
+    window.addEventListener('resize', () => {
+      updateArcGeometry();
+      handleScrollRAF();
+    }, { passive: true });
+
+    updateArcGeometry();
+    onScroll();
+  }
+
+  initBedrockCurvedShowcase();
+  document.addEventListener('astro:page-load', initBedrockCurvedShowcase);
+</script>

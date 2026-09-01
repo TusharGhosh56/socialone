@@ -37,6 +37,8 @@ interface Milestone {
   // false for points that only shape the path (station stops, turns) rather
   // than mark a section's start — those don't get a rendered milestone dot.
   dot?: boolean;
+  curved?: boolean;
+  gap?: boolean;
 }
 
 interface Flourish {
@@ -62,21 +64,63 @@ interface Flourish {
 // dots at the same on-screen height as the fixed-position mark; this keeps
 // the rail "in line with the logomark" (same design intent) without
 // literally touching its rendered edge.
-const MARK_CLEARANCE = 16;
-// Exported so other on-page elements that need to sit exactly ON the rail
-// (not just have the master line pass near them) can read the same real
-// measurement instead of duplicating the mark-relative formula — see
-// timelineTraveler.ts's alignment of the mobile timeline's own dots/rail
-// line to this same x.
+export function getContentLeft(): number {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return 64;
+  }
+
+  // Measure all container-x elements on the page to find the minimum content text left edge
+  const containers = document.querySelectorAll<HTMLElement>('.container-x');
+  let minLeft = Infinity;
+
+  for (const c of containers) {
+    const rect = c.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0) {
+      const style = window.getComputedStyle(c);
+      const pl = parseFloat(style.paddingLeft) || 0;
+      const textLeft = rect.left + pl;
+      if (textLeft > 0 && textLeft < minLeft) {
+        minLeft = textLeft;
+      }
+    }
+  }
+
+  // Fallback: check main headings or content blocks
+  if (minLeft === Infinity) {
+    const headings = document.querySelectorAll<HTMLElement>('main h1, main h2, main p');
+    for (const h of headings) {
+      const r = h.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0 && r.left > 0 && r.left < minLeft) {
+        minLeft = r.left;
+      }
+    }
+  }
+
+  const clientW = document.documentElement.clientWidth;
+  return minLeft !== Infinity ? minLeft : Math.max(32, clientW * 0.05);
+}
+
 export function railPad(): number {
-  if (typeof window !== 'undefined' && window.innerWidth < 768) {
-    return 10;
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return 24;
   }
-  const mark = document.querySelector<HTMLElement>('#floating-mark');
-  if (mark && mark.getBoundingClientRect().width > 0) {
-    return mark.getBoundingClientRect().left - MARK_CLEARANCE;
+
+  const contentLeft = getContentLeft();
+  const clientW = document.documentElement.clientWidth;
+
+  // 1. Narrow/mobile viewports (< 768px) or extremely tight margin (contentLeft <= 36px):
+  // Keep the rail tightly parked against the extreme left edge (8px-10px),
+  // leaving comfortable clearance before text starts at 16px - 36px.
+  if (clientW < 768 || contentLeft <= 36) {
+    return Math.max(8, Math.min(10, Math.floor(contentLeft * 0.35)));
   }
-  return Math.min(64, Math.max(24, document.documentElement.clientWidth * 0.05));
+
+  // 2. Medium and desktop viewports (>= 768px):
+  // The rail line and its halo (radius 14px) must have at least 26px of clean margin from contentLeft.
+  // When contentLeft is moderate (e.g. 58px on a 1036px screen), place it at ~24px, leaving 34px of clear space!
+  // When contentLeft is large (e.g. 160px on wide screen), cap it at 48px.
+  const idealGutterPad = Math.floor(contentLeft - 30);
+  return Math.max(14, Math.min(48, idealGutterPad));
 }
 function railLeftX(): number {
   return railPad() + window.scrollX;
@@ -279,7 +323,7 @@ function buildBuiltForGovMilestones(): Milestone[] {
     },
   });
 
-  // Dual Pillar Architecture Interconnected Bus (Desktop Only)
+  // Desktop (lg+): Clean Manifold Circuit traversing between the two cards (Strictly forward Y)
   if (isDesktop && cardGrid && card1 && card2) {
     const getCenterGapX = () => {
       const r1 = card1.getBoundingClientRect();
@@ -287,65 +331,70 @@ function buildBuiltForGovMilestones(): Milestone[] {
       return (r1.right + r2.left) / 2 + window.scrollX;
     };
 
-    const getJogY = () => {
-      if (archDesc) {
-        const dr = archDesc.getBoundingClientRect();
+    const getTopJogY = () => {
+      if (archHeading) {
+        const hr = archHeading.getBoundingClientRect();
         const gr = cardGrid.getBoundingClientRect();
-        return (dr.bottom + gr.top) / 2 + window.scrollY;
+        return (hr.bottom + gr.top) / 2 + window.scrollY;
       }
-      return cardGrid.getBoundingClientRect().top - 28 + window.scrollY;
+      return cardGrid.getBoundingClientRect().top - 32 + window.scrollY;
     };
 
-    // 1) Turn 90 deg right from left rail before the pics
+    const getBottomJogY = () => {
+      const gr = cardGrid.getBoundingClientRect();
+      if (sec3) {
+        const sr = sec3.getBoundingClientRect();
+        return (gr.bottom + sr.top) / 2 + window.scrollY;
+      }
+      return gr.bottom + 32 + window.scrollY;
+    };
+
+    // 1) Turn right from left rail into the horizontal manifold above the cards
     list.push({
-      key: 'bfg-cards-jog-start',
+      key: 'bfg-jog-top-rail',
       dot: false,
-      getPoint: () => {
-        const jy = getJogY();
-        return { x: railLeftX(), y: jy };
-      },
+      getPoint: () => ({ x: railLeftX(), y: getTopJogY() }),
     });
 
-    // 2) Reach center between the two cards
+    // 2) Reach center gap above the cards
     list.push({
-      key: 'bfg-cards-jog-center',
+      key: 'bfg-jog-top-center',
       dot: false,
-      getPoint: () => {
-        const jy = getJogY();
-        return { x: getCenterGapX(), y: jy };
-      },
+      getPoint: () => ({ x: getCenterGapX(), y: getTopJogY() }),
     });
 
-    // 3) Travel down between the two cards to the Power Splitter Hub
+    // 3) Travel strictly DOWN the center gap between the two cards
     list.push({
-      key: 'bfg-power-splitter',
+      key: 'bfg-cards-center-dot',
       dot: true,
       getPoint: () => {
-        const port = card1.querySelector('.pillar-power-terminal') || card1.querySelector('.pillar-badge');
-        if (port) {
-          const pr = port.getBoundingClientRect();
-          return { x: getCenterGapX(), y: pr.top + pr.height / 2 + window.scrollY };
-        }
-        return { x: getCenterGapX(), y: card1.getBoundingClientRect().top + 42 + window.scrollY };
+        const gr = cardGrid.getBoundingClientRect();
+        return { x: getCenterGapX(), y: gr.top + gr.height * 0.45 + window.scrollY };
       },
     });
 
-    // 4) Continue down the center aisle past the cards
-    const getCardsBottomY = () => {
-      return cardGrid.getBoundingClientRect().bottom + 24 + window.scrollY;
-    };
-
+    // 4) Reach bottom of the center gap below the cards
     list.push({
-      key: 'bfg-cards-bottom',
+      key: 'bfg-jog-bottom-center',
       dot: false,
-      getPoint: () => ({ x: getCenterGapX(), y: getCardsBottomY() }),
+      getPoint: () => ({ x: getCenterGapX(), y: getBottomJogY() }),
     });
 
-    // Section 3: Jog back to Left Rail in the gap below the cards
+    // 5) Jog back left to the left rail below the cards
     list.push({
-      key: 'bfg-monument-jog-left',
+      key: 'bfg-jog-bottom-rail',
       dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getCardsBottomY() }),
+      getPoint: () => ({ x: railLeftX(), y: getBottomJogY() }),
+    });
+  } else if (cardGrid) {
+    // Mobile / Tablet: Clean milestone on left rail
+    list.push({
+      key: 'bfg-cards-level',
+      dot: true,
+      getPoint: () => {
+        const gr = cardGrid.getBoundingClientRect();
+        return { x: railLeftX(), y: gr.top + 60 + window.scrollY };
+      },
     });
   }
 
@@ -429,13 +478,11 @@ function buildHowWeWorkMilestones(): Milestone[] {
 // 3. Purpose & Direction: Hero (Left) -> Mission Monument (Left) -> Sector Heading (Left) -> Top Splitter Manifold (Center on Desktop) -> 3 Sector Stream -> Bottom Combiner Manifold (Center) -> Jog to Left Rail -> Vision Heading (Left Rail) -> Final CTA (Left Rail Plug)
 function buildPurposeAndDirectionMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const missionMonument = document.querySelector<HTMLElement>('main .card-interactive-sheen');
-  const sectorHeading = document.getElementById('sector-horizons-heading') || document.querySelector<HTMLElement>('#sector-horizons-section h2');
-  const sectorGrid = document.getElementById('sector-horizons-grid') || document.querySelector<HTMLElement>('main .grid-cols-1.lg\\:grid-cols-3');
-  const visionMonument = document.querySelector<HTMLElement>('main .gradient-navy-mesh');
+  const missionSec = document.getElementById('mission-section') || document.querySelector<HTMLElement>('main section:nth-of-type(1)');
+  const sectorGrid = document.getElementById('sector-horizons-section') || document.querySelector<HTMLElement>('[data-sector-prism]');
+  const visionMonument = document.getElementById('vision-section') || document.querySelector<HTMLElement>('.gradient-navy-mesh');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
   const list: Milestone[] = [];
-  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
   // Hero on Left Rail
   list.push({
@@ -450,71 +497,29 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   list.push({
     key: 'pad-mission',
     getPoint: () => {
-      if (!missionMonument) return null;
-      const mr = missionMonument.getBoundingClientRect();
+      const heading = missionSec?.querySelector('h2');
+      if (heading) {
+        return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
+      }
+      if (!missionSec) return null;
+      const mr = missionSec.getBoundingClientRect();
       return { x: railLeftX(), y: mr.top + 60 + window.scrollY };
     },
   });
 
-  // Sector Horizons Heading on Left Rail
-  list.push({
-    key: 'pad-sectors-heading',
-    getPoint: () => {
-      if (!sectorHeading) return null;
-      return { x: railLeftX(), y: sectorHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  if (isDesktop && sectorHeading && sectorGrid) {
-    // Safe gap below the heading and above the 3 cards (Top Splitter Manifold)
-    const getTopSplitterY = () => {
-      const hr = sectorHeading.getBoundingClientRect();
-      const gr = sectorGrid.getBoundingClientRect();
-      return (hr.bottom + gr.top) / 2 + window.scrollY;
-    };
-
+  // Sector Horizons Deck on Left Rail
+  if (sectorGrid) {
     list.push({
-      key: 'pad-split-jog-start',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getTopSplitterY() }),
-    });
-    list.push({
-      key: 'pad-3way-splitter',
-      getPoint: () => ({ x: screenCenterX(), y: getTopSplitterY() }),
-    });
-
-    // Center Channel travels through the middle card (Card 2: Nonprofits)
-    list.push({
-      key: 'pad-sectors-mid-dot',
+      key: 'pad-sectors-level',
+      dot: true,
       getPoint: () => {
         const gr = sectorGrid.getBoundingClientRect();
-        return { x: screenCenterX(), y: gr.top + gr.height * 0.48 + window.scrollY };
+        return { x: railLeftX(), y: gr.top + 60 + window.scrollY };
       },
-    });
-
-    // Safe gap below the 3 cards and above the Vision Monument (Bottom Combiner Manifold)
-    const getBottomCombinerY = () => {
-      if (!visionMonument) return 0;
-      const gr = sectorGrid.getBoundingClientRect();
-      const vr = visionMonument.getBoundingClientRect();
-      return (gr.bottom + vr.top) / 2 + window.scrollY;
-    };
-
-    list.push({
-      key: 'pad-3way-combiner',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: getBottomCombinerY() }),
-    });
-
-    // In the gap below the cards: Jog from Combiner back to Left Rail
-    list.push({
-      key: 'pad-combiner-to-rail',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getBottomCombinerY() }),
     });
   }
 
-  // Vision Monument Heading on Left Rail (framing the vision on the left)
+  // Vision Monument Heading on Left Rail
   list.push({
     key: 'pad-vision-heading',
     getPoint: () => {
@@ -530,15 +535,15 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   return list;
 }
 
-// 4. Our Approach: Hero (Left) -> 4-Stage Explorer (Center Channel on Desktop) -> Jog to Left Rail -> Assurance Monument (Left Rail) -> Final CTA (Left Rail Plug)
+// 4. Our Approach: Hero (Left) -> Alternating S-Curve Methodology Circuit (Stage 0 Left -> Stage 1 Right -> Stage 2 Left -> Stage 3 Right) -> Final CTA
 function buildOurApproachMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const explorer = document.querySelector<HTMLElement>('[data-stage-explorer]');
-  const monument = document.querySelector<HTMLElement>('main .gradient-navy-mesh');
+  const stageCards = Array.from(document.querySelectorAll<HTMLElement>('.stage-chapter-card'));
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const list: Milestone[] = [];
-  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
+  // Hero on Left Rail
   list.push({
     key: 'oa-hero',
     getPoint: () => {
@@ -547,72 +552,118 @@ function buildOurApproachMilestones(): Milestone[] {
     },
   });
 
-  if (isDesktop && explorer && monument) {
-    // Jog into Stage Explorer Tab bar in the gap above
-    list.push({
-      key: 'oa-explorer-jog-start',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: explorer.getBoundingClientRect().top - 28 + window.scrollY }),
+  if (!isMultiCol || stageCards.length < 4) {
+    // Single column (mobile): Clean left rail
+    stageCards.forEach((card, idx) => {
+      list.push({
+        key: `oa-stage-${idx}`,
+        dot: true,
+        getPoint: () => {
+          const cr = card.getBoundingClientRect();
+          if (cr.height === 0) return null;
+          return { x: railLeftX(), y: cr.top + 48 + window.scrollY };
+        },
+      });
     });
-    list.push({
-      key: 'oa-explorer-jog-center',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: explorer.getBoundingClientRect().top - 28 + window.scrollY }),
-    });
-    list.push({
-      key: 'oa-explorer-dot',
-      getPoint: () => {
-        const er = explorer.getBoundingClientRect();
-        return { x: screenCenterX(), y: er.top + 30 + window.scrollY };
-      },
-    });
-
-    // In the gap below Stage Explorer: Jog back to Left Rail
-    const getOaGapY = () => {
-      return (explorer.getBoundingClientRect().bottom + monument.getBoundingClientRect().top) / 2 + window.scrollY;
-    };
-    list.push({
-      key: 'oa-monument-jog-start',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: getOaGapY() }),
-    });
-    list.push({
-      key: 'oa-monument-jog-left',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getOaGapY() }),
-    });
+    pushCtaConnection(list, cta, 'left', 'oa');
+    return list;
   }
 
-  // Independent Assurance Monument on Left Rail
+  // Desktop (lg+): Dynamic Alternating S-Curve Weave matching card text alignment
+  // Stage 0 (Explore) - Left Rail (Text Left)
   list.push({
-    key: 'oa-monument-heading',
+    key: 'oa-stage-0',
+    dot: true,
     getPoint: () => {
-      const heading = monument?.querySelector('h2');
-      if (!heading) return null;
-      return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
+      const cr = stageCards[0].getBoundingClientRect();
+      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
     },
   });
 
-  // Final CTA plugged into card interior
-  pushCtaConnection(list, cta, 'left', 'oa');
+  // Crossover 0 -> 1 (Left to Right in gap between stage 0 and 1)
+  list.push({
+    key: 'oa-cross-0-1',
+    dot: false,
+    getPoint: () => {
+      const r0 = stageCards[0].getBoundingClientRect();
+      const r1 = stageCards[1].getBoundingClientRect();
+      const midY = (r0.bottom + r1.top) / 2 + window.scrollY;
+      return { x: railRightX(), y: midY };
+    },
+  });
+
+  // Stage 1 (Design) - Right Rail (Text Right)
+  list.push({
+    key: 'oa-stage-1',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[1].getBoundingClientRect();
+      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Crossover 1 -> 2 (Right to Left in gap between stage 1 and 2)
+  list.push({
+    key: 'oa-cross-1-2',
+    dot: false,
+    getPoint: () => {
+      const r1 = stageCards[1].getBoundingClientRect();
+      const r2 = stageCards[2].getBoundingClientRect();
+      const midY = (r1.bottom + r2.top) / 2 + window.scrollY;
+      return { x: railLeftX(), y: midY };
+    },
+  });
+
+  // Stage 2 (Deliver) - Left Rail (Text Left)
+  list.push({
+    key: 'oa-stage-2',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[2].getBoundingClientRect();
+      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Crossover 2 -> 3 (Left to Right in gap between stage 2 and 3)
+  list.push({
+    key: 'oa-cross-2-3',
+    dot: false,
+    getPoint: () => {
+      const r2 = stageCards[2].getBoundingClientRect();
+      const r3 = stageCards[3].getBoundingClientRect();
+      const midY = (r2.bottom + r3.top) / 2 + window.scrollY;
+      return { x: railRightX(), y: midY };
+    },
+  });
+
+  // Stage 3 (Assure) - Right Rail (Text Right)
+  list.push({
+    key: 'oa-stage-3',
+    dot: true,
+    getPoint: () => {
+      const cr = stageCards[3].getBoundingClientRect();
+      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
+    },
+  });
+
+  // Final CTA plugged into card interior from Right Rail
+  pushCtaConnection(list, cta, 'right', 'oa');
 
   return list;
 }
 
-// 5. 16 Years of Proof: Hero (Left) -> Bedrock Header (Left) -> Weaves 4 Foundation Cornerstones (Top-Left -> Top-Right -> Bottom-Right -> Bottom-Left) -> Global Reach Heading (Left) -> Global Footprint Map (Left Rail) -> Final CTA (Left Rail Plug)
+// 5. 16 Years of Proof: Hero (Left Rail) -> Bedrock Heading (Left Rail) -> The Vertical Trail Dynamically Morphs Into the Semi-Circle Arc -> What APLYD Adds (Left Rail) -> Global Reach Heading -> Global Footprint Map -> Final CTA (Left Rail Plug)
 function build16YearsMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
-  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('footprint-map-wrap') || document.querySelector<HTMLElement>('#global-reach-section .rounded-3xl');
   const bedrockHeading = document.getElementById('bedrock-heading') || document.querySelector<HTMLElement>('#bedrock-section h2');
-  const card0 = document.querySelector<HTMLElement>('.bedrock-card-0');
-  const card1 = document.querySelector<HTMLElement>('.bedrock-card-1');
-  const card2 = document.querySelector<HTMLElement>('.bedrock-card-2');
-  const card3 = document.querySelector<HTMLElement>('.bedrock-card-3');
+  const bedrockContainer = document.getElementById('bedrock-interactive-container') || document.getElementById('bedrock-section');
+  const addsSection = document.getElementById('aplyd-adds-section');
+  const globalHeading = document.getElementById('global-heading') || document.querySelector<HTMLElement>('#global-reach-section h2');
+  const matrixWrap = document.getElementById('footprint-matrix-wrap') || document.getElementById('global-map-console') || document.querySelector<HTMLElement>('#global-reach-section');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
   const list: Milestone[] = [];
 
-  // Hero on Left Rail
+  // 1. Hero on Left Rail
   list.push({
     key: 'proof-hero',
     getPoint: () => {
@@ -622,7 +673,41 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 1. Global Reach Heading on Left Rail
+  // 2. Top of Bedrock Section (where the semi-circle starts flush with the rail)
+  list.push({
+    key: 'proof-bedrock-top',
+    dot: false,
+    getPoint: () => {
+      if (!bedrockContainer) return null;
+      const rect = bedrockContainer.getBoundingClientRect();
+      return { x: railLeftX(), y: rect.top + window.scrollY };
+    },
+  });
+
+  // 4. Bottom of Bedrock Section (Gap across the showcase section — NO vertical line drawn here!)
+  list.push({
+    key: 'proof-bedrock-bottom',
+    dot: false,
+    gap: true,
+    getPoint: () => {
+      if (!bedrockContainer) return null;
+      const rect = bedrockContainer.getBoundingClientRect();
+      return { x: railLeftX(), y: rect.bottom + window.scrollY };
+    },
+  });
+
+  // 5. What APLYD Adds on Left Rail (picks up seamlessly from the ending of the semi-circle)
+  if (addsSection) {
+    list.push({
+      key: 'proof-adds',
+      getPoint: () => {
+        const h = addsSection.querySelector('h2') ?? addsSection;
+        return { x: railLeftX(), y: h.getBoundingClientRect().top + 16 + window.scrollY };
+      },
+    });
+  }
+
+  // 5. Global Reach Heading on Left Rail
   list.push({
     key: 'proof-global-heading',
     getPoint: () => {
@@ -631,7 +716,7 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 2. Global Footprint Matrix on Left Rail
+  // 6. Global Footprint Matrix on Left Rail
   list.push({
     key: 'proof-matrix-left',
     getPoint: () => {
@@ -640,73 +725,7 @@ function build16YearsMilestones(): Milestone[] {
     },
   });
 
-  // 3. Bedrock Heading on Left Rail
-  list.push({
-    key: 'proof-bedrock-heading',
-    getPoint: () => {
-      if (!bedrockHeading) return null;
-      return { x: railLeftX(), y: bedrockHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // 4. Check if 2-column layout is active (desktop lg+)
-  const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
-
-  if (isMultiCol && card0 && card1 && card2 && card3) {
-    // 4a. Enter Cornerstone 1 (Top-Left: Policy Research & Governance)
-    list.push({
-      key: 'proof-pillar-0',
-      getPoint: () => {
-        const r = card0.getBoundingClientRect();
-        return { x: railLeftX(), y: r.top + 48 + window.scrollY };
-      },
-    });
-
-    // 4b. Horizontal crossover across aisle to Cornerstone 2 (Top-Right: Evidence & Learning)
-    list.push({
-      key: 'proof-jog-0-to-1',
-      dot: false,
-      getPoint: () => {
-        const r0 = card0.getBoundingClientRect();
-        return { x: railRightX(), y: r0.top + 48 + window.scrollY };
-      },
-    });
-    list.push({
-      key: 'proof-pillar-1',
-      getPoint: () => {
-        const r1 = card1.getBoundingClientRect();
-        return { x: railRightX(), y: r1.top + 48 + window.scrollY };
-      },
-    });
-
-    // 4c. Drop vertically down along Right Rail to Cornerstone 4 (Bottom-Right: Field Intelligence)
-    list.push({
-      key: 'proof-pillar-3',
-      getPoint: () => {
-        const r3 = card3.getBoundingClientRect();
-        return { x: railRightX(), y: r3.top + 48 + window.scrollY };
-      },
-    });
-
-    // 4d. Horizontal crossover back across aisle to Cornerstone 3 (Bottom-Left: Engineering & Systems)
-    list.push({
-      key: 'proof-jog-3-to-2',
-      dot: false,
-      getPoint: () => {
-        const r3 = card3.getBoundingClientRect();
-        return { x: railLeftX(), y: r3.top + 48 + window.scrollY };
-      },
-    });
-    list.push({
-      key: 'proof-pillar-2',
-      getPoint: () => {
-        const r2 = card2.getBoundingClientRect();
-        return { x: railLeftX(), y: r2.top + 48 + window.scrollY };
-      },
-    });
-  }
-
-  // Final CTA plugged into card interior
+  // 7. Final CTA plugged into card interior
   pushCtaConnection(list, cta, 'left', 'proof');
 
   return list;
@@ -1723,8 +1742,17 @@ export function initFlowLine(): void {
     }
 
     currentMilestonesWithPoints = withPoints;
-    const { points: expandedPoints, indexMap } = toOrthogonal(points);
-    built = buildRoundedPath(expandedPoints, CORNER_RADIUS);
+    const curvedFlags = withPoints.map((m) => !!m.curved);
+    const { points: expandedPoints, indexMap } = toOrthogonal(points, curvedFlags);
+    const gapFlags = indexMap.map((expandedIdx, origIdx) => !!withPoints[origIdx]?.gap);
+    // Expand gapFlags for all points
+    const fullGapFlags = new Array(expandedPoints.length).fill(false);
+    indexMap.forEach((expIdx, origIdx) => {
+      if (withPoints[origIdx]?.gap) {
+        fullGapFlags[expIdx] = true;
+      }
+    });
+    built = buildRoundedPath(expandedPoints, CORNER_RADIUS, fullGapFlags);
     milestoneCumulative = indexMap.map((expandedIdx) => built.cumulativeLengths[expandedIdx]);
 
     activationScrollY = withPoints.map((_, i) => points[i].y - window.innerHeight * ACTIVATION_FRACTION);
@@ -1905,6 +1933,17 @@ export function initFlowLine(): void {
         dossier.querySelector('.dossier-impact-box')?.classList.toggle('is-powered', currentLength >= at - 8);
       }
     });
+
+    // 9. Our Approach 4 Stages sequential card power activation
+    for (let idx = 0; idx < 4; idx++) {
+      const sIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `oa-stage-${idx}`);
+      if (sIdx >= 0) {
+        const at = milestoneCumulative[sIdx] ?? 0;
+        const isReached = currentLength >= at - 8;
+        const cards = document.querySelectorAll<HTMLElement>('.stage-chapter-card');
+        cards[idx]?.classList.toggle('is-powered', isReached);
+      }
+    }
   }
 
   function renderDots(milestones: Milestone[], points: Point[]) {
