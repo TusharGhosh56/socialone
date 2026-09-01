@@ -6,25 +6,7 @@ import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import GoldWaveform from '../../components/GoldWaveform.astro';
 import GradientVideo from '../../components/GradientVideo.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
-
-const bedrockPillars = [
-  {
-    title: 'Policy research and advisory',
-    desc: 'Sector knowledge, institutional analysis, governance and public policy formulation that inform how institutions understand problems, make decisions and design interventions.',
-  },
-  {
-    title: 'Measurement and evaluation',
-    desc: 'Baselines, MEL systems, independent evidence generation and implementation learning that help institutions assess performance and understand what is working in practice.',
-  },
-  {
-    title: 'Digital tools and systems',
-    desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
-  },
-  {
-    title: 'Last-mile data networks',
-    desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
-  },
-];
+import BedrockCurvedShowcase from '../../components/BedrockCurvedShowcase.astro';
 ---
 
 <Base
@@ -32,9 +14,9 @@ const bedrockPillars = [
   description="APLYD is built on sixteen years of Athena Infonomics work in research, measurement, digital systems and last-mile data across governments and funders."
   keywords="Athena Infonomics, APLYD Heritage, Global Public Sector Experience, Evidence-Driven AI"
 >
-  <div class="pt-20 sm:pt-24 lg:pt-28">
+  <div class="w-full">
     {/* ============================ HERO ============================ */}
-    <section class="hero-internal-section bg-navy text-white py-12 sm:py-16 lg:py-20 min-h-[380px] sm:min-h-[460px] lg:min-h-[520px] flex flex-col justify-center relative overflow-hidden">
+    <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
       {/* Thematic Cinematic Stock Video Background */}
       <HeroVideo
         src="/video/trust.mp4"
@@ -54,9 +36,9 @@ const bedrockPillars = [
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: THE BEDROCK ============================ */}
-      <section class="relative z-10 py-10 sm:py-16" id="bedrock-section">
-        <div class="container-x space-y-8 sm:space-y-12">
+      {/* ============================ SECTION 1: THE BEDROCK (CURVED DUAL ARC SHOWCASE) ============================ */}
+      <section class="relative z-10 pt-12 sm:pt-20 pb-8 sm:pb-14" id="bedrock-section">
+        <div class="container-x space-y-6 sm:space-y-8 mb-8 sm:mb-12">
           <div class="max-w-4xl space-y-3 sm:space-y-4">
             <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight" id="bedrock-heading">
               The bedrock
@@ -65,24 +47,10 @@ const bedrockPillars = [
               Athena Infonomics has built its work around four complementary capabilities. Together, they provide the sector knowledge, evidence infrastructure and delivery experience that underpin APLYD’s approach to applied AI.
             </p>
           </div>
-
-          {/* 4 Bedrock Pillars Display in Clean 2x2 Grid (No Fake Numbers / Tags) */}
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="bedrock-grid">
-            {bedrockPillars.map((item, idx) => (
-              <div class={`bedrock-card bedrock-card-${idx} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-8 lg:p-10 space-y-4 shadow-sm flex flex-col justify-between group transition-all duration-500 hover:shadow-xl hover:border-gold/40`} data-bedrock-index={idx}>
-                <div class="space-y-3 sm:space-y-4">
-                  <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug">
-                    {item.title}
-                  </h3>
-
-                  <p class="text-sm sm:text-base lg:text-lg text-mid-navy leading-relaxed font-normal">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
+
+        {/* Interactive Dual Semi-Circle Scroll Trajectory Showcase */}
+        <BedrockCurvedShowcase />
       </section>
 
       {/* ============================ SECTION 2: WHAT APLYD ADDS (DEEP MONUMENT) ============================ */}
