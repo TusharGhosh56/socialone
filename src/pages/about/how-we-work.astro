@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
-import HeroVideo from '../../components/HeroVideo.astro';
 import img01 from '../../assets/images/how-we-work/card_01-web.jpg';
 import img02 from '../../assets/images/how-we-work/card_02-web.jpg';
 import img03 from '../../assets/images/how-we-work/card_03-web.jpg';
@@ -65,12 +64,6 @@ const principles = [
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video Background */}
-      <HeroVideo
-        src="/video/subpage-hero/how we work.mp4"
-        overlayOpacity={0.62}
-      />
-
       <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Four principles behind every engagement
