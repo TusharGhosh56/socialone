@@ -71,7 +71,12 @@ const principles = [
         overlayOpacity={0.62}
       />
 
-      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
+      <div class="container-x relative z-10 space-y-5 sm:space-y-6">
+        <div class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-gold backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+          <span>APLYD Principles · Delivery Methodology</span>
+        </div>
+
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Four principles behind every engagement
         </h1>
@@ -86,65 +91,60 @@ const principles = [
     <AtmosphericCanvas>
       {/* ============================ 4 PRINCIPLES CHAPTERS ============================ */}
       <section class="relative z-10 py-10 sm:py-16">
-        <div class="container-x space-y-12 sm:space-y-16 lg:space-y-24">
-          {principles.map((p, idx) => (
-            <article
-              id={`principle-row-${idx}`}
-              class={`principle-row grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center`}
-            >
-              {/* Text Column: 100% Verbatim Client Copy */}
-              <div class={`lg:col-span-6 space-y-4 sm:space-y-6 ${idx % 2 === 1 ? 'lg:order-2' : ''}`}>
-                <div class="space-y-2.5 sm:space-y-3.5">
-                  <div class="inline-flex items-center gap-2 rounded-full border border-hair bg-pale-navy/90 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy principle-badge transition-all duration-500">
-                    <span class="principle-dot h-1.5 w-1.5 rounded-full bg-gold transition-all duration-500"></span>
+        <div class="container-x space-y-10 sm:space-y-14 lg:space-y-16">
+          {principles.map((p, idx) => {
+            const isEven = idx % 2 === 0;
+            return (
+              <article
+                id={`principle-row-${idx}`}
+                class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-md grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch group transition-all duration-500 hover:shadow-xl"
+              >
+                {/* Narrative Column */}
+                <div class={`p-6 sm:p-10 lg:p-14 lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6 ${!isEven ? 'order-1 lg:order-2' : ''}`}>
+                  <div class="inline-flex items-center gap-2 rounded-full border border-hair bg-pale-navy/90 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-navy w-fit">
+                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
                     <span>Principle · {p.phase}</span>
                   </div>
 
                   <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light leading-tight tracking-tight text-navy">
                     {p.title}
                   </h2>
-                </div>
 
-                <div class="space-y-3.5 sm:space-y-4 text-sm sm:text-base lg:text-lg leading-relaxed font-normal text-mid-navy">
-                  {p.paragraphs.map((para) => (
-                    <p>{para}</p>
-                  ))}
-                </div>
+                  <div class="space-y-3.5 sm:space-y-4 text-base sm:text-lg lg:text-xl leading-relaxed font-normal text-mid-navy">
+                    {p.paragraphs.map((para) => (
+                      <p>{para}</p>
+                    ))}
+                  </div>
 
-                {p.h3Title && (
-                  <div class="pt-4 sm:pt-6 border-t border-hair/80 space-y-3">
-                    <h3 class="text-xl sm:text-2xl font-light text-navy leading-snug">
-                      {p.h3Title}
-                    </h3>
-                    <div class="space-y-3 text-sm sm:text-base lg:text-lg leading-relaxed font-normal text-mid-navy">
-                      {p.subParagraphs?.map((sp) => (
-                        <p>{sp}</p>
-                      ))}
+                  {p.h3Title && (
+                    <div class="pt-4 sm:pt-6 border-t border-hair/80 space-y-3">
+                      <h3 class="text-xl sm:text-2xl font-light text-navy leading-snug">
+                        {p.h3Title}
+                      </h3>
+                      <div class="space-y-3 text-base sm:text-lg leading-relaxed font-normal text-mid-navy">
+                        {p.subParagraphs?.map((sp) => (
+                          <p>{sp}</p>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Image Column */}
-              <div class={`lg:col-span-6 flex flex-col justify-center ${idx % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <div class="principle-card group relative overflow-hidden rounded-2xl sm:rounded-3xl border border-hair shadow-md transition-all duration-500 hover:border-gold/50 hover:shadow-xl h-full flex flex-col justify-center">
-                  <div class="relative aspect-[16/10] sm:aspect-[16/11] lg:aspect-[4/3] w-full min-h-[220px] sm:min-h-[320px] lg:min-h-[400px] overflow-hidden rounded-2xl sm:rounded-3xl">
-                    <Image
-                      src={p.image}
-                      alt={p.alt}
-                      width={1000}
-                      height={800}
-                      format="webp"
-                      quality={90}
-                      class="h-full w-full object-cover object-[center_30%] transition-transform duration-700 ease-out group-hover:scale-[1.02]"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent pointer-events-none"></div>
-                  </div>
+                  )}
                 </div>
-              </div>
 
-            </article>
-          ))}
+                {/* Edge-to-Edge Media Column */}
+                <div class={`lg:col-span-5 relative min-h-[260px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-navy/5 ${!isEven ? 'order-2 lg:order-1' : ''}`}>
+                  <Image
+                    src={p.image}
+                    alt={p.alt}
+                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    widths={[400, 700, 900]}
+                    sizes="(min-width: 1024px) 42vw, 100vw"
+                  />
+                  <div class={`absolute inset-0 bg-gradient-to-t ${isEven ? 'lg:bg-gradient-to-l' : 'lg:bg-gradient-to-r'} from-navy/30 via-transparent to-transparent pointer-events-none`}></div>
+                </div>
+
+              </article>
+            );
+          })}
         </div>
       </section>
 
