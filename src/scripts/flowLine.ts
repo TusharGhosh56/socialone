@@ -323,7 +323,7 @@ function buildBuiltForGovMilestones(): Milestone[] {
     },
   });
 
-  // Dual Pillar Architecture Interconnected Bus (Desktop Only)
+  // Desktop (lg+): Clean Manifold Circuit traversing between the two cards (Strictly forward Y)
   if (isDesktop && cardGrid && card1 && card2) {
     const getCenterGapX = () => {
       const r1 = card1.getBoundingClientRect();
@@ -331,65 +331,70 @@ function buildBuiltForGovMilestones(): Milestone[] {
       return (r1.right + r2.left) / 2 + window.scrollX;
     };
 
-    const getJogY = () => {
-      if (archDesc) {
-        const dr = archDesc.getBoundingClientRect();
+    const getTopJogY = () => {
+      if (archHeading) {
+        const hr = archHeading.getBoundingClientRect();
         const gr = cardGrid.getBoundingClientRect();
-        return (dr.bottom + gr.top) / 2 + window.scrollY;
+        return (hr.bottom + gr.top) / 2 + window.scrollY;
       }
-      return cardGrid.getBoundingClientRect().top - 28 + window.scrollY;
+      return cardGrid.getBoundingClientRect().top - 32 + window.scrollY;
     };
 
-    // 1) Turn 90 deg right from left rail before the pics
+    const getBottomJogY = () => {
+      const gr = cardGrid.getBoundingClientRect();
+      if (sec3) {
+        const sr = sec3.getBoundingClientRect();
+        return (gr.bottom + sr.top) / 2 + window.scrollY;
+      }
+      return gr.bottom + 32 + window.scrollY;
+    };
+
+    // 1) Turn right from left rail into the horizontal manifold above the cards
     list.push({
-      key: 'bfg-cards-jog-start',
+      key: 'bfg-jog-top-rail',
       dot: false,
-      getPoint: () => {
-        const jy = getJogY();
-        return { x: railLeftX(), y: jy };
-      },
+      getPoint: () => ({ x: railLeftX(), y: getTopJogY() }),
     });
 
-    // 2) Reach center between the two cards
+    // 2) Reach center gap above the cards
     list.push({
-      key: 'bfg-cards-jog-center',
+      key: 'bfg-jog-top-center',
       dot: false,
-      getPoint: () => {
-        const jy = getJogY();
-        return { x: getCenterGapX(), y: jy };
-      },
+      getPoint: () => ({ x: getCenterGapX(), y: getTopJogY() }),
     });
 
-    // 3) Travel down between the two cards to the Power Splitter Hub
+    // 3) Travel strictly DOWN the center gap between the two cards
     list.push({
-      key: 'bfg-power-splitter',
+      key: 'bfg-cards-center-dot',
       dot: true,
       getPoint: () => {
-        const port = card1.querySelector('.pillar-power-terminal') || card1.querySelector('.pillar-badge');
-        if (port) {
-          const pr = port.getBoundingClientRect();
-          return { x: getCenterGapX(), y: pr.top + pr.height / 2 + window.scrollY };
-        }
-        return { x: getCenterGapX(), y: card1.getBoundingClientRect().top + 42 + window.scrollY };
+        const gr = cardGrid.getBoundingClientRect();
+        return { x: getCenterGapX(), y: gr.top + gr.height * 0.45 + window.scrollY };
       },
     });
 
-    // 4) Continue down the center aisle past the cards
-    const getCardsBottomY = () => {
-      return cardGrid.getBoundingClientRect().bottom + 24 + window.scrollY;
-    };
-
+    // 4) Reach bottom of the center gap below the cards
     list.push({
-      key: 'bfg-cards-bottom',
+      key: 'bfg-jog-bottom-center',
       dot: false,
-      getPoint: () => ({ x: getCenterGapX(), y: getCardsBottomY() }),
+      getPoint: () => ({ x: getCenterGapX(), y: getBottomJogY() }),
     });
 
-    // Section 3: Jog back to Left Rail in the gap below the cards
+    // 5) Jog back left to the left rail below the cards
     list.push({
-      key: 'bfg-monument-jog-left',
+      key: 'bfg-jog-bottom-rail',
       dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getCardsBottomY() }),
+      getPoint: () => ({ x: railLeftX(), y: getBottomJogY() }),
+    });
+  } else if (cardGrid) {
+    // Mobile / Tablet: Clean milestone on left rail
+    list.push({
+      key: 'bfg-cards-level',
+      dot: true,
+      getPoint: () => {
+        const gr = cardGrid.getBoundingClientRect();
+        return { x: railLeftX(), y: gr.top + 60 + window.scrollY };
+      },
     });
   }
 
@@ -509,52 +514,15 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
     },
   });
 
-  if (isDesktop && sectorHeading && sectorGrid) {
-    // Safe gap below the heading and above the 3 cards (Top Splitter Manifold)
-    const getTopSplitterY = () => {
-      const hr = sectorHeading.getBoundingClientRect();
-      const gr = sectorGrid.getBoundingClientRect();
-      return (hr.bottom + gr.top) / 2 + window.scrollY;
-    };
-
+  // Sector Horizons Grid level on Left Rail
+  if (sectorGrid) {
     list.push({
-      key: 'pad-split-jog-start',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getTopSplitterY() }),
-    });
-    list.push({
-      key: 'pad-3way-splitter',
-      getPoint: () => ({ x: screenCenterX(), y: getTopSplitterY() }),
-    });
-
-    // Center Channel travels through the middle card (Card 2: Nonprofits)
-    list.push({
-      key: 'pad-sectors-mid-dot',
+      key: 'pad-sectors-level',
+      dot: true,
       getPoint: () => {
         const gr = sectorGrid.getBoundingClientRect();
-        return { x: screenCenterX(), y: gr.top + gr.height * 0.48 + window.scrollY };
+        return { x: railLeftX(), y: gr.top + 60 + window.scrollY };
       },
-    });
-
-    // Safe gap below the 3 cards and above the Vision Monument (Bottom Combiner Manifold)
-    const getBottomCombinerY = () => {
-      if (!visionMonument) return 0;
-      const gr = sectorGrid.getBoundingClientRect();
-      const vr = visionMonument.getBoundingClientRect();
-      return (gr.bottom + vr.top) / 2 + window.scrollY;
-    };
-
-    list.push({
-      key: 'pad-3way-combiner',
-      dot: false,
-      getPoint: () => ({ x: screenCenterX(), y: getBottomCombinerY() }),
-    });
-
-    // In the gap below the cards: Jog from Combiner back to Left Rail
-    list.push({
-      key: 'pad-combiner-to-rail',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getBottomCombinerY() }),
     });
   }
 

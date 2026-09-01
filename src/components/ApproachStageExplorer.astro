@@ -143,16 +143,9 @@ const stages: StageData[] = [
 
             {/* TEXT COLUMN: 100% Verbatim Client Copy with generous inner padding */}
             <div class={`p-6 sm:p-10 lg:p-14 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? 'lg:col-span-7' : 'lg:col-span-7 lg:order-2'}`}>
-              <div class="space-y-2.5 sm:space-y-3.5">
-                <div class={`inline-flex items-center gap-2 rounded-full px-3.5 py-1 text-xs font-bold uppercase tracking-widest border ${badgeClasses}`}>
-                  <span class="stage-badge-dot h-1.5 w-1.5 rounded-full bg-gold"></span>
-                  <span>Stage {stage.stepNumber} · {stage.phase}</span>
-                </div>
-
-                <h2 class={`text-2xl sm:text-3xl lg:text-4xl font-light leading-tight tracking-tight ${headingClasses}`}>
-                  {stage.h2Full}
-                </h2>
-              </div>
+              <h2 class={`text-2xl sm:text-3xl lg:text-4xl font-light leading-tight tracking-tight ${headingClasses}`}>
+                {stage.h2Full}
+              </h2>
 
               {/* Exact Client Paragraphs */}
               <div class={`space-y-4 text-sm sm:text-base lg:text-lg leading-relaxed font-normal ${textClasses}`}>
