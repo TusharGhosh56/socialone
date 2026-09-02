@@ -1,0 +1,57 @@
+---
+// src/components/MagazineCoverStory.astro — Clean Editorial Cover Story (Picture with text on top)
+import { Image } from 'astro:assets';
+import type { CoverStory } from '../data/insights';
+
+interface Props {
+  story: CoverStory;
+}
+
+const { story } = Astro.props;
+---
+
+<div class="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/15 shadow-2xl bg-navy group">
+  {/* The full-bleed picture */}
+  <div class="relative aspect-[16/10] sm:aspect-[21/9] lg:aspect-[2.4/1] min-h-[360px] sm:min-h-[440px] w-full">
+    <Image
+      src={story.image}
+      alt={story.title}
+      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+      loading="eager"
+    />
+
+    {/* Dark gradient overlay for text readability */}
+    <div class="absolute inset-0 bg-gradient-to-t from-navy/95 via-navy/60 to-transparent pointer-events-none"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/20 to-transparent pointer-events-none"></div>
+
+    {/* Text overlaid directly on top of the picture */}
+    <div class="absolute inset-x-0 bottom-0 p-6 sm:p-10 lg:p-12 flex flex-col justify-end max-w-4xl">
+
+      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-normal text-white leading-tight tracking-tight mb-3">
+        {story.title}
+      </h2>
+
+      <p class="text-xs sm:text-small text-white/80 leading-relaxed max-w-2xl mb-5 hidden sm:block">
+        {story.excerpt}
+      </p>
+
+      {/* Author Byline */}
+      <div class="flex items-center gap-3">
+        {story.author.avatar && (
+          <div class="h-8 w-8 sm:h-9 sm:w-9 rounded-full overflow-hidden border border-white/30 bg-navy/60 shrink-0">
+            <Image
+              src={story.author.avatar}
+              alt={story.author.name}
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )}
+        <div class="flex items-center gap-2 text-xs sm:text-small text-white/80">
+          <span class="font-semibold text-white">{story.author.name}</span>
+          <span class="text-white/40">•</span>
+          <span class="text-white/60">{story.formattedDate}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

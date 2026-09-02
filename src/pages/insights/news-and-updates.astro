@@ -1,0 +1,106 @@
+---
+// src/pages/insights/news-and-updates.astro — Canonical News & Updates
+import Base from '../../layouts/Base.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import NewsDispatchTimeline from '../../components/NewsDispatchTimeline.astro';
+import Button from '../../components/Button.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
+import { newsDispatches } from '../../data/insights';
+---
+
+<Base
+  title="News & Updates | APLYD"
+  description="Announcements, deployment milestones, partnerships, and media coverage from APLYD."
+  keywords="APLYD News, Applied AI Updates, Athena Infonomics News"
+>
+  <div class="w-full">
+    {/* ============================ HERO SECTION ============================ */}
+    <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
+      <HeroVideo
+        src="/video/optimized/service.mp4"
+        overlayOpacity={0.65}
+      />
+
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
+          News & updates
+        </h1>
+
+        <p class="max-w-4xl lg:max-w-5xl text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed text-pretty">
+          Deployment milestones, partnerships, and media commentary from across our international practice.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      {/* ============================ NEWS LIST SECTION ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="news-section">
+        <div class="container-x">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
+            {/* Main News List (8 cols) */}
+            <div class="lg:col-span-8">
+              <NewsDispatchTimeline dispatches={newsDispatches} />
+            </div>
+
+            {/* Media Contact Sidebar (4 cols track spanning full height of timeline) */}
+            <div id="media-sidebar-track" class="lg:col-span-4 relative h-full">
+              <div
+                id="media-inquiry-card"
+                class="trail-docked-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 space-y-4 group will-change-transform lg:sticky lg:top-32"
+              >
+                {/* Visual trail docking beacon at MIDDLE TOP */}
+                <div class="pointer-events-none absolute -top-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rounded-full bg-gold shadow-[0_0_12px_rgba(209,156,51,1)] border-2 border-white hidden lg:block" aria-hidden="true"></div>
+
+                <div class="relative z-10 space-y-4">
+                  <h2 class="text-lg font-bold text-navy">
+                    Media inquiries
+                  </h2>
+
+                  <p class="text-xs sm:text-small text-mid-navy leading-relaxed">
+                    For press inquiries, interview requests, or official comments, get in touch with our team.
+                  </p>
+
+                  <div class="rounded-xl border border-hair/80 bg-white/80 p-3.5 space-y-1 backdrop-blur-sm">
+                    <p class="text-[0.6875rem] uppercase font-bold text-mid-navy/70 tracking-wider">Email</p>
+                    <a href="mailto:contact@aplyd.com" class="text-sm font-semibold text-navy hover:text-deep-gold transition-colors break-all">
+                      contact@aplyd.com
+                    </a>
+                  </div>
+
+                  <div class="pt-2">
+                    <Button href="/contact" variant="outline" class="w-full !flex items-center justify-center gap-2 text-xs font-bold">
+                      <span>Contact us</span>
+                      <span>&rarr;</span>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ CANONICAL CTA ============================ */}
+      <section class="relative z-10 py-8 sm:py-12">
+        <div class="container-x">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
+              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                Connect with our practice leaders
+              </h3>
+              <p class="text-base text-mid-navy leading-relaxed font-normal">
+                Get in touch for interview requests, official commentary, or briefing inquiries.
+              </p>
+            </div>
+            <div class="relative z-10 w-full sm:w-auto">
+              <Button href="/contact" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                Get in touch &rarr;
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </AtmosphericCanvas>
+  </div>
+</Base>

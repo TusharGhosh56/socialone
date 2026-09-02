@@ -104,6 +104,26 @@ export const navLinks: NavLink[] = [
     ],
   },
   {
+    label: 'Insights & Perspectives',
+    children: [
+      {
+        label: 'Articles',
+        href: '/insights/articles',
+        description: 'Long-form editorial commentary on applied AI, policy, and engineering.',
+      },
+      {
+        label: 'Research & Reports',
+        href: '/insights/research-and-reports',
+        description: 'Peer-reviewed benchmarks, sovereign blueprints, and technical whitepapers.',
+      },
+      {
+        label: 'News & Updates',
+        href: '/insights/news-and-updates',
+        description: 'Institutional announcements, multilateral deployments, and press dispatches.',
+      },
+    ],
+  },
+  {
     label: 'Careers',
     href: '/careers',
   },

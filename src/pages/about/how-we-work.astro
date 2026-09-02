@@ -46,9 +46,6 @@ const principles = [
     alt: 'Independent algorithmic evaluation and auditing',
     paragraphs: [
       'We only evaluate systems that no one in our group built, and we do not bid to build systems that we have evaluated. Evaluation is kept structurally separate from delivery.',
-    ],
-    h3Title: 'Independent by Design',
-    subParagraphs: [
       'Evaluation is most useful when its findings are not shaped by an interest in a particular outcome. Keeping assurance separate from delivery allows institutions to assess system performance, safety, fairness and impact with greater independence.',
       'This approach also enables us to evaluate systems developed by other providers without creating a conflict between evaluation and implementation. The principle applies equally to our own work: systems we build are not evaluated by us.',
     ],
@@ -98,19 +95,6 @@ const principles = [
                       <p>{para}</p>
                     ))}
                   </div>
-
-                  {p.h3Title && (
-                    <div class="pt-4 sm:pt-6 border-t border-hair/80 space-y-3">
-                      <h3 class="text-xl sm:text-2xl font-light text-navy leading-snug">
-                        {p.h3Title}
-                      </h3>
-                      <div class="space-y-3 text-base sm:text-lg leading-relaxed font-normal text-mid-navy">
-                        {p.subParagraphs?.map((sp) => (
-                          <p>{sp}</p>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Edge-to-Edge Media Column */}

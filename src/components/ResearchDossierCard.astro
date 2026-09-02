@@ -1,0 +1,130 @@
+---
+// src/components/ResearchDossierCard.astro — Clean Research Report Card
+import type { ResearchReport } from '../data/insights';
+
+interface Props {
+  report: ResearchReport;
+  isFlagship?: boolean;
+}
+
+const { report, isFlagship = false } = Astro.props;
+---
+
+<div
+  class={`rounded-2xl sm:rounded-3xl border transition-all duration-300 ${
+    isFlagship
+      ? 'border-white/15 bg-gradient-to-br from-navy via-navy to-deep-navy text-white shadow-xl p-6 sm:p-10 relative overflow-hidden'
+      : 'border-hair bg-white p-6 sm:p-8 shadow-sm hover:border-gold/40 text-navy'
+  }`}
+  data-research-card
+  data-report-id={report.id}
+>
+  <div class="relative z-10 flex flex-col justify-between h-full space-y-5">
+    <div class="space-y-3">
+      {/* Date */}
+      <p class={`text-xs ${isFlagship ? 'text-white/60' : 'text-mid-navy/70'}`}>
+        {report.date}
+      </p>
+
+      {/* Title */}
+      <h3 class={`font-bold tracking-tight leading-tight ${
+        isFlagship ? 'text-2xl sm:text-3xl text-white' : 'text-xl sm:text-2xl text-navy'
+      }`}>
+        {report.title}
+      </h3>
+
+      {/* Description */}
+      <p class={`text-sm sm:text-base leading-relaxed ${
+        isFlagship ? 'text-pale-navy/90 max-w-3xl' : 'text-mid-navy'
+      }`}>
+        {report.lead}
+      </p>
+
+      {/* Authors */}
+      <p class="text-xs pt-1">
+        <span class={isFlagship ? 'text-white/60' : 'text-mid-navy/70'}>Authors: </span>
+        <span class={`font-medium ${isFlagship ? 'text-white/90' : 'text-navy'}`}>
+          {report.authors.join(', ')}
+        </span>
+      </p>
+    </div>
+
+    {/* Expandable Abstract */}
+    <div class="pt-2">
+      <details
+        class={`group/details rounded-2xl border transition-all duration-200 overflow-hidden ${
+          isFlagship
+            ? 'border-white/15 bg-white/5 hover:border-gold/60 group-open/details:border-gold/80 group-open/details:bg-white/[0.08]'
+            : 'border-hair bg-paper/60 hover:border-gold/60 group-open/details:border-gold/80 group-open/details:bg-pale-gold/20'
+        }`}
+      >
+        <summary class="flex items-center justify-between px-4 py-3 cursor-pointer list-none select-none transition-colors">
+          <span
+            class={`text-xs sm:text-sm font-semibold tracking-wide ${
+              isFlagship ? 'text-white' : 'text-navy'
+            }`}
+          >
+            Read Executive Abstract
+          </span>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-medium text-gold group-open/details:hidden">Expand</span>
+            <span class="text-xs font-medium text-gold hidden group-open/details:inline">Collapse</span>
+            <span
+              class={`flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-200 group-open/details:rotate-180 ${
+                isFlagship ? 'bg-white/10 text-gold' : 'bg-navy/5 text-deep-gold'
+              }`}
+            >
+              <svg class="w-3 h-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2.5 4.5L6 8L9.5 4.5" />
+              </svg>
+            </span>
+          </div>
+        </summary>
+
+        <div
+          class={`px-4 pb-4 pt-2 text-xs sm:text-sm leading-relaxed border-t ${
+            isFlagship
+              ? 'border-white/10 text-white/85'
+              : 'border-hair text-mid-navy'
+          }`}
+        >
+          {report.abstract}
+        </div>
+      </details>
+    </div>
+
+    {/* Action Buttons */}
+    <div class="flex items-center gap-3 pt-2">
+      <button
+        type="button"
+        class={`inline-flex items-center gap-2 rounded-full px-5 py-2 text-xs font-semibold transition-all cursor-pointer ${
+          isFlagship
+            ? 'bg-gold text-navy hover:bg-white'
+            : 'bg-navy text-white hover:bg-gold hover:text-navy'
+        }`}
+        data-download-report={report.title}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Download report</span>
+      </button>
+
+      <button
+        type="button"
+        class={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold border transition-colors cursor-pointer ${
+          isFlagship
+            ? 'border-white/20 text-white/80 hover:border-gold hover:text-gold'
+            : 'border-hair text-mid-navy hover:border-gold hover:text-navy'
+        }`}
+        data-cite-button
+        data-bibtex={report.bibtex}
+      >
+        <span>Cite</span>
+      </button>
+    </div>
+  </div>
+</div>

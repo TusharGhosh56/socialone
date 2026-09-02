@@ -13,8 +13,9 @@
 // after FlowChart — see index.astro; that section was later removed
 // entirely, unrelated to this footer redesign.)
 import Reveal from './Reveal.astro';
-import wordmarkWhite from '../assets/logos/aplyd-wordmark-white.svg?raw';
 import markWhite from '../assets/logos/aplyd-mark-white.svg?raw';
+import athenaLogo from '../assets/logos/Athena_White.svg?raw';
+import tolaLogo from '../assets/logos/TolaData_Logo_-02.svg?raw';
 
 // Same helper as Header.astro's own: any '#'-style in-page anchor (About
 // Us's #top, Case Studies' #ai-in-action) only resolves on the homepage —
@@ -88,11 +89,18 @@ const columns = [
     ],
   },
   {
+    title: 'Insights',
+    links: [
+      { label: 'Articles & Journal', href: '/insights/articles' },
+      { label: 'Research & Reports', href: '/insights/research-and-reports' },
+      { label: 'News & Updates', href: '/insights/news-and-updates' },
+    ],
+  },
+  {
     title: 'Explore',
     links: [
       { label: 'AI in Action', href: '/ai-in-action' },
       { label: 'Careers', href: '/careers' },
-      { label: 'The Athena Group', href: 'https://www.athenainfonomics.com/' },
       { label: 'Get In Touch', href: '/contact' },
     ],
   },
@@ -101,19 +109,7 @@ const columns = [
 
 <footer class="gradient-navy gradient-sheen text-pale-navy" data-footer>
   <div class="container-x relative py-16 sm:py-20">
-    <!-- Wordmark + Explore/Company, side by side (not stacked — see this
-         file's own header comment) — deliberately kept as its own row
-         rather than sharing a width constraint with the base row below,
-         same reasoning as before: the base row needs the rest of
-         container-x's own width to lay its text out on one line at sm+.
-         gap-x-20/gap-y-12 (up from 16/10) per explicit "a bit more space"
-         request. Each of this footer's 3 blocks (this row, the base row,
-         the big mark) gets its own Reveal, staggered, same fade+rise-in-on-
-         viewport-entry convention used everywhere else on this page. -->
-    <Reveal class="flex flex-wrap items-start gap-x-20 gap-y-12">
-      <a href="/" aria-label="APLYD — home" class="block shrink-0">
-        <span class="block h-[76px] w-auto [&>svg]:h-[76px] [&>svg]:w-auto" set:html={wordmarkWhite} />
-      </a>
+    <Reveal class="flex flex-wrap items-start gap-x-10 sm:gap-x-14 lg:gap-x-16 xl:gap-x-20 gap-y-10">
       {
         columns.map((col) => (
           <nav aria-label={col.title}>
@@ -138,6 +134,34 @@ const columns = [
           </nav>
         ))
       }
+
+      {/* Dedicated Athena Infonomics Column */}
+      <nav aria-label="Athena Infonomics" class="space-y-4">
+        <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">Athena Infonomics</p>
+        <a
+          href="https://athenainfonomics.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Athena Infonomics — athenainfonomics.com"
+          class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
+        >
+          <span class="block h-10 sm:h-11 w-auto [&>svg]:h-10 sm:[&>svg]:h-11 [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={athenaLogo} />
+        </a>
+      </nav>
+
+      {/* Dedicated TolaData Column */}
+      <nav aria-label="TolaData" class="space-y-4">
+        <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">TolaData</p>
+        <a
+          href="https://www.toladata.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="TolaData — toladata.com"
+          class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
+        >
+          <span class="block h-12 sm:h-[52px] w-auto [&>svg]:h-12 sm:[&>svg]:h-[52px] [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={tolaLogo} />
+        </a>
+      </nav>
     </Reveal>
 
     <!-- base row — LinkedIn ahead of the copyright text, on the same line
