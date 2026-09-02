@@ -3,22 +3,19 @@ import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
-import GoldWaveform from '../../components/GoldWaveform.astro';
-import GradientVideo from '../../components/GradientVideo.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import SectorPrismDeck from '../../components/SectorPrismDeck.astro';
-import missionImg from '../../assets/images/purpose-direction/institution.png';
+import visionImg from '../../assets/images/purpose-direction/vision.jpg';
 ---
 
 <Base
   title="Purpose & Direction | Mission and Vision | APLYD"
-  description="APLYD's mission and vision: helping institutions make better decisions at scale, toward intelligence embedded across public institutions."
-  keywords="APLYD Purpose, AI Mission, Public Sector AI Vision, Institutional AI Capability, Responsible AI Adoption, Civic AI Infrastructure, AI for Global Development, Digital Transformation Strategy"
+  description="APLYD's mission and vision: helping institutions build the systems, capabilities, and intelligence to make better decisions at scale."
+  keywords="APLYD Purpose, AI Mission, Public Sector AI Vision, Institutional AI Capability, Responsible AI Adoption, Civic AI Infrastructure"
 >
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-      {/* Emotional Thematic Stock Video */}
       <HeroVideo
         src="/video/optimized/purpose_&_direction.mp4"
         overlayOpacity={0.6}
@@ -36,70 +33,58 @@ import missionImg from '../../assets/images/purpose-direction/institution.png';
     </section>
 
     {/* ============================ RICH ATMOSPHERIC CANVAS ============================ */}
-    <AtmosphericCanvas>
-      {/* ============================ SECTION 1: OUR MISSION ============================ */}
-      <section class="relative z-10 py-12 sm:py-20" id="mission-section">
-        <div class="container-x space-y-12 sm:space-y-16 lg:space-y-20">
-          
-          {/* Mission Split-Screen Monument */}
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-md grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch group transition-all duration-500 hover:shadow-2xl">
-            <div class="p-8 sm:p-12 lg:p-16 lg:col-span-7 flex flex-col justify-center space-y-6 sm:space-y-8">
-              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light text-navy leading-tight tracking-tight">
-                Our mission
+    <AtmosphericCanvas padded={false}>
+      <div class="relative z-10 w-full" id="siena-story-container">
+
+        {/* ==================== PURPOSE & DIRECTION: SINGLE VIEW (NO CARDS, PLAIN IMAGE, EXTREME ENDS) ==================== */}
+        <section class="relative w-full min-h-screen flex flex-col justify-between overflow-hidden" id="purpose-direction-stage">
+          {/* PLAIN Background Image: Zero overlays, pure natural photography */}
+          <div class="absolute inset-0 z-0">
+            <Image
+              src={visionImg}
+              alt="APLYD Purpose & Direction — Institutional Capability"
+              class="w-full h-full object-cover object-center"
+              widths={[800, 1400, 2000]}
+              sizes="100vw"
+              loading="eager"
+            />
+          </div>
+
+          {/* Content Layer Pushed to Extreme Ends: Top-Left & Bottom-Right */}
+          <div class="relative z-10 w-full h-full min-h-screen p-6 sm:p-10 lg:p-12 xl:p-16 flex flex-col justify-between pointer-events-none">
+            
+            {/* EXTREME TOP LEFT: Mission */}
+            <div class="max-w-lg lg:max-w-xl text-left self-start pointer-events-auto" id="mission-content-block">
+              <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full bg-navy/85 border border-gold/40 backdrop-blur-md shadow-md">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+                <span class="text-[11px] uppercase font-bold tracking-[0.2em] text-gold">Our Mission</span>
+              </div>
+
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-navy leading-[1.12] tracking-tight drop-shadow-sm font-display">
+                To help institutions build the systems, capabilities, and intelligence to make better decisions at scale.
               </h2>
 
-              <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-navy leading-snug border-l-4 border-gold pl-5 sm:pl-7">
-                To help institutions build the systems, capabilities, and intelligence to make better decisions at scale.
-              </blockquote>
+              <div class="w-12 h-0.5 bg-gold my-3"></div>
 
-              <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal pt-2">
+              <p class="text-xs sm:text-sm lg:text-base text-navy/90 font-normal leading-relaxed max-w-lg">
                 The challenge in public-sector AI is not only developing the technology. It is creating the conditions for institutions to adopt, operate and improve it. We work across that journey, from identifying the decisions and services where AI can add value, to understanding delivery realities, building systems that fit institutional workflows, and measuring what changes in practice.
               </p>
             </div>
 
-            {/* Right Media Frame with Cinematic Depth */}
-            <div class="lg:col-span-5 relative min-h-[300px] sm:min-h-[380px] lg:min-h-full overflow-hidden bg-navy/5">
-              <Image
-                src={missionImg}
-                alt="Institutional intelligence and decision making"
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                widths={[500, 800, 1100]}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-navy/40 via-transparent to-transparent pointer-events-none"></div>
-            </div>
-          </div>
-
-          {/* 3 Sector Dynamic Horizon Deck */}
-          <div class="space-y-6 sm:space-y-8" id="sector-horizons-section">
-            <SectorPrismDeck />
-          </div>
-
-        </div>
-      </section>
-
-      {/* ============================ SECTION 2: OUR VISION (DEEP MONUMENT) ============================ */}
-      <section class="relative z-10 py-10 sm:py-16" id="vision-section">
-        <div class="container-x">
-          <div class="gradient-navy-mesh gradient-sheen rounded-3xl p-8 sm:p-14 lg:p-20 text-white relative overflow-hidden shadow-2xl">
-            <GradientVideo variant="gold" overlayOpacity={0.58} />
-            <GoldWaveform alpha="1.2" />
-
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-              
-              {/* Left Column: Heading & Monumental Quote */}
-              <div class="lg:col-span-6 space-y-6 sm:space-y-8">
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-white leading-tight">
-                  Our vision
-                </h2>
-
-                <blockquote class="text-xl sm:text-2xl lg:text-3xl font-light text-white leading-snug border-l-4 border-gold pl-5 sm:pl-6">
-                  Intelligence embedded across public institutions, enabling faster, fairer, and more informed decisions.
-                </blockquote>
+            {/* EXTREME BOTTOM RIGHT: Vision */}
+            <div class="max-w-lg lg:max-w-xl text-left self-end ml-auto pointer-events-auto mt-8 sm:mt-12" id="vision-content-block">
+              <div class="inline-flex items-center gap-2 mb-2 px-3 py-1 rounded-full bg-navy/85 border border-gold/40 backdrop-blur-md shadow-md">
+                <span class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></span>
+                <span class="text-[11px] uppercase font-bold tracking-[0.2em] text-gold">Our Vision</span>
               </div>
 
-              {/* Right Column: Narrative Paragraphs */}
-              <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-base sm:text-lg lg:text-xl font-light text-pale-navy/95 leading-relaxed">
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light text-white leading-[1.12] tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] font-display">
+                Intelligence embedded across public institutions, enabling faster, fairer, and more informed decisions.
+              </h2>
+
+              <div class="w-12 h-0.5 bg-gold my-3"></div>
+
+              <div class="space-y-2 text-xs sm:text-sm lg:text-base text-white/95 font-normal leading-relaxed max-w-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.9)]">
                 <p>
                   The measure of progress is not the number of pilots launched, but whether systems can be adopted, sustained and improved within the institutions they are designed to serve. That means building for continuity across changes in staff, resources and operating conditions, with the governance and evidence required to support long-term use.
                 </p>
@@ -107,33 +92,41 @@ import missionImg from '../../assets/images/purpose-direction/institution.png';
                   A system that depends indefinitely on an external vendor does not create durable institutional capability. We build toward institutions that can operate, govern and improve their own AI systems, with ownership and capability developed from the outset.
                 </p>
               </div>
+            </div>
 
+          </div>
+        </section>
+
+        {/* ==================== 2. SECTOR HORIZONS ==================== */}
+        <section class="relative z-20 py-16 sm:py-24 border-t border-hair bg-white/80" id="sector-horizons-section">
+          <div class="container-x space-y-6 sm:space-y-8">
+            <SectorPrismDeck />
+          </div>
+        </section>
+
+        {/* ==================== 3. CANONICAL CTA ==================== */}
+        <section class="relative z-20 py-8 sm:py-14">
+          <div class="container-x">
+            <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+              <div class="max-w-2xl relative z-10">
+                <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Approach</div>
+                <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                  See our approach
+                </h3>
+                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+                  How APLYD moves an institution from the decision worth improving, through build, to independent assurance.
+                </p>
+              </div>
+              <div class="relative z-10 w-full sm:w-auto">
+                <Button href="/services/our-approach" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-md">
+                  See our approach &rarr;
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ============================ CTA ============================ */}
-      <section class="relative z-10 py-8 sm:py-14">
-        <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
-            <div class="max-w-2xl relative z-10">
-              <div class="text-xs uppercase font-bold tracking-widest text-gold mb-2">Our Approach</div>
-              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
-                See our approach
-              </h3>
-              <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                How APLYD moves an institution from the decision worth improving, through build, to independent assurance.
-              </p>
-            </div>
-            <div class="relative z-10 w-full sm:w-auto">
-              <Button href="/services/our-approach" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-md">
-                See our approach &rarr;
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </AtmosphericCanvas>
   </div>
 </Base>

@@ -259,7 +259,40 @@ export interface FlowPoint {
 let _getFlowWaypoints: () => FlowPoint[] = () => [];
 
 export function getFlowWaypoints(): FlowPoint[] {
-  return _getFlowWaypoints();
+  const livePts = _getFlowWaypoints();
+  if (livePts && livePts.length > 0) return livePts;
+
+  // Instant synchronous DOM fallback so flowLine has immediate valid coordinates
+  // even on the very first frame before animation loops initialize:
+  if (typeof document !== 'undefined') {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-flow2-canvas]');
+    const section = document.querySelector<HTMLElement>('[data-flow2]');
+    if (canvas && section) {
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width || window.innerWidth || 1200;
+      const h = rect.height || (rect.bottom - rect.top) || 600;
+      const pad = 24;
+
+      if (w < MOBILE_BREAKPOINT) {
+        const trunkX = rect.left + window.scrollX + w / 2;
+        return [0, 1, 2, 3].map((i) => ({
+          x: trunkX,
+          y: rect.top + window.scrollY + MOBILE_TOP_MARGIN + MOBILE_STATION_GAP * i,
+        }));
+      }
+
+      const centerY = rect.top + window.scrollY + h / 2;
+      const left = pad;
+      const right = w - pad;
+      const fullSpan = Math.max(160, right - left);
+      const span = fullSpan * STATION_SPAN_SCALE;
+      const spanLeft = left + (fullSpan - span) / 2;
+      const stationX = [0, 1, 2, 3].map((i) => rect.left + window.scrollX + spanLeft + (span * i) / 3);
+      return stationX.map((x) => ({ x, y: centerY }));
+    }
+  }
+
+  return [];
 }
 
 export function initFlowChart(): void {
