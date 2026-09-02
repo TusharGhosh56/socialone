@@ -21,7 +21,7 @@ import Button from '../Button.astro';
 
 // Drop the 5 video files at public/video/hero/1.mp4 .. 5.mp4 — see this
 // array if you want different filenames instead.
-const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
+const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/optimized/${n}.mp4`);
 ---
 
 <section class="hero" id="hero" data-hero>
@@ -29,7 +29,7 @@ const VIDEO_SOURCES = [1, 2, 3, 4, 5, 6].map((n) => `/video/hero/${n}.mp4`);
     <div class="hero__video-wrap" aria-hidden="true">
       {
         VIDEO_SOURCES.map((src, i) => (
-          <video class:list={['hero__video', { 'is-active': i === 0 }]} data-hero-video={i} autoplay loop muted playsinline preload="auto">
+          <video class:list={['hero__video', { 'is-active': i === 0 }]} data-hero-video={i} poster={`/video/posters/${i + 1}.webp`} autoplay loop muted playsinline preload="auto">
             <source src={src} type="video/mp4" />
           </video>
         ))
