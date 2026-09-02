@@ -3,11 +3,13 @@
 export interface VideoItem {
   id: string;
   src: string;
+  poster?: string;
   storyTag?: string;
 }
 
 interface Props {
   src?: string;
+  poster?: string;
   storyTag?: string;
   videos?: VideoItem[];
   activeId?: string;
@@ -18,6 +20,7 @@ interface Props {
 
 const {
   src,
+  poster,
   storyTag = 'Applied Intelligence · Human Impact',
   videos,
   activeId,
@@ -26,22 +29,46 @@ const {
   showBadge = true,
 } = Astro.props;
 
-// Determine video sources list
+function getPosterForVideo(videoSrc: string): string {
+  const filename = videoSrc.split('/').pop()?.replace(/\.[^/.]+$/, '') || '';
+  const cleanName = filename.replace(/\s+/g, '_').toLowerCase();
+  return `/video/posters/${cleanName}.webp`;
+}
+
+// Determine video sources list with auto-derived poster paths
 const videoList: VideoItem[] = videos && videos.length > 0 
-  ? videos 
-  : (src ? [{ id: 'default', src, storyTag }] : [{ id: 'default', src: '/video/hero/1.mp4', storyTag }]);
+  ? videos.map((v) => ({ ...v, poster: v.poster || getPosterForVideo(v.src) })) 
+  : (src 
+      ? [{ id: 'default', src, poster: poster || getPosterForVideo(src), storyTag }] 
+      : [{ id: 'default', src: '/video/optimized/1.mp4', poster: '/video/posters/1.webp', storyTag }]);
 
 const currentActiveId = activeId || videoList[0].id;
 const currentActiveItem = videoList.find((v) => v.id === currentActiveId) || videoList[0];
 ---
 
 <div class={`hero-video-stage pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
+  {/* Instant WebP Static Poster Underlay — guarantees 0ms visual paint with zero blank void */}
+  {videoList.map((item) => (
+    <img
+      src={item.poster}
+      alt=""
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      class={`hero-video-poster absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
+        item.id === currentActiveId ? 'opacity-100' : 'opacity-0 pointer-events-none'
+      }`}
+      data-hero-poster={item.id}
+    />
+  ))}
+
   {videoList.map((item) => (
     <video
       class={`hero-video-el absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-in-out ${
         item.id === currentActiveId ? 'opacity-100 is-active' : 'opacity-0 pointer-events-none'
       }`}
       data-hero-bg-video={item.id}
+      poster={item.poster}
       autoplay
       loop
       muted
@@ -74,6 +101,16 @@ const currentActiveItem = videoList.find((v) => v.id === currentActiveId) || vid
     pointer-events: none;
     overflow: hidden;
   }
+  .hero-video-poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    will-change: opacity;
+    z-index: 1;
+  }
   .hero-video-el {
     position: absolute;
     inset: 0;
@@ -82,6 +119,7 @@ const currentActiveItem = videoList.find((v) => v.id === currentActiveId) || vid
     object-fit: cover;
     object-position: center 35%;
     will-change: opacity;
+    z-index: 1;
   }
   .hero-video-overlay {
     position: absolute;
