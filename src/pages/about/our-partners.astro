@@ -101,28 +101,28 @@ const partnerNetwork = [
     <AtmosphericCanvas>
       <div class="py-8 sm:py-12 lg:py-16 space-y-10 sm:space-y-16 lg:space-y-24">
 
-        {/* SECTION 1: 3-METRIC STAT MATRIX */}
+        {/* SECTION 1: 3-METRIC STAT MATRIX (CLEAN EDITORIAL, NO BOXES) */}
         <section class="container-x" id="partners-metrics-section">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-6 lg:gap-8">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-10 sm:gap-x-12">
             {metrics.map((m) => (
-              <div class="group relative rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-7 lg:p-10 shadow-sm transition-all duration-300 hover:shadow-md flex flex-col justify-between card-flip-hover">
-                <div class="flex items-center justify-between gap-2 mb-2 sm:mb-4 relative z-10">
-                  <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy/80 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[0.625rem] sm:text-[0.6875rem] font-bold uppercase tracking-wider text-navy border border-hair flip-badge transition-colors">
-                    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+              <div class="flex flex-col justify-between pt-4 sm:pt-6 border-t border-hair/90">
+                <div class="flex items-center gap-2 mb-2 sm:mb-4">
+                  <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
+                  <span class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-widest text-mid-navy">
                     {m.badge}
                   </span>
                 </div>
 
-                <div class="my-2 sm:my-4 relative z-10">
-                  <div class="text-3xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display transition-transform duration-300 group-hover:scale-105 origin-left flip-text transition-colors">
+                <div class="my-1 sm:my-2">
+                  <div class="text-3xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display">
                     {m.value}
                   </div>
-                  <div class="text-[0.6875rem] sm:text-xs uppercase tracking-wider font-bold text-navy mt-1 sm:mt-2 flip-text transition-colors">
+                  <div class="text-[0.6875rem] sm:text-xs uppercase tracking-wider font-bold text-navy mt-1.5 sm:mt-2">
                     {m.label}
                   </div>
                 </div>
 
-                <p class="text-mid-navy text-xs sm:text-small font-normal leading-relaxed relative z-10 border-t border-hair pt-2.5 sm:pt-4 flip-text transition-colors">
+                <p class="text-mid-navy text-xs sm:text-small font-normal leading-relaxed mt-2 sm:mt-4">
                   {m.desc}
                 </p>
               </div>

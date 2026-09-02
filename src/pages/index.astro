@@ -744,7 +744,7 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
 
 <script>
   import { initTilt } from '../scripts/tilt';
-  import { initFlowLine, settledOffsetY } from '../scripts/flowLine';
+  import { settledOffsetY } from '../scripts/flowLine';
   import { initApproachBurst } from '../scripts/approachBurst';
   import { initServiceOrbit } from '../scripts/serviceOrbit';
   import { initGoldWaveform } from '../scripts/goldWaveform';
@@ -752,7 +752,6 @@ const faqColumns = [faqs.slice(0, faqMid), faqs.slice(faqMid)];
   import { initTimelineTraveler } from '../scripts/timelineTraveler';
   initTilt();
   initServiceOrbit();
-  initFlowLine();
   initGoldWaveform();
   initCardSpotlight();
   initTimelineTraveler();

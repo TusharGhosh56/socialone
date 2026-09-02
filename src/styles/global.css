@@ -305,8 +305,44 @@
     border-color: rgba(209, 156, 51, 0.5);
     box-shadow: 0 20px 40px -12px rgba(26, 33, 80, 0.16), 0 0 0 1px rgba(209, 156, 51, 0.25);
   }
-  .card-interactive-sheen:hover::before {
+  /* Trail-Docked Illuminated Card with Warm Gradient Effects */
+  .trail-docked-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(254, 250, 242, 0.95) 50%, rgba(255, 255, 255, 0.98) 100%);
+    border: 1px solid rgba(209, 156, 51, 0.35);
+    box-shadow: 0 12px 32px -8px rgba(26, 33, 80, 0.1), 0 0 28px -4px rgba(209, 156, 51, 0.18);
+    transition: all 400ms var(--ease-out);
+  }
+  .trail-docked-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(209, 156, 51, 0.25) 0%, rgba(209, 156, 51, 0.08) 50%, transparent 70%);
+    pointer-events: none;
+    filter: blur(16px);
+    transition: opacity 500ms ease, transform 500ms ease;
+  }
+  .trail-docked-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(209, 156, 51, 0.65);
+    box-shadow: 0 20px 44px -12px rgba(26, 33, 80, 0.16), 0 0 36px -4px rgba(209, 156, 51, 0.28);
+  }
+  .trail-docked-card:hover::before {
+    transform: scale(1.15);
+  }
+  .trail-docked-card.is-trail-ignited {
+    border-color: rgba(209, 156, 51, 0.75);
+    box-shadow: 0 20px 48px -10px rgba(26, 33, 80, 0.16), 0 0 36px 4px rgba(209, 156, 51, 0.35);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 1) 0%, rgba(254, 248, 235, 0.98) 40%, rgba(255, 255, 255, 1) 100%);
+  }
+  .trail-docked-card.is-trail-ignited::before {
     opacity: 1;
+    transform: scale(1.2);
   }
 
   /* Deep Flip on Hover — transforms white card into a clean, rich solid blue navy on hover */
@@ -472,6 +508,11 @@
   overflow: visible;
   pointer-events: none;
   z-index: 2;
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+}
+.flow-line-svg.is-ready {
+  opacity: 1;
 }
 .flow-line-path {
   fill: none;

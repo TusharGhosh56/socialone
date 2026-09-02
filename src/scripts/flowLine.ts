@@ -478,13 +478,14 @@ function buildHowWeWorkMilestones(): Milestone[] {
 // 3. Purpose & Direction: Hero (Left) -> Mission Monument (Left) -> Sector Heading (Left) -> Top Splitter Manifold (Center on Desktop) -> 3 Sector Stream -> Bottom Combiner Manifold (Center) -> Jog to Left Rail -> Vision Heading (Left Rail) -> Final CTA (Left Rail Plug)
 function buildPurposeAndDirectionMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const missionSec = document.getElementById('mission-section') || document.querySelector<HTMLElement>('main section:nth-of-type(1)');
+  const missionText = document.getElementById('mission-text-block') || document.getElementById('siena-mission-stage');
+  const visionCard = document.getElementById('siena-vision-image-card');
+  const visionText = document.getElementById('vision-text-block') || document.getElementById('siena-vision-stage');
   const sectorGrid = document.getElementById('sector-horizons-section') || document.querySelector<HTMLElement>('[data-sector-prism]');
-  const visionMonument = document.getElementById('vision-section') || document.querySelector<HTMLElement>('.gradient-navy-mesh');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
   const list: Milestone[] = [];
 
-  // Hero on Left Rail
+  // 1. Hero on Left Rail
   list.push({
     key: 'pad-hero',
     getPoint: () => {
@@ -493,21 +494,73 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
     },
   });
 
-  // Mission Monument on Left Rail
-  list.push({
-    key: 'pad-mission',
-    getPoint: () => {
-      const heading = missionSec?.querySelector('h2');
-      if (heading) {
-        return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
-      }
-      if (!missionSec) return null;
-      const mr = missionSec.getBoundingClientRect();
-      return { x: railLeftX(), y: mr.top + 60 + window.scrollY };
-    },
-  });
+  // 2. Mission Section on Left Rail
+  if (missionText) {
+    const heading = missionText.querySelector('h2');
+    list.push({
+      key: 'pad-mission',
+      dot: true,
+      getPoint: () => {
+        const hr = heading?.getBoundingClientRect() ?? missionText.getBoundingClientRect();
+        return { x: railLeftX(), y: hr.top + 20 + window.scrollY };
+      },
+    });
 
-  // Sector Horizons Deck on Left Rail
+    // Smooth horizontal jog across to Right Rail between Mission and Vision
+    if (visionCard || visionText) {
+      const getJogToVisionY = () => {
+        const mr = missionText.getBoundingClientRect();
+        const vr = (visionCard || visionText)!.getBoundingClientRect();
+        return (mr.bottom + vr.top) / 2 + window.scrollY;
+      };
+
+      list.push({
+        key: 'pad-jog-vis-start',
+        dot: false,
+        getPoint: () => ({ x: railLeftX(), y: getJogToVisionY() }),
+      });
+      list.push({
+        key: 'pad-jog-vis-end',
+        dot: false,
+        getPoint: () => ({ x: railRightX(), y: getJogToVisionY() }),
+      });
+    }
+  }
+
+  // 3. Vision Section on Right Rail (directly following Mission)
+  if (visionText) {
+    const heading = visionText.querySelector('h2');
+    list.push({
+      key: 'pad-vision-heading',
+      dot: true,
+      getPoint: () => {
+        const hr = heading?.getBoundingClientRect() ?? visionText.getBoundingClientRect();
+        return { x: railRightX(), y: hr.top + 20 + window.scrollY };
+      },
+    });
+
+    // Smooth horizontal jog back to Left Rail before Sector Horizons
+    if (sectorGrid) {
+      const getJogToSectorsY = () => {
+        const vr = visionText.getBoundingClientRect();
+        const sr = sectorGrid.getBoundingClientRect();
+        return (vr.bottom + sr.top) / 2 + window.scrollY;
+      };
+
+      list.push({
+        key: 'pad-jog-sec-start',
+        dot: false,
+        getPoint: () => ({ x: railRightX(), y: getJogToSectorsY() }),
+      });
+      list.push({
+        key: 'pad-jog-sec-end',
+        dot: false,
+        getPoint: () => ({ x: railLeftX(), y: getJogToSectorsY() }),
+      });
+    }
+  }
+
+  // 4. Sector Horizons Deck on Left Rail
   if (sectorGrid) {
     list.push({
       key: 'pad-sectors-level',
@@ -519,17 +572,7 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
     });
   }
 
-  // Vision Monument Heading on Left Rail
-  list.push({
-    key: 'pad-vision-heading',
-    getPoint: () => {
-      const heading = visionMonument?.querySelector('h2');
-      if (!heading) return null;
-      return { x: railLeftX(), y: heading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // Final CTA plugged into card interior
+  // 5. Final CTA plugged into card interior
   pushCtaConnection(list, cta, 'left', 'pad');
 
   return list;
@@ -1285,7 +1328,368 @@ function buildAiInActionCategoryMilestones(): Milestone[] {
   return list;
 }
 
-// 11. Intelligent Multi-Rail General Subpage Generator (For Contact, etc.)
+// 11. Dedicated Contact Page Milestone Generator (/contact)
+// Clean single-rail left spine that frames the narrative down the left rail,
+// perfectly aligned with the hero H1, Direct Channels card, and Our Offices,
+// without slicing across the interactive contact form or map.
+function buildContactMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const directChannelsH2 = document.getElementById('contact-form-h2') || document.querySelector<HTMLElement>('h2#contact-form-h2');
+  const officesH2 = document.getElementById('offices-h2') || document.querySelector<HTMLElement>('h2#offices-h2');
+  const officeAddress = document.querySelector<HTMLElement>('[data-office-address]');
+  const list: Milestone[] = [];
+
+  // 1. Hero H1 on Left Rail
+  list.push({
+    key: 'contact-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      const r = heroH1.getBoundingClientRect();
+      return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
+    },
+  });
+
+  // 2. Direct Channels Heading on Left Rail
+  list.push({
+    key: 'contact-direct-channels',
+    getPoint: () => {
+      if (!directChannelsH2) return null;
+      const r = directChannelsH2.getBoundingClientRect();
+      return { x: railLeftX(), y: r.top + 16 + window.scrollY };
+    },
+  });
+
+  // 3. Our Offices Heading on Left Rail
+  list.push({
+    key: 'contact-offices-heading',
+    getPoint: () => {
+      if (!officesH2) return null;
+      const r = officesH2.getBoundingClientRect();
+      return { x: railLeftX(), y: r.top + 16 + window.scrollY };
+    },
+  });
+
+  // 4. Terminal milestone at office location info on Left Rail
+  list.push({
+    key: 'contact-offices-terminal',
+    dot: true,
+    getPoint: () => {
+      if (!officeAddress) return null;
+      const r = officeAddress.getBoundingClientRect();
+      return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
+    },
+  });
+
+  return list;
+}
+
+// 12. Dedicated Articles & Journal Milestone Generator (/insights/articles)
+function buildArticlesMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const coverStory = document.getElementById('cover-story-section');
+  const archiveSec = document.getElementById('articles-archive-section');
+  const archiveH2 = archiveSec?.querySelector('h2');
+  const grid = document.getElementById('articles-grid');
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const list: Milestone[] = [];
+
+  // 1. Hero on Left Rail
+  list.push({
+    key: 'articles-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  // 2. Cover Story on Left Rail
+  if (coverStory) {
+    list.push({
+      key: 'articles-cover-story',
+      getPoint: () => {
+        const r = coverStory.getBoundingClientRect();
+        return { x: railLeftX(), y: r.top + 80 + window.scrollY };
+      },
+    });
+
+    // Smooth horizontal jog across to Right Rail between Cover Story and Archive
+    const getTransitionY = () => {
+      const cr = coverStory.getBoundingClientRect();
+      const ar = archiveSec ? archiveSec.getBoundingClientRect() : cr;
+      return (cr.bottom + ar.top) / 2 + window.scrollY;
+    };
+
+    list.push({
+      key: 'articles-jog-start',
+      dot: false,
+      getPoint: () => ({ x: railLeftX(), y: getTransitionY() }),
+    });
+    list.push({
+      key: 'articles-jog-end',
+      dot: false,
+      getPoint: () => ({ x: railRightX(), y: getTransitionY() }),
+    });
+  }
+
+  // 3. Archive Heading on Right Rail
+  if (archiveH2) {
+    list.push({
+      key: 'articles-archive-heading',
+      getPoint: () => {
+        const r = archiveH2.getBoundingClientRect();
+        return { x: railRightX(), y: r.top + 16 + window.scrollY };
+      },
+    });
+  }
+
+  // 4. Continue down Right Rail alongside the 3-column articles grid
+  if (grid) {
+    list.push({
+      key: 'articles-grid-mid',
+      dot: false,
+      getPoint: () => {
+        const r = grid.getBoundingClientRect();
+        return { x: railRightX(), y: r.top + r.height * 0.5 + window.scrollY };
+      },
+    });
+    list.push({
+      key: 'articles-grid-end',
+      dot: false,
+      getPoint: () => {
+        const r = grid.getBoundingClientRect();
+        return { x: railRightX(), y: r.bottom - 40 + window.scrollY };
+      },
+    });
+  }
+
+  // 5. Final CTA plugged into card interior
+  pushCtaConnection(list, cta, 'right', 'articles');
+
+  return list;
+}
+
+// 13. Dedicated Research & Reports Milestone Generator (/insights/research-and-reports)
+function buildResearchMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const flagshipSec = document.getElementById('flagship-report-section');
+  const repoSec = document.getElementById('reports-section');
+  const repoH2 = repoSec?.querySelector('h2');
+  const grid = document.getElementById('reports-grid');
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const list: Milestone[] = [];
+
+  // 1. Hero on Left Rail
+  list.push({
+    key: 'research-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  // 2. Flagship Benchmark on Left Rail
+  if (flagshipSec) {
+    list.push({
+      key: 'research-flagship',
+      getPoint: () => {
+        const r = flagshipSec.getBoundingClientRect();
+        return { x: railLeftX(), y: r.top + 80 + window.scrollY };
+      },
+    });
+
+    // Smooth horizontal jog across to Right Rail between Flagship and Publications
+    const getTransitionY = () => {
+      const fr = flagshipSec.getBoundingClientRect();
+      const rr = repoSec ? repoSec.getBoundingClientRect() : fr;
+      return (fr.bottom + rr.top) / 2 + window.scrollY;
+    };
+
+    list.push({
+      key: 'research-jog-start',
+      dot: false,
+      getPoint: () => ({ x: railLeftX(), y: getTransitionY() }),
+    });
+    list.push({
+      key: 'research-jog-end',
+      dot: false,
+      getPoint: () => ({ x: railRightX(), y: getTransitionY() }),
+    });
+  }
+
+  // 3. Publications Heading on Right Rail
+  if (repoH2) {
+    list.push({
+      key: 'research-repo-heading',
+      getPoint: () => {
+        const r = repoH2.getBoundingClientRect();
+        return { x: railRightX(), y: r.top + 16 + window.scrollY };
+      },
+    });
+  }
+
+  // 4. Continue down Right Rail alongside the Publications grid
+  if (grid) {
+    list.push({
+      key: 'research-grid-mid',
+      dot: false,
+      getPoint: () => {
+        const r = grid.getBoundingClientRect();
+        return { x: railRightX(), y: r.top + r.height * 0.5 + window.scrollY };
+      },
+    });
+    list.push({
+      key: 'research-grid-end',
+      dot: false,
+      getPoint: () => {
+        const r = grid.getBoundingClientRect();
+        return { x: railRightX(), y: r.bottom - 40 + window.scrollY };
+      },
+    });
+  }
+
+  // 5. Final CTA plugged into card interior
+  pushCtaConnection(list, cta, 'right', 'research');
+
+  return list;
+}
+
+// 14. Dedicated News & Updates Milestone Generator (/insights/news-and-updates)
+function buildNewsMilestones(): Milestone[] {
+  const heroH1 = document.querySelector<HTMLElement>('main h1');
+  const newsSec = document.getElementById('news-section');
+  const mediaCard = document.getElementById('media-inquiry-card');
+  const newsItems = Array.from(document.querySelectorAll<HTMLElement>('.news-item'));
+  const cta = document.querySelector<HTMLElement>('main .final-cta-card');
+  const list: Milestone[] = [];
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
+
+  // 1. Hero on Left Rail
+  list.push({
+    key: 'news-hero',
+    getPoint: () => {
+      if (!heroH1) return null;
+      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+    },
+  });
+
+  if (isDesktop && mediaCard) {
+    const track = document.getElementById('media-sidebar-track') || mediaCard;
+    const getTopJogY = () => {
+      const tr = track.getBoundingClientRect();
+      return tr.top - 40 + window.scrollY;
+    };
+    const getCardCenterX = () => {
+      const tr = track.getBoundingClientRect();
+      return tr.left + tr.width / 2 + window.scrollX;
+    };
+    const getCardTopY = () => {
+      const tr = track.getBoundingClientRect();
+      return tr.top + window.scrollY;
+    };
+
+    // 2. Horizontal jog across top of section directly to the middle top X of the card
+    list.push({
+      key: 'news-jog-top-start',
+      dot: false,
+      getPoint: () => ({ x: railLeftX(), y: getTopJogY() }),
+    });
+    list.push({
+      key: 'news-jog-top-end',
+      dot: false,
+      getPoint: () => ({ x: getCardCenterX(), y: getTopJogY() }),
+    });
+
+    // 3. Connect straight DOWN into the MIDDLE TOP of the card!
+    list.push({
+      key: 'news-card-top-dock',
+      dot: true,
+      getPoint: () => ({ x: getCardCenterX(), y: getCardTopY() }),
+    });
+
+    // 4. Trail continues straight down the column as the card moves down with scroll leaving behind the trail
+    if (newsItems.length > 2) {
+      const midItem = newsItems[Math.floor(newsItems.length / 2)];
+      list.push({
+        key: 'news-stream-mid',
+        dot: false,
+        getPoint: () => {
+          const ir = midItem.getBoundingClientRect();
+          return { x: getCardCenterX(), y: ir.top + ir.height / 2 + window.scrollY };
+        },
+      });
+
+      const lastItem = newsItems[newsItems.length - 1];
+      list.push({
+        key: 'news-stream-lower',
+        dot: false,
+        getPoint: () => {
+          const ir = lastItem.getBoundingClientRect();
+          return { x: getCardCenterX(), y: ir.bottom - 40 + window.scrollY };
+        },
+      });
+    }
+
+    // 5. Lastly, connects straight down into the final CTA card (no stray right-hand rail line!)
+    list.push({
+      key: 'news-cta-top',
+      dot: false,
+      getPoint: () => {
+        if (!cta) return null;
+        const cr = cta.getBoundingClientRect();
+        return { x: getCardCenterX(), y: cr.top + window.scrollY };
+      },
+    });
+
+    list.push({
+      key: 'news-cta-port',
+      dot: true,
+      getPoint: () => {
+        if (!cta) return null;
+        const cr = cta.getBoundingClientRect();
+        return { x: getCardCenterX(), y: cr.top + 48 + window.scrollY };
+      },
+    });
+  } else {
+    // Mobile / Tablet: Left rail stream to CTA
+    if (newsItems.length > 0) {
+      const firstItem = newsItems[0];
+      list.push({
+        key: 'news-stream-start',
+        getPoint: () => {
+          const r = firstItem.getBoundingClientRect();
+          return { x: railLeftX(), y: r.top + 36 + window.scrollY };
+        },
+      });
+
+      const midIndex = Math.floor(newsItems.length / 2);
+      const midItem = newsItems[midIndex];
+      list.push({
+        key: 'news-stream-mid',
+        dot: false,
+        getPoint: () => {
+          const r = midItem.getBoundingClientRect();
+          return { x: railLeftX(), y: r.top + r.height / 2 + window.scrollY };
+        },
+      });
+
+      const lastItem = newsItems[newsItems.length - 1];
+      list.push({
+        key: 'news-stream-end',
+        dot: false,
+        getPoint: () => {
+          const r = lastItem.getBoundingClientRect();
+          return { x: railLeftX(), y: r.bottom - 40 + window.scrollY };
+        },
+      });
+    }
+
+    pushCtaConnection(list, cta, 'left', 'news');
+  }
+
+  return list;
+}
+
+// 15. Intelligent Multi-Rail General Subpage Generator (For Careers, etc.)
 function buildGeneralSubpageMilestones(): Milestone[] {
   const list: Milestone[] = [];
   const heroH1 = document.querySelector<HTMLElement>('main h1');
@@ -1366,8 +1770,9 @@ function buildGeneralSubpageMilestones(): Milestone[] {
     }
   });
 
-  const bottomCta = document.querySelector<HTMLElement>('main section:last-of-type .final-cta-card, main section:last-of-type a, main section:last-of-type button, main .btn, .future-cta__trigger');
-  if (bottomCta) {
+  const lastSec = validSections.length > 0 ? validSections[validSections.length - 1] : null;
+  const bottomCta = lastSec?.querySelector<HTMLElement>('.final-cta-card, a.btn, a[href*="/contact"], .future-cta__trigger');
+  if (bottomCta && list.length > 0) {
     const finalRail = currentRail;
     list.push({
       key: 'subpage-cta-jog',
@@ -1410,7 +1815,13 @@ function buildMilestones(): Milestone[] {
     };
     const flowExitY = () => {
       const pts = getFlowWaypoints();
-      return pts.length ? pts[pts.length - 1].y : null;
+      if (pts.length) return pts[pts.length - 1].y;
+      const flowSec = document.getElementById('flow') || document.querySelector('[data-flow2]');
+      if (flowSec) {
+        const r = flowSec.getBoundingClientRect();
+        return r.top + r.height / 2 + window.scrollY;
+      }
+      return null;
     };
     const caseStudiesBottom = () => {
       const section = document.getElementById('ai-in-action');
@@ -1483,9 +1894,29 @@ function buildMilestones(): Milestone[] {
   if (document.querySelector('[data-ai-category-view]') !== null || pathname.includes('/ai-in-action/')) {
     return buildAiInActionCategoryMilestones();
   }
+  if (document.getElementById('contact-form') !== null || pathname.includes('/contact')) {
+    return buildContactMilestones();
+  }
+  if (pathname.includes('/insights/articles') || (pathname.includes('/insights') && document.getElementById('articles-archive-section') !== null)) {
+    return buildArticlesMilestones();
+  }
+  if (pathname.includes('/insights/research-and-reports') || document.getElementById('flagship-report-section') !== null) {
+    return buildResearchMilestones();
+  }
+  if (pathname.includes('/insights/news-and-updates') || document.getElementById('news-section') !== null) {
+    return buildNewsMilestones();
+  }
 
-  // 3. Fallback for other subpages (Contact, etc.)
+  // 3. Fallback for other subpages (Careers, etc.)
   return buildGeneralSubpageMilestones();
+}
+
+let activeFlowLineInstance: { remeasure: () => void } | null = null;
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('astro:before-swap', () => {
+    activeFlowLineInstance = null;
+  });
 }
 
 export function initFlowLine(): void {
@@ -1497,6 +1928,12 @@ export function initFlowLine(): void {
   const head = headGroup?.querySelector<SVGCircleElement>('.flow-line-head');
   const headHalo = headGroup?.querySelector<SVGCircleElement>('.flow-line-head-halo');
   if (!svg || !path || !dotsRoot) return;
+
+  if (activeFlowLineInstance && svg.dataset.flowLineInit === 'true') {
+    activeFlowLineInstance.remeasure();
+    return;
+  }
+  svg.dataset.flowLineInit = 'true';
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -1760,6 +2197,9 @@ export function initFlowLine(): void {
     renderDots(withPoints, points);
     renderBranches();
     flourishes = buildFlourishes();
+    if (built.totalLength > 0) {
+      svg.classList.add('is-ready');
+    }
   }
 
   // Maps an arbitrary page-Y (not necessarily any milestone's own position)
@@ -1997,6 +2437,16 @@ export function initFlowLine(): void {
     }
   }
 
+  function updateDockedCards() {
+    const dockedCards = document.querySelectorAll<HTMLElement>('.trail-docked-card');
+    if (dockedCards.length === 0) return;
+    const mediaDockDot = dotsRoot?.querySelector<SVGCircleElement>('[data-flow-dot="news-card-top-dock"]');
+    if (mediaDockDot) {
+      const isLit = mediaDockDot.classList.contains('is-ignited');
+      dockedCards.forEach((c) => c.classList.toggle('is-trail-ignited', isLit));
+    }
+  }
+
   function updateFinalCard() {
     const finalElements = document.querySelectorAll<HTMLElement>(
       'main section:last-of-type .card-interactive-sheen, main section:last-of-type .final-cta-card, main section:last-of-type .rounded-3xl, section#contact .future-cta__trigger'
@@ -2012,6 +2462,7 @@ export function initFlowLine(): void {
     path!.setAttribute('d', partialD(built, currentLength));
     updateDotOpacity();
     updateHead();
+    updateDockedCards();
     updateFinalCard();
     updateFlourishes();
   }
@@ -2070,6 +2521,13 @@ export function initFlowLine(): void {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onResize, { passive: true });
   window.addEventListener('load', () => {
+    measure();
+    onScroll();
+  });
+
+  activeFlowLineInstance = { remeasure: measure };
+
+  document.fonts?.ready?.then(() => {
     measure();
     onScroll();
   });

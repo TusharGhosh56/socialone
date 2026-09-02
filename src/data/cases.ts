@@ -12,7 +12,7 @@ import type { ImageMetadata } from 'astro';
 import img01 from '../assets/images/cases/01-agriculture-india.jpg';
 import img02 from '../assets/images/cases/02-education-evaluation-india.jpg';
 import img03 from '../assets/images/cases/03-education-mexico.jpg';
-import img04 from '../assets/images/cases/04-msme.jpg';
+import img04 from '../assets/images/cases/ai-msme.png';
 import img05 from '../assets/images/cases/05-farmer.jpg';
 import img06 from '../assets/images/cases/06-learning.jpg';
 import img07 from '../assets/images/cases/07-skilling.jpg';
