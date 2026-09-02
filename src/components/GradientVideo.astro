@@ -9,14 +9,17 @@ interface Props {
 
 const {
   variant = 'blue',
-  src = variant === 'gold' ? '/video/gradient_yellow.mp4' : '/video/gradient.mp4',
+  src = variant === 'gold' ? '/video/optimized/gradient_yellow.mp4' : '/video/optimized/gradient.mp4',
   overlayOpacity = 0.55,
   class: className = '',
 } = Astro.props;
+
+const poster = variant === 'gold' ? '/video/posters/gradient_yellow.webp' : '/video/posters/gradient.webp';
 ---
 
 <div class={`gradient-video-wrap pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden="true">
-  <video class="gradient-video absolute inset-0 h-full w-full object-cover" autoplay loop muted playsinline preload="auto">
+  <img src={poster} alt="" loading="eager" decoding="async" class="gradient-video absolute inset-0 h-full w-full object-cover" />
+  <video class="gradient-video absolute inset-0 h-full w-full object-cover" poster={poster} autoplay loop muted playsinline preload="auto">
     <source src={src} type="video/mp4" />
   </video>
   <div
