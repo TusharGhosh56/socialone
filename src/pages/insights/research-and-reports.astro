@@ -1,0 +1,134 @@
+---
+// src/pages/insights/research-and-reports.astro — Canonical Research & Reports
+import Base from '../../layouts/Base.astro';
+import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import ResearchDossierCard from '../../components/ResearchDossierCard.astro';
+import Button from '../../components/Button.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
+import { flagshipReport, researchReports } from '../../data/insights';
+---
+
+<Base
+  title="Research & Reports | APLYD"
+  description="Benchmarks, blueprints, and evaluation research developed across public systems in 28 countries."
+  keywords="APLYD Research, Public Sector AI Reports, Government AI Evidence, Sovereign AI Benchmarks"
+>
+  <div class="w-full">
+    {/* ============================ HERO SECTION ============================ */}
+    <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
+      <HeroVideo
+        src="/video/optimized/monitoring.mp4"
+        overlayOpacity={0.65}
+      />
+
+      <div class="container-x relative z-10 space-y-4 sm:space-y-6">
+        <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
+          Research & reports
+        </h1>
+
+        <p class="max-w-4xl lg:max-w-5xl text-base sm:text-xl lg:text-2xl font-light text-pale-navy/95 leading-relaxed text-pretty">
+          Benchmarks, blueprints, and evaluation research developed across public systems in 28 countries.
+        </p>
+      </div>
+    </section>
+
+    {/* ============================ ATMOSPHERIC CANVAS ============================ */}
+    <AtmosphericCanvas>
+      {/* ============================ FLAGSHIP BENCHMARK SECTION ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="flagship-report-section">
+        <div class="container-x">
+          <ResearchDossierCard report={flagshipReport} isFlagship={true} />
+        </div>
+      </section>
+
+      {/* ============================ PUBLICATIONS GRID SECTION ============================ */}
+      <section class="relative z-10 py-10 sm:py-16" id="reports-section">
+        <div class="container-x space-y-8">
+          <h2 class="text-2xl sm:text-3xl font-light text-navy tracking-tight">
+            Publications
+          </h2>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8" id="reports-grid">
+            {researchReports.map((report) => (
+              <ResearchDossierCard report={report} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ CANONICAL CTA ============================ */}
+      <section class="relative z-10 py-8 sm:py-12">
+        <div class="container-x">
+          <div class="rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-6 sm:p-10 lg:p-14 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 card-interactive-sheen final-cta-card">
+            <div class="max-w-2xl relative z-10">
+              <h3 class="text-2xl sm:text-3xl font-light text-navy mb-3">
+                Looking for specific benchmark data or research?
+              </h3>
+              <p class="text-base text-mid-navy leading-relaxed font-normal">
+                Our team conducts independent evaluations and diagnostics for public programs and development partners.
+              </p>
+            </div>
+            <div class="relative z-10 w-full sm:w-auto">
+              <Button href="/contact" variant="primary" class="w-full sm:w-auto text-center justify-center shadow-sm">
+                Contact research team &rarr;
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </AtmosphericCanvas>
+  </div>
+
+  {/* Client-Side Toast Notification Container */}
+  <div
+    id="toast-notification"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none rounded-xl bg-navy text-white px-5 py-3 shadow-xl border border-gold/30 flex items-center gap-2.5 text-xs font-medium"
+    role="status"
+    aria-live="polite"
+  >
+    <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
+    <span id="toast-message">Citation copied to clipboard</span>
+  </div>
+</Base>
+
+<script>
+  function initResearchPage() {
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+
+    function showToast(message: string) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = message;
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Citation Copying
+    document.querySelectorAll<HTMLButtonElement>('[data-cite-button]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const bibtex = btn.dataset.bibtex || '';
+        try {
+          await navigator.clipboard.writeText(bibtex);
+          showToast('Citation copied to clipboard');
+        } catch {
+          showToast('Citation ready to copy');
+        }
+      });
+    });
+
+    // Simulated Download
+    document.querySelectorAll<HTMLButtonElement>('[data-download-report]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        showToast('Preparing download...');
+      });
+    });
+  }
+
+  initResearchPage();
+  document.addEventListener('astro:page-load', initResearchPage);
+</script>
