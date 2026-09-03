@@ -18,7 +18,7 @@ interface Props extends TeamMember {
   // screen reader/keyboard user doesn't hit the same 12 people twice.
   decorative?: boolean;
 }
-const { name, title, subtitle, tag, photo, linkedin, decorative = false } = Astro.props;
+const { name, title, subtitle, tag, photo, photoPosition, linkedin, decorative = false } = Astro.props;
 
 function initials(fullName: string): string {
   const parts = fullName.replace(/^Dr\.?\s+/i, '').split(' ').filter(Boolean);
@@ -48,7 +48,16 @@ function initials(fullName: string): string {
     </svg>
   </a>
   {photo ? (
-    <Image class="team-card__avatar team-card__avatar--photo" src={photo} alt={`${name} - ${title} at APLYD`} width={144} height={144} format="webp" quality={82} />
+    <Image
+      class="team-card__avatar team-card__avatar--photo"
+      src={photo}
+      alt={`${name} - ${title} at APLYD`}
+      width={144}
+      height={144}
+      format="webp"
+      quality={82}
+      style={photoPosition ? { objectPosition: photoPosition } : undefined}
+    />
   ) : (
     <span class="team-card__avatar" aria-hidden="true">{initials(name)}</span>
   )}
