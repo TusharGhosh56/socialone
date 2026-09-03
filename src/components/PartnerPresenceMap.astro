@@ -8,117 +8,67 @@
   <div class="flex flex-wrap items-center gap-2 pb-2" id="partner-chips">
     <!-- Dynamic chips rendered by client script -->
   </div>
-
-  {/* Dual-Pane Studio: Left Regional Country Dossier + Right Interactive Map */}
-  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+  {/* Full-Width Interactive Map Visual */}
+  <div class="w-full partner-map-card relative rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md shadow-sm overflow-hidden min-h-[480px] sm:min-h-[580px] lg:min-h-[640px] xl:min-h-[700px] flex flex-col justify-center">
     
-    {/* ================= LEFT REGIONAL DOSSIER PANEL ================= */}
-    <div class="lg:col-span-4 rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-4 sm:p-6 shadow-sm flex flex-col justify-between min-h-[280px] sm:min-h-[420px] max-h-[360px] sm:max-h-[640px] overflow-hidden">
-
-      {/* Dossier Header */}
-      <div class="space-y-3 pb-4 border-b border-hair">
-        <div class="flex items-center justify-between gap-2">
-          <span class="text-[11px] font-bold uppercase tracking-wider text-gold">
-            Regional Dossier
-          </span>
-          <span id="panel-stats-pill" class="text-[10px] uppercase font-bold tracking-wider bg-pale-navy px-2.5 py-1 rounded-full text-navy border border-hair">
-            98 Countries · 23 Orgs
-          </span>
-        </div>
-
-        <div>
-          <h3 id="panel-region-title" class="text-xl sm:text-2xl font-light text-navy tracking-tight font-display">
-            All Geographies
-          </h3>
-          <p id="panel-region-desc" class="text-xs text-mid-navy/80 mt-1 leading-relaxed">
-            Select any region chip or click a country to inspect active delivery and evaluation partners.
-          </p>
-        </div>
-
-        {/* Quick Instant Country Filter */}
-        <div class="relative">
-          <input
-            type="text"
-            id="panel-search-input"
-            placeholder="Search country or partner..."
-            class="w-full text-xs bg-paper/50 border border-hair rounded-xl px-3 py-2 text-navy placeholder:text-mid-navy/60 focus:outline-none focus:border-gold transition-colors"
-          />
-        </div>
-      </div>
-
-      {/* Scrollable Countries & Partners Feed */}
-      <div id="panel-country-list" class="flex-1 overflow-y-auto space-y-2 py-3 pr-1 custom-scrollbar">
-        <!-- Dynamic Country Feed items rendered by script -->
-      </div>
-
-      {/* Dossier Footer / Interaction Tip */}
-      <div class="pt-3 border-t border-hair flex items-center justify-between text-[11px] text-mid-navy/70">
-        <span class="flex items-center gap-1.5">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold animate-pulse"></span>
-          Live Country Intelligence
-        </span>
-        <span class="text-[10px] text-navy font-bold">Hover to spotlight</span>
-      </div>
-
+    {/* Dynamic Country Hover Tooltip */}
+    <div id="partner-tooltip" class="partner-tooltip pointer-events-none opacity-0 transition-opacity duration-150 absolute z-30 bg-navy text-white px-4 py-3 rounded-2xl shadow-xl border border-white/20 max-w-xs text-xs">
+      <div class="tooltip-title font-bold text-sm text-gold mb-1 flex items-center justify-between gap-2"></div>
+      <div class="tooltip-presence text-pale-navy leading-relaxed"></div>
     </div>
 
-    {/* ================= RIGHT INTERACTIVE MAP VISUAL ================= */}
-    <div class="lg:col-span-8 partner-map-card relative rounded-3xl border border-hair bg-white/95 backdrop-blur-md shadow-sm overflow-hidden min-h-[480px] lg:min-h-[640px] flex flex-col justify-center">
-      
-      {/* Dynamic Country Hover Tooltip */}
-      <div id="partner-tooltip" class="partner-tooltip pointer-events-none opacity-0 transition-opacity duration-150 absolute z-30 bg-navy text-white px-4 py-3 rounded-2xl shadow-xl border border-white/20 max-w-xs text-xs">
-        <div class="tooltip-title font-bold text-sm text-gold mb-1 flex items-center justify-between gap-2"></div>
-        <div class="tooltip-presence text-pale-navy leading-relaxed"></div>
-      </div>
+    {/* Map Zoom Controls */}
+    <div class="absolute top-4 right-4 z-20 flex flex-col gap-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-hair p-1 shadow-sm">
+      <button
+        type="button"
+        id="map-zoom-in"
+        aria-label="Zoom in"
+        class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
+        title="Zoom In"
+      >
+        +
+      </button>
+      <button
+        type="button"
+        id="map-zoom-out"
+        aria-label="Zoom out"
+        class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
+        title="Zoom Out"
+      >
+        −
+      </button>
+      <button
+        type="button"
+        id="map-zoom-reset"
+        aria-label="Reset zoom"
+        class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors text-xs font-semibold cursor-pointer"
+        title="Reset Map View"
+      >
+        ↺
+      </button>
+    </div>
 
-      {/* Map Zoom Controls */}
-      <div class="absolute top-4 right-4 z-20 flex flex-col gap-1.5 bg-white/90 backdrop-blur-md rounded-xl border border-hair p-1 shadow-sm">
-        <button
-          type="button"
-          id="map-zoom-in"
-          aria-label="Zoom in"
-          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
-          title="Zoom In"
-        >
-          +
-        </button>
-        <button
-          type="button"
-          id="map-zoom-out"
-          aria-label="Zoom out"
-          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors font-bold text-base cursor-pointer"
-          title="Zoom Out"
-        >
-          −
-        </button>
-        <button
-          type="button"
-          id="map-zoom-reset"
-          aria-label="Reset zoom"
-          class="w-8 h-8 grid place-items-center rounded-lg text-navy hover:bg-pale-navy transition-colors text-xs font-semibold cursor-pointer"
-          title="Reset Map View"
-        >
-          ↺
-        </button>
-      </div>
+    {/* SVG World Map Viewport */}
+    <div class="w-full h-full flex items-center justify-center p-2 sm:p-4">
+      <svg
+        id="partner-presence-svg"
+        class="w-full h-auto max-h-[680px] select-none block"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label="Interactive world map showing APLYD partner presence across 98 countries"
+      ></svg>
+    </div>
 
-      {/* SVG Map Canvas */}
-      <div class="w-full h-[480px] lg:h-[640px] relative overflow-hidden flex items-center justify-center bg-gradient-to-br from-paper/30 via-white to-pale-navy/20">
-        <svg id="partner-presence-svg" class="w-full h-full block cursor-grab active:cursor-grabbing"></svg>
+    {/* Map Legend (Bottom Left) */}
+    <div class="absolute bottom-4 left-4 z-20 bg-white/90 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-hair shadow-sm flex items-center gap-2.5 text-xs text-mid-navy">
+      <span class="font-bold text-navy text-[11px] uppercase tracking-wider">Concentration:</span>
+      <div class="flex items-center gap-0.5">
+        <span class="w-4 h-2.5 rounded-xs bg-[#BFD9F2] inline-block border border-black/5" title="1 Partner"></span>
+        <span class="w-4 h-2.5 rounded-xs bg-[#78A9E0] inline-block border border-black/5" title="2-3 Partners"></span>
+        <span class="w-4 h-2.5 rounded-xs bg-[#2F80D1] inline-block border border-black/5" title="4-6 Partners"></span>
+        <span class="w-4 h-2.5 rounded-xs bg-[#0057B8] inline-block border border-black/5" title="7+ Partners"></span>
       </div>
-
-      {/* Map Legend (Bottom Left) */}
-      <div class="absolute bottom-4 left-4 z-20 bg-white/90 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-hair shadow-sm flex items-center gap-2.5 text-xs text-mid-navy">
-        <span class="font-bold text-navy text-[11px] uppercase tracking-wider">Concentration:</span>
-        <div class="flex items-center gap-0.5">
-          <span class="w-4 h-2.5 rounded-xs bg-[#BFD9F2] inline-block border border-black/5" title="1 Partner"></span>
-          <span class="w-4 h-2.5 rounded-xs bg-[#78A9E0] inline-block border border-black/5" title="2-3 Partners"></span>
-          <span class="w-4 h-2.5 rounded-xs bg-[#2F80D1] inline-block border border-black/5" title="4-6 Partners"></span>
-          <span class="w-4 h-2.5 rounded-xs bg-[#0057B8] inline-block border border-black/5" title="7+ Partners"></span>
-        </div>
-        <span class="text-[10px] text-mid-navy/70">Higher</span>
-      </div>
-
+      <span class="text-[10px] text-mid-navy/70">Higher</span>
     </div>
 
   </div>
@@ -500,6 +450,7 @@
   } else {
     initPartnerMap();
   }
+  document.addEventListener("astro:page-load", initPartnerMap);
 })();
 </script>
 

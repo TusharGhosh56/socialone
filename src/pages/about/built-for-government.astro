@@ -38,89 +38,118 @@ import imgStalls from '../../assets/images/built-for-gov/photo-1524178232363-1fb
 
     {/* ============================ ATMOSPHERIC CANVAS ============================ */}
     <AtmosphericCanvas>
-      {/* ============================ SECTION 1: WHY AI STALLS INSIDE INSTITUTIONS ============================ */}
-      <section class="relative z-10 py-10 sm:py-16" id="operational-reality">
-        <div class="container-x">
-          <div class="rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch transition-all duration-500 hover:shadow-lg">
-            
-            {/* Left: Text */}
-            <div class="p-8 sm:p-12 lg:p-16 lg:col-span-7 flex flex-col justify-center space-y-4 sm:space-y-6">
-              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-navy leading-tight" id="stalls-heading">
-                Why AI stalls inside institutions
-              </h2>
-
-              <p class="text-base sm:text-lg lg:text-xl text-mid-navy leading-relaxed font-normal">
-                AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
-              </p>
-            </div>
-
-            {/* Right: Clean Photography Window */}
-            <div class="lg:col-span-5 relative min-h-[260px] sm:min-h-[340px] lg:min-h-full overflow-hidden bg-navy/5">
-              <Image
-                src={imgStalls}
-                alt="Institutional challenges in public systems"
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
-                widths={[400, 700, 900]}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-l from-navy/20 via-transparent to-transparent pointer-events-none"></div>
-            </div>
-
+      {/* ============================ 60/40 STICKY SHOWCASE: WHY AI STALLS -> WHAT BUILT FOR GOV MEANS ============================ */}
+      
+      {/* Mobile Presentation (<1024px): Clean Stacked Sections */}
+      <div class="block lg:hidden space-y-12 py-8">
+        {/* Mobile Act 1 */}
+        <div class="container-x space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-light tracking-tight text-navy leading-tight" id="stalls-heading-mobile">
+            Why AI stalls inside institutions
+          </h2>
+          <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+            AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
+          </p>
+          <div class="aspect-[16/10] w-full rounded-2xl border border-hair overflow-hidden shadow-sm bg-navy/5">
+            <Image
+              src={imgStalls}
+              alt="Institutional challenges in public systems"
+              class="w-full h-full object-cover"
+              widths={[400, 700]}
+              sizes="100vw"
+            />
           </div>
         </div>
-      </section>
 
-      {/* ============================ SECTION 2: WHAT "BUILT FOR GOVERNMENT" MEANS ============================ */}
-      <section class="relative z-10 py-8 sm:py-12" id="architectural-requirements">
-        <div class="container-x space-y-8 sm:space-y-12">
+        {/* Mobile Act 2 */}
+        <div class="container-x space-y-6">
+          <h2 class="text-2xl sm:text-3xl font-light tracking-tight text-navy leading-tight" id="arch-h2-mobile">
+            What "built for government" means
+          </h2>
+          <div class="space-y-4">
+            <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+              We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
+            </p>
+            <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
+              We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
+            </p>
+          </div>
+          <div class="aspect-[16/10] w-full rounded-2xl border border-hair overflow-hidden shadow-sm bg-navy/5">
+            <Image
+              src={imgGov}
+              alt="System design and policy alignment"
+              class="w-full h-full object-cover"
+              widths={[400, 700]}
+              sizes="100vw"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Presentation (>=1024px): 60/40 Pinned Sticky Chapter Flow */}
+      <section id="bfg-sticky-showcase" class="hidden lg:block relative z-10 h-[220vh] w-full">
+        <div class="sticky top-0 h-screen w-full flex items-stretch overflow-hidden">
           
-          <div class="max-w-4xl">
-            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-light tracking-tight text-navy leading-tight" id="arch-h2">
-              What "built for government" means
-            </h2>
+          {/* Left 60%: Text Stage */}
+          <div class="w-[60%] h-full flex flex-col justify-center pl-16 sm:pl-20 lg:pl-28 xl:pl-36 pr-8 sm:pr-12 lg:pr-16 xl:pr-24 relative z-10">
+            <div class="max-w-2xl relative min-h-[380px] flex items-center">
+              {/* Act 1 Text */}
+              <div id="bfg-text-act-1" class="transition-all duration-700 ease-out space-y-6">
+                <h2 class="text-4xl xl:text-5xl font-light tracking-tight text-navy leading-tight" id="stalls-heading">
+                  Why AI stalls inside institutions
+                </h2>
+                <p class="text-lg xl:text-xl text-mid-navy leading-relaxed font-normal text-pretty">
+                  AI initiatives often encounter challenges beyond the model itself. Data may not adequately reflect the people a service is intended to reach. Systems may not fit established workflows. Implementation knowledge may remain with external providers, and without appropriate measurement, institutions may have limited evidence on whether a system is delivering its intended outcomes.
+                </p>
+              </div>
+
+              {/* Act 2 Text (Cross-fades in from left) */}
+              <div id="bfg-text-act-2" class="absolute inset-0 transition-all duration-700 ease-out space-y-6 flex flex-col justify-center opacity-0 pointer-events-none -translate-x-8">
+                <h2 class="text-4xl xl:text-5xl font-light tracking-tight text-navy leading-tight" id="arch-h2">
+                  What "built for government" means
+                </h2>
+                <div class="space-y-4">
+                  <p class="text-lg xl:text-xl text-mid-navy leading-relaxed font-normal text-pretty">
+                    We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
+                  </p>
+                  <p class="text-lg xl:text-xl text-mid-navy leading-relaxed font-normal text-pretty">
+                    We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* 2-Column Clean Architectural Split */}
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8" id="pillar-cards-grid">
-            
-            {/* Pillar 1 */}
-            <div class="pillar-card-1 rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-500 hover:shadow-lg hover:border-gold/40 group">
-              <div class="relative aspect-[16/10] w-full overflow-hidden bg-navy/5 border-b border-hair">
-                <Image
-                  src={imgGov}
-                  alt="System design and policy alignment"
-                  class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  widths={[400, 700]}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
-              </div>
+          {/* Right 40%: Seamless Integrated Visual Stage */}
+          <div class="w-[40%] h-full relative overflow-hidden flex items-center justify-end">
+            {/* Nested Vertical & Horizontal Feathering Masks (100% cross-browser) */}
+            <div class="relative w-full h-full [mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,black_14%,black_86%,transparent_100%)]">
+              <div class="relative w-full h-full [mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)] [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_12%,black_100%)]">
+                
+                {/* Image 1 */}
+                <div id="bfg-img-act-1" class="absolute inset-0 w-full h-full transition-all duration-700 ease-out">
+                  <Image
+                    src={imgStalls}
+                    alt="Institutional challenges in public systems"
+                    class="w-full h-full object-cover"
+                    widths={[800, 1200, 1600]}
+                    sizes="40vw"
+                  />
+                </div>
 
-              <div class="p-6 sm:p-8 lg:p-10 flex-1 flex flex-col justify-center">
-                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                  We start with the decision, service or workflow that needs to improve and assess where AI can create meaningful value within existing policy, data and operating constraints. Governance, security, interoperability and decision rights are considered as part of system design and implementation.
-                </p>
-              </div>
-            </div>
+                {/* Image 2 (Cross-fades in from right) */}
+                <div id="bfg-img-act-2" class="absolute inset-0 w-full h-full transition-all duration-700 ease-out opacity-0 pointer-events-none translate-x-8">
+                  <Image
+                    src={imgGov}
+                    alt="System design and policy alignment"
+                    class="w-full h-full object-cover"
+                    widths={[800, 1200, 1600]}
+                    sizes="40vw"
+                  />
+                </div>
 
-            {/* Pillar 2 */}
-            <div class="pillar-card-2 rounded-3xl border border-hair bg-white/95 backdrop-blur-md overflow-hidden shadow-sm flex flex-col justify-between transition-all duration-500 hover:shadow-lg hover:border-gold/40 group">
-              <div class="relative aspect-[16/10] w-full overflow-hidden bg-navy/5 border-b border-hair">
-                <Image
-                  src={imgTech}
-                  alt="Institutional capability and sovereign handover"
-                  class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  widths={[400, 700]}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
-              </div>
-
-              <div class="p-6 sm:p-8 lg:p-10 flex-1 flex flex-col justify-center">
-                <p class="text-base sm:text-lg text-mid-navy leading-relaxed font-normal">
-                  We also build institutional capability alongside the technology, so teams have the ownership, training, documentation and operating processes required to manage and improve systems over time.
-                </p>
               </div>
             </div>
-
           </div>
 
         </div>
@@ -167,4 +196,86 @@ import imgStalls from '../../assets/images/built-for-gov/photo-1524178232363-1fb
       </section>
     </AtmosphericCanvas>
   </div>
+
+  <script>
+    function initBfgShowcase() {
+      const outer = document.getElementById('bfg-sticky-showcase');
+      const text1 = document.getElementById('bfg-text-act-1');
+      const text2 = document.getElementById('bfg-text-act-2');
+      const img1 = document.getElementById('bfg-img-act-1');
+      const img2 = document.getElementById('bfg-img-act-2');
+
+      if (!outer || !text1 || !text2 || !img1 || !img2) return;
+
+      let ticking = false;
+
+      function update() {
+        if (window.innerWidth < 1024) return;
+
+        const rect = outer!.getBoundingClientRect();
+        const scrollHeight = outer!.offsetHeight - window.innerHeight;
+        if (scrollHeight <= 0) return;
+
+        const progress = Math.max(0, Math.min(1, -rect.top / scrollHeight));
+        const isAct2 = progress >= 0.42;
+
+        if (isAct2) {
+          // Act 1 exits: text slides left & fades, image slides right & fades
+          text1!.style.opacity = '0';
+          text1!.style.transform = 'translate3d(-32px, 0, 0)';
+          text1!.style.pointerEvents = 'none';
+
+          img1!.style.opacity = '0';
+          img1!.style.transform = 'translate3d(32px, 0, 0)';
+          img1!.style.pointerEvents = 'none';
+
+          // Act 2 enters
+          text2!.style.opacity = '1';
+          text2!.style.transform = 'translate3d(0, 0, 0)';
+          text2!.style.pointerEvents = 'auto';
+
+          img2!.style.opacity = '1';
+          img2!.style.transform = 'translate3d(0, 0, 0)';
+          img2!.style.pointerEvents = 'auto';
+        } else {
+          // Act 1 enters
+          text1!.style.opacity = '1';
+          text1!.style.transform = 'translate3d(0, 0, 0)';
+          text1!.style.pointerEvents = 'auto';
+
+          img1!.style.opacity = '1';
+          img1!.style.transform = 'translate3d(0, 0, 0)';
+          img1!.style.pointerEvents = 'auto';
+
+          // Act 2 exits
+          text2!.style.opacity = '0';
+          text2!.style.transform = 'translate3d(-32px, 0, 0)';
+          text2!.style.pointerEvents = 'none';
+
+          img2!.style.opacity = '0';
+          img2!.style.transform = 'translate3d(32px, 0, 0)';
+          img2!.style.pointerEvents = 'none';
+        }
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      update();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBfgShowcase);
+    } else {
+      initBfgShowcase();
+    }
+    document.addEventListener('astro:page-load', initBfgShowcase);
+  </script>
 </Base>

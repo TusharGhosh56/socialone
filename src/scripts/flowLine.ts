@@ -278,16 +278,12 @@ function pushCtaConnection(list: Milestone[], ctaOrGetter: HTMLElement | null | 
   });
 }
 
-// 1. Built for Government: Hero (Left) -> Diagnostic Studio (Left) -> Sec 2 Heading (Left) -> Jog Horizontally Before Pics -> Center Channel between Dual Cards -> Power Splitter Hub -> Beyond Gov Monument (Center) -> Final CTA
+// 1. Built for Government: Hero (Left) -> 60/40 Sticky Showcase (Act 1: Stalls -> Act 2: Built for Gov) -> Beyond Gov Monument (Left) -> Final CTA
 function buildBuiltForGovMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const sec1 = document.getElementById('operational-reality') || document.querySelector<HTMLElement>('main section:nth-of-type(1)');
-  const sec2 = document.getElementById('architectural-requirements') || document.querySelector<HTMLElement>('#dual-pillars')?.closest('section');
-  const archHeading = document.getElementById('arch-h2') || sec2?.querySelector('h2');
-  const archDesc = document.getElementById('arch-desc') || sec2?.querySelector('p');
-  const cardGrid = document.getElementById('dual-pillars') || sec2?.querySelector('.pillar-grid') || sec2?.querySelector('.grid');
-  const card1 = document.querySelector<HTMLElement>('.pillar-card-1');
-  const card2 = document.querySelector<HTMLElement>('.pillar-card-2');
+  const showcase = document.getElementById('bfg-sticky-showcase');
+  const stallsMobile = document.getElementById('stalls-heading-mobile');
+  const archMobile = document.getElementById('arch-h2-mobile');
   const sec3 = document.querySelector<HTMLElement>('main .gradient-navy-mesh')?.closest('section') || document.querySelector<HTMLElement>('main section:nth-of-type(3)');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card, main section:last-of-type a');
 
@@ -304,98 +300,56 @@ function buildBuiltForGovMilestones(): Milestone[] {
     },
   });
 
-  // Section 1: Heading on Left Rail
-  list.push({
-    key: 'bfg-sec1-heading',
-    getPoint: () => {
-      const h = sec1?.querySelector('h2') ?? sec1;
-      if (!h) return null;
-      return { x: railLeftX(), y: h.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
+  if (isDesktop && showcase) {
+    const getShowcaseTop = () => showcase.getBoundingClientRect().top + window.scrollY;
+    const getShowcaseHeight = () => Math.max(1, showcase.offsetHeight - window.innerHeight);
 
-  // Section 2: Heading on Left Rail
-  list.push({
-    key: 'bfg-sec2-heading',
-    getPoint: () => {
-      if (!archHeading) return null;
-      return { x: railLeftX(), y: archHeading.getBoundingClientRect().top + 16 + window.scrollY };
-    },
-  });
-
-  // Desktop (lg+): Clean Manifold Circuit traversing between the two cards (Strictly forward Y)
-  if (isDesktop && cardGrid && card1 && card2) {
-    const getCenterGapX = () => {
-      const r1 = card1.getBoundingClientRect();
-      const r2 = card2.getBoundingClientRect();
-      return (r1.right + r2.left) / 2 + window.scrollX;
-    };
-
-    const getTopJogY = () => {
-      if (archHeading) {
-        const hr = archHeading.getBoundingClientRect();
-        const gr = cardGrid.getBoundingClientRect();
-        return (hr.bottom + gr.top) / 2 + window.scrollY;
-      }
-      return cardGrid.getBoundingClientRect().top - 32 + window.scrollY;
-    };
-
-    const getBottomJogY = () => {
-      const gr = cardGrid.getBoundingClientRect();
-      if (sec3) {
-        const sr = sec3.getBoundingClientRect();
-        return (gr.bottom + sr.top) / 2 + window.scrollY;
-      }
-      return gr.bottom + 32 + window.scrollY;
-    };
-
-    // 1) Turn right from left rail into the horizontal manifold above the cards
+    // Act 1: "Why AI stalls inside institutions" on Left Rail
     list.push({
-      key: 'bfg-jog-top-rail',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getTopJogY() }),
-    });
-
-    // 2) Reach center gap above the cards
-    list.push({
-      key: 'bfg-jog-top-center',
-      dot: false,
-      getPoint: () => ({ x: getCenterGapX(), y: getTopJogY() }),
-    });
-
-    // 3) Travel strictly DOWN the center gap between the two cards
-    list.push({
-      key: 'bfg-cards-center-dot',
+      key: 'bfg-act1-heading',
       dot: true,
       getPoint: () => {
-        const gr = cardGrid.getBoundingClientRect();
-        return { x: getCenterGapX(), y: gr.top + gr.height * 0.45 + window.scrollY };
+        const top = getShowcaseTop();
+        return { x: railLeftX(), y: top + window.innerHeight * 0.45 };
       },
     });
 
-    // 4) Reach bottom of the center gap below the cards
+    // Act 2: "What built for government means" on Left Rail
     list.push({
-      key: 'bfg-jog-bottom-center',
-      dot: false,
-      getPoint: () => ({ x: getCenterGapX(), y: getBottomJogY() }),
-    });
-
-    // 5) Jog back left to the left rail below the cards
-    list.push({
-      key: 'bfg-jog-bottom-rail',
-      dot: false,
-      getPoint: () => ({ x: railLeftX(), y: getBottomJogY() }),
-    });
-  } else if (cardGrid) {
-    // Mobile / Tablet: Clean milestone on left rail
-    list.push({
-      key: 'bfg-cards-level',
+      key: 'bfg-act2-heading',
       dot: true,
       getPoint: () => {
-        const gr = cardGrid.getBoundingClientRect();
-        return { x: railLeftX(), y: gr.top + 60 + window.scrollY };
+        const top = getShowcaseTop();
+        const scrollH = getShowcaseHeight();
+        return { x: railLeftX(), y: top + scrollH * 0.55 + window.innerHeight * 0.45 };
       },
     });
+
+    // Showcase exit on Left Rail
+    list.push({
+      key: 'bfg-showcase-exit',
+      dot: false,
+      getPoint: () => {
+        const top = getShowcaseTop();
+        return { x: railLeftX(), y: top + showcase.offsetHeight };
+      },
+    });
+  } else {
+    // Mobile / Tablet: Clean sequential milestones on Left Rail
+    if (stallsMobile) {
+      list.push({
+        key: 'bfg-stalls-heading-mobile',
+        dot: true,
+        getPoint: () => ({ x: railLeftX(), y: stallsMobile.getBoundingClientRect().top + 16 + window.scrollY }),
+      });
+    }
+    if (archMobile) {
+      list.push({
+        key: 'bfg-arch-heading-mobile',
+        dot: true,
+        getPoint: () => ({ x: railLeftX(), y: archMobile.getBoundingClientRect().top + 16 + window.scrollY }),
+      });
+    }
   }
 
   // Section 3: Beyond Government Heading on Left Rail
@@ -578,118 +532,68 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   return list;
 }
 
-// 4. Our Approach: Hero (Left) -> Alternating S-Curve Methodology Circuit (Stage 0 Left -> Stage 1 Right -> Stage 2 Left -> Stage 3 Right) -> Final CTA
+// 4. Our Approach: Left Rail Entry -> Card 1 Left Port -> (Horizontal inter-card trails) -> Right Rail Exit -> CTA
 function buildOurApproachMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
-  const stageCards = Array.from(document.querySelectorAll<HTMLElement>('.stage-chapter-card'));
+  const frameworkOuter = document.querySelector<HTMLElement>('.framework-sticky-outer') || document.getElementById('framework-horizontal-root');
+  const card0 = document.getElementById('horizontal-stage-0');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
-  const isMultiCol = typeof window !== 'undefined' && window.innerWidth >= 1024;
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const list: Milestone[] = [];
 
-  // Hero on Left Rail
+  // 1. Hero start point on Left Rail
   list.push({
     key: 'oa-hero',
     getPoint: () => {
       if (!heroH1) return null;
-      return { x: railLeftX(), y: heroH1.getBoundingClientRect().top + heroH1.getBoundingClientRect().height / 2 + window.scrollY };
+      const hr = heroH1.getBoundingClientRect();
+      return { x: railLeftX(), y: hr.top + hr.height / 2 + window.scrollY };
     },
   });
 
-  if (!isMultiCol || stageCards.length < 4) {
-    // Single column (mobile): Clean left rail
-    stageCards.forEach((card, idx) => {
+  if (frameworkOuter) {
+    const getCard1Y = () => {
+      if (card0) {
+        const cr = card0.getBoundingClientRect();
+        return cr.top + cr.height / 2 + window.scrollY;
+      }
+      const fr = frameworkOuter.getBoundingClientRect();
+      const offset = isDesktop ? window.innerHeight * 0.5 : 240;
+      return fr.top + offset + window.scrollY;
+    };
+
+    // 2. Continuous Left Rail down to Card 1 vertical center
+    list.push({
+      key: 'oa-card1-level',
+      dot: true,
+      getPoint: () => ({ x: railLeftX(), y: getCard1Y() }),
+    });
+
+    // 3. Jogs 90 degrees horizontally into Card 1 left port
+    if (isDesktop && card0) {
       list.push({
-        key: `oa-stage-${idx}`,
+        key: 'oa-card1-port',
         dot: true,
         getPoint: () => {
-          const cr = card.getBoundingClientRect();
-          if (cr.height === 0) return null;
-          return { x: railLeftX(), y: cr.top + 48 + window.scrollY };
+          const cr = card0.getBoundingClientRect();
+          return { x: cr.left + window.scrollX, y: getCard1Y() };
         },
       });
+    }
+
+    // 4. Gap across the horizontal framework to the Right Rail exit
+    list.push({
+      key: 'oa-framework-exit',
+      gap: true,
+      dot: false,
+      getPoint: () => {
+        const fr = frameworkOuter.getBoundingClientRect();
+        return { x: railRightX(), y: fr.bottom + window.scrollY };
+      },
     });
-    pushCtaConnection(list, cta, 'left', 'oa');
-    return list;
   }
 
-  // Desktop (lg+): Dynamic Alternating S-Curve Weave matching card text alignment
-  // Stage 0 (Explore) - Left Rail (Text Left)
-  list.push({
-    key: 'oa-stage-0',
-    dot: true,
-    getPoint: () => {
-      const cr = stageCards[0].getBoundingClientRect();
-      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
-    },
-  });
-
-  // Crossover 0 -> 1 (Left to Right in gap between stage 0 and 1)
-  list.push({
-    key: 'oa-cross-0-1',
-    dot: false,
-    getPoint: () => {
-      const r0 = stageCards[0].getBoundingClientRect();
-      const r1 = stageCards[1].getBoundingClientRect();
-      const midY = (r0.bottom + r1.top) / 2 + window.scrollY;
-      return { x: railRightX(), y: midY };
-    },
-  });
-
-  // Stage 1 (Design) - Right Rail (Text Right)
-  list.push({
-    key: 'oa-stage-1',
-    dot: true,
-    getPoint: () => {
-      const cr = stageCards[1].getBoundingClientRect();
-      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
-    },
-  });
-
-  // Crossover 1 -> 2 (Right to Left in gap between stage 1 and 2)
-  list.push({
-    key: 'oa-cross-1-2',
-    dot: false,
-    getPoint: () => {
-      const r1 = stageCards[1].getBoundingClientRect();
-      const r2 = stageCards[2].getBoundingClientRect();
-      const midY = (r1.bottom + r2.top) / 2 + window.scrollY;
-      return { x: railLeftX(), y: midY };
-    },
-  });
-
-  // Stage 2 (Deliver) - Left Rail (Text Left)
-  list.push({
-    key: 'oa-stage-2',
-    dot: true,
-    getPoint: () => {
-      const cr = stageCards[2].getBoundingClientRect();
-      return { x: railLeftX(), y: cr.top + 56 + window.scrollY };
-    },
-  });
-
-  // Crossover 2 -> 3 (Left to Right in gap between stage 2 and 3)
-  list.push({
-    key: 'oa-cross-2-3',
-    dot: false,
-    getPoint: () => {
-      const r2 = stageCards[2].getBoundingClientRect();
-      const r3 = stageCards[3].getBoundingClientRect();
-      const midY = (r2.bottom + r3.top) / 2 + window.scrollY;
-      return { x: railRightX(), y: midY };
-    },
-  });
-
-  // Stage 3 (Assure) - Right Rail (Text Right)
-  list.push({
-    key: 'oa-stage-3',
-    dot: true,
-    getPoint: () => {
-      const cr = stageCards[3].getBoundingClientRect();
-      return { x: railRightX(), y: cr.top + 56 + window.scrollY };
-    },
-  });
-
-  // Final CTA plugged into card interior from Right Rail
+  // 5. Final CTA plugged into card interior from Right Rail
   pushCtaConnection(list, cta, 'right', 'oa');
 
   return list;
@@ -1961,51 +1865,7 @@ export function initFlowLine(): void {
     activeBranches = [];
     const SVGNS = 'http://www.w3.org/2000/svg';
 
-    // 1. Built for Government Dual Pillar Branching
-    const card1 = document.querySelector<HTMLElement>('.pillar-card-1');
-    const card2 = document.querySelector<HTMLElement>('.pillar-card-2');
-    if (card1 && card2 && document.documentElement.clientWidth >= 1024) {
-      const r1 = card1.getBoundingClientRect();
-      const r2 = card2.getBoundingClientRect();
-      const centerGapX = (r1.right + r2.left) / 2 + window.scrollX;
 
-      const port1 = card1.querySelector('.pillar-power-terminal') || card1.querySelector('.pillar-badge');
-      const port1Rect = port1?.getBoundingClientRect() ?? r1;
-      const portY = port1Rect.top + port1Rect.height / 2 - settledOffsetY(card1) + window.scrollY;
-
-      const c1PortX = r1.right + window.scrollX;
-      const c2PortX = r2.left + window.scrollX;
-
-      // Left Power Conduit Path
-      const p1 = document.createElementNS(SVGNS, 'path');
-      p1.setAttribute('class', 'flow-line-branch flow-line-branch-left flow-line-branch-pillar');
-      branchesRoot.appendChild(p1);
-      const b1 = buildRoundedPath([{ x: centerGapX, y: portY }, { x: c1PortX, y: portY }], CORNER_RADIUS);
-      activeBranches.push({ pathEl: p1, built: b1, startKey: 'bfg-power-splitter', endKey: 'bfg-power-splitter' });
-
-      // Right Power Conduit Path
-      const p2 = document.createElementNS(SVGNS, 'path');
-      p2.setAttribute('class', 'flow-line-branch flow-line-branch-right flow-line-branch-pillar');
-      branchesRoot.appendChild(p2);
-      const b2 = buildRoundedPath([{ x: centerGapX, y: portY }, { x: c2PortX, y: portY }], CORNER_RADIUS);
-      activeBranches.push({ pathEl: p2, built: b2, startKey: 'bfg-power-splitter', endKey: 'bfg-power-splitter' });
-
-      // Left Terminal Dot on Card 1
-      const t1 = document.createElementNS(SVGNS, 'circle');
-      t1.setAttribute('cx', String(c1PortX));
-      t1.setAttribute('cy', String(portY));
-      t1.setAttribute('r', '4');
-      t1.setAttribute('class', 'flow-line-terminal-dot flow-line-terminal-left flow-line-terminal-pillar');
-      branchesRoot.appendChild(t1);
-
-      // Right Terminal Dot on Card 2
-      const t2 = document.createElementNS(SVGNS, 'circle');
-      t2.setAttribute('cx', String(c2PortX));
-      t2.setAttribute('cy', String(portY));
-      t2.setAttribute('r', '4');
-      t2.setAttribute('class', 'flow-line-terminal-dot flow-line-terminal-right flow-line-terminal-pillar');
-      branchesRoot.appendChild(t2);
-    }
 
     // 2. Purpose & Direction 3-Way Sector Splitter and Combiner Branches
     const sectorGrid = document.getElementById('sector-horizons-grid');
@@ -2186,7 +2046,10 @@ export function initFlowLine(): void {
     const fullGapFlags = new Array(expandedPoints.length).fill(false);
     indexMap.forEach((expIdx, origIdx) => {
       if (withPoints[origIdx]?.gap) {
-        fullGapFlags[expIdx] = true;
+        const prevExpIdx = origIdx > 0 ? indexMap[origIdx - 1] : 0;
+        for (let k = prevExpIdx + 1; k <= expIdx; k++) {
+          fullGapFlags[k] = true;
+        }
       }
     });
     built = buildRoundedPath(expandedPoints, CORNER_RADIUS, fullGapFlags);
@@ -2253,15 +2116,6 @@ export function initFlowLine(): void {
       }
     });
 
-    // 1. Power splitter synchronization (Built for Government)
-    const splitterIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'bfg-power-splitter');
-    if (splitterIdx >= 0) {
-      const splitterAt = milestoneCumulative[splitterIdx] ?? 0;
-      const progress = Math.min(1, Math.max(0, (currentLength - splitterAt) / 48));
-      const isPowered = progress >= 0.7;
-      branchesRoot?.querySelectorAll('.flow-line-terminal-pillar').forEach((d) => d.classList.toggle('is-ignited', isPowered));
-      document.querySelectorAll('.pillar-card-1, .pillar-card-2').forEach((c) => c.classList.toggle('is-powered', isPowered));
-    }
 
     // 2. 3-Way sector splitter and combiner power states (Purpose & Direction)
     const padSplitterIdx = currentMilestonesWithPoints.findIndex((m) => m.key === 'pad-3way-splitter');
@@ -2374,14 +2228,18 @@ export function initFlowLine(): void {
       }
     });
 
-    // 9. Our Approach 4 Stages sequential card power activation
-    for (let idx = 0; idx < 4; idx++) {
-      const sIdx = currentMilestonesWithPoints.findIndex((m) => m.key === `oa-stage-${idx}`);
-      if (sIdx >= 0) {
-        const at = milestoneCumulative[sIdx] ?? 0;
-        const isReached = currentLength >= at - 8;
-        const cards = document.querySelectorAll<HTMLElement>('.stage-chapter-card');
-        cards[idx]?.classList.toggle('is-powered', isReached);
+    // 9. Our Approach: fade Card 1 entry dots when horizontal track scrolls
+    const oaOuter = document.querySelector<HTMLElement>('.framework-sticky-outer');
+    if (oaOuter) {
+      const fr = oaOuter.getBoundingClientRect();
+      const scrollHeight = oaOuter.offsetHeight - window.innerHeight;
+      const oaProgress = scrollHeight > 0 ? Math.max(0, Math.min(1, -fr.top / scrollHeight)) : 0;
+      const dotLevel = dotsRoot?.querySelector<SVGCircleElement>('[data-flow-dot="oa-card1-level"]');
+      const dotPort = dotsRoot?.querySelector<SVGCircleElement>('[data-flow-dot="oa-card1-port"]');
+      if (oaProgress > 0) {
+        const fade = Math.max(0, Math.min(1, 1 - oaProgress * 6));
+        if (dotLevel) dotLevel.style.opacity = String(fade);
+        if (dotPort) dotPort.style.opacity = String(fade);
       }
     }
   }
