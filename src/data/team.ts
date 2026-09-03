@@ -25,6 +25,8 @@ import francisPhoto from '../assets/images/team/francis.jpeg';
 import rajeshPhoto from '../assets/images/team/rajesh.jpeg';
 import ankitPhoto from '../assets/images/team/ankit.png';
 import anupamaPhoto from '../assets/images/team/anupama.jpeg';
+import siddharthaPhoto from '../assets/images/team/Siddhartha.jpeg';
+import gitikaPhoto from '../assets/images/team/Gitika Sharan.jpeg';
 
 export type TeamTag = 'Leadership' | 'AI & Digital Transformation' | 'Evaluation & Consulting';
 
@@ -34,6 +36,7 @@ export interface TeamMember {
   subtitle?: string;
   tag: TeamTag;
   photo?: ImageMetadata;
+  photoPosition?: string;
   // Real per-person LinkedIn profile URLs (client-supplied, 2026-08-11) —
   // TeamCard.astro still falls back to '#' for anyone without one, but
   // everyone currently has one.
@@ -49,8 +52,8 @@ export const team: TeamMember[] = [
   { name: 'Prasaanth Balraj', title: 'Associate Director, AI & Digital Transformation', tag: 'AI & Digital Transformation', photo: prasaanthPhoto, linkedin: 'https://linkedin.com/in/prasaanth-balraj-025664150' },
   { name: 'Suvabrata Roy', title: 'Associate Director, Technology Solutions', tag: 'AI & Digital Transformation', photo: suvabrataPhoto, linkedin: 'https://www.linkedin.com/in/suvabrata-roy-b9085514/' },
   { name: 'Dr Harsh Vats', title: 'Program Manager, AI Transformation', tag: 'AI & Digital Transformation', photo: harshPhoto, linkedin: 'https://www.linkedin.com/in/harsh-vats-programofficer' },
-  { name: 'Siddhartha Kumar', title: 'Manager, Strategic Operations', tag: 'AI & Digital Transformation' },
-  { name: 'Gitika Sharan', title: 'Head, Marketing & Strategic Communications', tag: 'AI & Digital Transformation' },
+  { name: 'Siddhartha Kumar', title: 'Manager, Strategic Operations', tag: 'AI & Digital Transformation', photo: siddharthaPhoto, linkedin: 'https://www.linkedin.com/in/siddhartha-kumar-5365091a0' },
+  { name: 'Gitika Sharan', title: 'Head, Marketing & Strategic Communications', tag: 'AI & Digital Transformation', photo: gitikaPhoto, photoPosition: '50% 12%', linkedin: 'https://www.linkedin.com/in/gitika-sharan-6a329013/' },
   { name: 'Dr Francis Xavier Rathinam', title: 'Senior Director, Global MERL Practice', tag: 'Evaluation & Consulting', photo: francisPhoto, linkedin: 'https://www.linkedin.com/in/francis-xavier-rathinam-2289101/' },
   { name: 'Dr Rajesh Khanna', title: 'Director, Local Governance & MERL', tag: 'Evaluation & Consulting', photo: rajeshPhoto, linkedin: 'https://www.linkedin.com/in/rajesh-khanna28' },
   { name: 'Ankit Chatri', title: 'Director, Government Partnerships', tag: 'Evaluation & Consulting', photo: ankitPhoto, linkedin: 'https://www.linkedin.com/in/ankit-chatri-8a797315' },
