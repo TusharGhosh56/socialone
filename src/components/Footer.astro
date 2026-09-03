@@ -135,32 +135,30 @@ const columns = [
         ))
       }
 
-      {/* Dedicated Athena Infonomics Column */}
-      <nav aria-label="Athena Infonomics" class="space-y-4">
-        <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">Athena Infonomics</p>
-        <a
-          href="https://athenainfonomics.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Athena Infonomics — athenainfonomics.com"
-          class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
-        >
-          <span class="block h-10 sm:h-11 w-auto [&>svg]:h-10 sm:[&>svg]:h-11 [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={athenaLogo} />
-        </a>
-      </nav>
+      {/* The Athena Group Column */}
+      <nav aria-label="The Athena Group">
+        <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">The Athena Group</p>
+        <div class="mt-4 flex flex-col items-start gap-4">
+          <a
+            href="https://athenainfonomics.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Athena Infonomics — athenainfonomics.com"
+            class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200 ml-3.5"
+          >
+            <span class="block h-9 sm:h-10 w-auto [&>svg]:h-9 sm:[&>svg]:h-10 [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={athenaLogo} />
+          </a>
 
-      {/* Dedicated TolaData Column */}
-      <nav aria-label="TolaData" class="space-y-4">
-        <p class="text-eyebrow font-bold uppercase tracking-[0.14em] text-gold">TolaData</p>
-        <a
-          href="https://www.toladata.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="TolaData — toladata.com"
-          class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
-        >
-          <span class="block h-12 sm:h-[52px] w-auto [&>svg]:h-12 sm:[&>svg]:h-[52px] [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={tolaLogo} />
-        </a>
+          <a
+            href="https://www.toladata.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="TolaData — toladata.com"
+            class="group inline-flex items-center opacity-90 hover:opacity-100 transition-opacity duration-200"
+          >
+            <span class="block h-10 sm:h-11 w-auto [&>svg]:h-10 sm:[&>svg]:h-11 [&>svg]:w-auto transition-transform duration-200 group-hover:scale-105" set:html={tolaLogo} />
+          </a>
+        </div>
       </nav>
     </Reveal>
 
