@@ -5,26 +5,24 @@ import imgDesign from '../assets/images/capabilities/hero-fieldwork.jpg';
 import imgDeliver from '../assets/images/capabilities/insight-ai.jpg';
 import imgAssure from '../assets/images/how-we-work-page/evaluation.png';
 
-interface StageData {
+interface StageItem {
   id: string;
-  stepNumber: string;
   phase: string;
-  h2Full: string;
+  h2: string;
   image: any;
   alt: string;
-  theme: 'light-gold' | 'dark-navy' | 'light-blue' | 'dark-midnight';
+  theme: 'ivory' | 'navy' | 'slate' | 'midnight';
   paragraphs: string[];
 }
 
-const stages: StageData[] = [
+const stages: StageItem[] = [
   {
     id: 'explore',
-    stepNumber: '01',
     phase: 'Explore',
-    h2Full: 'Strategy and direction (Explore)',
+    h2: 'Strategy and direction',
     image: imgExplore,
     alt: 'Strategy and direction consultation and institutional governance',
-    theme: 'light-gold',
+    theme: 'ivory',
     paragraphs: [
       'The first stage is about establishing where AI can create meaningful value and what it will take to deliver it. Rather than beginning with a technology or a predetermined solution, we start with the decision, service or workflow that needs to improve, and the people and institutions it affects.',
       'This means assessing the mandate, availability and quality of data, existing infrastructure, operational workflows and institutional capacity required for implementation. We examine where AI can improve decision-making or service delivery, and where it may introduce unnecessary cost, risk or operational complexity.',
@@ -33,12 +31,11 @@ const stages: StageData[] = [
   },
   {
     id: 'design',
-    stepNumber: '02',
     phase: 'Design',
-    h2Full: 'Field and delivery (Design)',
+    h2: 'Field and delivery',
     image: imgDesign,
     alt: 'Frontline delivery workflows and participatory co-design',
-    theme: 'dark-navy',
+    theme: 'navy',
     paragraphs: [
       'Good design begins with the delivery setting. Before deciding what to build, we understand how work actually happens, where systems fall short, and what people do to bridge those gaps.',
       'We observe frontline workflows, trace cases through the system, and work alongside the teams responsible for delivery. This brings forward the last-mile evidence that is often lost between frontline experience and institutional decision-making, while making the real constraints of implementation visible.',
@@ -47,12 +44,11 @@ const stages: StageData[] = [
   },
   {
     id: 'deliver',
-    stepNumber: '03',
     phase: 'Deliver',
-    h2Full: 'Design, build and scale (Deliver)',
+    h2: 'Design, build and scale',
     image: imgDeliver,
     alt: 'Systems engineering, pipeline integration and institutional handover',
-    theme: 'light-blue',
+    theme: 'slate',
     paragraphs: [
       'The third stage turns a validated prototype into a system that can operate reliably within an institution’s existing environment. This requires aligning the product, architecture, data, workflows and governance arrangements needed for sustained use.',
       'We undertake the AI and data engineering, integrate the system with existing pipelines and operational systems, and define requirements for interoperability, security, access and decision rights as part of the design.',
@@ -61,12 +57,11 @@ const stages: StageData[] = [
   },
   {
     id: 'assure',
-    stepNumber: '04',
     phase: 'Assure',
-    h2Full: 'Evaluation and assurance (Assure)',
+    h2: 'Evaluation and assurance',
     image: imgAssure,
     alt: 'Independent empirical evaluation, fairness and algorithmic auditing',
-    theme: 'dark-midnight',
+    theme: 'midnight',
     paragraphs: [
       'The final stage assesses whether a system is performing as intended and delivering value for the people and institutions it was designed to serve.',
       'We assess model performance, user adoption and workflow outcomes, alongside safety, fairness and broader impact. The findings inform a clear decision: improve, hold or scale. Where the evidence does not support continued use, stopping is a valid outcome.',
@@ -77,125 +72,502 @@ const stages: StageData[] = [
 ];
 ---
 
-<div class="approach-methodology-workbench w-full space-y-12 sm:space-y-16 lg:space-y-20">
-  {stages.map((stage, idx) => {
-    const isEven = idx % 2 === 0;
-    const isDark = stage.theme === 'dark-navy' || stage.theme === 'dark-midnight';
+<div id="framework-horizontal-root" class="framework-horizontal-wrapper relative w-full">
+  {/* Desktop Pinned Scroll Container (lg+) */}
+  <div class="hidden lg:block framework-sticky-outer">
+    <div class="framework-sticky-viewport sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center py-8 xl:py-10 bg-transparent">
 
-    // Distinctive gradient themes for each stage to eliminate monotone white
-    let cardThemeClasses = '';
-    let badgeClasses = '';
-    let headingClasses = '';
-    let textClasses = '';
-    let imageOverlayClasses = '';
+      {/* Exit Trail Overlay: Connects from Card 4 right port to Right Rail and down */}
+      <svg
+        id="framework-exit-trail-svg"
+        class="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          id="exit-active-path"
+          d=""
+          stroke="rgba(209, 156, 51, 0.85)"
+          stroke-width="2.25"
+          stroke-linecap="round"
+          stroke-dasharray="2 10"
+        />
+        <circle
+          id="card-3-exit-port"
+          cx="0"
+          cy="0"
+          r="4.5"
+          class="flow-line-dot opacity-0 transition-opacity duration-300"
+        />
+        <circle
+          id="exit-corner-dot"
+          cx="0"
+          cy="0"
+          r="4.5"
+          class="flow-line-dot opacity-0 transition-opacity duration-300"
+        />
+        <g id="exit-head-group" opacity="0">
+          <circle class="flow-line-head-halo" cx="0" cy="0" r="10" />
+          <circle class="flow-line-head" cx="0" cy="0" r="4.5" />
+        </g>
+      </svg>
+      {/* Horizontal Moving Stage Track */}
+      <div class="relative w-full overflow-visible my-auto z-10">
+        <div
+          id="framework-horizontal-track"
+          class="flex flex-nowrap items-center will-change-transform transition-transform duration-75 ease-out pl-6 sm:pl-12 lg:pl-20"
+          style="transform: translate3d(0, 0, 0);"
+        >
+          {stages.map((stage, idx) => {
+            let cardStyles = '';
+            let headingColor = '';
+            let textColor = '';
+            let badgeStyles = '';
 
-    if (stage.theme === 'light-gold') {
-      cardThemeClasses = 'bg-gradient-to-br from-white via-[#fafaf7] to-[#f7f3e8] border-hair/90 text-navy shadow-sm';
-      badgeClasses = 'bg-pale-gold/60 text-navy border-gold/30';
-      headingClasses = 'text-navy';
-      textClasses = 'text-mid-navy';
-      imageOverlayClasses = 'bg-gradient-to-t lg:bg-gradient-to-l from-transparent via-transparent to-black/10';
-    } else if (stage.theme === 'dark-navy') {
-      cardThemeClasses = 'bg-gradient-to-br from-[#101736] via-[#1a2150] to-[#0f142e] border-white/15 text-white shadow-xl';
-      badgeClasses = 'bg-white/10 text-gold border-white/20';
-      headingClasses = 'text-white';
-      textClasses = 'text-pale-navy/90';
-      imageOverlayClasses = 'bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-transparent to-navy/30';
-    } else if (stage.theme === 'light-blue') {
-      cardThemeClasses = 'bg-gradient-to-br from-white via-[#fafaf7] to-[#eef2f9] border-hair/90 text-navy shadow-sm';
-      badgeClasses = 'bg-pale-navy/60 text-navy border-hair/80';
-      headingClasses = 'text-navy';
-      textClasses = 'text-mid-navy';
-      imageOverlayClasses = 'bg-gradient-to-t lg:bg-gradient-to-l from-transparent via-transparent to-black/10';
-    } else {
-      // dark-midnight
-      cardThemeClasses = 'bg-gradient-to-br from-[#0c1228] via-[#161e42] to-[#1c1836] border-gold/30 text-white shadow-2xl';
-      badgeClasses = 'bg-gold/15 text-gold border-gold/40';
-      headingClasses = 'text-white';
-      textClasses = 'text-pale-navy/90';
-      imageOverlayClasses = 'bg-gradient-to-t lg:bg-gradient-to-r from-transparent via-transparent to-[#0c1228]/40';
-    }
+            if (stage.theme === 'ivory') {
+              cardStyles = 'bg-white border-hair/90 shadow-xl';
+              headingColor = 'text-navy';
+              textColor = 'text-mid-navy';
+              badgeStyles = 'bg-gold/10 text-gold border-gold/30';
+            } else if (stage.theme === 'navy') {
+              cardStyles = 'bg-[#12193b] border-white/15 text-white shadow-2xl';
+              headingColor = 'text-white';
+              textColor = 'text-pale-navy/90';
+              badgeStyles = 'bg-white/10 text-gold border-white/20';
+            } else if (stage.theme === 'slate') {
+              cardStyles = 'bg-white border-hair/90 shadow-xl';
+              headingColor = 'text-navy';
+              textColor = 'text-mid-navy';
+              badgeStyles = 'bg-gold/10 text-gold border-gold/30';
+            } else {
+              cardStyles = 'bg-[#0d132c] border-white/15 text-white shadow-2xl';
+              headingColor = 'text-white';
+              textColor = 'text-pale-navy/90';
+              badgeStyles = 'bg-gold/15 text-gold border-gold/40';
+            }
 
-    return (
-      <div class="relative" id={`stage-${stage.id}`}>
-        {/* Subtle Sequential Pipeline Connector Between Stages */}
-        {idx > 0 && (
-          <div class="flex items-center justify-center my-6 sm:my-10" aria-hidden="true">
-            <div class="relative flex flex-col items-center">
-              <div class="w-px h-8 sm:h-12 bg-gradient-to-b from-hair via-gold/60 to-hair"></div>
-              <div class="h-2 w-2 rounded-full bg-gold shadow-[0_0_8px_rgba(209,156,51,0.6)] my-1"></div>
-              <div class="w-px h-8 sm:h-12 bg-gradient-to-b from-hair via-gold/60 to-hair"></div>
-            </div>
-          </div>
-        )}
+            return (
+              <div class="flex items-center shrink-0">
+                {/* Single Stage Card */}
+                <article
+                  id={`horizontal-stage-${idx}`}
+                  data-stage-card-idx={idx}
+                  class={`framework-stage-card relative shrink-0 w-[80vw] max-w-[1080px] xl:max-w-[1160px] h-[64vh] min-h-[480px] max-h-[620px] rounded-3xl border overflow-hidden backdrop-blur-md transition-all duration-500 ${cardStyles}`}
+                  <div class="grid grid-cols-1 lg:grid-cols-12 h-full w-full">
+                    
+                    {/* Left Text Column: Minimal Badge + Clean Heading + Exact Client Copy */}
+                    <div class="lg:col-span-7 p-8 sm:p-10 xl:p-12 flex flex-col justify-center h-full overflow-y-auto scrollbar-none">
+                      
+                      {/* Simple Minimalistic Badge */}
+                      <div class="mb-4">
+                        <span class={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold tracking-wider uppercase border ${badgeStyles}`}>
+                          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                          {stage.phase}
+                        </span>
+                      </div>
 
-        {/* Master Stage Chapter Card with Full-Bleed Split-Screen Layout */}
-        <article class={`stage-chapter-card rounded-2xl sm:rounded-3xl border overflow-hidden backdrop-blur-md transition-all duration-500 relative group ${cardThemeClasses}`}>
-          
-          {/* Subtle Ambient Gradient Glow Orb in Background */}
-          {isDark ? (
-            <div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-gradient-to-br from-gold/10 via-deep-gold/5 to-transparent blur-3xl pointer-events-none"></div>
-          ) : (
-            <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-gradient-to-br from-pale-gold/30 via-transparent to-transparent blur-3xl pointer-events-none"></div>
-          )}
+                      {/* Clean Heading */}
+                      <h3 class={`text-2xl sm:text-3xl xl:text-4xl font-light leading-tight tracking-tight mb-5 ${headingColor}`}>
+                        {stage.h2}
+                      </h3>
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[440px] lg:min-h-[480px] relative z-10">
+                      <div class={`space-y-4 text-xs sm:text-sm xl:text-base leading-relaxed font-normal ${textColor}`}>
+                        {stage.paragraphs.map((para) => (
+                          <p>{para}</p>
+                        ))}
+                      </div>
+                    </div>
 
-            {/* TEXT COLUMN: 100% Verbatim Client Copy with generous inner padding */}
-            <div class={`p-6 sm:p-10 lg:p-14 flex flex-col justify-center space-y-4 sm:space-y-6 ${isEven ? 'lg:col-span-7' : 'lg:col-span-7 lg:order-2'}`}>
-              <h2 class={`text-2xl sm:text-3xl lg:text-4xl font-light leading-tight tracking-tight ${headingClasses}`}>
-                {stage.h2Full}
-              </h2>
+                    {/* Right Photographic Frame */}
+                    <div class="lg:col-span-5 relative h-full w-full overflow-hidden">
+                      <Image
+                        src={stage.image}
+                        alt={stage.alt}
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+                        widths={[600, 900, 1200]}
+                        sizes="(min-width: 1024px) 35vw, 100vw"
+                      />
+                    </div>
 
-              {/* Exact Client Paragraphs */}
-              <div class={`space-y-4 text-sm sm:text-base lg:text-lg leading-relaxed font-normal ${textClasses}`}>
-                {stage.paragraphs.map((para) => (
-                  <p>{para}</p>
-                ))}
+                  </div>
+                </article>
+
+                {/* Generous Inter-Card Gap: The Animated On-Scroll Dotted Trail */}
+                {idx < stages.length - 1 && (
+                  <div
+                    class="inter-card-connector shrink-0 w-44 sm:w-56 lg:w-72 xl:w-80 h-[64vh] min-h-[480px] max-h-[620px] flex items-center justify-center relative px-0"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      id={`inter-card-trail-${idx}`}
+                      class="w-full h-16 overflow-visible relative z-10"
+                      viewBox="0 0 300 40"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      {/* Active On-Scroll Animated Dotted Path */}
+                      <path
+                        id={`inter-card-path-${idx}`}
+                        d="M 0 20 L 0 20"
+                        stroke="rgba(209, 156, 51, 0.85)"
+                        stroke-width="2.25"
+                        stroke-linecap="round"
+                        stroke-dasharray="2 10"
+                      />
+
+                      {/* Source Card Exit Port Node */}
+                      <circle
+                        id={`card-${idx}-exit-port`}
+                        cx="0"
+                        cy="20"
+                        r="4.5"
+                        class="flow-line-dot opacity-0 transition-all duration-300"
+                      />
+
+                      {/* Midway Milestone Waypoint Dot */}
+                      <circle
+                        id={`inter-card-dot-${idx}`}
+                        cx="150"
+                        cy="20"
+                        r="4.5"
+                        class="flow-line-dot opacity-0 transition-all duration-300"
+                      />
+
+                      {/* Target Card Entry Port Node */}
+                      <circle
+                        id={`card-${idx + 1}-entry-port`}
+                        cx="300"
+                        cy="20"
+                        r="4.5"
+                        class="flow-line-dot opacity-0 transition-all duration-300"
+                      />
+
+                      {/* Animated Flowing Trail Head */}
+                      <g id={`inter-card-head-${idx}`} opacity="0" class="transition-opacity duration-200">
+                        <circle class="flow-line-head-halo" cx="0" cy="20" r="10" />
+                        <circle class="flow-line-head" cx="0" cy="20" r="4.5" />
+                      </g>
+                    </svg>
+                  </div>
+                )}
               </div>
-            </div>
-
-            {/* FULL-BLEED IMAGE COLUMN: Takes up 100% of the entire half flush to edges */}
-            <div class={`relative w-full min-h-[280px] sm:min-h-[360px] lg:min-h-full overflow-hidden ${isEven ? 'lg:col-span-5' : 'lg:col-span-5 lg:order-1'}`}>
-              <Image
-                src={stage.image}
-                alt={stage.alt}
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                widths={[600, 900, 1200]}
-                sizes="(min-width: 1024px) 42vw, 100vw"
-              />
-              <div class={`absolute inset-0 pointer-events-none ${imageOverlayClasses}`}></div>
-            </div>
-
-          </div>
-        </article>
+            );
+          })}
+        </div>
       </div>
-    );
-  })}
+
+      {/* Bottom Subtle Spacer */}
+      <div class="w-full shrink-0 h-4"></div>
+
+    </div>
+  </div>
+
+  {/* Mobile Presentation (<1024px) */}
+  <div class="block lg:hidden w-full space-y-6">
+
+    {/* Mobile Carousel with dotted trail connector */}
+    <div
+      id="mobile-framework-carousel"
+      class="flex items-center gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 pb-6 scrollbar-none"
+    >
+      {stages.map((stage, idx) => {
+        const isDark = stage.theme === 'navy' || stage.theme === 'midnight';
+        const cardBg = isDark
+          ? 'bg-[#12193b] text-white border-white/15'
+          : 'bg-white text-navy border-hair shadow-md';
+        const headingCls = isDark ? 'text-white' : 'text-navy';
+        const textCls = isDark ? 'text-pale-navy/90' : 'text-mid-navy';
+        const badgeCls = isDark ? 'bg-white/10 text-gold border-white/20' : 'bg-gold/10 text-gold border-gold/30';
+
+        return (
+          <div class="flex items-center shrink-0">
+            <article
+              data-mobile-card-idx={idx}
+              class={`shrink-0 w-[88vw] max-w-[460px] snap-center rounded-2xl border p-6 flex flex-col justify-between space-y-4 ${cardBg}`}
+            >
+              <div>
+                <div class="mb-3">
+                  <span class={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase border ${badgeCls}`}>
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+                    {stage.phase}
+                  </span>
+                </div>
+
+                <h3 class={`text-xl sm:text-2xl font-light leading-snug mb-4 ${headingCls}`}>
+                  {stage.h2}
+                </h3>
+
+                <div class="relative w-full h-48 rounded-xl overflow-hidden mb-4">
+                  <Image
+                    src={stage.image}
+                    alt={stage.alt}
+                    class="w-full h-full object-cover"
+                    widths={[400, 600]}
+                  />
+                </div>
+
+                <div class={`space-y-3 text-xs sm:text-sm leading-relaxed ${textCls}`}>
+                  {stage.paragraphs.map((p) => (
+                    <p>{p}</p>
+                  ))}
+                </div>
+              </div>
+            </article>
+
+            {idx < stages.length - 1 && (
+              <div class="shrink-0 w-8 flex items-center justify-center relative mx-1" aria-hidden="true">
+                <div class="w-full h-px relative flex items-center justify-center">
+                  <div class="w-full h-0.5 border-t-2 border-dotted border-gold/80"></div>
+                  <div class="w-2.5 h-2.5 rounded-full bg-gold border border-white shadow-[0_0_6px_rgba(217,158,40,0.7)] absolute"></div>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </div>
 </div>
 
+<style>
+  .framework-horizontal-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .framework-sticky-outer {
+      height: 400vh;
+      position: relative;
+    }
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .framework-stage-card {
+    will-change: transform, opacity;
+  }
+</style>
+
 <script>
-  function initStageInteractions() {
-    const cards = document.querySelectorAll<HTMLElement>('.stage-chapter-card');
-    cards.forEach((card, idx) => {
-      card.addEventListener('mouseenter', () => {
-        document.querySelectorAll(`.flow-line-oa-branch-${idx}`).forEach((b) => b.classList.add('is-active'));
-        document.querySelectorAll(`.flow-line-oa-terminal-${idx}`).forEach((t) => t.classList.add('is-ignited'));
-        const dot = document.querySelector(`[data-flow-dot="oa-stage-${idx}"]`);
-        dot?.classList.add('is-ignited');
-      });
-      card.addEventListener('mouseleave', () => {
-        if (!card.classList.contains('is-powered')) {
-          document.querySelectorAll(`.flow-line-oa-branch-${idx}`).forEach((b) => b.classList.remove('is-active'));
-          document.querySelectorAll(`.flow-line-oa-terminal-${idx}`).forEach((t) => t.classList.remove('is-ignited'));
+  import { railPad } from '../scripts/flowLine';
+
+  function initHorizontalFramework() {
+    const root = document.getElementById('framework-horizontal-root');
+    if (!root) return;
+
+    const outer = root.querySelector<HTMLElement>('.framework-sticky-outer');
+    const track = document.getElementById('framework-horizontal-track');
+    const stageCards = Array.from(document.querySelectorAll<HTMLElement>('.framework-stage-card'));
+
+    let isDesktop = window.innerWidth >= 1024;
+    let ticking = false;
+
+    // Transition progress windows for each of the 3 inter-card gaps
+    const gapWindows = [
+      { start: 0.05, end: 0.28 },
+      { start: 0.35, end: 0.58 },
+      { start: 0.65, end: 0.88 },
+    ];
+    const SVG_GAP_WIDTH = 300;
+
+    function getTrackMaxTranslate(): number {
+      if (!track) return 0;
+      const trackWidth = track.scrollWidth;
+      const windowWidth = window.innerWidth;
+      return Math.max(0, trackWidth - windowWidth + 140);
+    }
+
+    function updateDesktopScroll() {
+      if (!outer || !track) return;
+
+      const outerRect = outer.getBoundingClientRect();
+      const scrollHeight = outer.offsetHeight - window.innerHeight;
+
+      if (scrollHeight <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, -outerRect.top / scrollHeight));
+      const maxTranslate = getTrackMaxTranslate();
+      const currentTranslate = progress * maxTranslate;
+
+      track.style.transform = `translate3d(-${currentTranslate.toFixed(2)}px, 0, 0)`;
+
+      const stageCount = stageCards.length;
+      const activeIdx = Math.min(stageCount - 1, Math.floor(progress * stageCount * 0.999));
+
+
+      // Card Focus States
+      stageCards.forEach((card, idx) => {
+        if (idx === activeIdx) {
+          card.style.opacity = '1';
+          card.style.transform = 'scale(1)';
+        } else {
+          card.style.opacity = '0.85';
+          card.style.transform = 'scale(0.98)';
         }
       });
+
+
+
+      // =========================================================================
+      // INTER-CARD DOTTED TRAILS (Card 1 -> 2 -> 3 -> 4)
+      // Fully scroll-synchronized: draws forward as cards glide left,
+      // and retracts back as cards glide right
+      // =========================================================================
+      const SVG_START_X = 0;
+      const SVG_END_X = 300;
+      const SVG_SPAN = SVG_END_X - SVG_START_X;
+
+      gapWindows.forEach((win, i) => {
+        const pathEl = document.getElementById(`inter-card-path-${i}`);
+        const dotEl = document.getElementById(`inter-card-dot-${i}`);
+        const headGroup = document.getElementById(`inter-card-head-${i}`);
+        const targetCardPort = document.getElementById(`card-${i + 1}-entry-port`);
+        const sourceCardPort = document.getElementById(`card-${i}-exit-port`);
+
+        if (!pathEl || !dotEl || !headGroup) return;
+
+        if (progress < win.start) {
+          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_START_X} 20`);
+          dotEl.classList.remove('is-ignited');
+          dotEl.style.opacity = '0';
+          headGroup.setAttribute('opacity', '0');
+          if (sourceCardPort) {
+            sourceCardPort.classList.remove('is-ignited');
+            sourceCardPort.style.opacity = '0';
+          }
+          if (targetCardPort) {
+            targetCardPort.classList.remove('is-ignited');
+            targetCardPort.style.opacity = '0';
+          }
+        } else if (progress >= win.end) {
+          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_END_X} 20`);
+          dotEl.classList.add('is-ignited');
+          dotEl.style.opacity = '1';
+          headGroup.setAttribute('opacity', '0');
+          if (sourceCardPort) {
+            sourceCardPort.classList.add('is-ignited');
+            sourceCardPort.style.opacity = '1';
+          }
+          if (targetCardPort) {
+            targetCardPort.classList.add('is-ignited');
+            targetCardPort.style.opacity = '1';
+          }
+        } else {
+          const t = Math.max(0, Math.min(1, (progress - win.start) / (win.end - win.start)));
+          const drawX = SVG_START_X + t * SVG_SPAN;
+
+          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${drawX.toFixed(1)} 20`);
+
+          if (sourceCardPort) {
+            sourceCardPort.classList.add('is-ignited');
+            sourceCardPort.style.opacity = '1';
+          }
+
+          if (t >= 0.5) {
+            dotEl.classList.add('is-ignited');
+            dotEl.style.opacity = '1';
+          } else {
+            dotEl.classList.remove('is-ignited');
+            dotEl.style.opacity = t > 0.05 ? '0.4' : '0';
+          }
+
+          if (targetCardPort) {
+            const reached = t >= 0.96;
+            targetCardPort.classList.toggle('is-ignited', reached);
+            targetCardPort.style.opacity = reached ? '1' : t > 0.7 ? '0.4' : '0';
+          }
+
+          headGroup.setAttribute('opacity', '1');
+          const circles = headGroup.querySelectorAll('circle');
+          circles.forEach((c) => c.setAttribute('cx', drawX.toFixed(1)));
+        }
+      });
+
+      // =========================================================================
+      // =========================================================================
+      // Card 4 Exit Trail: Symmetrical to Entry Trail!
+      // Docks at Right Rail when currentTranslate === maxTranslate (at CTA)
+      // When back-scrolling, translates RIGHT with Card 4 and disappears INSTANTLY
+      // =========================================================================
+      const card3 = document.getElementById('horizontal-stage-3');
+      const card3ExitPort = document.getElementById('card-3-exit-port');
+      const exitSvg = document.getElementById('framework-exit-trail-svg');
+      const exitPath = document.getElementById('exit-active-path');
+      const exitDot = document.getElementById('exit-corner-dot');
+      const exitHead = document.getElementById('exit-head-group');
+
+      if (card3 && card3ExitPort && exitSvg && exitPath && exitDot && exitHead) {
+        const c3r = card3.getBoundingClientRect();
+        const railPadVal = typeof railPad === 'function' ? railPad() : 34;
+        const baseRailRight = document.documentElement.clientWidth - railPadVal;
+        const deltaBack = Math.max(0, maxTranslate - currentTranslate);
+        const currentRailRight = baseRailRight + deltaBack;
+        const portX = c3r.right;
+        const portY = c3r.top + c3r.height / 2;
+        const vpHeight = window.innerHeight;
+
+        // Disappear instantly if back-scrolled away from the final CTA dock position
+        if (deltaBack > 40) {
+          exitSvg.style.opacity = '0';
+          exitPath.setAttribute('d', '');
+          exitDot.classList.remove('is-ignited');
+          exitDot.style.opacity = '0';
+          card3ExitPort.classList.remove('is-ignited');
+          card3ExitPort.style.opacity = '0';
+          exitHead.setAttribute('opacity', '0');
+        } else {
+          exitSvg.style.opacity = '1';
+          card3ExitPort.classList.add('is-ignited');
+          card3ExitPort.style.opacity = '1';
+          exitDot.classList.add('is-ignited');
+          exitDot.style.opacity = '1';
+          exitHead.setAttribute('opacity', '0');
+
+          card3ExitPort.setAttribute('cx', portX.toFixed(1));
+          card3ExitPort.setAttribute('cy', portY.toFixed(1));
+          exitDot.setAttribute('cx', currentRailRight.toFixed(1));
+          exitDot.setAttribute('cy', portY.toFixed(1));
+
+          exitPath.setAttribute('d', `M ${portX.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${vpHeight}`);
+        }
+      }
+
+      if (prevBtn) prevBtn.disabled = activeIdx === 0;
+      if (nextBtn) nextBtn.disabled = activeIdx === stageCount - 1;
+
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!isDesktop) return;
+      if (!ticking) {
+        requestAnimationFrame(updateDesktopScroll);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      isDesktop = window.innerWidth >= 1024;
+      if (isDesktop) updateDesktopScroll();
     });
+
+
+
+    updateDesktopScroll();
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initStageInteractions);
+    document.addEventListener('DOMContentLoaded', initHorizontalFramework);
   } else {
-    initStageInteractions();
+    initHorizontalFramework();
   }
+  document.addEventListener('astro:page-load', initHorizontalFramework);
 </script>
