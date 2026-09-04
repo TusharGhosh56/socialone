@@ -182,12 +182,12 @@ const stages: StageItem[] = [
                 <article
                   id={`horizontal-stage-${idx}`}
                   data-stage-card-idx={idx}
-                  class={`framework-stage-card relative shrink-0 w-[80vw] max-w-[1080px] xl:max-w-[1160px] h-[64vh] min-h-[480px] max-h-[620px] rounded-3xl border overflow-hidden backdrop-blur-md transition-all duration-500 ${cardStyles}`}
+                  class={`framework-stage-card relative shrink-0 w-[86vw] max-w-[1240px] xl:max-w-[1360px] 2xl:max-w-[1440px] h-[74vh] min-h-[520px] max-h-[720px] xl:max-h-[760px] rounded-3xl border overflow-hidden backdrop-blur-md transition-all duration-500 ${cardStyles}`}
                 >
                   <div class="grid grid-cols-1 lg:grid-cols-12 h-full w-full">
                     
                     {/* Left Text Column: Minimal Badge + Clean Heading + Exact Client Copy */}
-                    <div class="lg:col-span-7 p-8 sm:p-10 xl:p-12 flex flex-col justify-center h-full overflow-y-auto scrollbar-none">
+                    <div class="lg:col-span-7 p-8 sm:p-10 xl:p-14 flex flex-col justify-center h-full overflow-y-auto scrollbar-none">
                       
                       {/* Simple Minimalistic Badge */}
                       <div class="mb-4">
@@ -226,7 +226,7 @@ const stages: StageItem[] = [
                 {/* Generous Inter-Card Gap: The Animated On-Scroll Dotted Trail */}
                 {idx < stages.length - 1 && (
                   <div
-                    class="inter-card-connector shrink-0 w-44 sm:w-56 lg:w-72 xl:w-80 h-[64vh] min-h-[480px] max-h-[620px] flex items-center justify-center relative px-0"
+                    class="inter-card-connector shrink-0 w-44 sm:w-56 lg:w-72 xl:w-80 h-[74vh] min-h-[520px] max-h-[720px] xl:max-h-[760px] flex items-center justify-center relative px-0"
                     aria-hidden="true"
                   >
                     <svg
