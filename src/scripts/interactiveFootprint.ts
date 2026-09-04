@@ -292,11 +292,9 @@ export async function initInteractiveFootprint(): Promise<void> {
       if (!pos) return;
 
       const node = nodesGroup.append('g')
-        .attr('class', 'map-node group cursor-pointer')
+        .attr('class', 'map-node group cursor-default select-none')
         .attr('data-map-node', hub.id)
-        .attr('tabindex', '0')
-        .attr('role', 'button')
-        .attr('aria-label', `${hub.name} in ${hub.country}`);
+        .style('outline', 'none');
 
       if (!reduceMotion) {
         // Radar Pulse Ring 1
@@ -395,12 +393,18 @@ export async function initInteractiveFootprint(): Promise<void> {
         .attr('class', 'select-none pointer-events-none drop-shadow-xs')
         .text(hub.country);
 
-      // Event Listeners for Rich Tooltip
+      // Event Listeners for Rich Tooltip (Hover only)
       node.on('mouseenter', () => showTooltip(hub, pos));
-      node.on('focus', () => showTooltip(hub, pos));
       node.on('mouseleave', hideTooltip);
-      node.on('blur', hideTooltip);
-      node.on('click', () => showTooltip(hub, pos));
+
+      // Make sure clicking the dots does nothing (no focus, no rectangle outline)
+      node.on('mousedown', (event: any) => {
+        if (event && event.preventDefault) event.preventDefault();
+      });
+      node.on('click', (event: any) => {
+        if (event && event.preventDefault) event.preventDefault();
+        if (event && event.stopPropagation) event.stopPropagation();
+      });
     });
 
   } catch (err) {
