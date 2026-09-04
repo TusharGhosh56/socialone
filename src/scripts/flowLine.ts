@@ -532,13 +532,11 @@ function buildPurposeAndDirectionMilestones(): Milestone[] {
   return list;
 }
 
-// 4. Our Approach: Left Rail Entry -> Card 1 Left Port -> (Horizontal inter-card trails) -> Right Rail Exit -> CTA
+// 4. Our Approach: Left Rail Entry -> Sticky Framework Gap -> Right Rail Exit -> CTA
 function buildOurApproachMilestones(): Milestone[] {
   const heroH1 = document.querySelector<HTMLElement>('main h1');
   const frameworkOuter = document.querySelector<HTMLElement>('.framework-sticky-outer') || document.getElementById('framework-horizontal-root');
-  const card0 = document.getElementById('horizontal-stage-0');
   const cta = document.querySelector<HTMLElement>('main .final-cta-card');
-  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
   const list: Milestone[] = [];
 
   // 1. Hero start point on Left Rail
@@ -552,36 +550,18 @@ function buildOurApproachMilestones(): Milestone[] {
   });
 
   if (frameworkOuter) {
-    const getCard1Y = () => {
-      if (card0) {
-        const cr = card0.getBoundingClientRect();
-        return cr.top + cr.height / 2 + window.scrollY;
-      }
-      const fr = frameworkOuter.getBoundingClientRect();
-      const offset = isDesktop ? window.innerHeight * 0.5 : 240;
-      return fr.top + offset + window.scrollY;
-    };
-
-    // 2. Continuous Left Rail down to Card 1 vertical center
+    // 2. Continuous Left Rail down to the top of the sticky framework container
     list.push({
-      key: 'oa-card1-level',
-      dot: true,
-      getPoint: () => ({ x: railLeftX(), y: getCard1Y() }),
+      key: 'oa-framework-entry',
+      dot: false,
+      getPoint: () => {
+        const fr = frameworkOuter.getBoundingClientRect();
+        return { x: railLeftX(), y: fr.top + window.scrollY };
+      },
     });
 
-    // 3. Jogs 90 degrees horizontally into Card 1 left port
-    if (isDesktop && card0) {
-      list.push({
-        key: 'oa-card1-port',
-        dot: true,
-        getPoint: () => {
-          const cr = card0.getBoundingClientRect();
-          return { x: cr.left + window.scrollX, y: getCard1Y() };
-        },
-      });
-    }
-
-    // 4. Gap across the horizontal framework to the Right Rail exit
+    // 3. Gap across the horizontal framework to the Right Rail exit
+    // (Both Card 1 entry trail and Card 4 exit trail are dynamically handled by ApproachStageExplorer.astro)
     list.push({
       key: 'oa-framework-exit',
       gap: true,
@@ -593,7 +573,7 @@ function buildOurApproachMilestones(): Milestone[] {
     });
   }
 
-  // 5. Final CTA plugged into card interior from Right Rail
+  // 4. Final CTA plugged into card interior from Right Rail
   pushCtaConnection(list, cta, 'right', 'oa');
 
   return list;
@@ -2227,21 +2207,6 @@ export function initFlowLine(): void {
         dossier.querySelector('.dossier-impact-box')?.classList.toggle('is-powered', currentLength >= at - 8);
       }
     });
-
-    // 9. Our Approach: fade Card 1 entry dots when horizontal track scrolls
-    const oaOuter = document.querySelector<HTMLElement>('.framework-sticky-outer');
-    if (oaOuter) {
-      const fr = oaOuter.getBoundingClientRect();
-      const scrollHeight = oaOuter.offsetHeight - window.innerHeight;
-      const oaProgress = scrollHeight > 0 ? Math.max(0, Math.min(1, -fr.top / scrollHeight)) : 0;
-      const dotLevel = dotsRoot?.querySelector<SVGCircleElement>('[data-flow-dot="oa-card1-level"]');
-      const dotPort = dotsRoot?.querySelector<SVGCircleElement>('[data-flow-dot="oa-card1-port"]');
-      if (oaProgress > 0) {
-        const fade = Math.max(0, Math.min(1, 1 - oaProgress * 6));
-        if (dotLevel) dotLevel.style.opacity = String(fade);
-        if (dotPort) dotPort.style.opacity = String(fade);
-      }
-    }
   }
 
   function renderDots(milestones: Milestone[], points: Point[]) {
