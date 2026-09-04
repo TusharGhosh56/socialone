@@ -88,6 +88,7 @@ function getInitials(fullName: string): string {
                               format="webp"
                               quality={85}
                               class="people-photo h-full w-full object-cover grayscale contrast-105 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
+                              style={member.photoPosition ? { objectPosition: member.photoPosition } : undefined}
                             />
                           ) : (
                             <div class="people-initials flex h-full w-full items-center justify-center bg-pale-navy/50 font-serif text-2xl sm:text-3xl font-light text-navy transition-all duration-500">
