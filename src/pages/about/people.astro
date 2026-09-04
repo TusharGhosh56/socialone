@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Button from '../../components/Button.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
+import HeroVideo from '../../components/HeroVideo.astro';
 import { Image } from 'astro:assets';
 import { team, type TeamTag } from '../../data/team';
 
@@ -35,6 +36,11 @@ function getInitials(fullName: string): string {
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
+      <HeroVideo
+        src="/video/subpage-hero/people.mp4"
+        overlayOpacity={0.65}
+      />
+
       <div class="container-x relative z-10 space-y-4 sm:space-y-6">
         <h1 class="max-w-4xl text-display font-light text-white leading-[1.08] text-3xl sm:text-5xl lg:text-6xl tracking-tight">
           Specialists across AI, delivery and evaluation
