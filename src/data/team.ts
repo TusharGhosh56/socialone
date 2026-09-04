@@ -53,7 +53,7 @@ export const team: TeamMember[] = [
   { name: 'Suvabrata Roy', title: 'Associate Director, Technology Solutions', tag: 'AI & Digital Transformation', photo: suvabrataPhoto, linkedin: 'https://www.linkedin.com/in/suvabrata-roy-b9085514/' },
   { name: 'Dr Harsh Vats', title: 'Program Manager, AI Transformation', tag: 'AI & Digital Transformation', photo: harshPhoto, linkedin: 'https://www.linkedin.com/in/harsh-vats-programofficer' },
   { name: 'Siddhartha Kumar', title: 'Manager, Strategic Operations', tag: 'AI & Digital Transformation', photo: siddharthaPhoto, linkedin: 'https://www.linkedin.com/in/siddhartha-kumar-5365091a0' },
-  { name: 'Gitika Sharan', title: 'Head, Marketing & Strategic Communications', tag: 'AI & Digital Transformation', photo: gitikaPhoto, photoPosition: '50% 12%', linkedin: 'https://www.linkedin.com/in/gitika-sharan-6a329013/' },
+  { name: 'Gitika Sharan', title: 'Head, Marketing & Strategic Communications', tag: 'AI & Digital Transformation', photo: gitikaPhoto, photoPosition: '50% 20%', linkedin: 'https://www.linkedin.com/in/gitika-sharan-6a329013/' },
   { name: 'Dr Francis Xavier Rathinam', title: 'Senior Director, Global MERL Practice', tag: 'Evaluation & Consulting', photo: francisPhoto, linkedin: 'https://www.linkedin.com/in/francis-xavier-rathinam-2289101/' },
   { name: 'Dr Rajesh Khanna', title: 'Director, Local Governance & MERL', tag: 'Evaluation & Consulting', photo: rajeshPhoto, linkedin: 'https://www.linkedin.com/in/rajesh-khanna28' },
   { name: 'Ankit Chatri', title: 'Director, Government Partnerships', tag: 'Evaluation & Consulting', photo: ankitPhoto, linkedin: 'https://www.linkedin.com/in/ankit-chatri-8a797315' },
