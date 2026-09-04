@@ -3,12 +3,12 @@
 // Featuring the exact white vector world map (from partners page), pulsing radar nodes,
 // animated golden network trails, and clean floating hover dossier cards.
 const metrics = [
-  { value: '440+', label: 'Engagements Delivered', badge: 'Public & Social Sector', detail: 'From national digital health to agriculture & climate' },
-  { value: '240+', label: 'Global Clients', badge: 'Trusted Institutions', detail: 'Governments, UN agencies, Bilaterals & Foundations' },
-  { value: '95+', label: 'Specialists Across Practice', badge: 'Applied AI & Policy', detail: 'Data engineers, econometricians & domain experts' },
-  { value: '65+', label: 'Countries with Projects', badge: 'Global Delivery', detail: 'Across Africa, South Asia, Southeast Asia & Americas' },
-  { value: '5', label: 'Continents in Field Ops', badge: 'Population Scale', detail: 'Active ground intelligence and data networks' },
-  { value: '120+', label: 'People Across the Group', badge: 'Athena Infonomics Ecosystem', detail: 'Multidisciplinary talent driving lasting capability' },
+  { value: '440+', label: 'Engagements Delivered', detail: 'From national digital health to agriculture & climate' },
+  { value: '240+', label: 'Global Clients', detail: 'Governments, UN agencies, Bilaterals & Foundations' },
+  { value: '95+', label: 'Specialists Across Practice', detail: 'Data engineers, econometricians & domain experts' },
+  { value: '65+', label: 'Countries with Projects', detail: 'Across Africa, South Asia, Southeast Asia & Americas' },
+  { value: '5', label: 'Continents in Field Ops', detail: 'Active ground intelligence and data networks' },
+  { value: '120+', label: 'People Across the Group', detail: 'Multidisciplinary talent driving lasting capability' },
 ];
 ---
 
@@ -17,13 +17,6 @@ const metrics = [
   <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-8 sm:gap-x-10 sm:gap-y-12 lg:gap-x-12 lg:gap-y-14" id="footprint-metrics-grid">
     {metrics.map((m) => (
       <div class="flex flex-col justify-between pt-4 sm:pt-6 border-t border-hair/90">
-        <div class="flex items-center gap-2 mb-2 sm:mb-4">
-          <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
-          <span class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-widest text-mid-navy">
-            {m.badge}
-          </span>
-        </div>
-
         <div class="my-1 sm:my-2">
           <div
             class="text-3xl sm:text-5xl lg:text-6xl font-light text-navy tracking-tight font-display"
@@ -87,7 +80,7 @@ const metrics = [
   {/* ==================== 3. DISTINCTION BANNER (GLOBAL + FT RANKING) ==================== */}
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
     {/* Left: Global Delivery Infrastructure */}
-    <div class="lg:col-span-7 rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col justify-between hover:border-smoke hover:shadow-lg transition-all duration-base">
+    <div class="lg:col-span-7 rounded-3xl border border-hair bg-white p-8 sm:p-12 shadow-sm flex flex-col justify-center hover:border-smoke hover:shadow-lg transition-all duration-base">
       <div>
         <h4 class="text-2xl sm:text-3xl font-bold text-navy mb-4">
           Global Delivery Infrastructure
@@ -95,21 +88,6 @@ const metrics = [
         <p class="text-lg text-mid-navy leading-relaxed">
           Founded in India in 2010. Offices in the <strong class="font-bold text-navy">US, UK, Kenya and Bangladesh</strong>, with delivery hubs across Africa and South Asia, providing the sovereign institutional access required to deploy AI at population scale.
         </p>
-      </div>
-
-      <div class="mt-8 pt-6 border-t border-hair flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-wider text-mid-navy">
-        <span class="flex items-center gap-1.5">
-          <svg class="h-4 w-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-          Sovereign Data Governance
-        </span>
-        <span class="flex items-center gap-1.5">
-          <svg class="h-4 w-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-          Frontline Field Operations
-        </span>
       </div>
     </div>
 
@@ -140,14 +118,20 @@ const metrics = [
   </div>
 </div>
 
-<style>
+<style is:global>
+  #footprint-vector-svg,
+  #footprint-vector-svg *,
   .map-node,
+  .map-node:focus,
+  .map-node:active,
+  .map-node:focus-visible,
   .map-node * {
     outline: none !important;
-    -webkit-tap-highlight-color: transparent;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none !important;
   }
 
-  .map-node.is-active .node-core,
   .map-node:hover .node-core {
     fill: #B3820A;
     stroke: #0A192F;
