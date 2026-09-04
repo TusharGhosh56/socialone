@@ -64,43 +64,36 @@ const categories = Object.values(caseStudyCategories);
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8" id="ai-directory-grid">
             {categories.map((cat, idx) => (
               <div
-                class={`ai-directory-card ai-directory-card-${idx} ai-directory-card-${cat.slug} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-10 shadow-sm flex flex-col justify-between group card-flip-hover`}
+                class={`ai-directory-card ai-directory-card-${idx} ai-directory-card-${cat.slug} rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md shadow-sm flex flex-col group card-flip-hover overflow-hidden h-full`}
                 data-card-spotlight
                 data-category-index={idx}
               >
-                <div class="relative z-10">
-                  <div class="flex items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-6">
-                    <span class="inline-flex items-center gap-1.5 rounded-full bg-pale-navy px-2.5 py-0.5 sm:px-3.5 sm:py-1 text-[0.6875rem] sm:text-xs font-bold uppercase tracking-wider text-navy flip-badge transition-colors">
-                      <span class="h-1.5 w-1.5 rounded-full bg-gold"></span>
-                      {cat.caseStudies.length} Case {cat.caseStudies.length === 1 ? 'Study' : 'Studies'}
-                    </span>
-                    <span class="text-[0.6875rem] sm:text-xs font-bold uppercase tracking-widest text-gold">{cat.navLabel}</span>
-                  </div>
+                {/* Full-Width Authentic Editorial Case Study Photography */}
+                <div class="relative z-10 w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden bg-navy/5 border-b border-hair/80 shrink-0">
+                  <Image
+                    src={categoryImages[cat.slug] || img01}
+                    alt={cat.title}
+                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent pointer-events-none"></div>
+                </div>
 
-                  {/* Authentic Editorial Case Study Photography */}
-                  <div class="mb-3.5 sm:mb-6 rounded-xl sm:rounded-2xl overflow-hidden border border-hair/90 shadow-sm bg-navy/5 relative aspect-[16/9]">
-                    <Image
-                      src={categoryImages[cat.slug] || img01}
-                      alt={cat.title}
-                      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                      loading="lazy"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy/30 via-transparent to-transparent pointer-events-none"></div>
-                  </div>
-
-                  <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-navy mb-2 sm:mb-3 transition-colors">
+                {/* Unified Content Body */}
+                <div class="relative z-10 p-5 sm:p-7 flex flex-col flex-1">
+                  <h2 class="text-xl sm:text-2xl font-bold text-navy mb-2 sm:mb-2.5 transition-colors line-clamp-2 min-h-[3.25rem] sm:min-h-[4rem] flex items-center">
                     {cat.title}
                   </h2>
 
-                  <p class="text-xs sm:text-base text-mid-navy leading-relaxed mb-4 sm:mb-8 flip-text transition-colors">
+                  <p class="text-xs sm:text-small text-mid-navy leading-relaxed mb-4 sm:mb-5 flip-text transition-colors min-h-[4.5rem] sm:min-h-[5.5rem] lg:min-h-[6.5rem]">
                     {cat.lead}
                   </p>
 
-                  <div class="pt-3 sm:pt-6 border-t border-hair/80 mb-4 sm:mb-8">
-                    <div class="text-[0.6875rem] sm:text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-2 sm:mb-3 flip-text transition-colors">
+                  <div class="pt-3.5 sm:pt-4 border-t border-hair/80 mb-5 sm:mb-6">
+                    <div class="text-[0.6875rem] sm:text-xs uppercase font-bold tracking-wider text-mid-navy/70 mb-2 sm:mb-2.5 flip-text transition-colors">
                       Featured Implementations:
                     </div>
-                    <ul class="space-y-1.5 sm:space-y-2 text-xs sm:text-sm font-bold text-navy">
+                    <ul class="space-y-1.5 sm:space-y-2 text-xs sm:text-small font-bold text-navy min-h-[2.75rem] sm:min-h-[3.25rem]">
                       {cat.caseStudies.map((cs) => (
                         <li class="flex items-center gap-2 flip-text transition-colors">
                           <span class="h-1.5 w-1.5 rounded-full bg-gold shrink-0"></span>
@@ -109,13 +102,17 @@ const categories = Object.values(caseStudyCategories);
                       ))}
                     </ul>
                   </div>
-                </div>
 
-                <div class="relative z-10 pt-1 sm:pt-2">
-                  <Button href={`/ai-in-action/${cat.slug}`} variant="outline" class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-gold group-hover:!text-navy group-hover:!border-gold transition-all duration-300 text-xs sm:text-small font-bold">
-                    <span>Explore {cat.navLabel}</span>
-                    <span class="inline-block transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
-                  </Button>
+                  <div class="mt-auto pt-2">
+                    <Button
+                      href={`/ai-in-action/${cat.slug}`}
+                      variant="outline"
+                      class="w-full !flex items-center justify-center gap-1.5 whitespace-nowrap group-hover:!bg-gold group-hover:!text-navy group-hover:!border-gold transition-all duration-300 text-xs sm:text-small font-bold"
+                    >
+                      <span>Explore {cat.navLabel}</span>
+                      <span class="inline-block transition-transform duration-micro group-hover:translate-x-1">&rarr;</span>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
