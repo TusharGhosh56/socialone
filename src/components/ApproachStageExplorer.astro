@@ -76,6 +76,36 @@ const stages: StageItem[] = [
   {/* Desktop Pinned Scroll Container (lg+) */}
   <div class="hidden lg:block framework-sticky-outer">
     <div class="framework-sticky-viewport sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center py-8 xl:py-10 bg-transparent">
+      {/* Entry Trail Overlay: Connects from Left Rail down and into Card 1 left port */}
+      <svg
+        id="framework-entry-trail-svg"
+        class="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          id="entry-active-path"
+          d=""
+          stroke="rgba(209, 156, 51, 0.85)"
+          stroke-width="2.25"
+          stroke-linecap="round"
+          stroke-dasharray="2 10"
+        />
+        <circle
+          id="card-0-entry-port"
+          cx="0"
+          cy="0"
+          r="4.5"
+          class="flow-line-dot opacity-0 transition-opacity duration-300"
+        />
+        <circle
+          id="entry-corner-dot"
+          cx="0"
+          cy="0"
+          r="4.5"
+          class="flow-line-dot opacity-0 transition-opacity duration-300"
+        />
+      </svg>
 
       {/* Exit Trail Overlay: Connects from Card 4 right port to Right Rail and down */}
       <svg
@@ -153,6 +183,7 @@ const stages: StageItem[] = [
                   id={`horizontal-stage-${idx}`}
                   data-stage-card-idx={idx}
                   class={`framework-stage-card relative shrink-0 w-[80vw] max-w-[1080px] xl:max-w-[1160px] h-[64vh] min-h-[480px] max-h-[620px] rounded-3xl border overflow-hidden backdrop-blur-md transition-all duration-500 ${cardStyles}`}
+                >
                   <div class="grid grid-cols-1 lg:grid-cols-12 h-full w-full">
                     
                     {/* Left Text Column: Minimal Badge + Clean Heading + Exact Client Copy */}
@@ -358,7 +389,19 @@ const stages: StageItem[] = [
 <script>
   import { railPad } from '../scripts/flowLine';
 
+  let activeScrollListener: (() => void) | null = null;
+  let activeResizeListener: (() => void) | null = null;
+
   function initHorizontalFramework() {
+    if (activeScrollListener) {
+      window.removeEventListener('scroll', activeScrollListener);
+      activeScrollListener = null;
+    }
+    if (activeResizeListener) {
+      window.removeEventListener('resize', activeResizeListener);
+      activeResizeListener = null;
+    }
+
     const root = document.getElementById('framework-horizontal-root');
     if (!root) return;
 
@@ -385,164 +428,238 @@ const stages: StageItem[] = [
     }
 
     function updateDesktopScroll() {
-      if (!outer || !track) return;
+      try {
+        if (!outer || !track) return;
 
-      const outerRect = outer.getBoundingClientRect();
-      const scrollHeight = outer.offsetHeight - window.innerHeight;
+        const outerRect = outer.getBoundingClientRect();
+        const scrollHeight = outer.offsetHeight - window.innerHeight;
 
-      if (scrollHeight <= 0) return;
+        if (scrollHeight <= 0) return;
 
-      const progress = Math.max(0, Math.min(1, -outerRect.top / scrollHeight));
-      const maxTranslate = getTrackMaxTranslate();
-      const currentTranslate = progress * maxTranslate;
+        const progress = Math.max(0, Math.min(1, -outerRect.top / scrollHeight));
+        const maxTranslate = getTrackMaxTranslate();
+        const currentTranslate = progress * maxTranslate;
 
-      track.style.transform = `translate3d(-${currentTranslate.toFixed(2)}px, 0, 0)`;
+        track.style.transform = `translate3d(-${currentTranslate.toFixed(2)}px, 0, 0)`;
 
-      const stageCount = stageCards.length;
-      const activeIdx = Math.min(stageCount - 1, Math.floor(progress * stageCount * 0.999));
+        const stageCount = stageCards.length;
+        const activeIdx = Math.min(stageCount - 1, Math.floor(progress * stageCount * 0.999));
 
-
-      // Card Focus States
-      stageCards.forEach((card, idx) => {
-        if (idx === activeIdx) {
-          card.style.opacity = '1';
-          card.style.transform = 'scale(1)';
-        } else {
-          card.style.opacity = '0.85';
-          card.style.transform = 'scale(0.98)';
-        }
-      });
-
-
-
-      // =========================================================================
-      // INTER-CARD DOTTED TRAILS (Card 1 -> 2 -> 3 -> 4)
-      // Fully scroll-synchronized: draws forward as cards glide left,
-      // and retracts back as cards glide right
-      // =========================================================================
-      const SVG_START_X = 0;
-      const SVG_END_X = 300;
-      const SVG_SPAN = SVG_END_X - SVG_START_X;
-
-      gapWindows.forEach((win, i) => {
-        const pathEl = document.getElementById(`inter-card-path-${i}`);
-        const dotEl = document.getElementById(`inter-card-dot-${i}`);
-        const headGroup = document.getElementById(`inter-card-head-${i}`);
-        const targetCardPort = document.getElementById(`card-${i + 1}-entry-port`);
-        const sourceCardPort = document.getElementById(`card-${i}-exit-port`);
-
-        if (!pathEl || !dotEl || !headGroup) return;
-
-        if (progress < win.start) {
-          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_START_X} 20`);
-          dotEl.classList.remove('is-ignited');
-          dotEl.style.opacity = '0';
-          headGroup.setAttribute('opacity', '0');
-          if (sourceCardPort) {
-            sourceCardPort.classList.remove('is-ignited');
-            sourceCardPort.style.opacity = '0';
+        // Card Focus States
+        stageCards.forEach((card, idx) => {
+          if (idx === activeIdx) {
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+          } else {
+            card.style.opacity = '0.85';
+            card.style.transform = 'scale(0.98)';
           }
-          if (targetCardPort) {
-            targetCardPort.classList.remove('is-ignited');
-            targetCardPort.style.opacity = '0';
-          }
-        } else if (progress >= win.end) {
-          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_END_X} 20`);
-          dotEl.classList.add('is-ignited');
-          dotEl.style.opacity = '1';
-          headGroup.setAttribute('opacity', '0');
-          if (sourceCardPort) {
-            sourceCardPort.classList.add('is-ignited');
-            sourceCardPort.style.opacity = '1';
-          }
-          if (targetCardPort) {
-            targetCardPort.classList.add('is-ignited');
-            targetCardPort.style.opacity = '1';
-          }
-        } else {
-          const t = Math.max(0, Math.min(1, (progress - win.start) / (win.end - win.start)));
-          const drawX = SVG_START_X + t * SVG_SPAN;
+        });
 
-          pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${drawX.toFixed(1)} 20`);
+        // =========================================================================
+        // INTER-CARD DOTTED TRAILS (Card 1 -> 2 -> 3 -> 4)
+        // Fully scroll-synchronized: draws forward as cards glide left,
+        // and retracts back as cards glide right
+        // =========================================================================
+        const SVG_START_X = 0;
+        const SVG_END_X = 300;
+        const SVG_SPAN = SVG_END_X - SVG_START_X;
 
-          if (sourceCardPort) {
-            sourceCardPort.classList.add('is-ignited');
-            sourceCardPort.style.opacity = '1';
-          }
+        gapWindows.forEach((win, i) => {
+          const pathEl = document.getElementById(`inter-card-path-${i}`);
+          const dotEl = document.getElementById(`inter-card-dot-${i}`);
+          const headGroup = document.getElementById(`inter-card-head-${i}`);
+          const targetCardPort = document.getElementById(`card-${i + 1}-entry-port`);
+          const sourceCardPort = document.getElementById(`card-${i}-exit-port`);
 
-          if (t >= 0.5) {
+          if (!pathEl || !dotEl || !headGroup) return;
+
+          if (progress < win.start) {
+            pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_START_X} 20`);
+            dotEl.classList.remove('is-ignited');
+            dotEl.style.opacity = '0';
+            headGroup.setAttribute('opacity', '0');
+            if (sourceCardPort) {
+              sourceCardPort.classList.remove('is-ignited');
+              sourceCardPort.style.opacity = '0';
+            }
+            if (targetCardPort) {
+              targetCardPort.classList.remove('is-ignited');
+              targetCardPort.style.opacity = '0';
+            }
+          } else if (progress >= win.end) {
+            pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${SVG_END_X} 20`);
             dotEl.classList.add('is-ignited');
             dotEl.style.opacity = '1';
+            headGroup.setAttribute('opacity', '0');
+            if (sourceCardPort) {
+              sourceCardPort.classList.add('is-ignited');
+              sourceCardPort.style.opacity = '1';
+            }
+            if (targetCardPort) {
+              targetCardPort.classList.add('is-ignited');
+              targetCardPort.style.opacity = '1';
+            }
           } else {
-            dotEl.classList.remove('is-ignited');
-            dotEl.style.opacity = t > 0.05 ? '0.4' : '0';
+            const t = Math.max(0, Math.min(1, (progress - win.start) / (win.end - win.start)));
+            const drawX = SVG_START_X + t * SVG_SPAN;
+
+            pathEl.setAttribute('d', `M ${SVG_START_X} 20 L ${drawX.toFixed(1)} 20`);
+
+            if (sourceCardPort) {
+              sourceCardPort.classList.add('is-ignited');
+              sourceCardPort.style.opacity = '1';
+            }
+
+            if (t >= 0.5) {
+              dotEl.classList.add('is-ignited');
+              dotEl.style.opacity = '1';
+            } else {
+              dotEl.classList.remove('is-ignited');
+              dotEl.style.opacity = t > 0.05 ? '0.4' : '0';
+            }
+
+            if (targetCardPort) {
+              const reached = t >= 0.96;
+              targetCardPort.classList.toggle('is-ignited', reached);
+              targetCardPort.style.opacity = reached ? '1' : t > 0.7 ? '0.4' : '0';
+            }
+
+            headGroup.setAttribute('opacity', '1');
+            const circles = headGroup.querySelectorAll('circle');
+            circles.forEach((c) => c.setAttribute('cx', drawX.toFixed(1)));
           }
+        });
 
-          if (targetCardPort) {
-            const reached = t >= 0.96;
-            targetCardPort.classList.toggle('is-ignited', reached);
-            targetCardPort.style.opacity = reached ? '1' : t > 0.7 ? '0.4' : '0';
+        const viewport = outer.querySelector<HTMLElement>('.framework-sticky-viewport') || outer;
+        const vpRect = viewport.getBoundingClientRect();
+
+        // =========================================================================
+        // Card 1 Entry Trail: Symmetrical to Exit Trail!
+        // Docks at Left Rail when currentTranslate === 0 (at Card 1 Explore stage)
+        // When scrolling forward, translates LEFT with Card 1 and disappears
+        // =========================================================================
+        const card0 = document.getElementById('horizontal-stage-0');
+        const card0EntryPort = document.getElementById('card-0-entry-port');
+        const entrySvg = document.getElementById('framework-entry-trail-svg');
+        const entryPath = document.getElementById('entry-active-path');
+        const entryDot = document.getElementById('entry-corner-dot');
+
+        if (card0 && card0EntryPort && entrySvg && entryPath && entryDot) {
+          const c0r = card0.getBoundingClientRect();
+          const railPadVal = typeof railPad === 'function' ? railPad() : 34;
+          const baseRailLeft = railPadVal;
+          const deltaForward = currentTranslate;
+          const currentRailLeft = baseRailLeft - deltaForward;
+          const portX = c0r.left - vpRect.left;
+          const portY = (c0r.top - vpRect.top) + c0r.height / 2;
+
+          // Progressive draw-in from top of framework down to card as user scrolls into section
+          const triggerDist = window.innerHeight * 0.72;
+          const enterProgress = Math.max(0, Math.min(1, (triggerDist - outerRect.top) / triggerDist));
+
+          if (deltaForward > 40) {
+            // Vanishing effect: moved left with Card 1 and disappears completely!
+            entrySvg.style.opacity = '0';
+            entryPath.setAttribute('d', '');
+            entryDot.classList.remove('is-ignited');
+            entryDot.style.opacity = '0';
+            card0EntryPort.classList.remove('is-ignited');
+            card0EntryPort.style.opacity = '0';
+          } else if (enterProgress <= 0) {
+            // User is above framework section: zero pre-existing trail!
+            entrySvg.style.opacity = '0';
+            entryPath.setAttribute('d', '');
+            entryDot.classList.remove('is-ignited');
+            entryDot.style.opacity = '0';
+            card0EntryPort.classList.remove('is-ignited');
+            card0EntryPort.style.opacity = '0';
+          } else {
+            entrySvg.style.opacity = '1';
+
+            if (enterProgress < 0.65) {
+              // Stage 1: Draw downwards along rail from top of framework to portY (middle of card)
+              const tDown = enterProgress / 0.65;
+              const curY = tDown * portY;
+              entryPath.setAttribute('d', `M ${currentRailLeft.toFixed(1)} 0 L ${currentRailLeft.toFixed(1)} ${curY.toFixed(1)}`);
+              entryDot.classList.remove('is-ignited');
+              entryDot.style.opacity = '0';
+              card0EntryPort.classList.remove('is-ignited');
+              card0EntryPort.style.opacity = '0';
+            } else {
+              // Stage 2: Turn 90 degrees right and draw horizontally into Card 1
+              const tHoriz = (enterProgress - 0.65) / 0.35;
+              const curX = currentRailLeft + tHoriz * (portX - currentRailLeft);
+              entryPath.setAttribute('d', `M ${currentRailLeft.toFixed(1)} 0 L ${currentRailLeft.toFixed(1)} ${portY.toFixed(1)} L ${curX.toFixed(1)} ${portY.toFixed(1)}`);
+
+              entryDot.setAttribute('cx', currentRailLeft.toFixed(1));
+              entryDot.setAttribute('cy', portY.toFixed(1));
+              entryDot.classList.add('is-ignited');
+              entryDot.style.opacity = '1';
+
+              card0EntryPort.setAttribute('cx', portX.toFixed(1));
+              card0EntryPort.setAttribute('cy', portY.toFixed(1));
+              if (tHoriz >= 0.95) {
+                card0EntryPort.classList.add('is-ignited');
+                card0EntryPort.style.opacity = '1';
+              } else {
+                card0EntryPort.classList.remove('is-ignited');
+                card0EntryPort.style.opacity = '0';
+              }
+            }
           }
-
-          headGroup.setAttribute('opacity', '1');
-          const circles = headGroup.querySelectorAll('circle');
-          circles.forEach((c) => c.setAttribute('cx', drawX.toFixed(1)));
         }
-      });
 
-      // =========================================================================
-      // =========================================================================
-      // Card 4 Exit Trail: Symmetrical to Entry Trail!
-      // Docks at Right Rail when currentTranslate === maxTranslate (at CTA)
-      // When back-scrolling, translates RIGHT with Card 4 and disappears INSTANTLY
-      // =========================================================================
-      const card3 = document.getElementById('horizontal-stage-3');
-      const card3ExitPort = document.getElementById('card-3-exit-port');
-      const exitSvg = document.getElementById('framework-exit-trail-svg');
-      const exitPath = document.getElementById('exit-active-path');
-      const exitDot = document.getElementById('exit-corner-dot');
-      const exitHead = document.getElementById('exit-head-group');
+        // =========================================================================
+        // Card 4 Exit Trail: Symmetrical to Entry Trail!
+        // Docks at Right Rail when currentTranslate === maxTranslate (at CTA)
+        // When back-scrolling, translates RIGHT with Card 4 and disappears INSTANTLY
+        // =========================================================================
+        const card3 = document.getElementById('horizontal-stage-3');
+        const card3ExitPort = document.getElementById('card-3-exit-port');
+        const exitSvg = document.getElementById('framework-exit-trail-svg');
+        const exitPath = document.getElementById('exit-active-path');
+        const exitDot = document.getElementById('exit-corner-dot');
+        const exitHead = document.getElementById('exit-head-group');
 
-      if (card3 && card3ExitPort && exitSvg && exitPath && exitDot && exitHead) {
-        const c3r = card3.getBoundingClientRect();
-        const railPadVal = typeof railPad === 'function' ? railPad() : 34;
-        const baseRailRight = document.documentElement.clientWidth - railPadVal;
-        const deltaBack = Math.max(0, maxTranslate - currentTranslate);
-        const currentRailRight = baseRailRight + deltaBack;
-        const portX = c3r.right;
-        const portY = c3r.top + c3r.height / 2;
-        const vpHeight = window.innerHeight;
+        if (card3 && card3ExitPort && exitSvg && exitPath && exitDot && exitHead) {
+          const c3r = card3.getBoundingClientRect();
+          const railPadVal = typeof railPad === 'function' ? railPad() : 34;
+          const baseRailRight = document.documentElement.clientWidth - railPadVal;
+          const deltaBack = Math.max(0, maxTranslate - currentTranslate);
+          const currentRailRight = baseRailRight + deltaBack;
+          const portX = c3r.right - vpRect.left;
+          const portY = (c3r.top - vpRect.top) + c3r.height / 2;
+          const vpHeight = vpRect.height;
 
-        // Disappear instantly if back-scrolled away from the final CTA dock position
-        if (deltaBack > 40) {
-          exitSvg.style.opacity = '0';
-          exitPath.setAttribute('d', '');
-          exitDot.classList.remove('is-ignited');
-          exitDot.style.opacity = '0';
-          card3ExitPort.classList.remove('is-ignited');
-          card3ExitPort.style.opacity = '0';
-          exitHead.setAttribute('opacity', '0');
-        } else {
-          exitSvg.style.opacity = '1';
-          card3ExitPort.classList.add('is-ignited');
-          card3ExitPort.style.opacity = '1';
-          exitDot.classList.add('is-ignited');
-          exitDot.style.opacity = '1';
-          exitHead.setAttribute('opacity', '0');
+          // Disappear instantly if back-scrolled away from the final CTA dock position
+          if (deltaBack > 40) {
+            exitSvg.style.opacity = '0';
+            exitPath.setAttribute('d', '');
+            exitDot.classList.remove('is-ignited');
+            exitDot.style.opacity = '0';
+            card3ExitPort.classList.remove('is-ignited');
+            card3ExitPort.style.opacity = '0';
+            exitHead.setAttribute('opacity', '0');
+          } else {
+            exitSvg.style.opacity = '1';
+            card3ExitPort.classList.add('is-ignited');
+            card3ExitPort.style.opacity = '1';
+            exitDot.classList.add('is-ignited');
+            exitDot.style.opacity = '1';
+            exitHead.setAttribute('opacity', '0');
 
-          card3ExitPort.setAttribute('cx', portX.toFixed(1));
-          card3ExitPort.setAttribute('cy', portY.toFixed(1));
-          exitDot.setAttribute('cx', currentRailRight.toFixed(1));
-          exitDot.setAttribute('cy', portY.toFixed(1));
+            card3ExitPort.setAttribute('cx', portX.toFixed(1));
+            card3ExitPort.setAttribute('cy', portY.toFixed(1));
+            exitDot.setAttribute('cx', currentRailRight.toFixed(1));
+            exitDot.setAttribute('cy', portY.toFixed(1));
 
-          exitPath.setAttribute('d', `M ${portX.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${vpHeight}`);
+            exitPath.setAttribute('d', `M ${portX.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${portY.toFixed(1)} L ${currentRailRight.toFixed(1)} ${vpHeight}`);
+          }
         }
+      } finally {
+        ticking = false;
       }
-
-      if (prevBtn) prevBtn.disabled = activeIdx === 0;
-      if (nextBtn) nextBtn.disabled = activeIdx === stageCount - 1;
-
-      ticking = false;
     }
 
     function onScroll() {
@@ -553,13 +670,14 @@ const stages: StageItem[] = [
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', () => {
+    activeScrollListener = onScroll;
+    activeResizeListener = () => {
       isDesktop = window.innerWidth >= 1024;
       if (isDesktop) updateDesktopScroll();
-    });
+    };
 
-
+    window.addEventListener('scroll', activeScrollListener, { passive: true });
+    window.addEventListener('resize', activeResizeListener);
 
     updateDesktopScroll();
   }
