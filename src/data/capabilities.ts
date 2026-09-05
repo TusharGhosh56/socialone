@@ -40,7 +40,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'AI portfolio and readiness',
         p1: "Before anything is built, we assess where AI can create meaningful value and what it will take to implement it effectively. This includes the institution's mandate, data maturity and ownership, existing infrastructure, workflows and workforce.",
         p2: 'We use this assessment to identify and prioritise the decisions and services where AI has a credible role, and develop a sequenced roadmap covering use cases, data and infrastructure requirements, and procurement. The aim is to establish a clear basis for investment before resources are committed to implementation',
-        image: '/src/assets/images/capabilities/work-governance.jpg',
+        image: '/src/assets/images/capabilities/ai.png',
         imageAlt: 'Institutional AI readiness assessment and governance roadmap',
       },
       {
@@ -91,7 +91,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Strategy and prioritisation',
         p1: 'Organisations often have substantial programme evidence across evaluations, partner reports and operational data, but limited capacity to bring it together for strategic decision-making. We synthesise this evidence to identify decisions where AI can create meaningful value, and assess opportunities against organisational priorities, resources and readiness.',
         p2: 'We then develop an AI opportunity portfolio and, where useful, use scenario analysis to support strategic and resource decisions. The resulting roadmap sequences adoption around clear priorities, evidence and organisational capacity.',
-        image: '/src/assets/images/purpose-direction/institution.png',
+        image: '/src/assets/images/capabilities/strategy_priority.jpg',
         imageAlt: 'Nonprofit institutional strategy and programme readiness assessment',
       },
       {
@@ -100,7 +100,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Operations and partner support',
         p1: 'We begin by understanding the workflows through which programmes are delivered, including the roles, information and processes that support day-to-day operations. This informs the design of knowledge retrieval systems, programme operations copilots and tools that strengthen coordination and support across partner networks.',
         p2: 'Solutions are prototyped in real delivery environments and designed around the practical conditions of implementation, including differences in data, connectivity and organisational capacity. The objective is to develop systems that integrate with existing workflows and can be adopted across diverse delivery contexts.',
-        image: '/src/assets/images/capabilities/insight-ai.jpg',
+        image: '/src/assets/images/capabilities/operations.png',
         imageAlt: 'Programme operations co-design and partner coordination workflows',
       },
       {
@@ -169,7 +169,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Independent assurance',
         p1: 'Finally, we measure what actually changed for the people a portfolio is meant to serve, not just what was built or delivered. We test quality, fairness and adoption, and report back plainly, including when the honest answer is that something did not work.',
         p2: "Because we keep this work separate from delivery, a funder gets a read it can trust and defend, and each allocation is better informed than the last. Over time, that is what turns a portfolio's evidence into better decisions rather than better reporting.",
-        image: '/src/assets/images/capabilities/work-governance.jpg',
+        image: '/src/assets/images/capabilities/independant.jpg',
         imageAlt: 'Independent algorithmic assurance and portfolio evaluation',
       },
     ],

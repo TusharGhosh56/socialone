@@ -4,6 +4,9 @@
 // 2. The glowing lead head dot and line draw along the mathematical arc in real-time on scroll.
 // 3. Image conveyor belt and text cards move along the exact circular trajectory.
 
+import digitalImg from '../assets/images/16/digital.png';
+import compassImg from '../assets/images/16/community-compass.jpeg';
+
 export interface BedrockPillar {
   title: string;
   desc: string;
@@ -27,13 +30,13 @@ const pillars: BedrockPillar[] = [
   {
     title: 'Digital tools and systems',
     desc: 'MIS platforms, product design, system architecture and core data-platform integration that connect technology to institutional workflows and operating environments.',
-    image: '/images/16/img3.jpg',
+    image: digitalImg.src,
     alt: 'Digital tools and institutional data systems',
   },
   {
     title: 'Last-mile data networks',
     desc: 'Community Compass, field intelligence networks, ground data collection and validation that bring evidence from delivery settings into institutional decision-making.',
-    image: '/images/16/img4.jpg',
+    image: compassImg.src,
     alt: 'Last-mile frontline data networks and field intelligence',
   },
 ];

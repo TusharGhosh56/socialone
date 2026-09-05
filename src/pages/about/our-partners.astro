@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import HeroVideo from '../../components/HeroVideo.astro';
 import AtmosphericCanvas from '../../components/AtmosphericCanvas.astro';
 import PartnerPresenceMap from '../../components/PartnerPresenceMap.astro';
+import PartnerLogoRibbon from '../../components/PartnerLogoRibbon.astro';
 import Button from '../../components/Button.astro';
 
 const metrics = [
@@ -20,51 +21,6 @@ const metrics = [
     value: '8',
     label: 'OPERATING REGIONS',
     desc: 'South Asia, Africa, MENA, Americas, Europe & Central Asia, and Pacific.',
-  },
-];
-
-const partnerNetwork = [
-  {
-    id: 'partner-card-0',
-    title: 'Global Reach',
-    count: '4',
-    partners: 'Abt Global, IMC (now DT Global), Oxford Policy Management, Palladium',
-    highlight: 'border-t-2 border-t-gold',
-  },
-  {
-    id: 'partner-card-1',
-    title: 'Multi-Region',
-    count: '7',
-    partners: 'Knowledge for Development (K4D), Agua Consult, Development Pathways, Genesis Analytics, ITAD, Apex TC, Hakunamatata',
-    highlight: 'border-t-2 border-t-gold',
-  },
-  {
-    id: 'partner-card-2',
-    title: 'South Asia',
-    count: '5',
-    partners: 'Consiglieri (CPL), IIT Madras, IWMI, Matrix Business Development, Dias Works',
-    highlight: 'border-t-2 border-t-gold/70',
-  },
-  {
-    id: 'partner-card-3',
-    title: 'Sub-Saharan Africa',
-    count: '2',
-    partners: 'Jarco Consulting, Consilient',
-    highlight: 'border-t-2 border-t-gold/70',
-  },
-  {
-    id: 'partner-card-4',
-    title: 'North America',
-    count: '3',
-    partners: 'Cadmus Group, Quantum Leaps, EMERG',
-    highlight: 'border-t-2 border-t-gold/50',
-  },
-  {
-    id: 'partner-card-5',
-    title: 'Middle East & North Africa',
-    count: '2',
-    partners: 'Optimum Analysis, Edmaaj',
-    highlight: 'border-t-2 border-t-gold/50',
   },
 ];
 ---
@@ -125,46 +81,9 @@ const partnerNetwork = [
           <PartnerPresenceMap />
         </section>
 
-        {/* SECTION 3: OUR PARTNER NETWORK (2-COLUMN ARCHITECTURAL MATRIX) */}
-        <section class="container-x space-y-5 sm:space-y-8" id="regional-network">
-          <div class="space-y-1.5 sm:space-y-2 border-b border-hair pb-2.5 sm:pb-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-gold">
-              Our Partner Network
-            </div>
-            <h2 class="text-2xl sm:text-4xl font-light text-navy tracking-tight">
-              Regional Delivery & Evaluation Alliances
-            </h2>
-          </div>
-
-          {/* 2-Column Grid */}
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 relative">
-            {partnerNetwork.map((region) => (
-              <div
-                id={region.id}
-                class={`group relative rounded-2xl sm:rounded-3xl border border-hair bg-white/95 backdrop-blur-md p-5 sm:p-8 lg:p-10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gold/60 flex flex-col justify-between space-y-3 sm:space-y-5 card-interactive-sheen ${region.highlight}`}
-              >
-                <div class="space-y-2 sm:space-y-3 relative z-10">
-                  <div class="flex items-start justify-between gap-3 sm:gap-4">
-                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-light text-navy tracking-tight font-display">
-                      {region.title}
-                    </h3>
-                    <div class="flex items-baseline gap-1.5 shrink-0 bg-pale-navy px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-pill border border-hair">
-                      <span class="text-base sm:text-xl font-bold text-gold font-display">
-                        {region.count}
-                      </span>
-                      <span class="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-navy">
-                        PARTNERS
-                      </span>
-                    </div>
-                  </div>
-
-                  <p class="text-xs sm:text-base text-mid-navy leading-relaxed font-normal pt-2 sm:pt-3 border-t border-hair/60">
-                    {region.partners}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* STRATEGIC PARTNERS LOGO RIBBON (MOVING LEFT & RIGHT) */}
+        <section id="partner-ribbon-section" class="w-full">
+          <PartnerLogoRibbon />
         </section>
 
         {/* SECTION 4: STANDARDIZED FINAL CTA CARD */}

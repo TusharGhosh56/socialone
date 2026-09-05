@@ -9,10 +9,12 @@
 // Gateway — see src/scripts/contactPage.ts. The endpoint is read from
 // PUBLIC_CONTACT_API_URL (a public URL, no credential); the browser origin
 // must be on the Lambda's ALLOWED_ORIGIN list or CORS will reject it.
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Reveal from '../components/Reveal.astro';
 import AtmosphericCanvas from '../components/AtmosphericCanvas.astro';
 import HeroVideo from '../components/HeroVideo.astro';
+import partnerBg from '../assets/images/partner_with_us/partner_with_us.png';
 import { contactEmails, offices } from '../data/contactInfo';
 import { serviceOptions, enquiryOptions } from '../data/contactOptions';
 import { FIELD_LIMITS } from '../data/contactLimits';
@@ -26,12 +28,25 @@ import { FIELD_LIMITS } from '../data/contactLimits';
   <div class="w-full">
     {/* ============================ HERO ============================ */}
     <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-      {/* Thematic Cinematic Stock Video: Collaborative Dialogue & Strategic Partnership */}
-      <HeroVideo
-        src="/video/optimized/6.mp4"
-        storyTag="Institutional Dialogue · Direct Specialist Routing"
-        overlayOpacity={0.68}
-      />
+      {/* Thematic Background Image: Partner With Us */}
+      <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <Image
+          src={partnerBg}
+          alt="APLYD Strategic Partnership Dialogue"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover"
+          widths={[800, 1400, 1920]}
+          sizes="100vw"
+        />
+        <div
+          class="absolute inset-0"
+          style="background: linear-gradient(180deg, rgba(11, 14, 43, 0.42) 0%, rgba(11, 14, 43, 0.68) 45%, rgba(11, 14, 43, 0.92) 75%, #0b0e2b 100%);"
+        ></div>
+        <div class="pointer-events-none absolute -right-24 top-10 h-[36rem] w-[36rem] rounded-full bg-gold/15 blur-[130px]"></div>
+        <div class="pointer-events-none absolute -left-28 bottom-0 h-80 w-80 rounded-full bg-navy/60 blur-[100px]"></div>
+      </div>
 
       <div class="container-x grid items-start gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-14 relative z-10">
         {/* Left Column: Heading, Value Prop, Direct Contact Details (5 cols) */}

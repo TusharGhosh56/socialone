@@ -1,0 +1,183 @@
+---
+// PartnerLogoRibbon.astro — Dual-strip continuously scrolling ribbon of institutional partner logos
+// Strip 1 moves left, Strip 2 moves right. Simple company names in hover tooltips.
+import { Image } from 'astro:assets';
+
+// Row 1 logos
+import gatesLogo from '../assets/images/partners/Gates_Foundation_Logo.svg';
+import adbLogo from '../assets/images/partners/asian-development-bank-adb-vector-logo.svg';
+import gizLogo from '../assets/images/partners/Giz.svg';
+import unopsLogo from '../assets/images/partners/UNOPS.svg';
+import pathLogo from '../assets/images/partners/PATH.svg';
+import csfLogo from '../assets/images/partners/Central square foundation.svg';
+import gwopaLogo from '../assets/images/partners/GWOPA.svg';
+import kfhiLogo from '../assets/images/partners/KFHI.svg';
+import crispLogo from '../assets/images/partners/CRISP.svg';
+import eswatiniLogo from '../assets/images/partners/Eswatini_water_services.svg';
+import nisgLogo from '../assets/images/partners/niSg.svg';
+import selcoLogo from '../assets/images/partners/selco-foundation-logo-white-text.svg';
+
+// Row 2 logos
+import ibpLogo from '../assets/images/partners/IBP.svg';
+import kogeLogo from '../assets/images/partners/KOGE.svg';
+import mission21Logo from '../assets/images/partners/Mission_21.svg';
+import winsLogo from '../assets/images/partners/Wins.svg';
+import fishWelfareLogo from '../assets/images/partners/Fish_welfare.svg';
+import ifmrLogo from '../assets/images/partners/IFMR.svg';
+import towerHealthLogo from '../assets/images/partners/reading_hospital_tower_health.svg';
+import chriLogo from '../assets/images/partners/CHRI.svg';
+import upstcLogo from '../assets/images/partners/upstc.svg';
+import nlciLogo from '../assets/images/partners/NLCI_NDIA.svg';
+import ramakrishnaLogo from '../assets/images/partners/RAMAkrishna.svg';
+
+const row1Logos = [
+  { name: 'Gates Foundation', image: gatesLogo },
+  { name: 'Asian Development Bank (ADB)', image: adbLogo },
+  { name: 'GIZ', image: gizLogo },
+  { name: 'UNOPS', image: unopsLogo },
+  { name: 'PATH', image: pathLogo },
+  { name: 'Central Square Foundation', image: csfLogo },
+  { name: 'Global Water Operators\' Partnerships Alliance (GWOPA)', image: gwopaLogo },
+  { name: 'Korea Food for the Hungry International', image: kfhiLogo },
+  { name: 'CRISP', image: crispLogo },
+  { name: 'Eswatini Water Services Corporation', image: eswatiniLogo },
+  { name: 'NISG', image: nisgLogo },
+  { name: 'SELCO Foundation', image: selcoLogo },
+];
+
+const row2Logos = [
+  { name: 'International Budget Partnership (IBP)', image: ibpLogo },
+  { name: 'KOGE (Kooperationsgemeinschaft)', image: kogeLogo },
+  { name: 'Mission 21', image: mission21Logo },
+  { name: 'WINS Global Consult', image: winsLogo },
+  { name: 'Fish Welfare Initiative', image: fishWelfareLogo },
+  { name: 'IFMR', image: ifmrLogo },
+  { name: 'Reading Hospital - Tower Health', image: towerHealthLogo },
+  { name: 'Centre for Health Research and Innovation', image: chriLogo },
+  { name: 'Government of Uttar Pradesh', image: upstcLogo },
+  { name: 'NLC India', image: nlciLogo },
+  { name: 'Ramakrishna Mission', image: ramakrishnaLogo },
+];
+
+// Duplicate each row 4 times for seamless infinite -50% translation across all screens
+const fullTrackRow1 = [...row1Logos, ...row1Logos, ...row1Logos, ...row1Logos];
+const fullTrackRow2 = [...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos];
+---
+
+<div class="partner-ribbon-wrapper w-full relative z-10 py-6 sm:py-8 overflow-hidden select-none">
+  <div class="flex flex-col gap-6 sm:gap-8 lg:gap-10">
+    {/* Strip 1 — Moving Left */}
+    <div class="partner-ribbon-viewport w-full overflow-hidden">
+      <div class="partner-ribbon-track track-left flex items-center gap-12 sm:gap-20 lg:gap-28 will-change-transform pt-14 sm:pt-16 pb-6 sm:pb-8">
+        {fullTrackRow1.map((p, idx) => (
+          <div
+            class="partner-logo-item relative shrink-0 flex flex-col items-center justify-center group cursor-pointer"
+            aria-label={p.name}
+            aria-hidden={idx >= row1Logos.length ? 'true' : 'false'}
+          >
+            {/* Logo Image — Significantly Enlarged */}
+            <Image
+              src={p.image}
+              alt={p.name}
+              class="partner-logo-img h-16 sm:h-24 lg:h-28 w-auto max-w-[220px] sm:max-w-[340px] lg:max-w-[420px] object-contain select-none pointer-events-none transition-transform duration-300 group-hover:scale-108"
+              loading="eager"
+            />
+
+            {/* Clean, Simple Company Name Tooltip on Hover */}
+            <div class="partner-tooltip pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-1.5 group-hover:translate-y-0 transition-all duration-150 ease-out z-40 flex flex-col items-center">
+              <div class="px-4 py-2 rounded-xl bg-[#0b0e2b]/95 backdrop-blur-md text-white shadow-2xl border border-white/15 whitespace-nowrap">
+                <span class="text-xs sm:text-[13px] font-medium tracking-tight text-white font-sans">{p.name}</span>
+              </div>
+              <div class="w-2.5 h-2.5 bg-[#0b0e2b] border-r border-b border-white/15 rotate-45 -mt-1.5 shadow-sm"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Strip 2 — Moving Right */}
+    <div class="partner-ribbon-viewport w-full overflow-hidden">
+      <div class="partner-ribbon-track track-right flex items-center gap-12 sm:gap-20 lg:gap-28 will-change-transform pt-14 sm:pt-16 pb-6 sm:pb-8">
+        {fullTrackRow2.map((p, idx) => (
+          <div
+            class="partner-logo-item relative shrink-0 flex flex-col items-center justify-center group cursor-pointer"
+            aria-label={p.name}
+            aria-hidden={idx >= row2Logos.length ? 'true' : 'false'}
+          >
+            {/* Logo Image — Significantly Enlarged */}
+            <Image
+              src={p.image}
+              alt={p.name}
+              class="partner-logo-img h-16 sm:h-24 lg:h-28 w-auto max-w-[220px] sm:max-w-[340px] lg:max-w-[420px] object-contain select-none pointer-events-none transition-transform duration-300 group-hover:scale-108"
+              loading="eager"
+            />
+
+            {/* Clean, Simple Company Name Tooltip on Hover */}
+            <div class="partner-tooltip pointer-events-none absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 translate-y-1.5 group-hover:translate-y-0 transition-all duration-150 ease-out z-40 flex flex-col items-center">
+              <div class="px-4 py-2 rounded-xl bg-[#0b0e2b]/95 backdrop-blur-md text-white shadow-2xl border border-white/15 whitespace-nowrap">
+                <span class="text-xs sm:text-[13px] font-medium tracking-tight text-white font-sans">{p.name}</span>
+              </div>
+              <div class="w-2.5 h-2.5 bg-[#0b0e2b] border-r border-b border-white/15 rotate-45 -mt-1.5 shadow-sm"></div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .partner-ribbon-viewport {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+  }
+
+  .partner-ribbon-track {
+    width: max-content;
+    padding-inline: 2rem;
+  }
+
+  /* Strip 1 scrolls continuously to the LEFT */
+  .track-left {
+    animation: partner-scroll-left 48s linear infinite;
+  }
+
+  /* Strip 2 scrolls continuously to the RIGHT */
+  .track-right {
+    animation: partner-scroll-right 48s linear infinite;
+  }
+
+  /* Hovering over either track or ribbon wrapper pauses the marquee */
+  .partner-ribbon-wrapper:hover .partner-ribbon-track {
+    animation-play-state: paused;
+  }
+
+  .partner-logo-img {
+    mix-blend-mode: multiply;
+  }
+
+  @keyframes partner-scroll-left {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  @keyframes partner-scroll-right {
+    from {
+      transform: translate3d(-50%, 0, 0);
+    }
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .partner-ribbon-track {
+      animation: none;
+      overflow-x: auto;
+    }
+  }
+</style>
