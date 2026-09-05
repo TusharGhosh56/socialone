@@ -13,11 +13,9 @@ export interface Office {
   mapQuery: string;
 }
 
-// Single point of contact — the form's "What are you looking for?" dropdown
-// (contactOptions.ts) already routes business / media / HR enquiries, so the
-// details card no longer splits them across separate addresses.
 export const contactEmails: ContactEmail[] = [
-  { label: 'Enquiries', email: 'contact@aplyd.com' },
+  { label: 'Partnership Queries', email: 'contact@aplyd.com' },
+  { label: 'Media Queries', email: 'adhish.k@athenainfonomics.com' },
 ];
 
 export const offices: Office[] = [
