@@ -49,7 +49,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Public-service solutions',
         p1: 'When a use case is ready to move forward, we design and build solutions around the needs of the public service. This can include advisory and planning systems, triage and supervision tools, and data integrations that connect with existing MIS and operational systems.',
         p2: 'Interoperability, security and decision rights are addressed as part of the system design, alongside the product and technical architecture. The result is a documented solution with the architecture, requirements and controls needed for implementation, operation and future development.',
-        image: '/src/assets/images/built-for-gov/photo-1524178232363-1fb2b075b655.png',
+        image: '/src/assets/images/capabilities/public-service.jpg',
         imageAlt: 'Frontline public service delivery and civic digital solutions',
       },
       {
@@ -58,7 +58,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Field evidence and service design',
         p1: 'Effective public services depend on how systems work in practice. We study users and workflows in their actual delivery settings, bringing together evidence from frontline teams and the people who use the service.',
         p2: 'This evidence informs co-design and prototyping with the people who will operate and use the system. We also establish the supporting foundations required for responsible implementation, including data standards, security controls, governance and standard operating procedures. The focus is not only on the tool, but on the service environment in which it needs to work.',
-        image: '/src/assets/images/capabilities/hero-fieldwork.jpg',
+        image: '/src/assets/images/capabilities/field-evidence.jpg',
         imageAlt: 'Field researchers gathering evidence from frontline workers and citizens',
       },
       {
@@ -67,7 +67,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Capability and ownership',
         p1: 'Sustained adoption requires institutional capability, not continued dependence on an external provider. We build ownership into the engagement from the outset, with clear product responsibilities, user training and the support structures required to operate the system.',
         p2: 'We also help institutions develop the capacity to assess model quality, fairness and public outcomes over time. The objective is to leave teams with the knowledge, operating routines and assurance mechanisms needed to manage and improve the system independently.',
-        image: '/src/assets/images/how-we-work-page/building.png',
+        image: '/src/assets/images/capabilities/portfolio.jpg',
         imageAlt: 'Institutional capacity building and sovereign codebase handover',
       },
     ],
@@ -142,7 +142,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Portfolio strategy',
         p1: "A fund's influence tends to concentrate in a handful of decisions that move money and shape a field. We read the evidence across the whole portfolio to find those decisions, rather than treating each grant in isolation, and look for where AI could strengthen them.",
         p2: "The opportunity view we build is grounded in the fund's own strategy, not a generic technology agenda dropped on top of it. What a funder is left with is a clear line from evidence, to the decisions that matter, to the roadmap that would fund them.",
-        image: '/src/assets/images/purpose-direction/donate.png',
+        image: '/src/assets/images/capabilities/decision_making.jpg',
         imageAlt: 'Philanthropic portfolio strategy and investment decision intelligence',
       },
       {
@@ -151,7 +151,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Ecosystem infrastructure',
         p1: 'Funders often pay several grantees to build the same thing four times over, then wonder why none of it is maintained. Where a data system, a shared tool or a knowledge platform could serve many grantees at once, we design and build it as shared infrastructure.',
         p2: 'That includes a clear model for how the infrastructure is governed, reused and kept alive after the initial grant. Done well, it spreads cost, raises the floor for smaller grantees who could never build it alone, and leaves something durable in the field rather than a set of one-off tools that expire with their funding.',
-        image: '/src/assets/images/cases/08-agriculture-systems.jpg',
+        image: '/src/assets/images/capabilities/ecosystem-infra.jpg',
         imageAlt: 'Shared digital public infrastructure and cross-grantee platforms',
       },
       {
@@ -160,7 +160,7 @@ export const sectorDataList: Record<'government' | 'nonprofits' | 'philanthropy'
         title: 'Grantee capability',
         p1: 'Tools that grantees do not truly own tend to stall the moment a grant ends. We run workshops and hands-on support so grantees genuinely hold the tools they are given, understand how they work, and can keep them running.',
         p2: 'Alongside that, we set responsible-AI guardrails practical enough for a stretched team to actually follow, rather than a compliance checklist that gets ignored. The aim is capability that outlasts the funding, not a dependency that has to be renewed with every cycle.',
-        image: '/src/assets/images/how-we-work-page/transfer.png',
+        image: '/src/assets/images/capabilities/workshop.jpg',
         imageAlt: 'Grantee capability building and hands-on operational workshops',
       },
       {
