@@ -61,13 +61,18 @@ import { FIELD_LIMITS } from '../data/contactLimits';
             </Reveal>
           </div>
 
-          {/* Direct Email Card */}
-          <Reveal delay={120} class="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 shadow-sm backdrop-blur-sm">
-            <h2 id="contact-form-h2" class="text-xs sm:text-small font-bold uppercase tracking-[0.1em] text-pale-navy/80">Direct Channels</h2>
-            <ul class="mt-3 sm:mt-4 space-y-2.5 sm:space-y-3">
-              {
-                contactEmails.map((c) => (
-                  <li>
+          {/* Direct Email Channels Card */}
+          <Reveal delay={120} class="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-6 shadow-sm backdrop-blur-sm space-y-4 sm:space-y-5">
+            {
+              contactEmails.map((c, index) => (
+                <div class={index > 0 ? 'border-t border-white/10 pt-4 sm:pt-5' : ''}>
+                  <h2
+                    id={index === 0 ? 'contact-form-h2' : undefined}
+                    class="text-xs sm:text-small font-bold uppercase tracking-[0.1em] text-pale-navy/80"
+                  >
+                    {c.label}
+                  </h2>
+                  <div class="mt-2.5 sm:mt-3">
                     <a
                       href={`mailto:${c.email}`}
                       class="group flex items-center gap-3 sm:gap-3.5 rounded-xl border border-white/10 bg-white/5 p-2.5 sm:p-3.5 text-body font-bold text-white no-underline transition-all duration-base hover:border-gold hover:bg-white/10 hover:text-gold"
@@ -78,21 +83,13 @@ import { FIELD_LIMITS } from '../data/contactLimits';
                         </svg>
                       </span>
                       <div class="min-w-0 flex-1">
-                        <span class="block text-[11px] sm:text-xs font-normal text-pale-navy/70">{c.label}</span>
                         <span class="block truncate text-xs sm:text-small font-bold">{c.email}</span>
                       </div>
                     </a>
-                  </li>
-                ))
-              }
-            </ul>
-
-            <div class="mt-4 sm:mt-5 flex items-center gap-2.5 sm:gap-3 border-t border-white/10 pt-3 sm:pt-4 text-xs sm:text-small text-pale-navy/80">
-              <span class="grid h-4.5 w-4.5 sm:h-5 sm:w-5 shrink-0 place-items-center rounded-full bg-pale-gold text-deep-gold font-bold text-[9px] sm:text-[10px]" aria-hidden="true">
-                ✓
-              </span>
-              <span>Direct response from senior practice leadership.</span>
-            </div>
+                  </div>
+                </div>
+              ))
+            }
           </Reveal>
         </div>
 

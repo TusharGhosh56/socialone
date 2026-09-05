@@ -17,14 +17,36 @@ const sectors: SectorData[] = [
   sectorDataList.nonprofits,
   sectorDataList.philanthropy,
 ];
+
+const sectorVideos = [
+  {
+    id: 'government',
+    src: '/video/subpage-hero/government.mp4',
+    poster: '/video/posters/government.webp',
+    storyTag: 'Government · Sovereign Public Delivery',
+  },
+  {
+    id: 'nonprofits',
+    src: '/video/subpage-hero/non_profit.mp4',
+    poster: '/video/posters/non_profit.webp',
+    storyTag: 'Nonprofits · Frontline Programme Operations',
+  },
+  {
+    id: 'philanthropy',
+    src: '/video/subpage-hero/philanthopy.mp4',
+    poster: '/video/posters/philanthopy.webp',
+    storyTag: 'Philanthropy · Catalytic Portfolio Intelligence',
+  },
+];
 ---
 
 <div class="sector-capabilities-view w-full" data-sector-view data-initial-sector={initialSector}>
   {/* ============================ HERO SECTION ============================ */}
   <section class="hero-internal-section bg-navy text-white pt-28 sm:pt-36 lg:pt-40 pb-16 sm:pb-24 lg:pb-28 min-h-screen min-h-[100dvh] flex flex-col justify-center relative overflow-hidden">
-    {/* Cinematic Stock Video Background: Applied Capabilities */}
+    {/* Cinematic Stock Video Background: Applied Capabilities across sectors */}
     <HeroVideo
-      src="/video/optimized/our_capabilities.mp4"
+      videos={sectorVideos}
+      activeId={initialSector}
       overlayOpacity={0.65}
     />
 
@@ -159,6 +181,7 @@ const sectors: SectorData[] = [
     const bodyBlocks = root.querySelectorAll<HTMLElement>('[data-sector-body]');
     const ctaBlocks = root.querySelectorAll<HTMLElement>('[data-sector-cta]');
     const bgVideos = root.querySelectorAll<HTMLVideoElement>('[data-hero-bg-video]');
+    const posters = root.querySelectorAll<HTMLImageElement>('[data-hero-poster]');
 
     const sectorTagMap: Record<string, string> = {
       government: 'Government · Sovereign Public Delivery',
@@ -166,15 +189,13 @@ const sectors: SectorData[] = [
       philanthropy: 'Philanthropy · Catalytic Portfolio Intelligence',
     };
 
-    // Ensure single video is visible and playing
-    if (bgVideos.length === 1) {
-      const vid = bgVideos[0];
-      vid.classList.add('opacity-100', 'is-active');
-      vid.classList.remove('opacity-0', 'pointer-events-none');
-      if (vid.paused) {
+    // Ensure active video is playing
+    bgVideos.forEach((vid) => {
+      vid.muted = true;
+      if (vid.classList.contains('is-active') && vid.paused) {
         vid.play().catch(() => {});
       }
-    }
+    });
 
     function switchSector(targetId: string, updateHistory = true) {
       // 0. Update background video & story tag (only switch if multiple videos exist)
@@ -185,6 +206,9 @@ const sectors: SectorData[] = [
           vid.classList.toggle('is-active', matches);
           vid.classList.toggle('opacity-0', !matches);
           vid.classList.toggle('pointer-events-none', !matches);
+          if (matches && vid.paused) {
+            vid.play().catch(() => {});
+          }
         });
       } else if (bgVideos.length === 1) {
         const vid = bgVideos[0];
@@ -193,6 +217,16 @@ const sectors: SectorData[] = [
         if (vid.paused) {
           vid.play().catch(() => {});
         }
+      }
+
+      // Update static posters in sync
+      if (posters.length > 0) {
+        posters.forEach((poster) => {
+          const matches = poster.getAttribute('data-hero-poster') === targetId;
+          poster.classList.toggle('opacity-100', matches);
+          poster.classList.toggle('opacity-0', !matches);
+          poster.classList.toggle('pointer-events-none', !matches);
+        });
       }
 
       const storyTagEl = root.querySelector('[data-hero-story-tag]');
